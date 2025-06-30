@@ -1,0 +1,60 @@
+name: Publish casualcatalog [DEV]
+
+on:
+  push:
+    tags: [dev/v*]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag to publish (e.g. dev/vNEXT or dev/v123)'
+        required: true
+        default: 'dev/vNEXT'
+        type: string
+
+jobs:
+  deploy:
+    name: Publishing casualcatalog dev
+    environment: casualcatalog-dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Ensure tag is from dev branch (push or manual)
+        run: |
+          echo "🔍 Checking commit source branch..."
+          COMMIT_SHA="${{ github.sha }}"
+          BRANCHES=$(git branch -r --contains "$COMMIT_SHA" | grep 'origin/dev' || true)
+
+          if [[ -z "$BRANCHES" ]]; then
+            echo "❌ Commit $COMMIT_SHA is not on the 'dev' branch."
+            exit 1
+          fi
+
+          echo "✅ Commit is part of 'dev' branch."
+
+      - name: Show version info
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "🔧 Manual publish for version: ${{ github.event.inputs.version }}"
+          else
+            echo "🏷 Tag triggered publish: ${GITHUB_REF#refs/tags/}"
+          fi
+
+      - name: Configure AWS credentials
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID --profile bootstrap
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile bootstrap
+          aws configure set region us-east-1 --profile bootstrap
+
+      - name: Upload to S3 and Create Invalidation
+        env:
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+          CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
+        run: |
+          aws s3 sync casualcatalog s3://$S3_BUCKET_NAME --delete --cache-control no-cache --profile bootstrap
+          aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/*" --profile bootstrap

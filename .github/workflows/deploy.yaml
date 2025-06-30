@@ -7,7 +7,7 @@ on:
 jobs:
     deploy:
         name: Deploy
-        environment: casual-store
+        environment: ask-ids
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repo

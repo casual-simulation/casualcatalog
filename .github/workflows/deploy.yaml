@@ -1,13 +1,13 @@
-name: Publish ASK IDs
+name: Deploy Casual Store
 
 on:
     push:
-        tags: [ask-ids/v*]
+        tags: [deploy/v*]
 
 jobs:
     deploy:
         name: Deploy
-        environment: ask-ids
+        environment: casual-store
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repo
@@ -25,5 +25,5 @@ jobs:
                   S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
                   CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
               run: |
-                  aws s3 sync ask-ids s3://$S3_BUCKET_NAME --delete --cache-control no-cache --profile bootstrap
+                  aws s3 sync casual-store s3://$S3_BUCKET_NAME --delete --cache-control no-cache --profile bootstrap
                   aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/*" --profile bootstrap

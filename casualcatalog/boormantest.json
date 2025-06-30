@@ -1,3 +1,4 @@
 {
-    "something":"goes here"
+    "something":"goes here",
+    "hello": "world!"
 }

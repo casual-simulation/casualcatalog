@@ -51,6 +51,11 @@ jobs:
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile bootstrap
           aws configure set region us-east-1 --profile bootstrap
 
+      - name: Upload to S3 and Create Invalidation
+        env:
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+          CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
+        run: |
           aws s3 sync casualcatalog s3://$S3_BUCKET_NAME \
             --delete \
             --cache-control no-cache \

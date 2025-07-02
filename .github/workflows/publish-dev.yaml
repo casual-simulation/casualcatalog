@@ -56,5 +56,19 @@ jobs:
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
         run: |
-          aws s3 sync casualcatalog s3://$S3_BUCKET_NAME --delete --cache-control no-cache --profile bootstrap
-          aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/*" --profile bootstrap
+          aws s3 sync casualcatalog s3://$S3_BUCKET_NAME \
+            --delete \
+            --cache-control no-cache \
+            --exclude "*.aux" \
+            --profile bootstrap
+
+          aws s3 sync casualcatalog s3://$S3_BUCKET_NAME \
+            --exclude "*" --include "*.aux" \
+            --content-type application/json \
+            --cache-control no-cache \
+            --profile bootstrap
+
+          aws cloudfront create-invalidation \
+            --distribution-id $CF_DISTRIBUTION_ID \
+            --paths "/*" \
+            --profile bootstrap

@@ -21,6 +21,9 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
+      - name: Fetch all remote branches
+        run: git fetch --prune --unshallow || git fetch --prune --all
+
       - name: Ensure tag is from main branch (push or manual)
         run: |
           echo "🔍 Checking commit source branch..."

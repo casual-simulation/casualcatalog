@@ -11,6 +11,10 @@ on:
         default: 'prod/vNEXT'
         type: string
 
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: Publishing casualcatalog prod

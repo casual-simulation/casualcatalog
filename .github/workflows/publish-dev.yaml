@@ -2,7 +2,7 @@ name: Publish casualcatalog [DEV]
 
 on:
   push:
-    tags: [dev/v*]
+    branches: [dev]
   workflow_dispatch:
     inputs:
       version:
@@ -10,6 +10,10 @@ on:
         required: true
         default: 'dev/vNEXT'
         type: string
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -24,25 +28,13 @@ jobs:
       - name: Fetch all remote branches
         run: git fetch --prune --unshallow || git fetch --prune --all
 
-      - name: Ensure tag is from dev branch (push or manual)
-        run: |
-          echo "🔍 Checking commit source branch..."
-          COMMIT_SHA="${{ github.sha }}"
-          BRANCHES=$(git branch -r --contains "$COMMIT_SHA" | grep 'origin/dev' || true)
-
-          if [[ -z "$BRANCHES" ]]; then
-            echo "❌ Commit $COMMIT_SHA is not on the 'dev' branch."
-            exit 1
-          fi
-
-          echo "✅ Commit is part of 'dev' branch."
-
       - name: Show version info
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "🔧 Manual publish for version: ${{ github.event.inputs.version }}"
           else
-            echo "🏷 Tag triggered publish: ${GITHUB_REF#refs/tags/}"
+            echo "🚀 Push triggered publish on branch: ${GITHUB_REF#refs/heads/}"
+            echo "🔁 Commit: ${GITHUB_SHA}"
           fi
 
       - name: Configure AWS credentials

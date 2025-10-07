@@ -46,11 +46,14 @@ jobs:
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY --profile bootstrap
           aws configure set region us-east-1 --profile bootstrap
 
-      - name: Upload to S3 and Create Invalidation
+      - name: Upload to S3 and Create Invalidation (only changed files)
         env:
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
         run: |
+          set -euo pipefail
+
+          # Upload content (same as before)
           aws s3 sync casualcatalog s3://$S3_BUCKET_NAME \
             --delete \
             --cache-control no-cache \
@@ -63,7 +66,41 @@ jobs:
             --cache-control no-cache \
             --profile bootstrap
 
-          aws cloudfront create-invalidation \
-            --distribution-id $CF_DISTRIBUTION_ID \
-            --paths "/*" \
-            --profile bootstrap
+          # Determine changed files
+          BEFORE_SHA="${{ github.event.before }}"
+          AFTER_SHA="${{ github.sha }}"
+
+          echo "Comparing commits $BEFORE_SHA -> $AFTER_SHA"
+          git fetch --no-tags --prune --depth=50 origin dev || true
+
+          # Get list of added/modified/deleted files under casualcatalog/
+          git diff --name-status "$BEFORE_SHA" "$AFTER_SHA" |
+            awk '($1=="A" || $1=="M" || $1=="D"){print $2}' |
+            grep -E '^casualcatalog/' || true > changed_files.txt
+
+          if [ ! -s changed_files.txt ]; then
+            echo "✅ No files changed under casualcatalog — skipping invalidation."
+            exit 0
+          fi
+
+          echo "Files changed:"
+          cat changed_files.txt
+
+          # Build CloudFront path list (strip prefix and add /)
+          sed 's#^casualcatalog#/#' changed_files.txt > cf_paths.txt
+          sort -u cf_paths.txt -o cf_paths.txt
+
+          # Split into batches of up to 900 (CloudFront limit: 1000)
+          split -l 900 cf_paths.txt batch_
+
+          for f in batch_*; do
+            [ ! -s "$f" ] && continue
+            mapfile -t ITEMS < "$f"
+            echo "Creating invalidation for ${#ITEMS[@]} paths..."
+            aws cloudfront create-invalidation \
+              --distribution-id "$CF_DISTRIBUTION_ID" \
+              --paths "${ITEMS[@]}" \
+              --profile bootstrap
+            sleep 2
+          done
+

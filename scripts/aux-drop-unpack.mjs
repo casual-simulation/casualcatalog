@@ -25,9 +25,13 @@ const VERSION_MAP = {
   2: "ab",
 };
 
-/** Run a command with arguments, bypassing shell quoting issues on Windows. */
+/** Run a command with arguments. Uses shell on Windows so npx.cmd resolves correctly. */
 function run(cmd, args) {
-  execFileSync(cmd, args, { encoding: "utf-8", stdio: "inherit" });
+  execFileSync(cmd, args, {
+    encoding: "utf-8",
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
 }
 
 /**
@@ -91,7 +95,7 @@ function unpackFile(auxFile) {
     return false;
   }
 
-  const outputDir = join(SRC, subdir, "/");
+  const outputDir = join(SRC, subdir);
   mkdirSync(outputDir, { recursive: true });
 
   // Derive the folder name that unpack-aux will create (e.g. "abPersonality.aux" → "abPersonality")

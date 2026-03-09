@@ -39,9 +39,13 @@ const PACK_CONFIGS = [
 
 const ASSETS_DIR = "assets";
 
-/** Run a command with arguments, bypassing shell quoting issues on Windows. */
+/** Run a command with arguments. Uses shell on Windows so npx.cmd resolves correctly. */
 function run(cmd, args) {
-  execFileSync(cmd, args, { encoding: "utf-8", stdio: "inherit" });
+  execFileSync(cmd, args, {
+    encoding: "utf-8",
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  });
 }
 
 /**

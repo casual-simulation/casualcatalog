@@ -1,22 +1,31 @@
 /**
- * Scans aux-drop/ for .aux files, unpacks each one into the
- * matching src/<subdir>/ directory, then deletes the original.
+ * Scans aux-drop/ for .aux files, reads the "version" property from
+ * each file's JSON to determine the target directory, unpacks it,
+ * then deletes the original.
+ *
+ *   version 1 → src/asks/
+ *   version 2 → src/ab/
  *
  * Usage:
- *   node scripts/unpack-aux.mjs            — process all .aux files in aux-drop/
- *   node scripts/unpack-aux.mjs <path>     — process a single .aux file
+ *   node scripts/aux-drop-unpack.mjs            — process all .aux files in aux-drop/
+ *   node scripts/aux-drop-unpack.mjs <path>     — process a single .aux file
  *
  * Run via:  pnpm run drop:unpack
  */
 
 import { execSync } from "node:child_process";
-import { readdirSync, statSync, unlinkSync, mkdirSync } from "node:fs";
-import { join, basename, relative } from "node:path";
+import { readdirSync, readFileSync, statSync, unlinkSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
 
 const AUX_DROP = "aux-drop";
 const SRC = "src";
 
-/** Run a command and return trimmed stdout. */
+const VERSION_MAP = {
+  1: "asks",
+  2: "ab",
+};
+
+/** Run a command with output piped to the console. */
 function run(cmd) {
   execSync(cmd, { encoding: "utf-8", stdio: "inherit" });
 }
@@ -49,32 +58,43 @@ function findAuxFiles(dir) {
 }
 
 /**
- * Extract the first-level subdirectory from an aux-drop path.
- * e.g. "aux-drop/ab/myFile.aux" → "ab"
+ * Read the "version" property from a .aux JSON file.
+ * Returns the version number, or null if it can't be determined.
  */
-function getSubdir(auxPath) {
-  const rel = relative(AUX_DROP, auxPath);
-  const firstSlash = rel.indexOf("/");
-  if (firstSlash === -1) return null;
-  return rel.slice(0, firstSlash);
+function getAuxVersion(auxFile) {
+  try {
+    const content = readFileSync(auxFile, "utf-8");
+    const json = JSON.parse(content);
+    return json.version ?? null;
+  } catch {
+    return null;
+  }
 }
 
 /**
- * Unpack a single .aux file into src/<subdir>/ and delete the original.
+ * Unpack a single .aux file into the correct src/ subdirectory
+ * based on its version, then delete the original.
  * Returns true on success, false on failure.
  */
 function unpackFile(auxFile) {
-  const subdir = getSubdir(auxFile);
+  const version = getAuxVersion(auxFile);
+
+  if (version === null) {
+    console.warn(`⚠️  Skipping ${auxFile} — could not read version from JSON`);
+    return false;
+  }
+
+  const subdir = VERSION_MAP[version];
 
   if (!subdir) {
-    console.warn(`⚠️  Skipping ${auxFile} — must be inside a subdirectory (e.g. aux-drop/ab/)`);
+    console.warn(`⚠️  Skipping ${auxFile} — unknown version: ${version}`);
     return false;
   }
 
   const outputDir = join(SRC, subdir, "/");
   mkdirSync(outputDir, { recursive: true });
 
-  console.log(`  ${auxFile} → ${outputDir}`);
+  console.log(`  ${auxFile} → ${outputDir} (v${version})`);
 
   try {
     run(
@@ -84,7 +104,7 @@ function unpackFile(auxFile) {
     // Delete the original .aux file after successful unpack
     unlinkSync(auxFile);
     return true;
-  } catch (err) {
+  } catch {
     console.error(`❌ Failed to unpack ${auxFile}`);
     return false;
   }

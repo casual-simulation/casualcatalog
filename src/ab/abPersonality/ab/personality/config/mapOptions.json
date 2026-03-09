@@ -1,0 +1,50 @@
+[
+    {
+        "name":  "satellite",
+        "id": "satellite"
+    },
+    {
+        "name":  "hybrid",
+        "id": "hybrid"
+    },
+    {
+        "name":  "oceans",
+        "id": "oceans"
+    },
+    {
+        "name":  "open street map",
+        "id": "osm"
+    },
+    {
+        "name":  "terrain",
+        "id": "terrain"
+    },
+    {
+        "name":  "dark gray canvas",
+        "id": "dark-gray"
+    },
+    {
+        "name":  "gray canvas",
+        "id": "gray"
+    },
+    {
+        "name":  "streets",
+        "id": "streets"
+    },
+    {
+        "name":  "streets (dark)",
+        "id": "streets-night-vector"
+    },
+    {
+        "name":  "streets (navigation)",
+        "id": "streets-navigation-vector"
+    },
+    {
+        "name":  "topographic",
+        "id": "topo"
+    },
+    {
+        "name":  "streets (relief)",
+        "id": "streets-relief-vector"
+    }
+]

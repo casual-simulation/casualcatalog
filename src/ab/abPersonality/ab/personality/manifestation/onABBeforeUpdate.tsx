@@ -1,0 +1,1 @@
+configBot.tags.abWasAwakeBeforeUpdate = tags.abAwake;

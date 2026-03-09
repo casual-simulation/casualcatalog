@@ -1,0 +1,1 @@
+setTagMask(thisBot, 'hasArmBeenPlaced', true, 'local');

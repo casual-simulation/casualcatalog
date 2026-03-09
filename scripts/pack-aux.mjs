@@ -18,7 +18,7 @@
  * Run via:  pnpm run pack:dev   or   pnpm run pack:prod
  */
 
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import {
   readdirSync,
   statSync,
@@ -39,9 +39,9 @@ const PACK_CONFIGS = [
 
 const ASSETS_DIR = "assets";
 
-/** Run a command with output piped to the console. */
-function run(cmd) {
-  execSync(cmd, { encoding: "utf-8", stdio: "inherit" });
+/** Run a command with arguments, bypassing shell quoting issues on Windows. */
+function run(cmd, args) {
+  execFileSync(cmd, args, { encoding: "utf-8", stdio: "inherit" });
 }
 
 /**
@@ -156,9 +156,11 @@ for (const { srcDir, outputDir, auxVersion } of PACK_CONFIGS) {
     console.log(`  📦 ${relative(".", subdir)}/ → ${relative(".", outputFile)} (v${auxVersion})`);
 
     try {
-      run(
-        `npx casualos pack-aux --overwrite --aux-version ${auxVersion} "${subdir}" "${outputFile}"`
-      );
+      run("npx", [
+        "casualos", "pack-aux",
+        "--overwrite", "--aux-version", String(auxVersion),
+        subdir, outputFile,
+      ]);
       totalPacked++;
     } catch {
       console.error(`  ❌ Failed to pack ${relative(".", subdir)}`);
@@ -202,7 +204,7 @@ if (isProd) {
     for (const auxFile of auxFiles) {
       console.log(`  Minifying ${auxFile}`);
       try {
-        run(`npx casualos minify-aux "${auxFile}"`);
+        run("npx", ["casualos", "minify-aux", auxFile]);
       } catch {
         console.error(`❌ Failed to minify ${auxFile}`);
         minifyFailed = true;

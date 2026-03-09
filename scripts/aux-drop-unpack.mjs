@@ -13,7 +13,7 @@
  * Run via:  pnpm run drop:unpack
  */
 
-import { execSync } from "node:child_process";
+import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync, statSync, unlinkSync, mkdirSync, rmSync } from "node:fs";
 import { join, basename } from "node:path";
 
@@ -25,9 +25,9 @@ const VERSION_MAP = {
   2: "ab",
 };
 
-/** Run a command with output piped to the console. */
-function run(cmd) {
-  execSync(cmd, { encoding: "utf-8", stdio: "inherit" });
+/** Run a command with arguments, bypassing shell quoting issues on Windows. */
+function run(cmd, args) {
+  execFileSync(cmd, args, { encoding: "utf-8", stdio: "inherit" });
 }
 
 /**
@@ -105,9 +105,11 @@ function unpackFile(auxFile) {
   console.log(`  ${auxFile} → ${outputDir} (v${version})`);
 
   try {
-    run(
-      `npx casualos unpack-aux --overwrite --recursive --preserve-bot-ids "${auxFile}" "${outputDir}"`
-    );
+    run("npx", [
+      "casualos", "unpack-aux",
+      "--overwrite", "--recursive", "--preserve-bot-ids",
+      auxFile, outputDir,
+    ]);
 
     // Delete the original .aux file after successful unpack
     unlinkSync(auxFile);

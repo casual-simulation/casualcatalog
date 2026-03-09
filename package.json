@@ -4,6 +4,8 @@
   "description": "The source code for the casual catalog.",
   "scripts": {
     "prepare": "husky",
+    "drop:unpack": "node scripts/aux-drop-unpack.mjs",
+    "drop:watch": "node scripts/aux-drop-watch.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

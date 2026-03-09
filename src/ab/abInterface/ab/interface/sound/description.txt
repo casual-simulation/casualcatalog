@@ -1,0 +1,15 @@
+this skill is a manager for sounds
+supported tags:
+    soundCreate
+    soundClick
+    soundDrag
+    soundDrop
+    soundPointerEnter
+    soundPointerExit
+
+possible values:
+    boolean - if true will play a default sound if one is found.
+    string url - will attempt to play the sound at the given url path.
+    string file path - will attempt to play the sound at the given path from the casual catalog.
+    array - a random entry will be chosen from the array and parsed as any one of the possible values above.
+    

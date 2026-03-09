@@ -14,8 +14,8 @@
  */
 
 import { execSync } from "node:child_process";
-import { readdirSync, readFileSync, statSync, unlinkSync, mkdirSync } from "node:fs";
-import { join } from "node:path";
+import { readdirSync, readFileSync, statSync, unlinkSync, mkdirSync, rmSync } from "node:fs";
+import { join, basename } from "node:path";
 
 const AUX_DROP = "aux-drop";
 const SRC = "src";
@@ -93,6 +93,14 @@ function unpackFile(auxFile) {
 
   const outputDir = join(SRC, subdir, "/");
   mkdirSync(outputDir, { recursive: true });
+
+  // Derive the folder name that unpack-aux will create (e.g. "abPersonality.aux" → "abPersonality")
+  const auxName = basename(auxFile, ".aux");
+  const unpackedDir = join(outputDir, auxName);
+
+  // Clean out the existing unpacked directory to remove stale files
+  // from tags/bots that no longer exist in the .aux file
+  rmSync(unpackedDir, { recursive: true, force: true });
 
   console.log(`  ${auxFile} → ${outputDir} (v${version})`);
 

@@ -1,13 +1,14 @@
 /**
  * Watches the aux-drop/ directory for new or changed .aux files
- * and automatically unpacks them into src/<subdir>/.
+ * and automatically unpacks them into the correct src/ subdirectory
+ * based on the version in the .aux JSON.
  *
  * Uses Node's built-in fs.watch (no extra dependencies needed).
  *
  * Run via:  pnpm run drop:watch
  */
 
-import { watch, statSync, readdirSync } from "node:fs";
+import { watch, statSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 
@@ -37,61 +38,34 @@ function unpack(auxFile) {
       stdio: "inherit",
     });
   } catch {
-    // Error output already handled by unpack-aux.mjs
+    // Error output already handled by aux-drop-unpack.mjs
   }
-}
-
-/**
- * Get the list of subdirectories inside aux-drop/ to watch.
- */
-function getWatchDirs() {
-  const dirs = [AUX_DROP];
-  try {
-    for (const entry of readdirSync(AUX_DROP)) {
-      const full = join(AUX_DROP, entry);
-      const stat = statSync(full, { throwIfNoEntry: false });
-      if (stat?.isDirectory()) {
-        dirs.push(full);
-      }
-    }
-  } catch {
-    // aux-drop may not exist yet
-  }
-  return dirs;
 }
 
 // ── Main ──────────────────────────────────────────────────────
 
-const dirs = getWatchDirs();
-
-if (dirs.length === 0) {
-  console.error("aux-drop/ directory not found. Create it and try again.");
-  process.exit(1);
+if (!existsSync(AUX_DROP)) {
+  mkdirSync(AUX_DROP, { recursive: true });
 }
 
 console.log("👀 Watching for .aux files in aux-drop/...");
-console.log("   Drop a .aux file into aux-drop/ab/ or aux-drop/asks/ to unpack it.");
+console.log("   Drop a .aux file into aux-drop/ to unpack it.");
+console.log("   The version in the file determines the destination (v1 → asks, v2 → ab).");
 console.log("   Press Ctrl+C to stop.\n");
 
-for (const dir of dirs) {
-  try {
-    watch(dir, (eventType, filename) => {
-      if (!filename || !filename.endsWith(".aux")) return;
+watch(AUX_DROP, (eventType, filename) => {
+  if (!filename || !filename.endsWith(".aux")) return;
 
-      const fullPath = join(dir, filename);
+  const fullPath = join(AUX_DROP, filename);
 
-      // Make sure the file actually exists (watch fires on deletes too)
-      const stat = statSync(fullPath, { throwIfNoEntry: false });
-      if (!stat || !stat.isFile()) return;
+  // Make sure the file actually exists (watch fires on deletes too)
+  const stat = statSync(fullPath, { throwIfNoEntry: false });
+  if (!stat || !stat.isFile()) return;
 
-      if (!shouldProcess(fullPath)) return;
+  if (!shouldProcess(fullPath)) return;
 
-      unpack(fullPath);
-    });
-  } catch {
-    // Directory may not exist, that's okay
-  }
-}
+  unpack(fullPath);
+});
 
 // Keep the process alive
 process.on("SIGINT", () => {

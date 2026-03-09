@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "The source code for the casual catalog.",
   "scripts": {
+    "prepare": "husky",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "packageManager": "pnpm@10.31.0"
+  "packageManager": "pnpm@10.31.0",
+  "devDependencies": {
+    "casualos": "^4.1.5",
+    "husky": "^9.1.7"
+  }
 }

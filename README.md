@@ -4,7 +4,15 @@ A catalog of dynamic content published to S3 and served via CloudFront.
 
 ## Setup
 
-Requires Node.js (v20+) and pnpm.
+Requires Node.js (v20+).
+
+If you don't have pnpm installed, enable it via corepack (ships with Node.js):
+
+```bash
+corepack enable
+```
+
+This will automatically use the correct pnpm version specified in the project. Then install dependencies:
 
 ```bash
 pnpm install

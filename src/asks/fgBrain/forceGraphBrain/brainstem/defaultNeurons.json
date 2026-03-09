@@ -1,0 +1,38 @@
+[
+    {
+        "topic": "summer",
+        "linkedTopics": [],
+        "stemConnected": true,
+        "details": "Summer is hot."
+    },
+    {
+        "topic": "gardening",
+        "linkedTopics": [],
+        "stemConnected": true,
+        "details": "Gardening involves growing plants."
+    },
+    {
+        "topic": "michigan",
+        "linkedTopics": [],
+        "stemConnected": true,
+        "details": "Michigan borders Canada."
+    },
+    {
+        "topic": "veggies",
+        "linkedTopics": ["summer", "gardening", "michigan"],
+        "stemConnected": false,
+        "details": "Vegetables includes carrots and potatoes."
+    },
+    {
+        "topic": "tomatoes",
+        "linkedTopics": ["veggies"],
+        "stemConnected": false,
+        "details": "Tomatoes are often considered fruits instead of veggies."
+    },
+    {
+        "topic": "squash",
+        "linkedTopics": ["veggies"],
+        "stemConnected": false,
+        "details": "Squash can be used for a lot of things, including being made into gourd bottles."
+    }
+]

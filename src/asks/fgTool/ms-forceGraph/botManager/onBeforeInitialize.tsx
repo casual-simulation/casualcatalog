@@ -1,0 +1,1 @@
+globalThis.botManager = thisBot;

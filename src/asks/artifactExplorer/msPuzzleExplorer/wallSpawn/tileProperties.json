@@ -1,0 +1,8 @@
+{
+    "tileType": "wall",
+    "passable": false,
+    "spawnPosition": {
+        "x": -3,
+        "y": -5
+    }
+}

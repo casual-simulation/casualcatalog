@@ -1,0 +1,1 @@
+tags.mode == "play" ? tags.color = "grey" : null;

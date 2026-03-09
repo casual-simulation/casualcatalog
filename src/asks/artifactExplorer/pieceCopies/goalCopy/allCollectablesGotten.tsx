@@ -1,0 +1,1 @@
+ masks.color = null; masks.ignoreTouch = null;

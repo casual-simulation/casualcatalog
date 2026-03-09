@@ -1,0 +1,10 @@
+{
+    "tileType": "enemyLeftRight",
+    "passable": true,
+    "harmful": true,
+    "moveLeftRight": true,
+    "spawnPosition": {
+        "x": -2,
+        "y": -7
+    }
+}

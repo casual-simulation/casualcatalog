@@ -1,0 +1,23 @@
+`You will recieve a JSON descriptor for a story block and a categorization tag.
+You must determine if the story block loosely fits the categorization, it does not have to be exact.
+Return a boolean, "true" if it fits, "false" if it doesnt.
+Your response must only include the boolean, nothing else.
+
+EXAMPLE 1:
+    descriptor: "{
+                name: "Harrison the Horse",
+                description: "a large brown horse with white spots",
+                categorization: ["horse", "animal"]
+            }"
+    categorization: "plant"
+    response: false
+
+EXAMPLE 2:
+    descriptor: "{
+                name: "Ana the Unicorn",
+                description: "a beautiful white unicorn with shimmering hair",
+                categorization: ["unicorn", "animal"]
+            }"
+    categorization: "horse"
+    response: true  
+}`

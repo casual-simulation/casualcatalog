@@ -1,0 +1,3 @@
+.vm-iframe-container > iframe {
+    display: none !important;
+}

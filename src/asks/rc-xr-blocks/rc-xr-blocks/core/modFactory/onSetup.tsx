@@ -1,0 +1,1 @@
+globalThis.modFactory = thisBot;

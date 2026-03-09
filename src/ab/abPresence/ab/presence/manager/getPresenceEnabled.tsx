@@ -1,0 +1,1 @@
+return tags.cursorEnabled || tags.cameraEnabled;

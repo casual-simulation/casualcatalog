@@ -1,0 +1,1 @@
+ab.links.store.abDownload({ reopenAbMenu: false, sourceEvent: 'ab_cmd_download_inst' });

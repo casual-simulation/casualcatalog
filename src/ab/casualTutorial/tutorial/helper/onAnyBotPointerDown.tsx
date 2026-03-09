@@ -1,0 +1,1 @@
+setTagMask(that.bot, "onDrag", `@os.enableCustomDragging()`, "tempLocal")

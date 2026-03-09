@@ -1,0 +1,9 @@
+{
+    "tileType": "pressureDoor",
+    "passable": false,
+    "pressureDoor": true,
+    "spawnPosition": {
+        "x": -1,
+        "y": -5
+    }
+}

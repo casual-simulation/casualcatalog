@@ -1,0 +1,41 @@
+{
+    "openai": {
+        "meshPath": "/ab/meshes/casualBot_chatGPT_01.glb",
+        "armMeshPath": "/ab/meshes/webslinger.glb",
+        "armColor": "#76a298",
+        "chatBarColor": "#76a298",
+        "scale": 0.9999,
+        "formOpacity": null,
+        "showName": false
+    },
+    "google": {
+        "meshPath": "/ab/meshes/casualBot_gemini_01.glb",
+        "armMeshPath": "/ab/meshes/webslinger.glb",
+        "armColor": "#3187ea",
+        "chatBarColor": "#3187ea",
+        "scale": 0.9999,
+        "formOpacity": null,
+        "showName": false
+    },
+    "anthropic": {
+        "meshPath": "/ab/meshes/casualBot_claude_01.glb",
+        "armMeshPath": "/ab/meshes/webslinger.glb",
+        "armColor": "#d4825a",
+        "chatBarColor": "#d4825a",
+        "scale": 0.9999,
+        "formOpacity": null,
+        "showName": false
+    },
+    "default": {
+        "meshPath": null,
+        "armMeshPath": null,
+        "armColor": "gold",
+        "chatBarColor": "gold",
+        "namePlateColor": "gold",
+        "labelColor": "black",
+        "scale": 0.9,
+        "formOpacity": 0.33,
+        "showName": true,
+        "agentName": null
+    }
+}

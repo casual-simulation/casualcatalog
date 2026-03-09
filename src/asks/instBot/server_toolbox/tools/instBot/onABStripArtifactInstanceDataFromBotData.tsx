@@ -1,0 +1,25 @@
+const { data } = that;
+
+delete data.tags.label;
+delete data.tags.biosSetting;
+delete data.tags.creationTime;
+delete data.tags.expirationTime;
+delete data.tags.instSetting;
+delete data.tags.instURL;
+delete data.tags.patternSetting;
+delete data.tags.studioSetting;
+delete data.tags.lineTo;
+delete data.tags.versionSetting;
+delete data.tags[data.tags.dimension];
+delete data.tags[data.tags.dimension + 'X'];
+delete data.tags[data.tags.dimension + 'Y'];
+delete data.tags[data.tags.dimension + 'Z'];
+delete data.tags[data.tags.dimension + 'RotationX'];
+delete data.tags[data.tags.dimension + 'RotationY'];
+delete data.tags[data.tags.dimension + 'RotationZ'];
+delete data.tags.dimension;
+delete data.tags.channelSetting;
+delete data.tags.color;
+delete data.tags.scale;
+delete data.tags.expiredInstBot;
+delete data.tags.studioStationID;

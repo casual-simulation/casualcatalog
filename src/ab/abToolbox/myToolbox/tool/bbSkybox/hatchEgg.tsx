@@ -1,0 +1,1 @@
+const skyPainter = await shout("hatch", {abID: "psSkyPainter", recordKey: "e91eab0d-6a75-4ab9-8a0e-50a4cc0c1d34", autoHatch: true})[0];

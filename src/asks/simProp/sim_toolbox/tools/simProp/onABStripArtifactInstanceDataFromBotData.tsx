@@ -1,0 +1,28 @@
+const { data } = that;
+
+delete data.tags.label;
+delete data.tags.labelColor;
+delete data.tags.labelFloatingBackgroundColor;
+delete data.tags.color;
+delete data.tags[data.tags.dimension + "X"];
+delete data.tags[data.tags.dimension + "Y"];
+delete data.tags[data.tags.dimension + "Z"];
+delete data.tags[data.tags.dimension + "RotationX"];
+delete data.tags[data.tags.dimension + "RotationY"];
+delete data.tags[data.tags.dimension + "RotationZ"];
+delete data.tags[data.tags.dimension];
+delete data.tags.dimension;
+delete data.tags.simID;
+delete data.tags.simAttributes;
+delete data.tags.propLocked;
+delete data.tags.roleName;
+delete data.tags.simAttributesStartingValues;
+delete data.tags.statsButton;
+delete data.tags.trackedStat;
+delete data.tags.trackedStatStartingValue;
+delete data.tags.trackedStatEndingValue;
+delete data.tags.progressBarBackgroundColor;
+delete data.tags.progressBarColor;
+delete data.tags.progressBar;
+delete data.tags.genForm;
+delete data.tags.imagePrompt;

@@ -1,0 +1,53 @@
+interface ABArtifactReconstituteArg {
+    abArtifactBundle: ABArtifactBundle;
+    abArtifactInstanceID?: string;
+    abArtifactInstanceIDPrevious?: string;
+    eggParameters?: any;
+    toast?: boolean;
+}
+
+interface ABArtifactEggDependency {
+    abID: string;
+    recordKey: string;
+    abVersion?: number;
+}
+
+interface ABArtifactAskDependency {
+    askID: string;
+}
+
+type ABArtifactDependency = ABArtifactEggDependency | ABArtifactAskDependency;
+
+interface ABArtifactBundle {
+    id: string;
+    name: string;
+    formatVersion: number;
+    data: Record<string, any>;
+    dependencies: Array<ABArtifactDependency>;
+    casualOSVersion: AuxVersion;
+    createdTimestamp: string;
+    abShellVersion: string;
+}
+
+interface ABArtifactShard {
+    data: Record<string, any>;
+    dependencies: Array<ABArtifactDependency>;
+}
+
+interface ABArtifactExperience {
+    data: Record<string, any>;
+}
+
+interface ABArtifactExperienceAuth {
+    abArtifactInstanceID: string;
+    authorized: boolean;
+    failureReason: ABArtifactExperienceAuthFailureReason;
+}
+
+type ABArtifactExperienceAuthFailureReason = 'user_declined_sign_in' | 'user_declined_inst_permission' | 'unknown';
+
+interface ABArtifactCollectShardsResult {
+    success: boolean;
+    reason?: any;
+    shard: ABArtifactShard;
+}

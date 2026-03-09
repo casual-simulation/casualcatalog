@@ -1,0 +1,9 @@
+{
+    "tileType": "ground",
+    "passable": true,
+    "ground": true,
+    "spawnPosition": {
+        "x": -2,
+        "y": -5
+    }
+}

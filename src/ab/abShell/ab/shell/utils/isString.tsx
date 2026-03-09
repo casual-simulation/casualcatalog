@@ -1,0 +1,1 @@
+return typeof that === 'string';

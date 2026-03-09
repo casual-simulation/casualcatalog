@@ -1,0 +1,16 @@
+[
+    {
+        "name": "blank bot",
+        "targetAB": "blankBot"
+    },
+    {
+        "name": "blank egg",
+        "studio": "AB",
+        "targetAB": "eggConfigurator",
+        "artifact": true
+    },
+    {
+        "name": "aux importer",
+        "targetAB": "abAuxImporter"
+    }
+]

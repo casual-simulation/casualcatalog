@@ -1,0 +1,1 @@
+tags.color = abPersonality.tags.abBaseColor;

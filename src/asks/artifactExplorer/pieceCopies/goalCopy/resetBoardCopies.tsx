@@ -1,0 +1,1 @@
+ clearTagMasks(thisBot); masks.homeX = null; masks.homeY = null;

@@ -1,0 +1,11 @@
+[
+    {
+        "name": "create an agent bot",
+        "targetAB": "agent_bot_tool"
+    },
+    {
+        "name": "toDo bot",
+        "targetAB": "toDoBot",
+        "artifact": true
+    }
+]

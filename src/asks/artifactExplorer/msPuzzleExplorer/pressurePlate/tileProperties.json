@@ -1,0 +1,9 @@
+{
+    "tileType": "pressurePlate",
+    "passable": true,
+    "pressurePlate": true,
+    "spawnPosition": {
+        "x": 0,
+        "y": -5
+    }
+}

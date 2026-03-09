@@ -1,0 +1,1 @@
+return links.utils.isString(that?.askID);

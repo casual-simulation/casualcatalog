@@ -1,12 +1,15 @@
 /**
- * Packs source directories into .aux files and copies asset directories.
+ * Packs source directories into .aux files and copies assets.
  *
- * For each immediate subdirectory of src/ab/ and src/asks/:
- *   - If it contains an extra.aux file → pack it with casualos pack-aux
- *   - Otherwise → copy it directly to dist/ (asset directory)
+ * 1. Packs aux packages from src/ into dist/
+ *    - src/ab/  → packs with --aux-version 2 → dist/ab/
+ *    - src/asks/ → packs with --aux-version 1 → dist/asks/
  *
- * src/ab/  → packs with --aux-version 2 → dist/ab/
- * src/asks/ → packs with --aux-version 1 → dist/asks/
+ * 2. Copies the assets/ directory structure into dist/
+ *    - assets/ab/audio/ → dist/ab/audio/
+ *    - assets/asks/meshes/ → dist/asks/meshes/
+ *
+ * 3. (prod only) Minifies all .aux files in dist/
  *
  * Usage:
  *   node scripts/pack-aux.mjs          — pack all
@@ -33,6 +36,8 @@ const PACK_CONFIGS = [
   { srcDir: "src/ab", outputDir: "dist/ab", auxVersion: 2 },
   { srcDir: "src/asks", outputDir: "dist/asks", auxVersion: 1 },
 ];
+
+const ASSETS_DIR = "assets";
 
 /** Run a command with output piped to the console. */
 function run(cmd) {
@@ -120,13 +125,6 @@ function getSubdirs(dir) {
     .map((entry) => join(dir, entry));
 }
 
-/**
- * Check if a directory contains an extra.aux file (making it an aux package).
- */
-function isAuxPackage(dir) {
-  return existsSync(join(dir, "extra.aux"));
-}
-
 // ── Main ──────────────────────────────────────────────────────
 
 // Remove hidden files from src/ before packing
@@ -140,11 +138,12 @@ if (removed > 0) {
 console.log("🧹 Cleaning dist/...");
 rmSync("dist", { recursive: true, force: true });
 
+// ── Pack aux packages ────────────────────────────────────────
+
 console.log(`📦 Packing .aux files (${isProd ? "prod" : "dev"})...\n`);
 
 let failed = false;
 let totalPacked = 0;
-let totalCopied = 0;
 
 for (const { srcDir, outputDir, auxVersion } of PACK_CONFIGS) {
   mkdirSync(outputDir, { recursive: true });
@@ -153,28 +152,17 @@ for (const { srcDir, outputDir, auxVersion } of PACK_CONFIGS) {
 
   for (const subdir of subdirs) {
     const name = basename(subdir);
+    const outputFile = join(outputDir, `${name}.aux`);
+    console.log(`  📦 ${relative(".", subdir)}/ → ${relative(".", outputFile)} (v${auxVersion})`);
 
-    if (isAuxPackage(subdir)) {
-      // Directory contains extra.aux → pack it into a .aux file
-      const outputFile = join(outputDir, `${name}.aux`);
-      console.log(`  📦 ${relative(".", subdir)}/ → ${relative(".", outputFile)} (v${auxVersion})`);
-
-      try {
-        run(
-          `npx casualos pack-aux --overwrite --aux-version ${auxVersion} "${subdir}" "${outputFile}"`
-        );
-        totalPacked++;
-      } catch {
-        console.error(`  ❌ Failed to pack ${relative(".", subdir)}`);
-        failed = true;
-      }
-    } else {
-      // No extra.aux → copy as asset directory
-      const destDir = join(outputDir, name);
-      console.log(`  📂 ${relative(".", subdir)}/ → ${relative(".", destDir)}/ (copy)`);
-
-      cpSync(subdir, destDir, { recursive: true });
-      totalCopied++;
+    try {
+      run(
+        `npx casualos pack-aux --overwrite --aux-version ${auxVersion} "${subdir}" "${outputFile}"`
+      );
+      totalPacked++;
+    } catch {
+      console.error(`  ❌ Failed to pack ${relative(".", subdir)}`);
+      failed = true;
     }
   }
 }
@@ -184,7 +172,20 @@ if (failed) {
   process.exit(1);
 }
 
-console.log(`\n✅ Packed ${totalPacked} aux package(s), copied ${totalCopied} asset directory(s).`);
+console.log(`\n✅ Packed ${totalPacked} aux package(s).`);
+
+// ── Copy assets ──────────────────────────────────────────────
+
+if (existsSync(ASSETS_DIR)) {
+  console.log("\n📂 Copying assets into dist/...\n");
+
+  cpSync(ASSETS_DIR, "dist", { recursive: true });
+
+  console.log(`  ${ASSETS_DIR}/ → dist/`);
+  console.log("\n✅ Assets copied.");
+} else {
+  console.log("\nNo assets/ directory found, skipping asset copy.");
+}
 
 // ── Minify (prod only) ───────────────────────────────────────
 

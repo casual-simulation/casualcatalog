@@ -1,0 +1,10 @@
+{
+    "tileType": "enemyUpDown",
+    "passable": true,
+    "harmful": true,
+    "moveUpDown": true,
+    "spawnPosition": {
+        "x": -3,
+        "y": -7
+    }
+}

@@ -1,0 +1,466 @@
+.material-icon { 
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Support for IE. */
+    font-feature-settings: 'liga';
+}
+
+.diff-app {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+    background-color: white;
+    padding: 12px;
+    z-index: 1;
+}
+
+.diff-app button {
+    font-family: Roboto;
+    font-size: 0.95em;
+    background-color: rgb(102 102 102);
+    padding: 6px 12px;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #00000000;
+    letter-spacing: 0.05em;
+    color: white;
+    text-transform: uppercase;
+    box-shadow: 0px 1px 4px 0px #0000003d;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.diff-app button:disabled {
+    opacity: 0.5;
+    cursor: auto;
+}
+
+.diff-app button.small-circular-button {
+    color: white;
+    background-color: rgb(72, 72, 72);
+    padding: 0;
+    border-radius: 50%;
+    /* box-shadow: none; */
+    line-height: 0.5;
+    user-select: none;
+}
+.diff-app button.small-circular-button .material-icon {
+    font-size: 18px;
+}
+
+/* CSS to target devices that have hover capabilities (typically non-touchscreen devices) */
+@media (hover: hover) and (pointer: fine) {
+    .diff-app button:hover:enabled {
+        filter: brightness(1.2);
+    }
+}
+
+.diff-app-container {
+}
+
+.diff-app-container .version-info {
+    color: dimgray;
+    margin-bottom: 24px;
+    width: fit-content;
+}
+
+.diff-app-container .close-button {
+    background-color: rgb(42 42 42);
+}
+
+.diff-app-container .diff-button {
+    background-color: rgb(56 178 56);
+}
+.diff-app-container .download-button {
+    background-color: rgb(56, 121, 178);
+}
+
+.diff-button-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.diff-button-group .diff-processing {
+    margin-left: 16px;
+}
+
+.diff-options {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 24px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    border-color: rgb(0 0 0 / 51%);
+    padding: 8px;
+    background-color: rgb(235 235 235);
+    width: fit-content;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+.diff-errors{
+    margin-top: 24px;
+}
+
+.diff-errors h2 {
+    color: #ff3131;
+    margin-bottom: 8px;
+}
+
+.diff-errors .errors {
+}
+
+.diff-errors .error {
+    color: white;
+    line-height: normal;
+    font-size: 1.05em;
+    font-weight: 500;
+}
+
+.diff-errors .error:not(first-child) {
+    margin-top: 4px;
+}
+
+.diff-errors .error .icon {
+    vertical-align: middle;
+    font-size: 1.5em;
+}
+
+.diff-errors .error .message {
+    background-color: #ff3131;
+    padding: 2px 8px;
+}
+
+.mode-selection {
+    margin-top: 24px;
+}
+
+.files-selection {
+    display: flex;
+    flex-direction: row;
+    gap: 64px;
+    margin-top: 24px;
+}
+
+.files-selection .files .file {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 4px;
+}
+
+.files-selection .files .file .name {
+    margin-right: 8px;
+}
+
+.diffs-container {    
+    margin-top: 24px;
+    /* width: fit-content; */
+    max-width: min(1280px, 100%);
+    opacity: 1;
+    animation: update-blink 0.5s ease-out;
+}
+
+.diffs-container .bot-diff:not(:first-child) {
+    margin-top: 32px;
+}
+
+@keyframes update-blink {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.bot-diff {
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.bot-diff:not(first-child) {
+    margin-top: 24px;
+}
+
+.bot-diff .file-name {
+    font-weight: bold;
+    font-size: 1.3em;
+    color: #1a365d;
+    background: linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%);
+    border: 1px solid #7cb9e8;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: -1px -1px 8px -1px; /* Negative margins to align with bot-diff border */
+    border-bottom: 2px solid #4a90d9;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.bot-diff:has(.file-name) {
+    border-top: 3px solid #4a90d9;
+    margin-top: 40px;
+}
+
+.bot-diff:has(.file-name):first-child {
+    margin-top: 24px; /* Keep normal top margin for first item */
+}
+
+.bot-diff .bot-name {   
+    font-weight: bold;
+    font-size: 1.2em;
+    align-content: center;
+    height: 2.2em;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: #e2fbff;
+    background-color: #245e9f;
+    overflow-x: clip;
+}
+
+.bot-tags {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.tag-diff {
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-color: rgba(0, 0, 0, 0.56);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.tag-diff .tag-name {
+    background-color: #b8d5ff;
+    color: #253c5b;
+    font-weight: bold;
+    font-size: 1.1em;
+    align-content: center;
+    height: 1.7em;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.tag-content {
+    line-height: normal;
+    font-family: monospace;
+    padding-bottom: 4px;
+    padding-top: 4px;
+    overflow-x: auto;
+}
+
+.tag-content .no-changes { 
+    padding-left: 10px;
+    font-style: italic;
+    color: #969696;
+    font-size: 1em;
+}
+
+.tag-content table {
+    border-collapse: collapse;
+}
+
+.tag-content table td {
+    padding: 0;
+}
+
+.tag-content .line {
+    white-space: pre-wrap;
+}
+
+.tag-content .line .removed {
+    background-color: #ff3131;
+    color: white;
+}
+
+.tag-content .line .added {
+    background-color: #48dd48;
+    color: #041e02;
+}
+
+.tag-content .divider {
+    font-size: 0.93em;
+}
+
+.tag-content .divider .line-number {
+    color: #8a8a8a;
+    line-height: 1.4em;
+    letter-spacing: -0.2em;
+    background-color: #c9c9c9;
+}
+
+.tag-content .divider .line-content {
+    background-color: #dadada;
+    color: #5d5d5d;
+    padding-left: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.tag-content .line-number {
+    min-width: 28px;
+    padding-left: 8px;
+    padding-right: 8px;
+    text-align: right;
+    vertical-align: top;
+    color: #979797;
+    user-select: none;
+}
+
+.tag-content .line-number.added {
+    background-color: #33c833;
+    color: #0b500e;
+}
+
+.tag-content .line-number.removed {
+    background-color: #e72f2f;
+    color: #ffe2e2;
+}
+
+.tag-content .line-content .added {
+}
+
+.tag-content .line-content .removed {
+}
+
+.tag-content .line-content {
+    width: 100%;
+}
+
+.diff-options .option {
+    
+}
+
+.diff-options .option:not(first-child) {
+    /* margin-top: 12px; */
+}
+
+.file-group {
+    margin-top: 32px;
+}
+
+.file-group .file-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.file-group .file-header:hover {
+    background-color: rgba(74, 144, 217, 0.05);
+}
+
+.file-group .file-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 1.4em;
+    color: #1a365d;
+    background: linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%);
+    border: 2px solid #4a90d9;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.file-group .file-name .collapse-icon {
+    font-size: 1.2em;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.file-group .file-stats {
+    margin-bottom: 16px;
+    padding-left: 16px;
+}
+
+.file-group .file-stats .change-count {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 4px;
+}
+
+.file-group .file-bots .bot-diff {
+    margin-top: 16px;
+}
+
+.file-group .file-bots .bot-diff:first-child {
+    margin-top: 0;
+}
+
+.file-status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    margin-left: 12px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.file-status-badge.badge-new {
+    background-color: #10b981;
+    color: white;
+}
+
+.file-status-badge.badge-removed {
+    background-color: #ef4444;
+    color: white;
+}
+
+.file-status-badge.badge-modified {
+    background-color: #f59e0b;
+    color: white;
+} 
+
+.file-status-badge.badge-no-changes {
+    background-color: #6b7280;
+    color: white;
+}
+
+/* Optional: Add hover effects for badges */
+@media (hover: hover) and (pointer: fine) {
+    .file-status-badge:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+}

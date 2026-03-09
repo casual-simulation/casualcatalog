@@ -1,0 +1,9 @@
+{
+    "tileType": "key",
+    "passable": true,
+    "key": true,
+    "spawnPosition": {
+        "x": -2,
+        "y": -6
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "top": "10%",
+    "left": "10%",
+    "width": "clamp(500px, 40vw, 1000px)",
+    "max-width": "calc(100vw - 10px)",
+    "height": "360px",
+    "box-shadow": "2px 5px 19px -4px rgba(0,0,0,0.48)",
+    "border-radius": "1rem",
+    "border": "4px solid #f2f2f2"
+}

@@ -1,0 +1,2 @@
+shout("clearSimPropMenu");
+shout("clearPropMenu");

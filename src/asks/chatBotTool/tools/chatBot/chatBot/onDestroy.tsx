@@ -1,0 +1,1 @@
+ab.links.console.tags.showTopBar = true;

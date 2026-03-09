@@ -1,0 +1,1 @@
+os.focusOn(thisBot, {zoom: 20})

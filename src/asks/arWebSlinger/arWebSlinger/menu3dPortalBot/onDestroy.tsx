@@ -1,0 +1,1 @@
+destroy(links.menu3dParentBot);

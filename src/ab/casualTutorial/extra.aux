@@ -1,0 +1,3086 @@
+{
+  "version": 1,
+  "state": {
+    "0bcd06e4-1cd0-4acd-8f9b-c6bd8cbd09d9": {
+      "id": "0bcd06e4-1cd0-4acd-8f9b-c6bd8cbd09d9",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#892c0d",
+        "homeX": 1,
+        "homeY": 3,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(\n    byTag('sequence', tags.sequence),\n    byTag('step', tags.step),\n    byTag('name', 'orange')\n)\n\nshout('openTagPortal', {id: myBot.id, tag: 'onClick', size: 'large'})",
+        "scaleY": "0.4",
+        "scaleZ": "0.15",
+        "sequence": "morePortals",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "0c3b9d13-e17a-4de4-918a-d1ad2cfaa859": {
+      "id": "0c3b9d13-e17a-4de4-918a-d1ad2cfaa859",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "homeX": "-2.5",
+        "homeY": "-1.5",
+        "homeZ": "1",
+        "name": "foxProxy",
+        "pointable": "false",
+        "sequence": "introDeep",
+        "step": "4",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "0cc4433b-91a9-4408-824f-5c2160798c3a": {
+      "id": "0cc4433b-91a9-4408-824f-5c2160798c3a",
+      "tags": {
+        "casualTutorial": true,
+        "help": "true",
+        "label": "help",
+        "onClick": "@shout(\"help\")",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "0cd622ed-9171-4f2f-abfe-daba6dee967c": {
+      "id": "0cd622ed-9171-4f2f-abfe-daba6dee967c",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": 0,
+        "homeY": "-3",
+        "pointable": "false",
+        "scaleX": "2.25",
+        "scaleY": "1",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "0d14cbac-92ba-42d7-b91b-b1fdf94d6b41": {
+      "id": "0d14cbac-92ba-42d7-b91b-b1fdf94d6b41",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#17bdca",
+        "homeX": 0,
+        "homeY": 1,
+        "homeZ": 0,
+        "name": "teal",
+        "onBotChanged": "if (that.tags.includes(\"scale\")) { tags.botScale = tags.scale }",
+        "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"scale\"})",
+        "scale": "1",
+        "sequence": "intro",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "0faba1bd-502e-4214-a756-72decee727da": {
+      "id": "0faba1bd-502e-4214-a756-72decee727da",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#3e82f8",
+        "delay": "100",
+        "draggable": "false",
+        "homeRotationZ": "0",
+        "homeX": 4,
+        "homeY": 3,
+        "homeZ": "0",
+        "jump": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"out\"\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"in\"\n    }\n})",
+        "sequence": "shoutListen",
+        "slide": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeY\", {\n    fromValue: tags.homeY,\n    toValue: tags.homeY == tags.startY ? tags.startY + 1 : tags.startY,\n    duration: 0.25,\n})",
+        "startY": 3,
+        "step": 1,
+        "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "122eb8a8-d83f-4aca-a49c-b2ee15aa606d": {
+      "id": "122eb8a8-d83f-4aca-a49c-b2ee15aa606d",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "homeX": 8,
+        "homeY": 0,
+        "homeZ": "-0.5",
+        "name": "nextStep",
+        "pointable": "false",
+        "sequence": "intro",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "13d793e2-dbc2-4df9-af9e-c112610d489d": {
+      "id": "13d793e2-dbc2-4df9-af9e-c112610d489d",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": "-3",
+        "homeY": -4,
+        "pointable": "false",
+        "scaleX": "2.25",
+        "scaleY": "1.25",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "14fe5cab-d62e-4f83-a57a-b9373db082f0": {
+      "id": "14fe5cab-d62e-4f83-a57a-b9373db082f0",
+      "tags": {
+        "casualTutorial": true,
+        "bounce": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 2,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 2,\n    toValue: 0,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 1,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 1,\n    toValue: 0,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})",
+        "changeColor": "@if (!tags.home) return\n\nvar randomColor = tags.colors[Math.floor(Math.random() * tags.colors.length)]\nmasks.color = randomColor",
+        "color": "#17bdca",
+        "colors": "🧬[\"#f8b4d9\", \"#f17eb8\", \"#e64694\", \"#d61f69\", \"#bf125d\",\n\"#f8b4b3\", \"#f87f7f\", \"#f05152\", \"#e02423\", \"#c81e1d\",\n\"#fdba8c\", \"#ff8a4c\", \"#ff5a1f\", \"#d03800\", \"#b43403\",\n\"#f9ca16\", \"#e3a008\", \"#c27701\", \"#9e580b\", \"#8e4a10\",\n\"#83e1bc\", \"#30c48d\", \"#0b9f6e\", \"#047a55\", \"#036b4e\",\n\"#7edce1\", \"#17bdca\", \"#0694a2\", \"#047481\", \"#036572\",\n\"#a4cafd\", \"#76a9fa\", \"#3e82f8\", \"#1b64f1\", \"#1a56db\",\n\"#b3c5fc\", \"#8da1fb\", \"#6775f5\", \"#5850eb\", \"#5144cc\",\n\"#cabefc\", \"#ac94fa\", \"#9061f9\", \"#7d3af2\", \"#6c2bd9\"]",
+        "draggable": "false",
+        "homeX": "2",
+        "homeY": "4",
+        "jump": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 2,\n    duration: 0.3,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 2,\n    toValue: 0,\n    duration: 0.3,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})",
+        "label": "Bob",
+        "name": "bob",
+        "scaleX": "2",
+        "scaleY": "1",
+        "sequence": "shoutListen",
+        "slide": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 0.5,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0.5,\n    toValue: 0,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nif (tags.homeY == 4) {\n    await animateTag(thisBot, \"homeY\", {\n        fromValue: 4,\n        toValue: 1,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n} else {\n    await animateTag(thisBot, \"homeY\", {\n        fromValue: 1,\n        toValue: 4,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n}",
+        "spin": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 0,\n    toValue: 3.14159,\n    duration: 0.5,\n    easing: {\n        type: 'cubic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 3.14159,\n    toValue: 6.28318,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'out'\n    }\n})\n",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "17df9b9b-7ef0-47da-ae9c-51fa4f5a3381": {
+      "id": "17df9b9b-7ef0-47da-ae9c-51fa4f5a3381",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "0.5",
+        "label": "Make this bot say something when you click on it",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "18b8b5e5-5310-4da5-a41c-a244d3811610": {
+      "id": "18b8b5e5-5310-4da5-a41c-a244d3811610",
+      "tags": {
+        "casualTutorial": true,
+        "color": "purple",
+        "homeX": 1,
+        "homeY": 2,
+        "homeZ": 0,
+        "name": "changer",
+        "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"color\"})",
+        "sequence": "intro",
+        "step": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "18e8787b-dcc5-4e57-b694-0297977a9702": {
+      "id": "18e8787b-dcc5-4e57-b694-0297977a9702",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f9ca16",
+        "delay": "50",
+        "draggable": "false",
+        "homeRotationZ": "0",
+        "homeX": -2,
+        "homeY": 4,
+        "homeZ": "0",
+        "jump": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"out\"\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"in\"\n    }\n})",
+        "sequence": "shoutListen",
+        "slide": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeY\", {\n    fromValue: tags.homeY,\n    toValue: tags.homeY == tags.startY ? tags.startY + 1 : tags.startY,\n    duration: 0.25,\n})",
+        "startY": 4,
+        "step": 1,
+        "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "19e3a05e-6725-4554-9c14-1cad8ba3f7d5": {
+      "id": "19e3a05e-6725-4554-9c14-1cad8ba3f7d5",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#741a3d",
+        "draggable": "false",
+        "homeX": -3,
+        "homeY": 0,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"pink\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onClick\", size: \"medium\"})",
+        "scaleX": "1.5",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "1bbcb363-db33-41a8-a878-9f04e01df351": {
+      "id": "1bbcb363-db33-41a8-a878-9f04e01df351",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#ced4d9",
+        "environment": "true",
+        "environmentX": 0,
+        "environmentY": 0,
+        "environmentZ": 0,
+        "homeX": 0,
+        "homeY": "0",
+        "homeZ": 0,
+        "pointable": "false",
+        "scaleX": "17",
+        "scaleY": "21",
+        "scaleZ": "-0.25",
+        "step1": "true",
+        "type": "floor",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "1dcab76d-6852-439c-a1b1-b5e503ddfa13": {
+      "id": "1dcab76d-6852-439c-a1b1-b5e503ddfa13",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "-2.25",
+        "label": "Make the bot move again if you click on it again",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 7,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "1e1d4f8c-23da-4bd1-ac51-f4b3d427a1a3": {
+      "id": "1e1d4f8c-23da-4bd1-ac51-f4b3d427a1a3",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#30c48d",
+        "homeX": -3,
+        "homeY": 3,
+        "name": "green",
+        "onClick": "@tags.color = tags.color == '#30c48d' ? '#3e82f8' : '#30c48d'",
+        "sequence": "interactions",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "24688af8-b3f9-4021-8140-f14ddf86eadb": {
+      "id": "24688af8-b3f9-4021-8140-f14ddf86eadb",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#ac94fa",
+        "homeX": -1,
+        "homeY": -3,
+        "name": "purple",
+        "sequence": "saving",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "250d5eab-f43c-4e19-8271-5fa49528ba36": {
+      "id": "250d5eab-f43c-4e19-8271-5fa49528ba36",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#0b9f6e",
+        "delay": "60",
+        "draggable": "false",
+        "homeRotationZ": "0",
+        "homeX": 2,
+        "homeY": 1,
+        "homeZ": "0",
+        "jump": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"out\"\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"in\"\n    }\n})",
+        "sequence": "shoutListen",
+        "slide": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeY\", {\n    fromValue: tags.homeY,\n    toValue: tags.homeY == tags.startY ? tags.startY + 1 : tags.startY,\n    duration: 0.25,\n})",
+        "startY": 1,
+        "step": 1,
+        "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "25276b2b-22da-4e00-8cca-56c75387f6a7": {
+      "id": "25276b2b-22da-4e00-8cca-56c75387f6a7",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "0.75",
+        "label": "Animate this bot to come back down after it goes up",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 8,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "260ff4e1-5716-4d2a-8622-16641c6c01ef": {
+      "id": "260ff4e1-5716-4d2a-8622-16641c6c01ef",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e9ecef",
+        "draggable": "false",
+        "homeX": "-3",
+        "homeY": -4,
+        "label": "Turn",
+        "name": "turn",
+        "onClick": "@shout(\"turn\")",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05,\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'\n",
+        "onPointerExit": "@masks.color = '#ffffff'",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.1,\n})",
+        "scaleX": "2",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "274fad23-fda1-43d8-a8ca-bbca2b47ac82": {
+      "id": "274fad23-fda1-43d8-a8ca-bbca2b47ac82",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#04543e",
+        "homeX": "-1.125",
+        "homeY": -1,
+        "label": "@moveDown",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(\n    byTag(\"sequence\", tags.sequence),\n    byTag(\"step\", tags.step),\n    byTag(\"name\", \"green\")\n)\n\nshout('openTagPortal', {id: myBot.id, tag: 'moveDown', size: 'medium'})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "28158843-8a9c-45b7-b9f0-4eaac94c9a0d": {
+      "id": "28158843-8a9c-45b7-b9f0-4eaac94c9a0d",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#584feb",
+        "homeX": -3,
+        "homeY": 2,
+        "homeZ": 0,
+        "name": "purple",
+        "sequence": "intro",
+        "step": "2",
+        "step1": "true",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "2a3f03f6-9b09-47a3-b3b5-0c3a756e9e01": {
+      "id": "2a3f03f6-9b09-47a3-b3b5-0c3a756e9e01",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#ff5a1f",
+        "homeX": -3,
+        "homeY": -2,
+        "homeZ": 0,
+        "name": "orange",
+        "onClick": "@tags.homeX = Number(tags.homeX) + 1",
+        "sequence": "interactions",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "2b508f07-91e8-4ea5-871c-af10bdd1dfc7": {
+      "id": "2b508f07-91e8-4ea5-871c-af10bdd1dfc7",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "3.4",
+        "homeY": 5,
+        "label": "Dimensions",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "3.5",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "sequence": "portals",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "2c10dfcb-d02e-459b-b810-d1799b11af23": {
+      "id": "2c10dfcb-d02e-459b-b810-d1799b11af23",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#7d3af2",
+        "homeX": -3,
+        "homeY": "1",
+        "name": "purple",
+        "onClick": "@await animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 5,\n    duration: 1\n})",
+        "sequence": "interactions",
+        "step": 8,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "2c40dbbd-421a-4be3-a767-c461cddd0e8a": {
+      "id": "2c40dbbd-421a-4be3-a767-c461cddd0e8a",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f8f9fa",
+        "hello": true,
+        "helloSortOrder": 2,
+        "helloX": "3",
+        "helloY": 0,
+        "label": "Popup \"Hey there!\"",
+        "onClick": "@os.showHtml(`<h1 style=\"padding: 2rem\">Hey there!</h1>`)",
+        "scaleX": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "2f8c8851-aa5f-45a2-8735-d739f225af7a": {
+      "id": "2f8c8851-aa5f-45a2-8735-d739f225af7a",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#fce969",
+        "homeX": 0,
+        "homeY": -1,
+        "homeZ": 0,
+        "name": "yellow",
+        "sequence": "intro",
+        "step": 1,
+        "step1": "true",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "300c58a2-535d-4e4c-8f7c-c1b07b064afe": {
+      "id": "300c58a2-535d-4e4c-8f7c-c1b07b064afe",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#04505b",
+        "draggable": "false",
+        "homeX": -3,
+        "homeY": 0,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"labelBot\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onClick\", size: \"large\"})",
+        "scaleX": "1.5",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 6,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "314efb61-3de9-4a3b-95e3-ec29765f4df9": {
+      "id": "314efb61-3de9-4a3b-95e3-ec29765f4df9",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "homeX": 8,
+        "homeY": 0,
+        "name": "nextProxy",
+        "pointable": "false",
+        "sequence": "introDeep",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "33ceb378-0592-4e02-84da-5fdbbdcc3e12": {
+      "id": "33ceb378-0592-4e02-84da-5fdbbdcc3e12",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#04543e",
+        "homeX": "1.125",
+        "homeY": -1,
+        "label": "@moveRight",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(\n    byTag(\"sequence\", tags.sequence),\n    byTag(\"step\", tags.step),\n    byTag(\"name\", \"green\")\n)\n\nshout('openTagPortal', {id: myBot.id, tag: 'moveRight', size: 'medium'})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "35277e04-8f63-485d-a80b-6984ceed389f": {
+      "id": "35277e04-8f63-485d-a80b-6984ceed389f",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#ffffff",
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": "-5",
+        "label": "Help! I'm on a phone!",
+        "labelSize": "0.9",
+        "name": "help",
+        "onClick": "@shout('executeDialogue', { sequence: 'introDeep', step: 2, dialogueIndex: 5 })",
+        "scaleX": "6",
+        "scaleZ": "0.5",
+        "sequence": "introDeep",
+        "step": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "36044b9e-319c-40e6-8a0f-4d8c21db3e6f": {
+      "id": "36044b9e-319c-40e6-8a0f-4d8c21db3e6f",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#761c1d",
+        "homeX": -2,
+        "homeY": 2,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(\n    byTag('sequence', tags.sequence),\n    byTag('step', tags.step),\n    byTag('name', 'homeRed')\n)\n\nshout('openTagPortal', {id: myBot.id, tag: 'onClick', size: 'medium'})",
+        "scaleY": "0.4",
+        "scaleZ": "0.15",
+        "sequence": "morePortals",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "375b67db-c1cc-43a4-86e3-008f495c510b": {
+      "id": "375b67db-c1cc-43a4-86e3-008f495c510b",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": 2,
+        "homeY": 2,
+        "name": "grey",
+        "sequence": "saving",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "3aad8f33-83af-4148-a88a-3092b6cd0a4b": {
+      "id": "3aad8f33-83af-4148-a88a-3092b6cd0a4b",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#0b9f6e",
+        "draggable": "false",
+        "goHome": "@await os.closeCircleWipe()\nos.goToDimension('home')\n// Grid portal is updated in system.dimensionManager\n\n// Update this bot\nsetTagMask(thisBot, 'floating', false, 'local')\nsetTagMask(thisBot, 'color', '#0b9f6e', 'local')\n\nawait os.sleep(250)\nshout('executeDialogue', {sequence: 'portals', step: '2', dialogueIndex: 6, dimension: 'home', id: thisBot.id})\nawait os.openCircleWipe()",
+        "goToSpace": "@if (os.getCurrentDimension() == 'outerSpace') return\n\nawait os.closeCircleWipe()\nos.goToDimension('outerSpace')\n// Styling of grid portal handled in system.dimensionManager\n\n// Update this bot\nif (!tags.floating) {\n    whisper(thisBot, 'startFloat')\n    setTagMask(thisBot, 'floating', true, 'local')\n}\nsetTagMask(thisBot, 'color', '#047a55', 'local')\n\n\nawait os.sleep(250);\nawait os.openCircleWipe();\nos.sleep(300).then(() => shout('executeDialogue', {sequence: 'portals', step: '2', dialogueIndex: 1, id: thisBot.id}) )\n",
+        "homeX": 0,
+        "homeY": 1,
+        "name": "green",
+        "onBotChanged": "@if (that.tags.includes('home') && tags.home) {\n    whisper(thisBot, 'goToSpace')\n}",
+        "onClick": "@if (os.getCurrentDimension() != 'home' && stepManager.tags.step == 2) {\n    shout('hideSpeechBubble')\n    whisper(thisBot, 'goHome')\n}\n",
+        "outerSpace": "true",
+        "sequence": "portals",
+        "startFloat": "@await animateTag(thisBot, \"outerSpaceZ\", {\n    fromValue: 0,\n    toValue: -1,\n    duration: 3,\n    easing: 'sinusoidal',\n})\n\nawait animateTag(thisBot, \"outerSpaceZ\", {\n    fromValue: -1,\n    toValue: 0,\n    duration: 3,\n    easing: 'sinusoidal',\n})\n\nif (tags.floating) {\n    whisper(thisBot, 'startFloat')\n}",
+        "step": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "3c43104b-b6c8-4413-9f11-5601e74acac6": {
+      "id": "3c43104b-b6c8-4413-9f11-5601e74acac6",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2",
+        "homeY": "2",
+        "label": "Challenge",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "3",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 7,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "3c980d12-2431-451b-909b-56c27e9cc325": {
+      "id": "3c980d12-2431-451b-909b-56c27e9cc325",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "homeX": "0",
+        "homeY": -4,
+        "label": "Jump",
+        "name": "jump",
+        "onClick": "@shout(\"jump\")",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05,\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'\n",
+        "onPointerExit": "@masks.color = '#ffffff'",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.1,\n})",
+        "scaleX": "2",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "3defff70-28ae-4c19-bd4e-a71be4679d1a": {
+      "id": "3defff70-28ae-4c19-bd4e-a71be4679d1a",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "label": "<",
+        "mobileArrows": true,
+        "mobileArrowsSortOrder": 2,
+        "mobileArrowsX": "-0.5",
+        "mobileArrowsY": 0,
+        "onClick": "@shout('onKeyDown', {keys: ['ArrowLeft']})",
+        "onPointerDown": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05,\n})",
+        "onPointerUp": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05,\n})",
+        "scale": "0.5",
+        "scaleZ": "0.5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "401b6220-c1b5-4c56-8e09-a13c90e2f84f": {
+      "id": "401b6220-c1b5-4c56-8e09-a13c90e2f84f",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": 2,
+        "homeY": "2",
+        "label": "Challenge",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "3",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": "6",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "42615938-2c3e-4aee-b8e9-5680647cba70": {
+      "id": "42615938-2c3e-4aee-b8e9-5680647cba70",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": 0,
+        "homeY": -4,
+        "pointable": "false",
+        "scaleX": "3",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "468308ff-5ba3-49c4-9cbf-fd521c922e32": {
+      "id": "468308ff-5ba3-49c4-9cbf-fd521c922e32",
+      "tags": {
+        "ab1": "true",
+        "ab1X": "-2",
+        "ab1Y": "-6",
+        "casualTutorial": true,
+        "color": "#ff5a1f",
+        "homeX": 0,
+        "homeY": -2,
+        "homeZ": 0,
+        "moved": "false",
+        "name": "orange",
+        "onClick": "@if (os.isInDimension('home')) {\n    os.goToDimension('ab1')\n} else if (os.isInDimension('ab1')) {\n    os.goToDimension('home')\n    shout('nextStep')\n}",
+        "onPortalChanged": "@if (!tags.home) return\n\nif (that.portal == 'gridPortal') {\n    if (that.dimension != 'home') {\n        setTagMask(thisBot, 'moved', true, 'tempLocal')\n    } else if (tags.moved && !tags.spoke) {\n        shout('executeDialogue', {sequence: 'portals', step: 3, dialogueIndex: 4})\n        setTagMask(thisBot, 'spoke', true, 'tempLocal')\n    }\n}",
+        "sequence": "portals",
+        "shuffle": "true",
+        "shuffleX": "-2",
+        "shuffleY": "2",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "47886fdd-fce3-4fa2-973c-40149a0c0fe5": {
+      "id": "47886fdd-fce3-4fa2-973c-40149a0c0fe5",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "label": ">",
+        "mobileArrows": true,
+        "mobileArrowsRotationZ": "-1.5708",
+        "mobileArrowsSortOrder": 1,
+        "mobileArrowsX": 0,
+        "mobileArrowsY": "0",
+        "onClick": "@shout('onKeyDown', {keys: ['ArrowDown']})",
+        "onPointerDown": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05,\n})",
+        "onPointerUp": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05,\n})",
+        "scale": "0.5",
+        "scaleZ": "0.5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "49a19c43-50e8-4e16-bfec-a0d7a7ed1c3f": {
+      "id": "49a19c43-50e8-4e16-bfec-a0d7a7ed1c3f",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#ff5a1f",
+        "homeX": 1,
+        "homeY": 4,
+        "name": "orange",
+        "onClick": "@// If the portal is open, close it\nif (configBot.tags.miniMapPortal) {\n    configBot.tags.miniMapPortal = \"\"\n\n// If the portal is not open, open it\n} else {\n    configBot.tags.miniMapPortal = \"home\"\n}\n\n// Change the size of the mini map portal\nminiMapPortalBot.tags.miniPortalHeight = 0.4",
+        "sequence": "morePortals",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "4c19050f-8a17-4e79-a5fa-36833f21887b": {
+      "id": "4c19050f-8a17-4e79-a5fa-36833f21887b",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f05152",
+        "homeX": 0,
+        "homeY": 4,
+        "homeZ": 0,
+        "name": "red",
+        "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"scaleX\"})",
+        "scaleX": "3",
+        "sequence": "intro",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "4c24c439-44f6-4509-8ae8-7a965806b2e6": {
+      "id": "4c24c439-44f6-4509-8ae8-7a965806b2e6",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "homeX": "-3",
+        "homeY": "-6",
+        "label": "shout(\"moveLeft\")",
+        "labelSize": "0.9",
+        "name": "left",
+        "onClick": "@shout(\"moveLeft\")",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'",
+        "onPointerExit": "@masks.color = '#ffffff'\n",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05\n})",
+        "scaleX": "2.75",
+        "scaleY": "0.75",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "4d19fdf5-379f-4640-8677-495e54863b59": {
+      "id": "4d19fdf5-379f-4640-8677-495e54863b59",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#41379d",
+        "draggable": "false",
+        "form": "cube",
+        "homeRotationX": 0.7853981633974483,
+        "homeX": 3,
+        "homeY": "0.3",
+        "homeZ": "0.175",
+        "label": "Edit",
+        "labelColor": "white",
+        "labelSize": "0.8",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"purple\"))\nshout('openTagPortal', {id: myBot.id, tag: \"onClick\", size: \"medium\"})",
+        "scaleY": "0.5",
+        "scaleZ": "0.25",
+        "sequence": "interactions",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "4dabb6aa-fbad-4e77-bcdd-868bf2595f1a": {
+      "id": "4dabb6aa-fbad-4e77-bcdd-868bf2595f1a",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#17bdca",
+        "form": "hex",
+        "homeX": 1,
+        "homeY": -1,
+        "homeZ": 0,
+        "name": "teal",
+        "onBotChanged": "@if (that.tags.includes('form')) {\n    masks.onBotChanged = ' '\n    shout('executeDialogue', {sequence: 'intro', step: 5, dialogueIndex: 2})\n}",
+        "onClick": "@shout(\"openFormMenu\", {id: thisBot.id})",
+        "onDrag": "@os.enableCustomDragging()",
+        "sequence": "intro",
+        "step": 5,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "4eea2900-8942-4566-9388-485b8234f736": {
+      "id": "4eea2900-8942-4566-9388-485b8234f736",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#212529",
+        "draggable": "false",
+        "form": "sphere",
+        "outerSpace": true,
+        "outerSpaceSortOrder": 2,
+        "outerSpaceX": "4.75",
+        "outerSpaceY": "1.25",
+        "outerSpaceZ": "1",
+        "scale": "0.5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "4f7894a7-64cc-4957-a829-ee12c1682469": {
+      "id": "4f7894a7-64cc-4957-a829-ee12c1682469",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": "-3",
+        "homeY": -6,
+        "pointable": "false",
+        "scaleX": "3",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "520a27eb-b5a4-475d-9202-f9a89fb3a144": {
+      "id": "520a27eb-b5a4-475d-9202-f9a89fb3a144",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f9ca16",
+        "homeX": -1,
+        "homeY": 3,
+        "name": "yellow",
+        "onClick": "@configBot.tags.menuPortal = \"hello\"\n",
+        "sequence": "morePortals",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "532f22c9-d8b8-4903-97f1-6d079b197c50": {
+      "id": "532f22c9-d8b8-4903-97f1-6d079b197c50",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#892c0d",
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": "3.625",
+        "label": " @onPointerExit",
+        "labelColor": "white",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"colorChanger\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onPointerExit\"})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "548bfc72-a2ea-44fd-b6df-e84c4cee533a": {
+      "id": "548bfc72-a2ea-44fd-b6df-e84c4cee533a",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e02423",
+        "homeX": -2,
+        "homeY": 3,
+        "name": "homeRed",
+        "onClick": "@configBot.tags.mapPortal = \"map\"",
+        "sequence": "morePortals",
+        "step": 2,
+        "undefined": true,
+        "undefinedX": 0,
+        "undefinedY": 0,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "5877cb41-3321-4990-b6b7-b1777142bf08": {
+      "id": "5877cb41-3321-4990-b6b7-b1777142bf08",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "form": "sprite",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/5c0e5b8791fb216e54ec625400196888abd86dbe14e30359ef39da40f6952190",
+        "homeRotationX": 1.5707963267948966,
+        "homeX": "-1",
+        "homeY": "3.5",
+        "homeZ": "3",
+        "name": "poster",
+        "scale": "2",
+        "scaleY": "1.316",
+        "sequence": "introDeep",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "59b602b9-4e86-4c82-92ab-aa4a67cfa890": {
+      "id": "59b602b9-4e86-4c82-92ab-aa4a67cfa890",
+      "tags": {
+        "casualTutorial": true,
+        "bounce": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 2,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 2,\n    toValue: 0,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 1,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 1,\n    toValue: 0,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})",
+        "changeColor": "@if (!tags.home) return\n\nvar randomColor = tags.colors[Math.floor(Math.random() * tags.colors.length)]\nmasks.color = randomColor",
+        "color": "#ff8a4c",
+        "colors": "🧬[\"#f8b4d9\", \"#f17eb8\", \"#e64694\", \"#d61f69\", \"#bf125d\",\n\"#f8b4b3\", \"#f87f7f\", \"#f05152\", \"#e02423\", \"#c81e1d\",\n\"#fdba8c\", \"#ff8a4c\", \"#ff5a1f\", \"#d03800\", \"#b43403\",\n\"#f9ca16\", \"#e3a008\", \"#c27701\", \"#9e580b\", \"#8e4a10\",\n\"#83e1bc\", \"#30c48d\", \"#0b9f6e\", \"#047a55\", \"#036b4e\",\n\"#7edce1\", \"#17bdca\", \"#0694a2\", \"#047481\", \"#036572\",\n\"#a4cafd\", \"#76a9fa\", \"#3e82f8\", \"#1b64f1\", \"#1a56db\",\n\"#b3c5fc\", \"#8da1fb\", \"#6775f5\", \"#5850eb\", \"#5144cc\",\n\"#cabefc\", \"#ac94fa\", \"#9061f9\", \"#7d3af2\", \"#6c2bd9\"]",
+        "draggable": "false",
+        "homeX": -3,
+        "homeY": 3,
+        "jump": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 2,\n    duration: 0.3,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 2,\n    toValue: 0,\n    duration: 0.3,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})",
+        "label": "Alice",
+        "name": "alice",
+        "scaleX": "2",
+        "sequence": "shoutListen",
+        "slide": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 0.5,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0.5,\n    toValue: 0,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nif (tags.homeY == 3) {\n    await animateTag(thisBot, \"homeY\", {\n        fromValue: 3,\n        toValue: 0,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n} else {\n    await animateTag(thisBot, \"homeY\", {\n        fromValue: 0,\n        toValue: 3,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n}",
+        "spin": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 0,\n    toValue: 3.14159,\n    duration: 0.5,\n    easing: {\n        type: 'cubic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 3.14159,\n    toValue: 6.28318,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'out'\n    }\n})\n",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "5a274070-a644-402c-98cb-ce8bec476240": {
+      "id": "5a274070-a644-402c-98cb-ce8bec476240",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.5",
+        "homeY": "3",
+        "label": "Commands",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "4",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "sequence": "shoutListen",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "5be3ce23-9d11-4257-a2ef-2fd5102c9ef5": {
+      "id": "5be3ce23-9d11-4257-a2ef-2fd5102c9ef5",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#761c1d",
+        "draggable": "false",
+        "form": "cube",
+        "homeRotationX": 0.7853981633974483,
+        "homeX": 0,
+        "homeY": "0.3",
+        "homeZ": "0.175",
+        "label": "Edit",
+        "labelColor": "white",
+        "labelSize": "0.8",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"red\"))\nshout('openTagPortal', {id: myBot.id, tag: \"onClick\"})",
+        "scaleY": "0.5",
+        "scaleZ": "0.25",
+        "sequence": "interactions",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "5c8a15b2-7957-4399-9b82-bb4f56ceefb9": {
+      "id": "5c8a15b2-7957-4399-9b82-bb4f56ceefb9",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e02423",
+        "draggable": "false",
+        "homeX": "-10000",
+        "homeY": "-10000",
+        "map": "true",
+        "mapX": "-88",
+        "mapY": "42",
+        "name": "mapRed",
+        "onClick": "@configBot.tags.mapPortal = \"\"\nshout('hideGoHome')\nawait os.sleep(500)\nshout('executeDialogue', {sequence: 'morePortals', step: 2, dialogueIndex: 3})",
+        "scale": "10000",
+        "sequence": "morePortals",
+        "step": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "5cc0e68d-b44e-4c41-9493-7e030bcb2f48": {
+      "id": "5cc0e68d-b44e-4c41-9493-7e030bcb2f48",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f05152",
+        "delay": "25",
+        "draggable": "false",
+        "homeRotationZ": "0",
+        "homeX": 1,
+        "homeY": 4,
+        "homeZ": "0",
+        "jump": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"out\"\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"in\"\n    }\n})",
+        "sequence": "shoutListen",
+        "slide": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeY\", {\n    fromValue: tags.homeY,\n    toValue: tags.homeY == tags.startY ? tags.startY + 1 : tags.startY,\n    duration: 0.25,\n})",
+        "startY": 4,
+        "step": 1,
+        "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "5cf42817-5f09-45d7-9f9e-d6f9c720ff32": {
+      "id": "5cf42817-5f09-45d7-9f9e-d6f9c720ff32",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e64694",
+        "homeX": 0,
+        "homeY": 4,
+        "name": "pink",
+        "onClick": "@os.goToDimension(\"shuffle\")",
+        "pink": "true",
+        "sequence": "portals",
+        "shuffle": "true",
+        "shuffleX": "2",
+        "shuffleY": "-3",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "5fdb0db3-f0ff-43ea-8b00-0e2003efa719": {
+      "id": "5fdb0db3-f0ff-43ea-8b00-0e2003efa719",
+      "tags": {
+        "casualTutorial": true,
+        "color": "green",
+        "homeX": -3,
+        "homeY": 1,
+        "name": "changer",
+        "onClick": "@",
+        "sequence": "interactions",
+        "step": 5,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "63178dc7-5a75-4979-a955-2c566efdbb84": {
+      "id": "63178dc7-5a75-4979-a955-2c566efdbb84",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#9061f9",
+        "form": "cube",
+        "homeX": -3,
+        "homeY": -2,
+        "homeZ": 0,
+        "name": "formTagBot",
+        "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"form\"})",
+        "sequence": "intro",
+        "step": "5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "662c2e41-6092-47ab-ac40-0354a9104666": {
+      "id": "662c2e41-6092-47ab-ac40-0354a9104666",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#30c48d",
+        "homeX": -3,
+        "homeY": 4,
+        "homeZ": 0,
+        "name": "green",
+        "sequence": "intro",
+        "step": 1,
+        "step1": "true",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "667a131a-4a9e-4879-9caf-09092f882982": {
+      "id": "667a131a-4a9e-4879-9caf-09092f882982",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#3e82f8",
+        "homeX": -3,
+        "homeY": 3,
+        "name": "blue",
+        "onClick": "@// If the portal is open, close it\nif (configBot.tags.miniGridPortal) {\n    configBot.tags.miniGridPortal = \"\"\n\n// If the portal is not open, open it\n} else {\n    configBot.tags.miniGridPortal = \"hello\"\n}\n\n// Change some settings for the mini grid portal\nminiGridPortalBot.tags.miniPortalHeight = 0.4\nminiGridPortalBot.tags.portalGridScale = 1",
+        "sequence": "morePortals",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "66d1d4e0-03d4-4f86-8ae2-eeee435ba4b3": {
+      "id": "66d1d4e0-03d4-4f86-8ae2-eeee435ba4b3",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#30c48d",
+        "homeX": 1,
+        "homeY": -2,
+        "homeZ": 0,
+        "name": "green",
+        "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"scaleY\"})",
+        "scaleY": "4",
+        "sequence": "intro",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "683f10c0-becd-4527-bb52-540f2fe66683": {
+      "id": "683f10c0-becd-4527-bb52-540f2fe66683",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "homeX": "2",
+        "homeY": "2",
+        "label": "Animations",
+        "pointable": "false",
+        "scaleX": "4",
+        "scaleZ": "0.2",
+        "sequence": "introDeep",
+        "step": "4",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "6863290b-27ac-4bf6-8b96-565d4a0eaed1": {
+      "id": "6863290b-27ac-4bf6-8b96-565d4a0eaed1",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "-0.25",
+        "label": "Clicking on this bot will show a text box.\n\nChange the bot's label tag to what you type there.",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 6,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "6a3633b2-7b96-4be2-85f0-40a2b13829b6": {
+      "id": "6a3633b2-7b96-4be2-85f0-40a2b13829b6",
+      "tags": {
+        "casualTutorial": true,
+        "color": "royalblue",
+        "homeX": -1,
+        "homeY": 3,
+        "name": "blue",
+        "onClick": "@// Open the sheet portal\nconfigBot.tags.sheetPortal = thisBot.id\n\n// Limit the tags that are shown, to not clutter the page\nsheetPortalBot.tags.sheetPortalAllowedTags = ['onClick', 'homeX', 'homeY', 'color', 'scale', 'scaleX', 'scaleY', 'scaleZ']\n",
+        "onPortalChanged": "@if (that.portal == 'sheetPortal'        // Make sure it was the sheet portal\n    && !that.dimension                  // Check that it was closed\n    && tags.color !== 'royalblue') {    // Make sure color was changed\n\n        shout('executeDialogue', {\n            sequence: 'portals',\n            step: 1,\n            dialogueIndex: 4\n        })\n\n}",
+        "sequence": "portals",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "6aedd96b-24d2-4740-b2c1-bf4ad21bd4cf": {
+      "id": "6aedd96b-24d2-4740-b2c1-bf4ad21bd4cf",
+      "tags": {
+        "casualTutorial": true,
+        "form": "dimension",
+        "formAddress": "mobileArrows",
+        "homeX": "-1",
+        "homeY": -7,
+        "onBotChanged": "@if (that.tags.includes('home') || that.tags.includes('scale')) {\n    if (gridPortalBot.tags.pixelWidth > 500) {\n        setTagMask(thisBot, \"home\", false, \"local\")\n    }\n} ",
+        "sequence": "interactions",
+        "step": "3",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "6ba85466-5373-48b7-beb0-06359f730592": {
+      "id": "6ba85466-5373-48b7-beb0-06359f730592",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#212529",
+        "draggable": "false",
+        "form": "sphere",
+        "homeX": 5,
+        "homeY": 1,
+        "outerSpace": true,
+        "outerSpaceSortOrder": 1,
+        "outerSpaceX": "3.25",
+        "outerSpaceY": "1.25",
+        "outerSpaceZ": "1",
+        "scale": "0.5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "6cb21851-c548-4f7e-8289-bc58c8604f13": {
+      "id": "6cb21851-c548-4f7e-8289-bc58c8604f13",
+      "tags": {
+        "casualTutorial": true,
+        "form": "dimension",
+        "formAddress": "environment",
+        "home": true,
+        "homeSortOrder": 0,
+        "homeX": 0,
+        "homeY": 0,
+        "type": "environment",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "6d54a9dd-24df-4dc8-92eb-3ce0bb1bc24e": {
+      "id": "6d54a9dd-24df-4dc8-92eb-3ce0bb1bc24e",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#243776",
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": -4,
+        "label": " @onKeyDown",
+        "labelColor": "white",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"mover\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onKeyDown\", size: \"large\", space: \"local\"})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "6f21c7f9-1f9a-4c8e-9558-82238e35a0df": {
+      "id": "6f21c7f9-1f9a-4c8e-9558-82238e35a0df",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": -3,
+        "label": "Press",
+        "labelSize": "0.8",
+        "name": "button",
+        "onClick": "@",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'",
+        "onPointerExit": "@masks.color = '#ffffff'",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05\n})",
+        "scaleX": "2",
+        "scaleY": "0.75",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "6ff66115-7e06-4aa2-96e2-557820cbae8a": {
+      "id": "6ff66115-7e06-4aa2-96e2-557820cbae8a",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#8da1fb",
+        "delay": "45",
+        "draggable": "false",
+        "homeRotationZ": "0",
+        "homeX": -4,
+        "homeY": 1,
+        "homeZ": "0",
+        "jump": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"out\"\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"in\"\n    }\n})",
+        "sequence": "shoutListen",
+        "slide": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeY\", {\n    fromValue: tags.homeY,\n    toValue: tags.homeY == tags.startY ? tags.startY + 1 : tags.startY,\n    duration: 0.25,\n})",
+        "startY": 1,
+        "step": 1,
+        "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "702520c2-1127-4971-8db1-412a7fd57f0a": {
+      "id": "702520c2-1127-4971-8db1-412a7fd57f0a",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#044004",
+        "draggable": "false",
+        "homeX": -3,
+        "homeY": 0,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"changer\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onClick\", size: \"medium\"})",
+        "scaleX": "1.5",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 5,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "70655cad-a446-4a18-8021-a84bdb0e1118": {
+      "id": "70655cad-a446-4a18-8021-a84bdb0e1118",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#3e82f8",
+        "homeX": -3,
+        "homeY": 1,
+        "homeZ": 0,
+        "name": "blue",
+        "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"scaleZ\"})",
+        "scaleZ": "2",
+        "sequence": "intro",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "7269a021-43b2-4c71-8f9d-83161d4332d3": {
+      "id": "7269a021-43b2-4c71-8f9d-83161d4332d3",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#892c0d",
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": "4.375",
+        "label": " @onPointerEnter ",
+        "labelColor": "white",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"colorChanger\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onPointerEnter\"})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "74c8860f-eaa5-4abe-b3c4-488df6bd62eb": {
+      "id": "74c8860f-eaa5-4abe-b3c4-488df6bd62eb",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "3.5",
+        "homeY": "3.35",
+        "label": "shuffle\npink\nhello\nempty\nouterSpace",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "portals",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "789157a4-e00b-46cf-841d-cc13808ba3c2": {
+      "id": "789157a4-e00b-46cf-841d-cc13808ba3c2",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f9ca16",
+        "draggable": "false",
+        "form": "sphere",
+        "outerSpace": true,
+        "outerSpaceSortOrder": 1,
+        "outerSpaceX": "-125",
+        "outerSpaceY": "-10",
+        "outerSpaceZ": "-50",
+        "scale": "200",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "79e375f6-381a-458f-86b2-6ecf8d04dc32": {
+      "id": "79e375f6-381a-458f-86b2-6ecf8d04dc32",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#17bdca",
+        "homeX": -4,
+        "homeY": 3,
+        "homeZ": 0,
+        "name": "teal",
+        "onClick": "@// os.log( os )",
+        "sequence": "portals",
+        "shuffle": "true",
+        "shuffleX": "4",
+        "shuffleY": "3",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "7a228d71-11c5-4d02-9aef-09c8b2f80c44": {
+      "id": "7a228d71-11c5-4d02-9aef-09c8b2f80c44",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "form": "mesh",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/a0c5e0cfe5bd5f1be882dadc8dec523538b9cf32a1e0ab48b5735c5c296617a8.xml",
+        "formAnimation": "Idle",
+        "formSubtype": "gltf",
+        "homeRotationZ": "-0.4",
+        "homeX": "-2",
+        "homeZ": "-1.25",
+        "name": "fox",
+        "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"formAnimation\"})",
+        "scale": "5",
+        "sequence": "introDeep",
+        "step": "4",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "81a31846-cb4f-42c9-bee6-86e38f32f99e": {
+      "id": "81a31846-cb4f-42c9-bee6-86e38f32f99e",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#ff8a4c",
+        "homeX": -3,
+        "homeY": 1,
+        "homeZ": 0,
+        "name": "orange",
+        "scale": "2",
+        "sequence": "intro",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "829ae3c3-b3fe-4472-b6a2-f3ca7ace5b8b": {
+      "id": "829ae3c3-b3fe-4472-b6a2-f3ca7ace5b8b",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": 0,
+        "homeY": -8,
+        "pointable": "false",
+        "scaleX": "3",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "83e6fcef-95d0-4f64-9b68-75af1f1b00fb": {
+      "id": "83e6fcef-95d0-4f64-9b68-75af1f1b00fb",
+      "tags": {
+        "creator": "f8602878-c2ef-48bd-85a0-8d6351eb4120",
+        "form": "sprite",
+        "onClick": "@\n    shout('openTagPortal', {id: thisBot.id, tag: 'formAddress'});\n    configBot.tags.codeToolsPortal = 'help';\n",
+        "scale": 3,
+        "sequence": "introDeep",
+        "step": 2,
+        "casualTutorial": true,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "87c8b81b-6612-4b25-905e-f8aef854a7c4": {
+      "id": "87c8b81b-6612-4b25-905e-f8aef854a7c4",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#9061f9",
+        "homeX": 3,
+        "homeY": 1,
+        "name": "purple",
+        "onClick": "@os.showHtml(`\n    <div style=\"padding: 24px\">\n        Hello, world!\n    </div>\n`)",
+        "sequence": "interactions",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "88f17221-2bbb-49a2-99c6-06fc7dcfc592": {
+      "id": "88f17221-2bbb-49a2-99c6-06fc7dcfc592",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#d61f69",
+        "delay": "35",
+        "draggable": "false",
+        "homeRotationZ": "0",
+        "homeX": -1,
+        "homeY": 0,
+        "homeZ": "0",
+        "jump": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"out\"\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"in\"\n    }\n})",
+        "sequence": "shoutListen",
+        "slide": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeY\", {\n    fromValue: tags.homeY,\n    toValue: tags.homeY == tags.startY ? tags.startY + 1 : tags.startY,\n    duration: 0.25,\n})",
+        "startY": 0,
+        "step": 1,
+        "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "89ed08bb-1345-4eae-a05f-c7f18902c6a0": {
+      "id": "89ed08bb-1345-4eae-a05f-c7f18902c6a0",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#04543e",
+        "homeX": "1.125",
+        "homeY": "-0.25",
+        "label": "@moveLeft",
+        "labelColor": "white",
+        "labelSize": "0.8",
+        "onClick": "@var myBot = getBot(\n    byTag(\"sequence\", tags.sequence),\n    byTag(\"step\", tags.step),\n    byTag(\"name\", \"green\")\n)\n\nshout('openTagPortal', {id: myBot.id, tag: 'moveLeft', size: 'medium'})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "89ee1ad1-8344-457d-aac9-6838af6a33f8": {
+      "id": "89ee1ad1-8344-457d-aac9-6838af6a33f8",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f9ca16",
+        "homeX": 2,
+        "homeY": 1,
+        "homeZ": 0,
+        "name": "yellow",
+        "scale": "0.5",
+        "sequence": "intro",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "8a8c816e-dbb7-42b5-a873-9f7641810c06": {
+      "id": "8a8c816e-dbb7-42b5-a873-9f7641810c06",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "1.75",
+        "label": "Make the green bot change color when you click on it",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 5,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "8ca0d513-2d97-428b-baab-27d1ec3b0258": {
+      "id": "8ca0d513-2d97-428b-baab-27d1ec3b0258",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#9061f9",
+        "homeX": -2,
+        "homeY": 2,
+        "name": "purple",
+        "onPortalChanged": "@if (that.portal == 'systemPortal') {\n    if (that.dimension) {\n        shout('executeDialogue', {sequence: 'morePortals', step: 4, dialogueIndex: 6})\n    }\n}",
+        "sequence": "morePortals",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "8e819542-02fd-49ab-9ba1-a823c61b94ea": {
+      "id": "8e819542-02fd-49ab-9ba1-a823c61b94ea",
+      "tags": {
+        "casualTutorial": true,
+        "addPicture": "@setTagMask(thisBot, \"home\", true, \"local\")\nsetTagMask(thisBot, \"sequence\", \"introDeep\", \"local\")\nsetTagMask(thisBot, \"step\", 2, \"local\")",
+        "draggable": "false",
+        "form": "sprite",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/4e703c1a2e645f72415055a4443c3f7e46a1c652afd8eddb910274c216a0dbc4.png",
+        "homeZ": "-1",
+        "onClick": "@\n    shout('openTagPortal', {id: thisBot.id, tag: 'formAddress'});\n    configBot.tags.codeToolsPortal = 'help';\n",
+        "scale": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "8e8e4628-6d02-4841-8200-251047236da0": {
+      "id": "8e8e4628-6d02-4841-8200-251047236da0",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#0b9f6e",
+        "draggable": "false",
+        "homeRotationX": 0.3490658503988659,
+        "homeRotationY": 0.7853981633974483,
+        "homeRotationZ": 0,
+        "homeX": -4,
+        "homeY": 2,
+        "homeZ": "0.6",
+        "name": "green",
+        "scaleY": "1",
+        "sequence": "intro",
+        "step": 6,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "8ede09e1-b56b-4439-a239-9d2a8567da0d": {
+      "id": "8ede09e1-b56b-4439-a239-9d2a8567da0d",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#59351d",
+        "homeX": "-1",
+        "homeY": "2.615",
+        "homeZ": "1.625",
+        "name": "frame",
+        "scaleX": "2.125",
+        "scaleY": "0.2",
+        "scaleZ": "2.75",
+        "sequence": "introDeep",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "8fc6e672-5fc6-4d66-ad5c-2e7bfa7af51f": {
+      "id": "8fc6e672-5fc6-4d66-ad5c-2e7bfa7af51f",
+      "tags": {
+        "creator": "f8602878-c2ef-48bd-85a0-8d6351eb4120",
+        "form": "sprite",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/a806641a420c7429129c2fbf017517b190e060907909fe1fed46307acb645afa",
+        "onClick": "@\n    shout('openTagPortal', {id: thisBot.id, tag: 'formAddress'});\n    configBot.tags.codeToolsPortal = 'help';\n",
+        "scale": 3,
+        "sequence": "introDeep",
+        "step": 2,
+        "casualTutorial": true,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "8ff1b8fc-a7f7-4678-b831-46955e297111": {
+      "id": "8ff1b8fc-a7f7-4678-b831-46955e297111",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": 2,
+        "homeY": "-0.5",
+        "label": "Bonus",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "3",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 5,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "91c17354-7e61-4899-a472-380a9ed167fa": {
+      "id": "91c17354-7e61-4899-a472-380a9ed167fa",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#723b14",
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": "-4.75",
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.8",
+        "onClick": "@var myBot = getBot(\n    byTag('sequence', tags.sequence),\n    byTag('step', tags.step),\n    byTag('name', 'link')\n)\n\nshout ('openTagPortal', {id: myBot.id, tag: 'onClick'})",
+        "scale": "0.9",
+        "scaleX": "1.5",
+        "scaleY": "0.45",
+        "scaleZ": "0.15",
+        "sequence": "saving",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "925d03b9-5f04-46d2-a1d8-8f94e3c36492": {
+      "id": "925d03b9-5f04-46d2-a1d8-8f94e3c36492",
+      "tags": {
+        "casualTutorial": true,
+        "bounce": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 2,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 2,\n    toValue: 0,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 1,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 1,\n    toValue: 0,\n    duration: 0.5,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})",
+        "changeColor": "@if (!tags.home) return\n\nvar randomColor = tags.colors[Math.floor(Math.random() * tags.colors.length)]\nmasks.color = randomColor",
+        "color": "#9061f9",
+        "colors": "🧬[\"#f8b4d9\", \"#f17eb8\", \"#e64694\", \"#d61f69\", \"#bf125d\",\n\"#f8b4b3\", \"#f87f7f\", \"#f05152\", \"#e02423\", \"#c81e1d\",\n\"#fdba8c\", \"#ff8a4c\", \"#ff5a1f\", \"#d03800\", \"#b43403\",\n\"#f9ca16\", \"#e3a008\", \"#c27701\", \"#9e580b\", \"#8e4a10\",\n\"#83e1bc\", \"#30c48d\", \"#0b9f6e\", \"#047a55\", \"#036b4e\",\n\"#7edce1\", \"#17bdca\", \"#0694a2\", \"#047481\", \"#036572\",\n\"#a4cafd\", \"#76a9fa\", \"#3e82f8\", \"#1b64f1\", \"#1a56db\",\n\"#b3c5fc\", \"#8da1fb\", \"#6775f5\", \"#5850eb\", \"#5144cc\",\n\"#cabefc\", \"#ac94fa\", \"#9061f9\", \"#7d3af2\", \"#6c2bd9\"]",
+        "draggable": "false",
+        "homeX": -1,
+        "homeY": 2,
+        "jump": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 2,\n    duration: 0.3,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 2,\n    toValue: 0,\n    duration: 0.3,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})",
+        "name": "mover",
+        "sequence": "shoutListen",
+        "slide": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 0.5,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0.5,\n    toValue: 0,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nif (tags.homeX == -1) {\n    await animateTag(thisBot, \"homeX\", {\n        fromValue: -1,\n        toValue: -4,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n} else {\n    await animateTag(thisBot, \"homeX\", {\n        fromValue: -4,\n        toValue: -1,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n}",
+        "spin": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 0,\n    toValue: 3.14159,\n    duration: 0.5,\n    easing: {\n        type: 'cubic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 3.14159,\n    toValue: 6.28318,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'out'\n    }\n})\n",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "9469bdcc-c86a-44cb-bf63-f6fca35d5da1": {
+      "id": "9469bdcc-c86a-44cb-bf63-f6fca35d5da1",
+      "tags": {
+        "casualTutorial": true,
+        "botDropped": "false",
+        "color": "#ac94fa",
+        "homeX": 3,
+        "homeY": 2,
+        "homeZ": 0,
+        "name": "purple",
+        "onAnyBotDrop": "@\nif (tags.home && !tags.botDropped) {\n    if (that.bot.tags.step == 1 && that.bot.tags.sequence == \"intro\") {\n        masks.botDropped = true\n        shout(\"executeDialogue\", {step: 1, sequence: \"intro\", dialogueIndex: 3})\n    }\n}\n",
+        "sequence": "intro",
+        "step": 1,
+        "step1": "true",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "94e372f9-fcab-41cd-adf3-af7f1c1999ea": {
+      "id": "94e372f9-fcab-41cd-adf3-af7f1c1999ea",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e64694",
+        "homeX": -3,
+        "homeY": 1,
+        "name": "pink",
+        "onClick": "@",
+        "sequence": "interactions",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "960e440a-148b-41db-810d-1a3ea776ecac": {
+      "id": "960e440a-148b-41db-810d-1a3ea776ecac",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": 2,
+        "homeY": "-1",
+        "label": "Bonus",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "3",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 7,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "9a671afc-8fac-44a2-a547-9e184389d323": {
+      "id": "9a671afc-8fac-44a2-a547-9e184389d323",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#30c48d",
+        "homeX": 2,
+        "homeY": 1,
+        "name": "green",
+        "sequence": "saving",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "9a785555-9d40-45a3-94c6-384c60dabb4c": {
+      "id": "9a785555-9d40-45a3-94c6-384c60dabb4c",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#491d96",
+        "homeX": -3,
+        "homeY": 0,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"purple\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onClick\", size: \"medium\"})",
+        "scaleX": "1.5",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 8,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "9fee6b49-87e5-4496-aa49-7c57bc0f8f9d": {
+      "id": "9fee6b49-87e5-4496-aa49-7c57bc0f8f9d",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#343a3f",
+        "homeX": 0,
+        "homeY": -4,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.85",
+        "onClick": "@var myBot = getBot(\n    byTag(\"sequence\", tags.sequence),\n    byTag(\"step\", tags.step),\n    byTag(\"name\", \"button\")\n)\n\nshout(\"openTagPortal\", {id: myBot.id, tag: 'onClick', size: 'medium'})",
+        "scaleX": "1.5",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "shoutListen",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "a0e09a3c-d670-4987-a35f-ddccb8b36504": {
+      "id": "a0e09a3c-d670-4987-a35f-ddccb8b36504",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#17bdca",
+        "homeX": -3,
+        "homeY": 3,
+        "name": "teal",
+        "sequence": "saving",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "a12c1af7-40d8-4682-9094-349cceba4a60": {
+      "id": "a12c1af7-40d8-4682-9094-349cceba4a60",
+      "tags": {
+        "casualTutorial": true,
+        "color": "clear",
+        "homeX": "0",
+        "homeY": "0",
+        "name": "ab1Proxy",
+        "onAnyCreate": "@if (!tags.home) return\n\nif (that.bot.tags.onClick || that.bot.tags.ab1Click) return\n\nif (tags.beenToSheet && !tags.addedBot) {\n    setTagMask(thisBot, 'addedBot', true, 'local')\n    shout('executeDialogue', {sequence: 'portals', step: 4, dialogueIndex: 6})\n}\n",
+        "onPortalChanged": "@if (!tags.home) return\n\nif (that.portal == 'sheetPortal' && !tags.beenToSheet) {\n    setTagMask(thisBot, 'beenToSheet', true, 'local')\n    shout('executeDialogue', {sequence: 'portals', step: 4, dialogueIndex: 5})\n}\n",
+        "pointable": "false",
+        "sequence": "portals",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "a3240003-c60a-4c06-a1da-cea07e4e583e": {
+      "id": "a3240003-c60a-4c06-a1da-cea07e4e583e",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f8f9fa",
+        "hello": true,
+        "helloX": "-3",
+        "helloY": 0,
+        "label": "Toast \"Hello\"",
+        "onClick": "@os.toast(\"Hello\")",
+        "scaleX": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "a6d8f90c-394f-4f12-8db4-0afb89871e40": {
+      "id": "a6d8f90c-394f-4f12-8db4-0afb89871e40",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "-2",
+        "label": "Make the bot switch between two colors each time it's clicked",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 5,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "a6f743e6-3955-4b42-a4dd-fac26aee9768": {
+      "id": "a6f743e6-3955-4b42-a4dd-fac26aee9768",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#17bdca",
+        "homeX": -4,
+        "homeY": 5,
+        "name": "teal",
+        "onAnyCreate": "@if (!tags.home) return;\n\nif (that.bot.tags.form == 'sprite') {\n    // Make that bot open its #formAddress tag when clicked\n    that.bot.tags.onClick = `@\n    shout('openTagPortal', {id: thisBot.id, tag: 'formAddress'});\n    configBot.tags.codeToolsPortal = 'help';\n`\n    that.bot.tags.scale = 3\n    // Say the next dialogue part\n    shout('executeDialogue', {sequence: 1, step: 8, dialogueIndex: 3})\n}",
+        "sequence": "introDeep",
+        "step": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "a8328974-ef07-4aca-8fb0-1a5847b717f7": {
+      "id": "a8328974-ef07-4aca-8fb0-1a5847b717f7",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#3e82f8",
+        "homeX": -2,
+        "homeY": -4,
+        "name": "mover",
+        "onBotChanged": "@if (!that.tags.includes(\"home\")) return;\n\nif (!tags.home) { // Stop listening if not home\n    setTagMask(thisBot, \"onKeyDown\", null, \"local\")\n\n} else { // Reset location & start listening if home\n    tags.homeX = -2\n    tags.homeY = -4\n\n    setTagMask(thisBot, \"onKeyDown\",\n`@if (that.keys.includes(\"ArrowDown\")) {\n    tags.homeY = tags.homeY - 1\n}\n\nif (that.keys.includes(\"ArrowUp\")) {\n    tags.homeY = tags.homeY + 1\n}\n\nif (that.keys.includes(\"ArrowLeft\")) {\n    tags.homeX = tags.homeX - 1\n}\n\nif (that.keys.includes(\"ArrowRight\")) {\n    tags.homeX = tags.homeX + 1\n}`,\n    \"local\"\n    )\n}",
+        "sequence": "interactions",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "adb7d84e-5547-4a6e-ba68-1ffb5f59b881": {
+      "id": "adb7d84e-5547-4a6e-ba68-1ffb5f59b881",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e9ecef",
+        "hello": true,
+        "helloSortOrder": 1,
+        "helloX": "0",
+        "helloY": 0,
+        "label": "Tip \"Hey\"",
+        "onClick": "@os.tip(\"Hey\")",
+        "scaleX": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "ae68fda3-2a38-4144-933f-2cbc9145b6a7": {
+      "id": "ae68fda3-2a38-4144-933f-2cbc9145b6a7",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#741a3d",
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": 3,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"pink\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onClick\", size: \"medium\"})",
+        "scaleX": "1.5",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "portals",
+        "shuffle": "true",
+        "shuffleX": "2",
+        "shuffleY": "-4",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "aecb0061-088d-468d-9867-c8d8a0483a19": {
+      "id": "aecb0061-088d-468d-9867-c8d8a0483a19",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "form": "mesh",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/89ef890be5c3719f0bd883b1107576a5d4296d30c8203dc84cd8da207d3c8b31.xml",
+        "formSubtype": "gltf",
+        "homeX": "1",
+        "homeY": "0.5",
+        "homeZ": "2",
+        "name": "soda",
+        "sequence": "introDeep",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "b0b205f1-49d6-4121-9b81-39fa2343fe4b": {
+      "id": "b0b205f1-49d6-4121-9b81-39fa2343fe4b",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": 2,
+        "homeY": "2",
+        "label": "Challenge",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "3",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 8,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "b1c437c4-f8ad-43cf-b673-4274dfbfcbb4": {
+      "id": "b1c437c4-f8ad-43cf-b673-4274dfbfcbb4",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "homeX": 7,
+        "homeY": -9,
+        "name": "helpProxy",
+        "pointable": "false",
+        "sequence": "introDeep",
+        "step": "3",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "b2d4ecc9-06dc-48a3-8b7b-30b57986b89e": {
+      "id": "b2d4ecc9-06dc-48a3-8b7b-30b57986b89e",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "mobileArrows": true,
+        "mobileArrowsX": 0,
+        "mobileArrowsY": "0.53125",
+        "pointable": "false",
+        "scale": "0.5",
+        "scaleX": "1.25",
+        "scaleY": "1.125",
+        "scaleZ": "0.25",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "b340029e-f10e-4f06-8372-5e61f26e78aa": {
+      "id": "b340029e-f10e-4f06-8372-5e61f26e78aa",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#1e429f",
+        "homeX": -3,
+        "homeY": 2,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(\n    byTag('sequence', tags.sequence),\n    byTag('step', tags.step),\n    byTag('name', 'blue')\n)\n\nshout('openTagPortal', {id: myBot.id, tag: 'onClick', size: 'large'})",
+        "scaleY": "0.4",
+        "scaleZ": "0.15",
+        "sequence": "morePortals",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "b5f65777-c155-42d3-a080-cf299fcf0395": {
+      "id": "b5f65777-c155-42d3-a080-cf299fcf0395",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "homeX": "-3.75",
+        "homeY": "2",
+        "name": "greenProxy",
+        "pointable": "false",
+        "sequence": "intro",
+        "step": 6,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "b61ed651-3330-4eaf-b9db-143dc8bac047": {
+      "id": "b61ed651-3330-4eaf-b9db-143dc8bac047",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "homeX": "2",
+        "homeY": "0",
+        "label": "Idle\nWalk\nGallop\nAttack\nEating",
+        "labelSize": "0.8",
+        "pointable": "false",
+        "scaleX": "3",
+        "scaleY": "4",
+        "scaleZ": "0.1",
+        "sequence": "introDeep",
+        "step": "4",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "b8c9bf76-1f88-4aca-87c9-e1e5b23612b7": {
+      "id": "b8c9bf76-1f88-4aca-87c9-e1e5b23612b7",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#17bdca",
+        "homeX": -3,
+        "homeY": 1,
+        "name": "teal",
+        "onClick": "@os.toast(\"Hey there!\")",
+        "sequence": "interactions",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "bba49a6b-083d-4374-8e68-578ebfc2b1ab": {
+      "id": "bba49a6b-083d-4374-8e68-578ebfc2b1ab",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "form": "mesh",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/b4b1743623b395209ba320b394c0602c19c19fc4a13c9400210839aa4a0a1b37.xml",
+        "formSubtype": "gltf",
+        "homeRotationZ": -0.7853981633974483,
+        "homeX": "-1.2",
+        "homeY": "0.35",
+        "homeZ": "1.9",
+        "name": "sushi",
+        "scale": "0.5",
+        "sequence": "introDeep",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "be67fc42-deb5-47e9-914f-75bb449e2eb7": {
+      "id": "be67fc42-deb5-47e9-914f-75bb449e2eb7",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "homeX": 7,
+        "homeY": -9,
+        "name": "helpProxy",
+        "pointable": "false",
+        "sequence": "interactions",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "be917254-8046-4874-993b-0613639ea056": {
+      "id": "be917254-8046-4874-993b-0613639ea056",
+      "tags": {
+        "casualTutorial": true,
+        "color": "clear",
+        "homeSortOrder": 4,
+        "homeX": 0,
+        "homeY": 0,
+        "homeZ": "-0.5",
+        "name": "ab-1",
+        "pointable": "false",
+        "sequence": "portals",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "c35fbc22-0add-43f8-ab27-235e86c8bad9": {
+      "id": "c35fbc22-0add-43f8-ab27-235e86c8bad9",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e64694",
+        "form": "circle",
+        "homeX": 1,
+        "homeY": 3,
+        "homeZ": 0,
+        "name": "pink",
+        "sequence": "intro",
+        "step": "5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "c5bd648f-e979-4fea-869f-ec26b44e0644": {
+      "id": "c5bd648f-e979-4fea-869f-ec26b44e0644",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": 2,
+        "homeY": "3",
+        "label": "Challenge",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "3",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 5,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "c798dc3c-38f6-4523-81d4-f438cb1f6914": {
+      "id": "c798dc3c-38f6-4523-81d4-f438cb1f6914",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e64694",
+        "homeX": -2,
+        "homeY": 1,
+        "name": "pink",
+        "sequence": "saving",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "c8a93b76-e37f-4284-bd56-75f243387995": {
+      "id": "c8a93b76-e37f-4284-bd56-75f243387995",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": 0,
+        "homeY": -4,
+        "pointable": "false",
+        "scaleX": "2.25",
+        "scaleY": "1.25",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "c93bca0a-22e5-47cf-9ea6-6ffce712723f": {
+      "id": "c93bca0a-22e5-47cf-9ea6-6ffce712723f",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#892c0d",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "3.625",
+        "label": " @onPointerExit",
+        "labelColor": "white",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"colorChanger\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onPointerUp\"})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "c9ebd682-b323-4aeb-8e8b-2d549383e966": {
+      "id": "c9ebd682-b323-4aeb-8e8b-2d549383e966",
+      "tags": {
+        "casualTutorial": true,
+        "color": "clear",
+        "homeX": -3,
+        "homeY": -3,
+        "name": "ab1Proxy2",
+        "pointable": "false",
+        "sequence": "portals",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "cb14d7a5-eefc-422a-b014-bc72b05daf93": {
+      "id": "cb14d7a5-eefc-422a-b014-bc72b05daf93",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#0694a2",
+        "delay": "0",
+        "draggable": "false",
+        "homeRotationZ": "0",
+        "homeX": -5,
+        "homeY": 5,
+        "homeZ": "0",
+        "jump": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"out\"\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"in\"\n    }\n})",
+        "sequence": "shoutListen",
+        "slide": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeY\", {\n    fromValue: tags.homeY,\n    toValue: tags.homeY == tags.startY ? tags.startY + 1 : tags.startY,\n    duration: 0.25,\n})",
+        "startY": 5,
+        "step": 1,
+        "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "cc633493-5deb-4136-a3fb-da316beda199": {
+      "id": "cc633493-5deb-4136-a3fb-da316beda199",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "1",
+        "label": "Make this bot move when you click on it",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 7,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "cca7bee9-e6e1-40ea-8f3c-b67d586fcb50": {
+      "id": "cca7bee9-e6e1-40ea-8f3c-b67d586fcb50",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#036572",
+        "draggable": "false",
+        "form": "cube",
+        "homeRotationX": 0.7853981633974483,
+        "homeX": -3,
+        "homeY": "0.3",
+        "homeZ": "0.175",
+        "label": "Edit",
+        "labelColor": "white",
+        "labelSize": "0.8",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"teal\"))\nshout('openTagPortal', {id: myBot.id, tag: \"onClick\"})\n",
+        "scaleY": "0.5",
+        "scaleZ": "0.25",
+        "sequence": "interactions",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "ce592445-fcd9-4d54-9417-52caf974e80f": {
+      "id": "ce592445-fcd9-4d54-9417-52caf974e80f",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#73230e",
+        "draggable": "false",
+        "homeX": -3,
+        "homeY": 0,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"mover\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onClick\", size: \"medium\"})",
+        "scaleX": "1.5",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 7,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "cf1b856c-0c62-4358-867c-30311706aaf8": {
+      "id": "cf1b856c-0c62-4358-867c-30311706aaf8",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f05152",
+        "homeX": 0,
+        "homeY": 1,
+        "name": "red",
+        "onClick": "@os.tip(\"Howdy!\")",
+        "sequence": "interactions",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "d102f14a-b005-4537-be86-257b8ad2240f": {
+      "id": "d102f14a-b005-4537-be86-257b8ad2240f",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f9ca16",
+        "form": "sphere",
+        "homeX": -3,
+        "homeY": 3,
+        "homeZ": 0,
+        "name": "yellow",
+        "sequence": "intro",
+        "step": "5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "d196f886-53c3-40e0-a511-85245d8244c9": {
+      "id": "d196f886-53c3-40e0-a511-85245d8244c9",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#ff5a1f",
+        "homeX": -3,
+        "homeY": 1,
+        "name": "mover",
+        "onClick": "@",
+        "sequence": "interactions",
+        "step": 7,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "d33613e3-89fc-4e45-b0e3-2e989fea4032": {
+      "id": "d33613e3-89fc-4e45-b0e3-2e989fea4032",
+      "tags": {
+        "creator": "f8602878-c2ef-48bd-85a0-8d6351eb4120",
+        "form": "sprite",
+        "onClick": "@\n    shout('openTagPortal', {id: thisBot.id, tag: 'formAddress'});\n    configBot.tags.codeToolsPortal = 'help';\n",
+        "scale": 3,
+        "sequence": "introDeep",
+        "step": 2,
+        "casualTutorial": true,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "d371d929-91f4-43db-b4ba-ccb599cbe6cf": {
+      "id": "d371d929-91f4-43db-b4ba-ccb599cbe6cf",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "label": ">",
+        "mobileArrows": true,
+        "mobileArrowsRotationZ": "1.5708",
+        "mobileArrowsX": 0,
+        "mobileArrowsY": "0.5",
+        "onClick": "@shout('onKeyDown', {keys: ['ArrowUp']})",
+        "onPointerDown": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05,\n})",
+        "onPointerUp": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05,\n})",
+        "scale": "0.5",
+        "scaleZ": "0.5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "d5031cdc-9185-425a-aea2-30d841f12a2a": {
+      "id": "d5031cdc-9185-425a-aea2-30d841f12a2a",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e64694",
+        "homeX": 2,
+        "homeY": 3,
+        "name": "pink",
+        "onClick": "@os.tip(\"Hello!\")",
+        "sequence": "interactions",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "d506596d-f8f1-4fc6-83fb-fbcc42681cdf": {
+      "id": "d506596d-f8f1-4fc6-83fb-fbcc42681cdf",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "form": "mesh",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/7f9efb8ea8b6cc6641946c89bd3a39b05435ef65450104ce6ee206df475ab043.xml",
+        "formSubtype": "gltf",
+        "homeRotationZ": 0.5235987755982988,
+        "homeX": "0",
+        "homeY": "-0.5",
+        "homeZ": "1.6",
+        "name": "pizza",
+        "sequence": "introDeep",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "d7a6330c-13a3-4371-883a-01de4cff3f91": {
+      "id": "d7a6330c-13a3-4371-883a-01de4cff3f91",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#17bdca",
+        "homeX": -3,
+        "homeY": 1,
+        "label": "Label",
+        "name": "labelBot",
+        "onClick": "@// Here, we make a \"variable\" to save what you type\n// \"await\" means pause here until the input is closed\nvar newLabel = await os.showInput()\n\n// Change the label tag here:\n",
+        "scaleX": 3,
+        "scaleZ": "0.75",
+        "sequence": "interactions",
+        "step": 6,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "d7ab6fea-1f11-4ae8-87a8-e2fcb1f5fcc0": {
+      "id": "d7ab6fea-1f11-4ae8-87a8-e2fcb1f5fcc0",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#17bdca",
+        "homeX": 0,
+        "homeY": 4,
+        "homeZ": 0,
+        "name": "teal",
+        "sequence": "intro",
+        "step": 1,
+        "step1": "true",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "da615654-cc05-4dbd-a67c-8f88a9ec6143": {
+      "id": "da615654-cc05-4dbd-a67c-8f88a9ec6143",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "label": ">",
+        "mobileArrows": true,
+        "mobileArrowsSortOrder": 3,
+        "mobileArrowsX": "0.5",
+        "mobileArrowsY": 0,
+        "onClick": "@shout('onKeyDown', {keys: ['ArrowRight']})",
+        "onPointerDown": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05,\n})",
+        "onPointerUp": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05,\n})",
+        "scale": "0.5",
+        "scaleZ": "0.5",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "dae044d9-7d98-4bac-9bbe-4e9fe923bc72": {
+      "id": "dae044d9-7d98-4bac-9bbe-4e9fe923bc72",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": "-8",
+        "label": "shout(\"moveDown\")",
+        "labelSize": "0.9",
+        "name": "down",
+        "onClick": "@shout(\"moveDown\")",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'",
+        "onPointerExit": "@masks.color = '#ffffff'\n",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05\n})",
+        "scaleX": "2.75",
+        "scaleY": "0.75",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "dbc9112c-bd60-41cc-bec1-9250900b7ab7": {
+      "id": "dbc9112c-bd60-41cc-bec1-9250900b7ab7",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#9061f9",
+        "homeX": 2,
+        "homeY": -1,
+        "homeZ": "0",
+        "name": "purple",
+        "onClick": "@await animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 3,\n    duration: 0.5,\n    easing: {type: \"quadratic\", mode: \"out\"}\n})\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 3,\n    toValue: 0,\n    duration: 1,\n    easing: {type: \"elastic\", mode: \"out\"}\n})",
+        "sequence": "interactions",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "ddacb6d2-639a-47dd-9b64-8e0c37ebbfc8": {
+      "id": "ddacb6d2-639a-47dd-9b64-8e0c37ebbfc8",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#8e4a10",
+        "homeX": -1,
+        "homeY": 2,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.9",
+        "onClick": "@var myBot = getBot(\n    byTag('sequence', tags.sequence),\n    byTag('step', tags.step),\n    byTag('name', 'yellow')\n)\n\nshout('openTagPortal', {id: myBot.id, tag: 'onClick', size: 'medium'})",
+        "scaleX": "1",
+        "scaleY": "0.4",
+        "scaleZ": "0.15",
+        "sequence": "morePortals",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "de8d6b64-09d7-4b1b-a24b-34ff944d7056": {
+      "id": "de8d6b64-09d7-4b1b-a24b-34ff944d7056",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#30c48d",
+        "homeX": 0,
+        "homeY": 2,
+        "moveDown": "@",
+        "moveLeft": "@",
+        "moveRight": "@",
+        "moveUp": "@tags.homeY = tags.homeY + 1",
+        "name": "green",
+        "onBotChanged": "@if (that.tags.includes('home')) {\n    tags.homeX = tags.startX\n    tags.homeY = tags.startY\n}",
+        "sequence": "shoutListen",
+        "startX": "0",
+        "startY": "2",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "e0577ac0-d66e-4511-bf67-17e1ebdf07ae": {
+      "id": "e0577ac0-d66e-4511-bf67-17e1ebdf07ae",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#04543e",
+        "homeX": "-1.125",
+        "homeY": "-0.25",
+        "label": "@moveUp",
+        "labelColor": "white",
+        "labelSize": "0.75",
+        "onClick": "@var myBot = getBot(\n    byTag(\"sequence\", tags.sequence),\n    byTag(\"step\", tags.step),\n    byTag(\"name\", \"green\")\n)\n\nshout('openTagPortal', {id: myBot.id, tag: 'moveUp', size: 'medium'})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "e15b5ba0-9572-4510-a4dc-783768eb458f": {
+      "id": "e15b5ba0-9572-4510-a4dc-783768eb458f",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": -3,
+        "label": "Press",
+        "labelSize": "0.8",
+        "name": "button",
+        "onClick": "@// Get the bot we want to command\nvar thatBot = getBot(\"label\", \"Alice\")\n\n// Whisper to that bot\nwhisper(thatBot, \"slide\")",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'",
+        "onPointerExit": "@masks.color = '#ffffff'",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05\n})",
+        "scaleX": "2",
+        "scaleY": "0.75",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "e262e213-de35-4a6b-a8f9-602d821aa806": {
+      "id": "e262e213-de35-4a6b-a8f9-602d821aa806",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "form": "mesh",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/89c3e1f65855e724a8a061a790e91e42e6772466389a280d0d171ce6e3922933.xml",
+        "formSubtype": "gltf",
+        "homeX": 0,
+        "homeY": "0",
+        "homeZ": "-1.5",
+        "name": "table",
+        "scale": "5",
+        "sequence": "introDeep",
+        "step": "1",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "e26dd47a-7fd4-47d3-80b7-8efcbf473d89": {
+      "id": "e26dd47a-7fd4-47d3-80b7-8efcbf473d89",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": 2,
+        "homeY": "2",
+        "label": "Challenge",
+        "labelAlignment": "left",
+        "labelFontSize": "2",
+        "scaleX": "3",
+        "scaleY": "1",
+        "scaleZ": "0.1",
+        "sequence": "interactions",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "e3a6cd82-66c8-4e94-9179-f2ee45caf508": {
+      "id": "e3a6cd82-66c8-4e94-9179-f2ee45caf508",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "homeX": 3,
+        "homeY": "-6",
+        "label": "shout(\"moveRight\")",
+        "labelSize": "0.9",
+        "name": "right",
+        "onClick": "@shout(\"moveRight\")",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'",
+        "onPointerExit": "@masks.color = '#ffffff'\n",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05\n})",
+        "scaleX": "2.75",
+        "scaleY": "0.75",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "e3e75729-f96b-4eda-aede-61ace2df105d": {
+      "id": "e3e75729-f96b-4eda-aede-61ace2df105d",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#3e82f8",
+        "homeX": -3,
+        "homeY": 3,
+        "name": "blue",
+        "sequence": "portals",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "e75d2140-cf3c-48bb-b71d-4b50de55a14c": {
+      "id": "e75d2140-cf3c-48bb-b71d-4b50de55a14c",
+      "tags": {
+        "casualTutorial": true,
+        "color": "orange",
+        "homeX": -2,
+        "homeY": 4,
+        "name": "colorChanger",
+        "onPointerDown": "@tags.scaleZ = 0.75",
+        "onPointerEnter": "@tags.color = \"skyblue\"",
+        "onPointerExit": "@tags.color = \"orange\"",
+        "onPointerUp": "@tags.scaleZ = 1",
+        "scaleZ": 1,
+        "sequence": "interactions",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "eab82098-6958-4d45-b5e2-7b48b1c311b6": {
+      "id": "eab82098-6958-4d45-b5e2-7b48b1c311b6",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#892c0d",
+        "draggable": "false",
+        "homeX": "2.25",
+        "homeY": "4.375",
+        "label": " @onPointerDown",
+        "labelColor": "white",
+        "onClick": "@var myBot = getBot(byTag(\"sequence\", tags.sequence), byTag(\"step\", tags.step), byTag(\"name\", \"colorChanger\"))\nshout(\"openTagPortal\", {id: myBot.id, tag: \"onPointerDown\"})",
+        "scaleX": "2",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "interactions",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "eb8c304e-4868-4788-a93e-74e683f4b28e": {
+      "id": "eb8c304e-4868-4788-a93e-74e683f4b28e",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": 3,
+        "homeY": -6,
+        "pointable": "false",
+        "scaleX": "3",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "ec4768be-b3b2-4d9a-bf4d-df95f9283bc5": {
+      "id": "ec4768be-b3b2-4d9a-bf4d-df95f9283bc5",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#343a3f",
+        "homeX": 0,
+        "homeY": -4,
+        "label": "@onClick",
+        "labelColor": "white",
+        "labelSize": "0.85",
+        "onClick": "@var myBot = getBot(\n    byTag(\"sequence\", tags.sequence),\n    byTag(\"step\", tags.step),\n    byTag(\"name\", \"button\")\n)\n\nshout(\"openTagPortal\", {id: myBot.id, tag: 'onClick', size: 'large'})",
+        "scaleX": "1.5",
+        "scaleY": "0.5",
+        "scaleZ": "0.2",
+        "sequence": "shoutListen",
+        "step": 4,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "ef26e72c-40a7-4d37-9d05-e485f0c72244": {
+      "id": "ef26e72c-40a7-4d37-9d05-e485f0c72244",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#d03800",
+        "draggable": "false",
+        "form": "hex",
+        "name": "alien",
+        "outerSpace": true,
+        "outerSpaceX": "4",
+        "outerSpaceY": "2",
+        "scale": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "efd16e69-9d70-4c54-9512-81ebcf0523d5": {
+      "id": "efd16e69-9d70-4c54-9512-81ebcf0523d5",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#e9ecef",
+        "hello": true,
+        "helloSortOrder": 3,
+        "helloX": "1000",
+        "helloY": "1000",
+        "label": "Close",
+        "onClick": "@configBot.tags.menuPortal = \"\"",
+        "scaleX": "2",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "f278864a-b1f1-4751-b761-b051de8a3a7d": {
+      "id": "f278864a-b1f1-4751-b761-b051de8a3a7d",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "homeX": 3,
+        "homeY": -4,
+        "label": "Slide",
+        "name": "slide",
+        "onClick": "@shout(\"slide\")",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05,\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'\n",
+        "onPointerExit": "@masks.color = '#ffffff'",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.1,\n})",
+        "scaleX": "2",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "f3633edf-2dad-4b90-8fb3-8d9209fa056d": {
+      "id": "f3633edf-2dad-4b90-8fb3-8d9209fa056d",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#3e82f8",
+        "draggable": "false",
+        "homeRotationZ": "0.485",
+        "homeX": "2",
+        "homeY": "0",
+        "homeZ": 0,
+        "name": "blue",
+        "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: 'homeRotationZ'})",
+        "rotated": "false",
+        "scaleX": "3",
+        "scaleY": "1",
+        "sequence": "intro",
+        "step": 6,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "f37b62a0-e3bd-4768-9d11-26c7eb8f4d9a": {
+      "id": "f37b62a0-e3bd-4768-9d11-26c7eb8f4d9a",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#3e82f8",
+        "homeX": 1,
+        "homeY": 3,
+        "name": "blue",
+        "onAbAdded": "@if (!tags.finished && tags.home) {\n    setTagMask(thisBot, 'finished', true, 'local')\n    shout(\"executeDialogue\", {sequence: 'saving', step: 3, dialogueIndex: 5})\n}",
+        "sequence": "saving",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "f56d8f0e-fbf2-4944-978d-378e329a8b4e": {
+      "id": "f56d8f0e-fbf2-4944-978d-378e329a8b4e",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "mobileArrows": true,
+        "mobileArrowsX": 0,
+        "mobileArrowsY": 0,
+        "pointable": "false",
+        "scale": "0.5",
+        "scaleX": "3.25",
+        "scaleY": "1.25",
+        "scaleZ": "0.25",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "f6b8046a-80c5-40ef-8ae2-7b3e3cf945a0": {
+      "id": "f6b8046a-80c5-40ef-8ae2-7b3e3cf945a0",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#f9ca16",
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": -4,
+        "label": "Show Link",
+        "labelSize": "0.8",
+        "name": "link",
+        "onClick": "@os.showJoinCode()",
+        "scale": "1",
+        "scaleX": "2",
+        "scaleY": "0.75",
+        "scaleZ": "0.25",
+        "sequence": "saving",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "f7a9b9b6-c272-40aa-90fc-ea2bea3fec7f": {
+      "id": "f7a9b9b6-c272-40aa-90fc-ea2bea3fec7f",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "form": "mesh",
+        "formAddress": "https://publicos-link-filesbucket-404655125928.s3.amazonaws.com/ab-1/89ef890be5c3719f0bd883b1107576a5d4296d30c8203dc84cd8da207d3c8b31.xml",
+        "formSubtype": "gltf",
+        "homeX": -4,
+        "homeY": 4,
+        "name": "soda",
+        "scale": "2",
+        "sequence": "introDeep",
+        "step": "3",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "f87c51e6-5bdf-48cc-a349-ce6ab5617663": {
+      "id": "f87c51e6-5bdf-48cc-a349-ce6ab5617663",
+      "tags": {
+        "casualTutorial": true,
+        "color": "transparent",
+        "draggable": "false",
+        "homeX": "2.3",
+        "homeY": "1.4",
+        "label": "jump\nbounce\nspin\nslide\nchangeColor",
+        "labelAlignment": "left",
+        "labelFontSize": "1.2",
+        "scaleX": "3.5",
+        "scaleY": "2",
+        "scaleZ": "0.1",
+        "sequence": "shoutListen",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "f8a88421-773b-4330-bd5a-4d64cc969fc8": {
+      "id": "f8a88421-773b-4330-bd5a-4d64cc969fc8",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": 0,
+        "homeY": "-3",
+        "pointable": "false",
+        "scaleX": "2.25",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 3,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "fbd5ab30-f439-472c-b99c-aac3d05c5d12": {
+      "id": "fbd5ab30-f439-472c-b99c-aac3d05c5d12",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#9061f9",
+        "delay": "15",
+        "draggable": "false",
+        "homeRotationZ": "0",
+        "homeX": 5,
+        "homeY": 0,
+        "homeZ": "0",
+        "jump": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"out\"\n    }\n})\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: tags.homeZ,\n    toValue: tags.homeZ == 0 ? 2 : 0,\n    duration: 0.25,\n    easing: {\n        type: \"quadratic\",\n        mode: \"in\"\n    }\n})",
+        "sequence": "shoutListen",
+        "slide": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeY\", {\n    fromValue: tags.homeY,\n    toValue: tags.homeY == tags.startY ? tags.startY + 1 : tags.startY,\n    duration: 0.25,\n})",
+        "startY": 0,
+        "step": 1,
+        "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "fc12bdc9-535f-435d-99b2-b06b7d0d7929": {
+      "id": "fc12bdc9-535f-435d-99b2-b06b7d0d7929",
+      "tags": {
+        "casualTutorial": true,
+        "draggable": "false",
+        "homeX": 0,
+        "homeY": -4,
+        "label": "shout(\"moveUp\")",
+        "labelSize": "0.8",
+        "name": "up",
+        "onClick": "@shout(\"moveUp\")",
+        "onPointerDown": "@os.playSound(soundBot.tags.btnDown)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.5,\n    toValue: 0.4,\n    duration: 0.05\n})",
+        "onPointerEnter": "@masks.color = '#e9ecef'",
+        "onPointerExit": "@masks.color = '#ffffff'\n",
+        "onPointerUp": "@os.playSound(soundBot.tags.btnUp)\n\nawait animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05\n})",
+        "scaleX": "2.75",
+        "scaleY": "0.75",
+        "scaleZ": "0.5",
+        "sequence": "shoutListen",
+        "step": 2,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "fcd61994-7168-407b-9345-65022ab68659": {
+      "id": "fcd61994-7168-407b-9345-65022ab68659",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#ff8a4c",
+        "homeX": -3,
+        "homeY": -1,
+        "homeZ": 0,
+        "name": "orange",
+        "sequence": "intro",
+        "step": 1,
+        "step1": "true",
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    },
+    "fedf48c7-ec57-464c-b880-06ce6acf31b7": {
+      "id": "fedf48c7-ec57-464c-b880-06ce6acf31b7",
+      "tags": {
+        "casualTutorial": true,
+        "color": "#485056",
+        "homeX": 3,
+        "homeY": -4,
+        "pointable": "false",
+        "scaleX": "2.25",
+        "scaleY": "1.25",
+        "scaleZ": "0.25",
+        "sequence": "shoutListen",
+        "step": 1,
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
+        "abVersion": "9.65.1.1728866444854"
+      }
+    }
+  }
+}

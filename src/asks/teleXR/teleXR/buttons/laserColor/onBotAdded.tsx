@@ -1,0 +1,1 @@
+masks.color = tags.colors[math.randomInt(0, tags.colors.length - 1)];

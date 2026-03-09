@@ -1,0 +1,19 @@
+type ABCommandCallback = (args?: any[]) => void;
+
+interface ABCommandArg {
+  identifier: string[] | string;
+  description: string;
+}
+
+interface ABCommandHelp {
+  shortDescription: string;
+  longDescription?: string;
+  args?: ABCommandArg[];
+  usage?: string | string[];
+}
+
+interface ABCommand {
+  name: string;
+  callback: ABCommandCallback;
+  help: ABCommandHelp;
+}

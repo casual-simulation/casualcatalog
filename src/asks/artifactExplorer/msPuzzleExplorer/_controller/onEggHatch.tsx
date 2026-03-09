@@ -1,0 +1,2 @@
+thisBot.setCameraVariables();
+thisBot.loadArtSheets();

@@ -1,0 +1,2 @@
+shout("clearEggSetupMenu");
+shout('clearEggTestMenu');

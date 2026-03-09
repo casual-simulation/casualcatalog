@@ -1,0 +1,110 @@
+[
+    {
+        "color": "#00D9CD",
+        "forceGraph": "exampleForceGraph",
+        "home": true,
+        "homeX": 4.09562257138731,
+        "homeY": 4.133350878372885,
+        "homeZ": 0.5726427239999277,
+        "system": "fgExampleBots",
+        "name": "cyan3",
+        "onCreate": "@await os.sleep(100);\r\n\r\nlet botID: string;\r\n\r\nconst botsToLinkTo = getBots(b=>{\r\n    if(b.tags.name == \"cyan2\"){\r\n        botID = b.id;\r\n    }\r\n})\r\n\r\ntags.lineTo = botID;"
+    },
+    {
+        "color": "#00D9CD",
+        "forceGraph": "exampleForceGraph",
+        "home": true,
+        "homeX": -0.9065879432236036,
+        "homeY": 3.6517746792506856,
+        "homeZ": 3.526804943259359,
+        "system": "fgExampleBots",
+        "name": "cyan1",
+        "onCreate": "@await os.sleep(100);\r\n\r\nconst botIDs = [];\r\n\r\nconst botsToLinkTo = getBots(b=>{\r\n    if(b.tags.name == \"cyan1\" || b.tags.name == \"orange2\" || b.tags.name == \"cyan3\"){\r\n        botIDs.push(b.id);\r\n    }\r\n})\r\n\r\ntags.lineTo = botIDs;"
+    },
+    {
+        "color": "#AEA1FF",
+        "forceGraph": "exampleForceGraph",
+        "home": true,
+        "homeX": 0.42836141316649673,
+        "homeY": -1.1455350377199938,
+        "homeZ": -5.223088785228663,
+        "system": "fgExampleBots",
+        "name": "purple2",
+        "onCreate": "@await os.sleep(100);\r\n\r\nlet botID: String;\r\n\r\nconst botsToLinkTo = getBots(b=>{\r\n    if(b.tags.name == \"purple1\"){\r\n        botID = b.id;\r\n    }\r\n})\r\n\r\ntags.lineTo = botID;"
+    },
+    {
+        "color": "#FA28FF",
+        "fgSettings": {
+            "gravity": true,
+            "gravityPosition": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "gravityX": 0,
+            "gravityY": 0,
+            "gravityZ": 0,
+            "gravityStrength": 0.05,
+            "gravityRadius": 0,
+            "dimensions": 3,
+            "collision": true,
+            "collisionRadius": 1,
+            "charge": true,
+            "chargeStrength": -1,
+            "linkDistance": 5
+        },
+        "forceGraph": "exampleForceGraph",
+        "home": true,
+        "homeX": 4.197789456974843,
+        "homeY": -1.7939264958482326,
+        "homeZ": -0.13642132975694657,
+        "label": "graphSettings",
+        "system": "fgExampleBots",
+        "name": "fgSettings",
+        "onCreate": "@await os.sleep(100);\r\n\r\nconst botIDs = [];\r\n\r\nconst botsToLinkTo = getBots(b=>{\r\n    if(b.tags.name == \"purple2\" || b.tags.name == \"cyan3\" || b.tags.name == \"orange1\"){\r\n        botIDs.push(b.id);\r\n    }\r\n})\r\n\r\ntags.lineTo = botIDs;"
+    },
+    {
+        "color": "#00D9CD",
+        "forceGraph": "exampleForceGraph",
+        "home": true,
+        "homeX": -0.8026979421665384,
+        "homeY": 4.395161323076704,
+        "homeZ": -2.563512339781722,
+        "system": "fgExampleBots",
+        "name": "cyan2",
+        "onCreate": "@await os.sleep(100);\r\n\r\nconst botIDs = [];\r\n\r\nconst botsToLinkTo = getBots(b=>{\r\n    if(b.tags.name == \"cyan1\" || b.tags.name == \"purple2\"){\r\n        botIDs.push(b.id);\r\n    }\r\n})\r\n\r\ntags.lineTo = botIDs;"
+    },
+    {
+        "color": "#FE9200",
+        "forceGraph": "exampleForceGraph",
+        "home": true,
+        "homeX": -3.8205452680552168,
+        "homeY": -5.48226032976862,
+        "homeZ": 2.358508291151383,
+        "system": "fgExampleBots",
+        "name": "orange2",
+        "onCreate": "@await os.sleep(100);\r\n\r\nlet botID: string;\r\n\r\nconst botsToLinkTo = getBots(b=>{\r\n    if(b.tags.name == \"orange1\"){\r\n        botID = b.id;\r\n    }\r\n})\r\n\r\ntags.lineTo = botID;"
+    },
+    {
+        "color": "#FE9200",
+        "forceGraph": "exampleForceGraph",
+        "home": true,
+        "homeX": 0.21255009376652395,
+        "homeY": -2.3883341780717338,
+        "homeZ": 4.785029550867039,
+        "system": "fgExampleBots",
+        "name": "orange1",
+        "onCreate": "@await os.sleep(100);\r\n\r\nlet botID: string;\r\n\r\nconst botsToLinkTo = getBots(b=>{\r\n    if(b.tags.name == \"orange2\"){\r\n        botID = b.id;\r\n    }\r\n})\r\n\r\ntags.lineTo = botID;"
+    },
+    {
+        "color": "#AEA1FF",
+        "forceGraph": "exampleForceGraph",
+        "home": true,
+        "homeX": -3.7876337360974244,
+        "homeY": -4.619838515383662,
+        "homeZ": -3.8583454946940643,
+        "system": "fgExampleBots",
+        "name": "purple1",
+        "onCreate": "@await os.sleep(100);\r\n\r\nconst botIDs = [];\r\n\r\nconst botsToLinkTo = getBots(b=>{\r\n    if(b.tags.name == \"orange2\" || b.tags.name == \"purple2\"){\r\n        botIDs.push(b.id);\r\n    }\r\n})\r\n\r\ntags.lineTo = botIDs;"
+    }
+]

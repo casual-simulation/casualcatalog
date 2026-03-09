@@ -1,0 +1,1 @@
+that.button == thisBot.id ? null : thisBot.onPointerExit();

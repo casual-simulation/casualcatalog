@@ -1,0 +1,1 @@
+return [links.totemA, links.totemB].find(t => !t.tags.isSet);

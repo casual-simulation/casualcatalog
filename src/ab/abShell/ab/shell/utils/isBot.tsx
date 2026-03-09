@@ -1,0 +1,1 @@
+return typeof that === 'object' && that.tags && that.id && that.space && that.vars;

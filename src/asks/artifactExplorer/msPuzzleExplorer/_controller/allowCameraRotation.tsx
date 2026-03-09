@@ -1,0 +1,1 @@
+that == true ? gridPortalBot.tags.portalRotatable = true : gridPortalBot.tags.portalRotatable = false;

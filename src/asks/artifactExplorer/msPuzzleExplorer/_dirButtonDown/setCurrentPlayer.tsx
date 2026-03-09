@@ -1,0 +1,1 @@
+// that == configBot.id ? masks.home = true : null

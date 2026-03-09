@@ -1,1 +1,7 @@
+# Ensure node is available in GUI git clients (Fork, GitHub Desktop, etc.)
+# that don't inherit your shell's PATH.
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+[ -s "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
 node scripts/unpack-aux.mjs

@@ -156,6 +156,14 @@ for (const { srcDir, outputDir, auxVersion } of PACK_CONFIGS) {
 
   for (const subdir of subdirs) {
     const name = basename(subdir);
+
+    // Only pack directories that contain an extra.aux file —
+    // its presence signals this is a valid unpacked aux package.
+    if (!existsSync(join(subdir, "extra.aux"))) {
+      console.log(`  ⏭️  Skipping ${relative(".", subdir)}/ — no extra.aux found`);
+      continue;
+    }
+
     const outputFile = join(outputDir, `${name}.aux`);
     console.log(`  📦 ${relative(".", subdir)}/ → ${relative(".", outputFile)} (v${auxVersion})`);
 
@@ -194,8 +202,9 @@ if (existsSync(ASSETS_DIR)) {
 }
 
 // ── Minify (prod only) ───────────────────────────────────────
+const ALLOW_MINIFY = false;
 
-if (isProd) {
+if (isProd && ALLOW_MINIFY) {
   console.log("\n🗜️  Minifying .aux files in dist/...\n");
 
   const auxFiles = findAuxFiles("dist");

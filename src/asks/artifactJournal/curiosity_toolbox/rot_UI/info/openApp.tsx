@@ -3,8 +3,8 @@ os.registerApp("infoApp", thisBot);
 
 masks.collectionNumber = that;
 
-let hudBot = getBot(byTag("name", "hudMenu"));
-hudBot.tags.currentRegisteredApp = "infoApp";
+let journal = getBot(byTag("artifactJournal", true));
+journal.tags.currentRegisteredApp = "infoApp";
 
 const App = thisBot.getApp();
 

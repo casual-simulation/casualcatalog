@@ -1,4 +1,3 @@
-let hudBot = getBot(byTag("name", "hudMenu"));
 let locationBot = getBot(byTag("name", "locationRequest"));
 let playerBot = getBot(byTag("artifactJournal", true))
 let locationToggled= playerBot.tags.continueLocationPull ?? false;

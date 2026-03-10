@@ -19,10 +19,6 @@ if (that) {
     }
 }
 
-if (!tags.artifactData) {
-    thisBot.getDataFromStrapi();
-}
-
 shout('abMenuRefresh');
 shout("clearRoTJournalMenu");
 
@@ -35,40 +31,13 @@ const menuOptions = {
     journal: getLink(thisBot)
 }
 
-const showRotButton = {
-    ...menuOptions,
-    label: 'show River of Time',
-    rotJournal_menuSortOrder: 1,
-    onClick: `@
-        links.journal.showRoT();
-        shout("clearRoTJournalMenu");
-    `
-}
+if (tags.currentRegisteredApp) {
+    os.unregisterApp(tags.currentRegisteredApp);
+    tags.currentRegisteredApp = null;
+    os.unregisterApp("hudApp");
 
-const hideRotButton = {
-    ...menuOptions,
-    label: 'hide River of Time',
-    rotJournal_menuSortOrder: 1,
-    onClick: `@
-        links.journal.hideRoT();
-        shout("clearRoTJournalMenu");
-    `
-}
-
-const spawnPlayerButton = {
-    ...menuOptions,
-    label: 'spawn player',
-    rotJournal_menuSortOrder: 2,
-    formAddress: 'add_box',
-    onClick: `@
-        links.journal.spawnPlayer();
-        shout("clearRoTJournalMenu");
-    `
-}
-
-if (tags.rotShown == false) {
-    ab.links.menu.abCreateMenuButton(showRotButton);
 } else {
-    ab.links.menu.abCreateMenuButton(hideRotButton);
-    ab.links.menu.abCreateMenuButton(spawnPlayerButton);
+    const collectionsMenu = getBot("name", "collectionsMenu");
+    collectionsMenu.openApp();
 }
+

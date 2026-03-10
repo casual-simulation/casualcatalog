@@ -9,7 +9,7 @@ tags.itemLink = null;
 
 os.unregisterApp("infoApp");
 
-if (that == "x"){
+if (that == "x" && masks.collectionNumber){
     let collectionBot = getBot(byTag("name", "collectionMenu"));
     let collectionsMenuBot = getBot(byTag("name", "collectionsMenu"));
     let artifactData = getBot(byTag("artifactJournal", true));

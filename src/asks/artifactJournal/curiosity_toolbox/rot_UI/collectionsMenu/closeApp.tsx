@@ -1,6 +1,6 @@
 os.unregisterApp("collectionsMenuApp");
 
 if (that == "x"){
-    let hudBot = getBot(byTag("name", "hudMenu"));
-    hudBot.openApp();
+    let journal = getBot(byTag("artifactJournal", true));
+    journal.tags.currentRegisteredApp = null;
 }

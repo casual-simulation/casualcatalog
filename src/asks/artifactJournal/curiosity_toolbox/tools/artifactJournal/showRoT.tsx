@@ -12,10 +12,3 @@ for (let i = 0; i < rotBots.length; ++i) {
 for (let j = 0; j < museumBots.length; ++j) {
     museumBots[j].tags.home = true;
 }
-
-const hudBot = getBot("name", "hudMenu");
-if (hudBot) {
-    hudBot.openApp();
-}
-
-tags.rotShown = true;

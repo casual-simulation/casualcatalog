@@ -1,13 +1,8 @@
 const data = that.data;
 
 tags.journalURL = data.url ?? undefined;
-tags.rotShown = false;
 tags.userData = data.userData;
 tags.continueLocationPull = false;
-
-if(!tags.journalURL) {
-    
-}
 
 if (!data.userData) {
     tags.userData = {
@@ -40,4 +35,6 @@ if (data.eggParameters) {
     os.focusOn(thisBot);
 }
 
-thisBot.onClick();
+await thisBot.getDataFromStrapi();
+thisBot.spawnPlayer();
+thisBot.showRoT();

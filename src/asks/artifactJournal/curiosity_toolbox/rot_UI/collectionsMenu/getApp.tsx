@@ -11,8 +11,12 @@ const App = () => {
     }, []);
 
     return (<>
+        
         <div className="collectionsM-container">
             <div className="collectionsM-top-bar">
+                <button className="journal-help" id="button" onClick={thisBot.openHelp}>
+                    <span>?</span>
+                </button>
                 <button className="collectionsM-close-btn" onClick={() => thisBot.closeApp("x")}>
                     <span className="md-icon md-icon-font">close</span>
                 </button>
@@ -47,3 +51,9 @@ const App = () => {
 }
 
 return App
+
+// <button class="nb-btn locationR-mini-icon-btn" onClick={() => { thisBot.openLocationApp() }}>
+//     <span class="material-symbols-outlined">explore</span>
+// </button>
+// <button className="journal-login" id={(isLoggedIn) ? "notClickable" : "clickable"} onClick={thisBot.login}>
+// </button>

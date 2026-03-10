@@ -1,4 +1,4 @@
-let collectionsMenu = getBot(byTag("name", "collectionsMenu"));
+let collectionsMenu = thisBot;
 let artifactData = getBot(byTag("artifactJournal", true));
 
 collectionsMenu.masks.collectionsCompletion = [0];
@@ -7,4 +7,3 @@ for (let i = 0; i < artifactData.tags.collectableIDs.length; i++){ //i is the in
     else collectionsMenu.masks.collectionsCompletion.push(0);
 }
 collectionsMenu.masks.collectionsCompletion = collectionsMenu.masks.collectionsCompletion;
-

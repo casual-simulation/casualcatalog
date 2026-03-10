@@ -31,7 +31,7 @@
     flex-direction: row;
     width: 100%;
     align-items: center;
-    justify-content: end;
+    justify-content: space-between;
     background-color: var(--primary);
     border-bottom: 2px solid var(--black);
     border-radius: 6px 6px 0 0;

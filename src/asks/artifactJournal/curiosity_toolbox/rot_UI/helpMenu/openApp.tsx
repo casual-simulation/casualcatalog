@@ -1,8 +1,8 @@
 os.unregisterApp("helpApp");
 os.registerApp("helpApp", thisBot);
 
-let hudBot = getBot(byTag("name", "hudMenu"));
-hudBot.tags.currentRegisteredApp = "helpApp";
+let journal = getBot(byTag("artifactJournal", true));
+journal.tags.currentRegisteredApp = "helpApp";
 
 const App = thisBot.getApp();
 

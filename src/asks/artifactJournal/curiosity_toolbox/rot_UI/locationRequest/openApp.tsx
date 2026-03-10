@@ -16,8 +16,8 @@ if (playerBot) {
 
 let menu = that
 
-let hudBot = getBot(byTag("name", "hudMenu"));
-hudBot.tags.currentRegisteredApp = "locationApp";
+let journal = getBot(byTag("artifactJournal", true));
+journal.tags.currentRegisteredApp = "locationApp";
 
 const App = thisBot.getApp(menu);
 

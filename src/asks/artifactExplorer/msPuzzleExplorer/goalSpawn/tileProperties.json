@@ -1,0 +1,11 @@
+{
+    "tileType": "goal",
+    "passable": true,
+    "winTile": true,
+    "spawnPosition": {
+        "x": -5,
+        "y": 4
+    },
+    "maxCopies": 1,
+    "maxCopiesMessage": "There can only be 1 goal at a time."
+}

@@ -1,0 +1,1 @@
+masks.interval = setInterval(() => whisper(thisBot, 'frustumUpdate'), tags.updateRateMS);

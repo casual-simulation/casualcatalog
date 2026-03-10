@@ -1,0 +1,32 @@
+.enter-xr-buttons {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    column-gap: 40px;
+    bottom: 15vh;
+}
+
+.enter-xr-buttons button {
+    background-color: transparent;
+    color: white;
+    font-size: 1.25em;
+    padding: 14px 28px;
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    cursor: pointer;
+    user-select: none;
+}
+
+@media (hover) {
+    .enter-xr-buttons button:hover {
+        background-color: #666;
+    }
+}
+
+.enter-xr-buttons button:active {
+    background-color: #888;
+}

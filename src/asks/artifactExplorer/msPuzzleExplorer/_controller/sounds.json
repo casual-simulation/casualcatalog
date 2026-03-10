@@ -1,0 +1,7 @@
+{
+    "goalReached": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/msPeGoalSound/15c1eb86be12fd286f6c435ffe881568e7cc49a7b0ef329f370385cb09ffdb86.wav",
+    "levelComplete": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/msPeLevelSound/c15616ba1845a5da3e69dd8405d3a4036024da8b6f53e4982fa41f344c14ad41.wav",
+    "teleport": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/msPeTeleport/71af3176ff47f515ccc9d3496e587b0737a8fd55ceca7d606f2313fa54028e1c.wav",
+    "collectablePickup": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/msPeCollectablePickup/358b505b98dbf7dc6cbd93da893af778c40885cb64f1bf996dcba0c625329737.wav",
+    "tilesetClicked": "https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/msPeTilesetSound/e50e659a71f54b87e76551a85007700659b304380bdef44cc5aa45dd146a4906.mpga"
+}

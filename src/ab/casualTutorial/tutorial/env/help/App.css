@@ -1,0 +1,97 @@
+.remove-btn-style {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+.clearfix:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.help-container {
+    width: 100%;
+    height: 100%;
+}
+
+.close-click-target {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.help-modal {
+    width: 90vw;
+    background-color: #f6f9fc;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 0.5rem;
+    min-height: 40vh;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+@media screen and (min-width: 768px) {
+    .help-modal {
+        width: 75%;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .help-modal {
+        width: 60%;
+    }
+}
+
+.help-header {
+    width: 100%;
+    background: #e9ecef;
+}
+
+.header-title {
+    float: left;
+    margin-left: 1.5rem;
+}
+
+.close-help-btn {
+    position: absolute;
+    right: 1rem;
+    top: 14px;
+}
+
+.help-body {
+    padding: 1rem 3rem 2rem 3rem;
+    overflow-y: auto;
+    max-height: calc(90vh - 5rem);
+}
+
+.edit-btn {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    justify-content: center;
+    color: #363636;
+    background-color: #f6f9fc;
+}
+
+.edit-btn i {
+    margin-top: 3px;
+    margin-left: 1px;
+}
+
+.help-editor {
+    width: 100%;
+    min-height: 60vh;
+    height: fit-content;
+}
+

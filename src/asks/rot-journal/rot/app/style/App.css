@@ -1,0 +1,35 @@
+:root {
+    --primary: #00ADED;
+    --black: #000000;
+}
+/* Font */
+@font-face {
+    font-family: 'Cascadia Code';
+    src: url(https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/6693c2bf-6fbe-44b2-bf1d-f277176832fe/4927a4803eef59128102f0d37298e3735ea9602a3daea006cc95c9423fc6ed89.woff);
+}
+
+button {
+    cursor: pointer;
+}
+
+.nb-btn {
+    font-family: 'Cascadia Code';
+    border-radius: 5px;
+    background-color: var(--primary);
+    color: var(--black);
+    border: 2px solid var(--black);
+    padding: 16px;
+    box-shadow: 3px 3px 0 var(--black);
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.25s;
+}
+
+.nb-btn:hover {
+    box-shadow: 1px 1px 0 var(--black);
+    transform: translate(2px, 2px);
+}

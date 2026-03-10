@@ -1,0 +1,46 @@
+interface ABUserPresenceData {
+    /** Remote id of the user the presence data is for. */
+    remoteId: string;
+
+    /** Can either be user's display name or a shortened local user id. **/
+    remoteName: string;
+
+    /** Portal that the presence data is for. */
+    portal: string;
+
+    /** Dimension that the presence data is for. **/
+    dimension: string;
+
+    /** Color of the user. */
+    color: string;
+
+    camera?: ABUserPresenceCameraData;
+    cursors?: ABUserPresenceCursorData[];
+}
+
+interface ABUserPresenceCameraData {
+    /** Type of the camera that the data is for. */
+    cameraType: 'perspective' | 'orthographic';
+    
+    /** The position of the camera. **/
+    position: { x: number, y: number, z: number };
+
+    /** The rotation quaternion of the camera. **/
+    quaternion: { x: number, y: number, z: number, w: number };
+
+    /** The zoom vlaue that the camera is at. This is only relevant for orthographic cameras. */
+    zoom?: number;
+}
+
+interface ABUserPresenceCursorData {
+    /** The type of the pointer that the data is for. */
+    pointerType: 'mouse' | 'left' | 'right' | 'touch';
+    
+    /** The position of the cursor. **/
+    position: { x: number, y: number, z: number };
+}
+
+interface ABUserPresenceQueuedCursorData extends ABUserPresenceCursorData {
+    /** The dimension that this cursor is in. */
+    dimension: string;
+}

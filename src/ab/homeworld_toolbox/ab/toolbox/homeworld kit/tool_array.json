@@ -1,0 +1,13 @@
+[
+    {
+        "name": "place bot",
+        "studio": "AB",
+        "targetAB": "homePlace",
+        "artifact": true
+    },
+    {
+        "name": "studio",
+        "studio": "AB",
+        "targetAB": "studioWizard"
+    }
+]

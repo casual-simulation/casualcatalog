@@ -1,0 +1,20 @@
+const { data } = that;
+
+delete data.tags.bbLabel;
+delete data.tags.bbLabelColor;
+delete data.tags.bbLabelFloatingBackgroundColor;
+delete data.tags.color;
+delete data.tags[data.tags.dimension + "X"];
+delete data.tags[data.tags.dimension + "Y"];
+delete data.tags[data.tags.dimension + "Z"];
+delete data.tags[data.tags.dimension + "RotationX"];
+delete data.tags[data.tags.dimension + "RotationY"];
+delete data.tags[data.tags.dimension + "RotationZ"];
+delete data.tags[data.tags.dimension];
+delete data.tags.dimension;
+delete data.tags.form;
+delete data.tags.formSubtype;
+delete data.tags.formAddress;
+delete data.tags.formAddressAspectRatio;
+delete data.tags.userID;
+delete data.tags.pokeNotifsAllowed;

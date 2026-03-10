@@ -1,0 +1,1 @@
+links.manifestation.abSetAwake({ awake: true });

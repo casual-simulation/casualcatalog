@@ -1,0 +1,12 @@
+type ABAskIDOrigin = 'casual_catalog' | 'ab_record';
+
+interface ABLookupAskIDResult {
+    success: boolean;
+    origin: ABAskIDOrigin;
+    hatchedBots?: Bot[];
+}
+
+interface ABLookupEggResult {
+    success: boolean,
+    hatchedBots?: Bot[],
+}

@@ -1,0 +1,28 @@
+let xCoord = Math.round(that.to.x);
+let yCoord = Math.round(that.to.y);
+
+let currX = tags.homeX;
+let currY = tags.homeY;
+
+let up = xCoord == currX && yCoord == currY+1;
+let down = xCoord == currX && yCoord == currY-1;
+let left = yCoord == currY && xCoord == currX-1;
+let right = yCoord == currY && xCoord == currX+1;
+
+// console.log(`up: ${up}`)
+// console.log(`down: ${down}`)
+// console.log(`left: ${left}`)
+// console.log(`right: ${right}`)
+
+if(up){
+    thisBot.onKeyDown({ keys: ["w"] })
+}
+if(down){
+    thisBot.onKeyDown({ keys: ["s"] })
+}
+if(left){
+    thisBot.onKeyDown({ keys: ["a"] })
+}
+if(right){
+    thisBot.onKeyDown({ keys: ["d"] })
+}

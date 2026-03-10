@@ -1,0 +1,21 @@
+interface ABXPEPayoutParams extends APIPayoutRequest {
+    amount: number;
+    destination: 'stripe' | 'cash';
+    sourceId?: string
+}
+
+type ABXPEPayoutResult = ABXPEPayoutResultSuccess | ABXPEPayoutResultFailure;
+
+interface ABXPEPayoutResultSuccess {
+    success: true;
+    payAmount: number;
+    curCredits: number;
+    sourceId?: string;
+}
+
+interface ABXPEPayoutResultFailure {
+    success: false;
+    errorCode: string;
+    errorMessage: string;
+    sourceId?: string;
+}

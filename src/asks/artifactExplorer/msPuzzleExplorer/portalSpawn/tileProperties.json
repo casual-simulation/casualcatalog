@@ -1,0 +1,10 @@
+{
+    "tileType": "portal",
+    "passable": true,
+    "teleporter": true,
+    "paired": true,
+    "spawnPosition": {
+        "x": -1,
+        "y": -7
+    }
+}

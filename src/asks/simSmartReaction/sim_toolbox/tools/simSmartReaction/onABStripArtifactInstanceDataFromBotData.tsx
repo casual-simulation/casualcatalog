@@ -1,0 +1,24 @@
+const { data } = that;
+
+delete data.tags.label;
+delete data.tags.labelColor;
+delete data.tags.labelFloatingBackgroundColor;
+delete data.tags.color;
+delete data.tags[data.tags.dimension + "X"];
+delete data.tags[data.tags.dimension + "Y"];
+delete data.tags[data.tags.dimension + "Z"];
+delete data.tags[data.tags.dimension + "RotationX"];
+delete data.tags[data.tags.dimension + "RotationY"];
+delete data.tags[data.tags.dimension + "RotationZ"];
+delete data.tags[data.tags.dimension];
+delete data.tags.dimension;
+delete data.tags.simID;
+delete data.tags.actionTriggers;
+delete data.tags.choosingTrigger;
+delete data.tags.lineTo;
+delete data.tags.actionStory;
+delete data.tags.roleTags;
+delete data.tags.orderMatters;
+delete data.tags.sequentialMatters;
+delete data.tags.checkQueue;
+delete data.tags.manualFunction;

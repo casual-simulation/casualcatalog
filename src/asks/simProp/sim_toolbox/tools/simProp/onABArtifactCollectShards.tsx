@@ -1,0 +1,34 @@
+const shard: ABArtifactShard = {
+    data: {
+        label: tags.label,
+        dimensionData: {
+            dimension: ab.links.remember.tags.abActiveDimension,
+            [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],
+            [ab.links.remember.tags.abActiveDimension + 'X']: tags[ab.links.remember.tags.abActiveDimension + 'X'],
+            [ab.links.remember.tags.abActiveDimension + 'Y']: tags[ab.links.remember.tags.abActiveDimension + 'Y'],
+            [ab.links.remember.tags.abActiveDimension + 'Z']: tags[ab.links.remember.tags.abActiveDimension + 'Z'],
+            [ab.links.remember.tags.abActiveDimension + 'RotationX']: tags[ab.links.remember.tags.abActiveDimension + 'RotationX'],
+            [ab.links.remember.tags.abActiveDimension + 'RotationY']: tags[ab.links.remember.tags.abActiveDimension + 'RotationY'],
+            [ab.links.remember.tags.abActiveDimension + 'RotationZ']: tags[ab.links.remember.tags.abActiveDimension + 'RotationZ'],
+        },
+        color: tags.color,
+        labelFloatingBackgroundColor: tags.labelFloatingBackgroundColor,
+        labelColor: tags.labelColor,
+        simID: tags.simID,
+        simAttributes: tags.simAttributesStartingValues,
+        propLocked: tags.propLocked,
+        roleName: tags.roleName,
+        trackedStat: tags.trackedStat,
+        trackedStatStartingValue: tags.trackedStatStartingValue,
+        trackedStatEndingValue: tags.trackedStatEndingValue,
+        genForm: tags.genForm,
+        imagePrompt: tags.imagePrompt
+    },
+    dependencies: [
+        {
+            askID: 'simProp'
+        }
+    ]
+}
+
+return shard;

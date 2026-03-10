@@ -1,0 +1,1 @@
+if(tags.mode == "play"){ os.enableCustomDragging() }

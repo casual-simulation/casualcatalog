@@ -1,0 +1,1 @@
+return typeof that === 'object' && !Array.isArray(that);

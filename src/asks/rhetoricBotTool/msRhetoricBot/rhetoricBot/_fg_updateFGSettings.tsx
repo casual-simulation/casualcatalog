@@ -1,0 +1,1 @@
+tags.fgSettings = {"gravity":false,"linkDistance":3,"dimensions":3};

@@ -1,0 +1,12 @@
+.ab-app-text-link {
+  color: var(--ab-app-text-link-color, rgb(71 255 137));
+}
+
+.ab-app-text-link:hover {
+  cursor: pointer;
+  color: var(--ab-app-text-link-hover-color, rgb(0 192 255));
+}
+
+.ab-app-text-link.bold {
+  font-weight: bold;
+}

@@ -1,0 +1,9 @@
+{
+    "tileType": "pushableBlock",
+    "passable": false,
+    "pushable": true,
+    "spawnPosition": {
+        "x": 0,
+        "y": -6
+    }
+}

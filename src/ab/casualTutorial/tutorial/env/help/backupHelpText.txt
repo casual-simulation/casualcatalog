@@ -1,0 +1,13 @@
+{
+    1: // Sequence 1
+    {1: //Step 1 (Moving Bots)
+        '<h1>Welcome</h1><p>This tutorial will take you through the basics of CasualOS and how to use it.</p><p>Click the help button any time you get stuck.</p><p>Click the next arrow when you\'re ready to move on.</p>',
+     2: // Step 2 (Color)
+        '<h1>Colors</h1><p>Information about bots, like their color, are stored in "Tags." We\'ll learn more about them later</p><p>You can put the name of a color or a <a href="https://www.color-hex.com/">hex code</a> in the bot\'s tag.</p>',
+     3: // Step 3 (Scale)
+        '<h1>Scale</h1><p>Just like their color, the size of a bot is stored in a tag</p><p>The default size of a bot is 1.</p><p>Any number between 0 and 1 will be smaller. Any number larger than 1 will be bigger.</p>',
+     4: // Step 4 (Scale X, Y, and Z)
+        '<h1>More Scales</h1><p>Since bots exist in 3D space, they care about 3 directions: X, Y, and Z.</p><p>They can be scaled up or down in only these directions with the scaleX, scaleY, and scaleZ tags.</p>',
+     5: // Step 5 (Forms)
+        '<h1>Forms</h1><p>You can make a bot any shape you want with the #form tag.</p><p>However, there are only a few shapes built-in to CasualOS. If you want a bot to be a different shape, we will cover how to do that later.</p><p>The shapes that are already built-in are:</p><ul><li>cube</li><li>sphere</li><li>frustum</li><li>helix</li><li>egg</li><li>hex</li><li>circle</li><li>keyboard</li></ul>'
+}}

@@ -1,0 +1,10 @@
+whisper(thisBot, "clearBrain");
+whisper(thisBot, "clearLog");
+tags.brainLink = null;
+shout("resetRBMenu");
+tags.neuronCopy = null;
+tags.forceGraph = null;
+tags.fgSettings = null;
+tags.homeX = 0;
+tags.homeY = 0;
+tags.homeZ = 0;

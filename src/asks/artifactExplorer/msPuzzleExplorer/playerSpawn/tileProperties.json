@@ -1,0 +1,9 @@
+{
+    "tileType": "player",
+    "passable": false,
+    "player": true,
+    "spawnPosition": {
+        "x": -3,
+        "y": -7
+    }
+}

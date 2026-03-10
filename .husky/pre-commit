@@ -1,0 +1,3 @@
+. .husky/init.sh
+
+node scripts/aux-drop-check-clear.mjs

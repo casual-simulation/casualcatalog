@@ -1,0 +1,19 @@
+{
+  "name": "casualcatalog",
+  "version": "1.0.0",
+  "description": "The source code for the casual catalog.",
+  "scripts": {
+    "prepare": "husky",
+    "drop:unpack": "node scripts/aux-drop-unpack.mjs",
+    "drop:watch": "node scripts/aux-drop-watch.mjs",
+    "pack:dev": "node scripts/pack-aux.mjs",
+    "pack:prod": "node scripts/pack-aux.mjs --prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "packageManager": "pnpm@10.31.0",
+  "devDependencies": {
+    "casualos": "4.1.6-alpha.22774766502",
+    "husky": "^9.1.7"
+  }
+}

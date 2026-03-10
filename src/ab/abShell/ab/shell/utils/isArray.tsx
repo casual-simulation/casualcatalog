@@ -1,0 +1,1 @@
+return Array.isArray(that);

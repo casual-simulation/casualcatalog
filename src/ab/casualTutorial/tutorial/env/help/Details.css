@@ -1,0 +1,58 @@
+details {
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.05);
+  border-left: 8px solid gray;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+details summary::-webkit-details-marker {
+  display:none;
+}
+
+details summary {
+    font-size: 20px;
+}
+
+details summary, details p {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: flex-start;
+  cursor: pointer;
+}
+
+details p {
+  display: block;
+  cursor: default;
+}
+
+details[open] summary {
+  font-weight: 700;
+}
+
+details[open] {
+    padding-bottom: 0 !important;
+}
+
+details.red {
+    border-left: 8px solid #f05152;
+    background-color: #fce8e790;
+}
+
+details.orange {
+    border-left: 8px solid #ff8a4c;
+    background-color: #feecdc90;
+}
+
+details.yellow {
+    border-left: 8px solid #f9ca16;
+    background-color: #fdf6b290;
+}
+
+details.blue {
+    border-left: 8px solid #3e82f8;
+    background-color: #e1effd90;
+}

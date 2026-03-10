@@ -1,0 +1,1 @@
+masks.color = tags.hoverColor;

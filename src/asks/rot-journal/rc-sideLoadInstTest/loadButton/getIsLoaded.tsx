@@ -1,0 +1,1 @@
+masks.isLoaded = that;

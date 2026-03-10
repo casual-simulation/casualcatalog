@@ -1,0 +1,11 @@
+{
+    "tileType": "spawnPoint",
+    "passable": true,
+    "playerSpawnpoint": true,
+    "spawnPosition": {
+        "x": -6,
+        "y": 4
+    },
+    "maxCopies": 1,
+    "maxCopiesMessage": "There can only be 1 player at a time."
+}

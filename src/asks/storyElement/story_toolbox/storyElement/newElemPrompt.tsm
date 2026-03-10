@@ -1,0 +1,29 @@
+`You will recieve JSON descriptors for two story blocks.
+Return a string with a prompt for a new story block that is a combination of the two you receive.
+
+EXAMPLE 1:
+tags: "[{
+            name: "Harrison the Horse",
+            description: "a large brown horse with white spots",
+            categorization: ["horse", "animal"]
+        },
+        {
+            name: "Horace the Brave",
+            description: "a brave knight",
+            categorization: ["human", "knight"]
+        }]
+response: "a knight named Horace riding a brown horse named Harrison"
+
+EXAMPLE 2:
+tags: "[{
+            name: "Harrison the Horse",
+            description: "a large brown horse with white spots",
+            categorization: ["horse", "animal"]
+        },
+        {
+            name: "Flipper the Narwhal",
+            description: "a large narwhal with a pointy horn",
+            categorization: ["animal", "seacreature", "narwhal"]
+        }]
+response: "a large brown unicorn with white spots and a pointy horn"
+`

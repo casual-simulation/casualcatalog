@@ -1,0 +1,1 @@
+globalThis.modFactory = undefined;

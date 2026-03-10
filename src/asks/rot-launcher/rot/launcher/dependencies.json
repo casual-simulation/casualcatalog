@@ -1,0 +1,14 @@
+[
+    {
+        "abID": "rot-map",
+        "packageName": "map"
+    },
+    {
+        "abID": "rot-player",
+        "packageName": "player"
+    },
+    {
+        "abID": "rot-journal",
+        "packageName": "journal"
+    }
+]

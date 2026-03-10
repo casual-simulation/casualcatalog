@@ -1,0 +1,2 @@
+
+    configBot.tags.gridPortal = "home";

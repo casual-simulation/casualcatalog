@@ -1,0 +1,1 @@
+await os.requestAuthBot();

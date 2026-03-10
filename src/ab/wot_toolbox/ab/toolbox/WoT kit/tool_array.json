@@ -1,0 +1,14 @@
+[
+    {
+        "name": "create a uuab",
+        "studio": "AB",
+        "targetAB": "uuabConfigurator",
+        "artifact": true
+    },
+    {
+        "name": "create launcher",
+        "studio": "AB",
+        "targetAB": "launcher",
+        "artifact": true
+    }
+]

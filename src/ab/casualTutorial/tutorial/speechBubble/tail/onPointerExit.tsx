@@ -1,0 +1,2 @@
+var mainBot = getBot(byTag("type", "speechBubbleMain"))
+whisper(mainBot, "onPointerExit")

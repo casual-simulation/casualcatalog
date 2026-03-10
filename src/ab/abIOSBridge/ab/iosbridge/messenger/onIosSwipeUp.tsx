@@ -1,0 +1,1 @@
+if (tags.debug) os.log("[AB iOS Bridge] Swipe up gesture recognized from iOS app");

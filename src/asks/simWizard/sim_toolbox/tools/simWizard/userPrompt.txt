@@ -1,0 +1,52 @@
+# Dog Training Simulation
+
+## Settings
+- **Backyard** - Open grass area for practice
+- **Living Room** - Indoor training space with distractions
+- **Park** - Public area with other stimuli
+
+## Props/Agents
+
+**Dog (Agent)**
+- Attributes: Focus (0-100), Energy (0-100), Trust (0-100), Skill Level (0-100)
+- Actions: Sit, Stay, Come, Bark, Ignore, Respond
+
+**Trainer (Agent)**
+- Attributes: Patience (0-100), Consistency (0-100), Treat Supply (0-20)
+- Actions: Give Command, Reward, Correct, Praise, Ignore Behavior
+
+**Treats (Prop)**
+- Attributes: Quantity (decreases with use), Appeal (affects dog motivation)
+
+**Distractions (Prop)**
+- Attributes: Intensity (low/medium/high) - reduces dog's Focus
+
+## Core Interactions
+
+When **Trainer** uses "Give Command":
+- If Dog's Focus > 60 and Energy > 30, Dog performs action correctly
+- Success increases Dog's Skill Level (+5) and Trust (+3)
+- Failure decreases Dog's Focus (-10)
+
+When **Trainer** uses "Reward" with Treats:
+- Dog's Trust increases (+10)
+- Dog's Skill Level for last action increases (+8)
+- Treat Supply decreases (-1)
+- Dog's Energy decreases slightly (-5)
+
+When **Distractions** are present:
+- Dog's Focus decreases proportionally to Intensity
+- High Distraction Intensity + Low Skill = Dog uses "Ignore" action
+- Trainer's Consistency determines effectiveness of commands despite distractions
+
+When **Trainer's Patience** drops below 40:
+- Dog's Trust decreases (-5 per command)
+- Commands become less effective (50% success rate)
+
+When **Dog's Energy** drops below 20:
+- All Skill performances decrease (-20 effectiveness)
+- Dog defaults to "Ignore" action
+
+**Trainer's Consistency** above 70:
+- Dog's Skill Level increases faster (+2 bonus per success)
+- Dog's Focus recovers faster (+5 per session)

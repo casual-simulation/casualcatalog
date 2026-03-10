@@ -1,0 +1,37 @@
+[
+    {
+        "name": "curiosity camera",
+        "studio": "AB",
+        "targetAB": "curiosityCamera",
+        "artifact": true
+    },
+    {
+        "name": "geo artifact",
+        "studio": "AB",
+        "targetAB": "geoArtifact",
+        "artifact": true
+    },
+    {
+        "name": "geo docent",
+        "studio": "AB",
+        "targetAB": "geoDocent"
+    },
+    {
+        "name": "tutorial",
+        "studio": "AB",
+        "targetAB": "tutorialLoader",
+        "artifact": true
+    },
+    {
+        "name": "artifact journal",
+        "studio": "AB",
+        "targetAB": "artifactJournal",
+        "artifact": true
+    },
+    {
+        "name": "artifact explorer",
+        "studio": "AB",
+        "targetAB": "artifactExplorerLevelGenerator",
+        "artifact": true
+    }
+]

@@ -1,0 +1,33 @@
+button {
+    appearance: button;
+    /* background-color: #2c62bf; */
+    border: solid transparent;
+    border-radius: 6px;
+    box-sizing: border-box;
+    /* color: #FFFFFF; */
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .8px;
+    line-height: 16px;
+    margin: 1rem 0.25rem 1rem 1rem;
+    outline: none;
+    overflow: visible;
+    padding: 8px 16px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    transform: translateZ(0);
+    transition: filter .2s;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.left-arrow {
+    display: inline-block;
+    transform: scale(2);
+    margin-right: 0.5rem;
+}

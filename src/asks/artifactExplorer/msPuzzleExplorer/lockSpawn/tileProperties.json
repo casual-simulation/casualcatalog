@@ -1,0 +1,9 @@
+{
+    "tileType": "lock",
+    "passable": false,
+    "lock": true,
+    "spawnPosition": {
+        "x": -3,
+        "y": -6
+    }
+}

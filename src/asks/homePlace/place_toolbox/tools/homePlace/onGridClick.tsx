@@ -1,0 +1,2 @@
+shout('clearHomePlaceMenu');
+shout("clearHomeWorldVersionMenu");

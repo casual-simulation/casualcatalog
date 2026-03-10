@@ -1,0 +1,1 @@
+if (thisBot.vars.updateLog) thisBot.vars.updateLog();

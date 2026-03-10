@@ -25,6 +25,18 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Fetch all remote branches
         run: git fetch --prune --unshallow || git fetch --prune --all
 
@@ -49,6 +61,9 @@ jobs:
             echo "🏷 Tag triggered publish: ${GITHUB_REF#refs/tags/}"
           fi
 
+      - name: Build (prod)
+        run: pnpm run pack:prod
+
       - name: Configure AWS credentials
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -63,13 +78,13 @@ jobs:
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           CF_DISTRIBUTION_ID: ${{ secrets.CF_DISTRIBUTION_ID }}
         run: |
-          aws s3 sync casualcatalog s3://$S3_BUCKET_NAME \
+          aws s3 sync dist s3://$S3_BUCKET_NAME \
             --delete \
             --cache-control no-cache \
             --exclude "*.aux" \
             --profile bootstrap
 
-          aws s3 sync casualcatalog s3://$S3_BUCKET_NAME \
+          aws s3 sync dist s3://$S3_BUCKET_NAME \
             --exclude "*" --include "*.aux" \
             --content-type application/json \
             --cache-control no-cache \

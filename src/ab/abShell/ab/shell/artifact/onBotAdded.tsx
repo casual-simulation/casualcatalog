@@ -1,0 +1,1 @@
+thisBot.vars.reconstitutingSignalBotIds = new Set();

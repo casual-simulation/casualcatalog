@@ -1,0 +1,1 @@
+thisBot.abArtifactWizardMenuOpen({ wizardBot: thisBot, wizardDimension: that.dimension });

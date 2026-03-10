@@ -1,0 +1,1 @@
+tags.color = links.personality.tags.abBaseMenuColor;

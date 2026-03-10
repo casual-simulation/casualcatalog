@@ -1,0 +1,9 @@
+{
+    "tileType": "collectable",
+    "passable": true,
+    "collectable": true,
+    "spawnPosition": {
+        "x": -1,
+        "y": -6
+    }
+}

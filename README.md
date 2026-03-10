@@ -12,6 +12,12 @@ If you don't have pnpm installed, enable it via corepack (ships with Node.js):
 corepack enable
 ```
 
+> **Note:** The version of corepack bundled with Node.js v20 may fail with a keyid signature error when activating pnpm. If you see this, update corepack first:
+> ```bash
+> npm install -g corepack@latest
+> corepack enable
+> ```
+
 This will automatically use the correct pnpm version specified in the project. Then install dependencies:
 
 ```bash
@@ -44,10 +50,10 @@ You can unpack in two ways:
 
 ```bash
 # One-shot: process all .aux files currently in aux-drop/
-pnpm run drop:unpack
+pnpm drop:unpack
 
 # Watcher: auto-unpack files as they're dropped in
-pnpm run drop:watch
+pnpm drop:watch
 ```
 
 Both will unpack the `.aux` file into the correct `src/` subdirectory and delete the original from `aux-drop/`. If a directory already exists for that aux file, it is cleaned out first to remove stale files from deleted tags or bots.
@@ -58,10 +64,10 @@ After unpacking, review the diff and commit when ready. The pre-commit hook will
 
 ```bash
 # Dev build: packs src/ into dist/, copies assets/ into dist/
-pnpm run pack:dev
+pnpm pack:dev
 
 # Prod build: same as dev, plus minifies all .aux files in dist/
-pnpm run pack:prod
+pnpm pack:prod
 ```
 
 Both commands clean `dist/` before building and remove hidden files (like `.DS_Store`) from `src/` before packing.
@@ -70,10 +76,10 @@ Both commands clean `dist/` before building and remove hidden files (like `.DS_S
 
 | Script | Description |
 |---|---|
-| `pnpm run drop:unpack` | Unpack all `.aux` files in `aux-drop/` into `src/` based on version |
-| `pnpm run drop:watch` | Watch `aux-drop/` and auto-unpack files as they appear |
-| `pnpm run pack:dev` | Build `dist/` from `src/` and `assets/` |
-| `pnpm run pack:prod` | Build `dist/` from `src/` and `assets/`, then minify |
+| `pnpm drop:unpack` | Unpack all `.aux` files in `aux-drop/` into `src/` based on version |
+| `pnpm drop:watch` | Watch `aux-drop/` and auto-unpack files as they appear |
+| `pnpm pack:dev` | Build `dist/` from `src/` and `assets/` |
+| `pnpm pack:prod` | Build `dist/` from `src/` and `assets/`, then minify |
 
 ## Deploying
 

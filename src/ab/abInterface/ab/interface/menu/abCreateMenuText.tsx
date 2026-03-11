@@ -3,6 +3,7 @@ if (!that) {
 }
 
 const {
+    menuItemStyle,
     menuItemLabelStyle,
     ...rest
 } = that;
@@ -16,6 +17,7 @@ let menuText = {
     menuItemStyle: {
         "padding-top": "6px",
         "padding-bottom": "6px",
+        ...menuItemStyle,
     },
     menuItemLabelStyle: {
         "white-space": "pre-wrap",

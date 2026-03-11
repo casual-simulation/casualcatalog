@@ -168,18 +168,13 @@ if (initialBoot) {
 // onEggHatch for all just hatched bots
 whisper(newBots, "onEggHatch", { ab: origin, version, inst: ab.tags.abInst, botIds: newBotIds, eggParameters, sourceEvent });
 
-// onAbAdded for all bots in the experience
+// onABAdded for all bots in the experience
 superShout("onABAdded", { ab: origin, version, inst: ab.tags.abInst, botIds: newBotIds, sourceEvent });
 superShout("onAbAdded", { ab: origin, version, inst: ab.tags.abInst, botIds: newBotIds, sourceEvent }); // Backwards compatibility.
 
 if (os.isCollaborative()) {
     // Remote shout to all other connected remotes that a remote has added an ab.
-    const remoteIds = await os.remotes();
-    const selfIndex = remoteIds.indexOf(configBot.id);
-    if (selfIndex > 0) {
-        remoteIds.splice(selfIndex, 1);
-    }
-
+    const remoteIds = (await os.remotes()).filter(id => id !== configBot.id)
     sendRemoteData(remoteIds, 'remote_ab_added', { ab: origin, version, inst: ab.tags.abInst, botIds: newBotIds, sourceEvent, abEggId: abEgg.id });
 }
 

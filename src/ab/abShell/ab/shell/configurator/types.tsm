@@ -1,0 +1,93 @@
+// ============================================
+// Core
+// ============================================
+interface ABConfiguratorPropertyBase {
+  key: string;
+  label?: string;
+  description?: string;
+  order?: number;
+  visibleWhen?: ABConfiguratorVisibility;
+}
+
+interface ABConfiguratorVisibility {
+  key: string;
+  operator: 'equal' | 'not equal' | 'greater than' | 'less than' | 'contains';
+  value: any;
+}
+
+interface ABConfiguratorSelectOption {
+  value: string | number;
+  label?: string;
+}
+
+// ============================================
+// Type-specific properties
+// ============================================
+interface ABConfiguratorPropertyColor extends ABConfiguratorPropertyBase {
+  type: 'color';
+  value?: string;
+  default?: string;
+  alpha?: boolean;
+}
+
+interface ABConfiguratorPropertyNumber extends ABConfiguratorPropertyBase {
+  type: 'number';
+  value?: number;
+  default?: number;
+  min?: number;
+  max?: number;
+  step?: number;
+  integer?: boolean;
+}
+
+interface ABConfiguratorPropertyText extends ABConfiguratorPropertyBase {
+  type: 'text';
+  value?: string;
+  default?: string;
+  placeholder?: string;
+  maxLength?: number;
+  pattern?: string;
+  patternMessage?: string;
+}
+
+interface ABConfiguratorPropertyBoolean extends ABConfiguratorPropertyBase {
+  type: 'boolean';
+  value?: boolean;
+  default?: boolean;
+}
+
+interface ABConfiguratorPropertySelect extends ABConfiguratorPropertyBase {
+  type: 'select';
+  value?: string | number | ABConfiguratorSelectOption;
+  default?: string | number | ABConfiguratorSelectOption;
+  options: ABConfiguratorSelectOption[];
+}
+
+interface ABConfiguratorPropertyMultiSelect extends ABConfiguratorPropertyBase {
+  type: 'multiselect';
+  value?: (string | number | ABConfiguratorSelectOption)[];
+  default?: (string | number | ABConfiguratorSelectOption)[];
+  options: ABConfiguratorSelectOption[];
+}
+
+interface ABConfiguratorPropertyGroup extends ABConfiguratorPropertyBase {
+  type: 'group';
+  properties: ABConfiguratorProperty[];
+}
+
+// ============================================
+// Union + Data
+// ============================================
+type ABConfiguratorProperty =
+  | ABConfiguratorPropertyColor
+  | ABConfiguratorPropertyNumber
+  | ABConfiguratorPropertyText
+  | ABConfiguratorPropertyBoolean
+  | ABConfiguratorPropertySelect
+  | ABConfiguratorPropertyMultiSelect
+  | ABConfiguratorPropertyGroup;
+
+interface ABConfiguratorData {
+  group: string;
+  properties: ABConfiguratorProperty[];
+}

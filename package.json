@@ -8,6 +8,7 @@
     "drop:watch": "node scripts/aux-drop-watch.mjs",
     "pack:dev": "node scripts/pack-aux.mjs",
     "pack:prod": "node scripts/pack-aux.mjs --prod",
+    "update:aux-types": "node scripts/update-aux-library-definitions.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

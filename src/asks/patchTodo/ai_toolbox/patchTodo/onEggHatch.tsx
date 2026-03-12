@@ -14,7 +14,7 @@ if (that.eggParameters) {
 
     tags.abPatchBotIdentity = `patch ${thisBot.id.substring(0, 5)}`;
     tags.abPatchLabel = `review ${tags.abPatchBotIdentity}`;
-    tags.system = `abPatchBot.${tags.abPatchBotIdentity}`;
+    // tags.system = `abPatchBot.${tags.abPatchBotIdentity}`;
     
     tags.abIgnore = true;
     tags.abPatchBotInstance = true;
@@ -23,8 +23,4 @@ if (that.eggParameters) {
     tags.alwaysApprove = that.eggParameters?.alwaysApprove ?? false;
 } 
 
-await os.startFormAnimation(thisBot, "incomplete_in").then(
-    os.startFormAnimation(thisBot, "incomplete_static", {
-        clampWhenFinished
-    })
-);
+thisBot.handleAnimationState("incomplete");

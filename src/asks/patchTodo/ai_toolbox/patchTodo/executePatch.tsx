@@ -1,11 +1,5 @@
 try {
-    await os.startFormAnimation(thisBot, "incomplete_out").then(() => {
-        os.startFormAnimation(thisBot, "processing_in").then(() => {
-            os.startFormAnimation(thisBot, "processing_loop", {
-                loop
-            })
-        })
-    });
+    thisBot.handleAnimationState("processing");
    
     await thisBot.abPatchApply();
 } finally {

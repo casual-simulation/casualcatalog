@@ -21,7 +21,7 @@ const BASE_TAGS = {
     name: `abConfiguratorMenuItem.${property.key}`,
     property: '🧬' + JSON.stringify(property),
     tooltip: property.description ?? property.label,
-    upatePropertyField: ListenerString(() => {
+    updatePropertyField: ListenerString(() => {
         /** This is a utility function for easily settings/changing values in the property tag object that is CasualOS tag friendly. */
         const { name, value, suppressRefresh = false } = that;
 
@@ -30,10 +30,7 @@ const BASE_TAGS = {
         }
 
         const property = tags.property;
-        if (name in property) {
-            property[name] = value;
-        }
-
+        property[name] = value;
         tags.property = '🧬' + JSON.stringify(property);
     }),
     onBotAdded: ListenerString(() => {
@@ -95,11 +92,10 @@ if (property.type === 'boolean') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
         onClick: ListenerString(() => {
-            thisBot.upatePropertyField({ name: 'value', value: !tags.property.value })
+            thisBot.updatePropertyField({ name: 'value', value: !tags.property.value })
         }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyBoolean;
-            
             tags.formAddress = property.value === true ? 'check_box' : 'check_box_outline_blank';
             tags.label = property.label ?? property.key;
         }),
@@ -107,9 +103,23 @@ if (property.type === 'boolean') {
 } else if (property.type === 'color') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
-        // label: 'color',
-        onRefreshDisplay: ListenerString(() => {
+        formAddress: 'palette',
+        onClick: ListenerString(async () => {
             const property = tags.property as ABConfiguratorPropertyColor;
+            const current = property.value ?? property.default;
+            const picked = await os.showInput(current, {
+                type: 'color',
+                title: property.label ?? property.key,
+            });
+            if (picked != null) {
+                thisBot.updatePropertyField({ name: 'value', value: picked });
+            }
+        }),
+        onRefreshDisplay: ListenerString(async () => {
+            const property = tags.property as ABConfiguratorPropertyColor;
+            tags.label = `${property.label ?? property.key}: ${property.value ?? property.default ?? 'unset'}`;
+            tags.color = property.value ?? property.default;
+            tags.labelColor = await ab.links.utils.getContrastColor(tags.color);
         }),
     })
 } else if (property.type === 'select') {
@@ -138,28 +148,25 @@ if (property.type === 'boolean') {
         ...BASE_TAGS,
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyText;
-
             tags.label = property.placeholder ?? property.label ?? property.key;
             tags.menuItemText = property.value;
         }),
         onInputTyping: ListenerString(() => {
             const { text } = that;
 
-            thisBot.upatePropertyField({ name: 'value', value: text, suppressRefresh: true });
+            thisBot.updatePropertyField({ name: 'value', value: text, suppressRefresh: true });
         })
     })
 } else if (property.type === 'group') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
+        formAddress: 'folder',
         onClick: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyGroup;
-
             configBot.tags.menuPortal = `abConfiguratorMenu_${property.key}`;
         }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyGroup;
-
-            tags.formAddress = 'folder';
             tags.label = property.label ?? property.key;
         }),
     })

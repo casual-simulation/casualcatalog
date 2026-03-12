@@ -27,7 +27,6 @@ interface ABConfiguratorPropertyColor extends ABConfiguratorPropertyBase {
   type: 'color';
   value?: string;
   default?: string;
-  alpha?: boolean;
 }
 
 interface ABConfiguratorPropertyNumber extends ABConfiguratorPropertyBase {

@@ -10,12 +10,12 @@
  *   thisBot.abApplyConfiguratorDefaults({ abConfiguratorGroup: 'myGroup', bots: [botA, botB] });
  */
 
-interface ABApplyConfiguratorDefaultsArgs {
+interface ABApplyConfiguratorDefaultsArg {
     abConfiguratorGroup: string;
     bots?: Bot[];
 }
 
-const { abConfiguratorGroup, bots: incomingBots } = that as ABApplyConfiguratorDefaultsArgs ?? {};
+const { abConfiguratorGroup, bots: incomingBots } = that as ABApplyConfiguratorDefaultsArg ?? {};
 
 assert(abConfiguratorGroup, `[${tags.system}.${tagName}] abConfiguratorGroup is a required parameter.`);
 

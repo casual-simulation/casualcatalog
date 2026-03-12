@@ -1,11 +1,11 @@
-interface ABCreatePropertyMenuItemArgs { 
+interface ABCreatePropertyMenuItemArg { 
     abConfiguratorGroup: string;
     menuGroup: string;
     property: ABConfiguratorProperty;
     index: number;
 }
 
-const { abConfiguratorGroup, menuGroup, property, index } = that as ABCreatePropertyMenuItemArgs ?? {};
+const { abConfiguratorGroup, menuGroup, property, index } = that as ABCreatePropertyMenuItemArg ?? {};
 
 if (!property) {
     console.warn(`[${tags.system}.${tagName}] given null for a property.`);
@@ -15,10 +15,12 @@ if (!property) {
 const BASE_TAGS = {
     space: 'tempLocal',
     [menuGroup ? `abConfiguratorMenu_${menuGroup}` : 'abConfiguratorMenu']: true,
+    menuGroup,
     abConfiguratorGroup,
     manager: getLink(thisBot),
     name: `abConfiguratorMenuItem.${property.key}`,
     property: '🧬' + JSON.stringify(property),
+    tooltip: property.description ?? property.label,
     upatePropertyField: ListenerString(() => {
         /** This is a utility function for easily settings/changing values in the property tag object that is CasualOS tag friendly. */
         const { name, value, suppressRefresh = false } = that;
@@ -39,6 +41,10 @@ const BASE_TAGS = {
             console.log(`[${tags.name}] invoke`);
         }
 
+        os.addBotListener(thisBot, 'onClick', () => {
+            thisBot.hideTooltip();
+        })
+
         whisper(thisBot, 'onRefreshDisplay');
     }),
     onBotChanged: ListenerString(() => {
@@ -53,6 +59,29 @@ const BASE_TAGS = {
             }
 
             whisper(thisBot, 'onRefreshDisplay');
+        }
+    }),
+    onPointerEnter: ListenerString(() => {
+        thisBot.hideTooltip();
+
+        if (tags.tooltip) {
+            thisBot.vars.timeoutId = setTimeout(async () => {
+                thisBot.vars.tooltipId = await os.tip(tags.tooltip, undefined, undefined, Infinity);
+            }, links.manager.tags.tooltipTimeoutMS)
+        }
+    }),
+    onPointerExit: ListenerString(() => {
+        thisBot.hideTooltip();
+    }),
+    hideTooltip: ListenerString(() => {
+        if (thisBot.vars.timeoutId) {
+            clearTimeout(thisBot.vars.timeoutId);
+            thisBot.vars.timeoutId = null;
+        }
+
+        if (thisBot.vars.tooltipId) {
+            os.hideTips(thisBot.vars.tooltipId);
+            thisBot.vars.tooltipId = null;
         }
     }),
     abConfiguratorMenuReset: ListenerString(() => {
@@ -78,6 +107,7 @@ if (property.type === 'boolean') {
 } else if (property.type === 'color') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
+        // label: 'color',
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyColor;
         }),
@@ -122,7 +152,9 @@ if (property.type === 'boolean') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
         onClick: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyGroup;
 
+            configBot.tags.menuPortal = `abConfiguratorMenu_${property.key}`;
         }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyGroup;

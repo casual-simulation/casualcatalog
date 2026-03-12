@@ -22,27 +22,28 @@ const dataFound = configuratorData && configuratorData.group && configuratorData
 if (dataFound) {
     thisBot.abCloseConfigurator(); // Close any currently open configurator menu.
 
+    // Keep a the configurator data that is used to created this menu cached for reference.
+    // Good for remembering the structure of the data, but not the values themselves as the current values should be
+    // retrieved from the menu items.
+    thisBot.vars.cachedConfiguratorData = configuratorData;
+
+    const menuGroups: ABConfiguratorPropertyGroup[] = thisBot.abGetGroupsFromProperties({ properties: configuratorData.properties });
+
     configBot.tags.menuPortal = 'abConfiguratorMenu';
 
-    const menuTitle = ab.links.menu.abCreateMenuText({ 
+    const configTitle = ab.links.menu.abCreateMenuText({
         space: 'tempLocal',
-        name: 'abConfiguratorMenuTitle',
+        name: 'abConfiguratorTitle',
         abConfiguratorMenu: true,
-        abConfiguratorGroup,
+        abConfiguratorMenuSortOrder: Number.MIN_SAFE_INTEGER,
         abConfiguratorMenuReset: ListenerString(() => {
             destroy(thisBot);
         }),
-        // formAddress: 'build',
         label: `configure:\n${abConfiguratorGroup}`,
         labelAlignment: 'center',
         menuItemStyle: {
-            // 'color': 'blue',
-            // 'background-color': 'black',
-            // 'filter': 'brightness(0.8)',
         },
         menuItemLabelStyle: {
-            // display: 'flex',
-            // color: 'red',
             'font-weight': 'bold',
         }
     })
@@ -63,15 +64,13 @@ if (dataFound) {
         }
     }
 
-    console.log(`menuItemBots:`, menuItemBots);
-
     createPropertyMenuItems(configuratorData.properties);
-
 
     const submitButton = ab.links.menu.abCreateMenuButton({ 
         space: 'tempLocal',
         name: 'abConfiguratorMenuSubmit',
         abConfiguratorMenu: true,
+        abConfiguratorMenuSortOrder: Number.MAX_SAFE_INTEGER,
         abConfiguratorMenuReset: ListenerString(() => {
             destroy(thisBot);
         }),
@@ -109,6 +108,60 @@ if (dataFound) {
             // 'font-weight': 'bold',
         }
     })
+
+    const groupBackButton = ab.links.menu.abCreateMenuButton({
+        space: 'tempLocal',
+        name: 'abConfiguratorMenuSubmit',
+        abConfiguratorMenuReset: ListenerString(() => {
+            destroy(thisBot);
+        }),
+        manager: getLink(thisBot),
+        menuItemBots: getLink(menuItemBots),
+        abConfiguratorGroup,
+        formAddress: 'arrow_back',
+        label: `back`,
+        onClick: ListenerString(() => {
+            if (configBot.tags.menuPortal) {
+                const currentGroupKey: string = configBot.tags.menuPortal.replace('abConfiguratorMenu_', '');
+                const parentGroupProperty: ABConfiguratorPropertyGroup = links.manager.abGetParentGroupProperty({
+                    properties: links.manager.vars.cachedConfiguratorData.properties,
+                    targetKey: currentGroupKey
+                })
+
+                if (parentGroupProperty) {
+                    configBot.tags.menuPortal = `abConfiguratorMenu_${parentGroupProperty.key}`;
+                } else {
+                    configBot.tags.menuPortal = 'abConfiguratorMenu';
+                }
+            }
+        }),
+    });
+
+    for (const menuGroup of menuGroups) {
+        // Create menu title for each group name.
+        const groupTitle = ab.links.menu.abCreateMenuText({
+            space: 'tempLocal',
+            name: `abConfiguratorGroupTitle.${menuGroup.key}`,
+            menuGroupKey: menuGroup.key,
+            formAddress: 'folder',
+            [`abConfiguratorMenu_${menuGroup.key}`]: true,
+            [`abConfiguratorMenu_${menuGroup.key}SortOrder`]: Number.MIN_SAFE_INTEGER,
+            abConfiguratorMenuReset: ListenerString(() => {
+                destroy(thisBot);
+            }),
+            label: `${menuGroup.label ?? menuGroup.key}`,
+            labelAlignment: 'center',
+            menuItemStyle: {
+            },
+            menuItemLabelStyle: {
+                'font-weight': 'bold',
+            }
+        })
+
+        // Put the group back button in each menu group.
+        groupBackButton.tags[`abConfiguratorMenu_${menuGroup.key}`] = true;
+        groupBackButton.tags[`abConfiguratorMenu_${menuGroup.key}SortOrder`] = Number.MAX_SAFE_INTEGER;
+    }
 } else {
     ab.links.utils.abLog({ message: `Can't open ab configurator for '${abConfiguratorGroup}' — no data was found.`})
 }

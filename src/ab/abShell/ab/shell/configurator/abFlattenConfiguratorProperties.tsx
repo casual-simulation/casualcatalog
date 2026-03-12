@@ -7,11 +7,11 @@
  *   const flat = thisBot.abFlattenConfiguratorProperties({ properties: data.properties });
  */
 
-interface ABFlattenConfiguratorPropertiesArgs {
+interface ABFlattenConfiguratorPropertiesArg {
     properties: ABConfiguratorProperty[];
 }
 
-const { properties } = that as ABFlattenConfiguratorPropertiesArgs ?? {};
+const { properties } = that as ABFlattenConfiguratorPropertiesArg ?? {};
 
 const result: ABConfiguratorProperty[] = [];
 

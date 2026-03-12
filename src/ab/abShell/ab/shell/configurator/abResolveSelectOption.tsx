@@ -19,12 +19,12 @@
  *   // => null
  */
 
-interface ABResolveSelectOptionArgs {
+interface ABResolveSelectOptionArg {
     options: ABConfiguratorSelectOption[];
     value: string | number | ABConfiguratorSelectOption;
 }
 
-const { options, value } = that as ABResolveSelectOptionArgs ?? {};
+const { options, value } = that as ABResolveSelectOptionArg ?? {};
 
 // Already a full option object — validate it exists in options
 if (typeof value === 'object' && value != null && 'value' in value) {

@@ -1,5 +1,5 @@
 try {
-    thisBot.handleAnimationState("processing");
+    thisBot.handleAnimationState("processing_in");
    
     await thisBot.abPatchApply();
 } finally {

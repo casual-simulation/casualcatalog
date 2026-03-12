@@ -23,4 +23,4 @@ if (that.eggParameters) {
     tags.alwaysApprove = that.eggParameters?.alwaysApprove ?? false;
 } 
 
-thisBot.handleAnimationState("incomplete");
+thisBot.handleAnimationState("incomplete_in");

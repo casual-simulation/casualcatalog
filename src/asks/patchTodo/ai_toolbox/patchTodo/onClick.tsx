@@ -1,0 +1,2 @@
+thisBot.abPatchMenuOpen();
+thisBot.animateSpin();

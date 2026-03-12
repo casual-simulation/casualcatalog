@@ -272,6 +272,27 @@ abCommands.addCommand('uuid', () => {
     usage: '.uuid'
 });
 
+abCommands.addCommand('copy', (args) => {
+    const botIds = args && args.length > 0 ? args : undefined;
+    if (botIds) {
+        const bots: Bot[] = [];
+        for (const id of botIds) {
+            const bot = getBot('id', id);
+            if (bot) {
+                bots.push(bot);
+            }
+        }
+        if (bots.length > 0) {
+            ab.links.paste.abCopyBotsToClipboard({ bots });
+        }
+    } else {
+        os.toast('Provide the id(s) of the bot(s) you want to copy to the clipboard.');
+    }
+}, {
+    shortDescription: 'Copy a bot(s) to the clipboard.',
+    usage: '.copy <botId> <botId2> ...'
+});
+
 abCommands.addCommand('dup', (args) => {
     const botId = args ? args[0] : undefined;
     if (botId) {

@@ -23,4 +23,5 @@ if (that.eggParameters) {
     tags.alwaysApprove = that.eggParameters?.alwaysApprove ?? false;
 } 
 
+tags.formAnimations = await os.listFormAnimations(thisBot);
 thisBot.handleAnimationState("incomplete_in");

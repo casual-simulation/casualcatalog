@@ -29,7 +29,7 @@ if (dataFound) {
 
     const menuGroups: ABConfiguratorPropertyGroup[] = thisBot.abGetGroupsFromProperties({ properties: configuratorData.properties });
 
-    configBot.tags.menuPortal = 'abConfiguratorMenu';
+    configBot.masks.menuPortal = 'abConfiguratorMenu';
 
     const configTitle = ab.links.menu.abCreateMenuText({
         space: 'tempLocal',
@@ -154,9 +154,9 @@ if (dataFound) {
                 })
 
                 if (parentGroupProperty) {
-                    configBot.tags.menuPortal = `abConfiguratorMenu_${parentGroupProperty.key}`;
+                    configBot.masks.menuPortal = `abConfiguratorMenu_${parentGroupProperty.key}`;
                 } else {
-                    configBot.tags.menuPortal = 'abConfiguratorMenu';
+                    configBot.masks.menuPortal = 'abConfiguratorMenu';
                 }
             }
         }),

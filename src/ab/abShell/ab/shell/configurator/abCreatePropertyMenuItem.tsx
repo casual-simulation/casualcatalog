@@ -273,7 +273,7 @@ if (property.type === 'boolean') {
         formAddress: 'folder',
         onClick: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyGroup;
-            configBot.tags.menuPortal = `abConfiguratorMenu_${property.key}`;
+            configBot.masks.menuPortal = `abConfiguratorMenu_${property.key}`;
         }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyGroup;

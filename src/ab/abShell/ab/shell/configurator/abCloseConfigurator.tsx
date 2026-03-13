@@ -1,7 +1,7 @@
 shout('abConfiguratorMenuReset');
 
-if (configBot.tags.menuPortal === 'abConfiguratorMenu') {
-    configBot.tags.menuPortal = null;
+if (configBot.masks.menuPortal === 'abConfiguratorMenu') {
+    configBot.masks.menuPortal = null;
 }
 
 if (thisBot.vars.cachedConfiguratorData) {

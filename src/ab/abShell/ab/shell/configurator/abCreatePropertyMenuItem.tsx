@@ -1,4 +1,4 @@
-interface ABCreatePropertyMenuItemArg { 
+interface ABCreatePropertyMenuItemArg {
     abConfiguratorGroup: string;
     menuGroup: string;
     property: ABConfiguratorProperty;
@@ -92,11 +92,12 @@ if (property.type === 'boolean') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
         onClick: ListenerString(() => {
-            thisBot.updatePropertyField({ name: 'value', value: !tags.property.value })
+            thisBot.updatePropertyField({ name: 'value', value: !(tags.property.value ?? tags.property.default ?? false) })
         }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyBoolean;
-            tags.formAddress = property.value === true ? 'check_box' : 'check_box_outline_blank';
+            const current = property.value ?? property.default;
+            tags.formAddress = current === true ? 'check_box' : 'check_box_outline_blank';
             tags.label = property.label ?? property.key;
         }),
     })
@@ -125,23 +126,132 @@ if (property.type === 'boolean') {
 } else if (property.type === 'select') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
+        formAddress: 'list',
+        onClick: ListenerString(async () => {
+            const property = tags.property as ABConfiguratorPropertySelect;
+            const options = property.options.map((o, i) => ({ label: o.label ?? String(o.value), value: i }));
+            const currentIndex = property.options.findIndex(o => o.value === (property.value ?? property.default));
+            const selected = await os.showInput(currentIndex >= 0 ? currentIndex : 0, {
+                type: 'list',
+                subtype: 'radio',
+                title: property.label ?? property.key,
+                items: options,
+            });
+            if (selected != null) {
+                const resolved = links.manager.abResolveSelectOption({ options: property.options, value: selected.value });
+                if (resolved) {
+                    thisBot.updatePropertyField({ name: 'value', value: resolved.value });
+                }
+            }
+        }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertySelect;
+            const resolved: ABConfiguratorSelectOption | null = links.manager.abResolveSelectOption({
+                options: property.options,
+                value: property.value ?? property.default
+            });
+            tags.label = (property.label ?? property.key) + ': ' + (resolved?.label ?? resolved?.value ?? 'unset');
         }),
     })
 } else if (property.type === 'multiselect') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
+        formAddress: 'checklist',
+        onClick: ListenerString(async () => {
+            const property = tags.property as ABConfiguratorPropertyMultiSelect;
+            const current: any[] = Array.isArray(property.value) ? property.value : (property.default ?? []);
+            const options = property.options.map((o, i) => ({ label: o.label ?? String(o.value), value: o.value }));
+            const currentIndices = current
+                .map(v => {
+                    const normalized = (typeof v === 'object' && v != null) ? v.value : v;
+
+                    // Try matching by value first
+                    const byValue = property.options.findIndex(o => o.value === normalized);
+                    if (byValue >= 0) return byValue;
+
+                    // Fall back to index if normalized is an integer within range
+                    if (typeof normalized === 'number' && Number.isInteger(normalized) && normalized >= 0 && normalized < property.options.length) {
+                        return normalized;
+                    }
+
+                    return -1;
+                })
+                .filter(i => i >= 0);
+
+            const selected = await os.showInput(currentIndices, {
+                type: 'list',
+                subtype: 'checkbox',
+                title: property.label ?? property.key,
+                items: options,
+            });
+
+            if (selected != null) {
+                const resolved = (Array.isArray(selected) ? selected : [selected])
+                    .map(s => links.manager.abResolveSelectOption({ options: property.options, value: s.value }))
+                    .filter(o => o != null)
+                    .map(o => o.value);
+
+                thisBot.updatePropertyField({ name: 'value', value: resolved });
+            }
+        }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyMultiSelect;
+            const current: any[] = Array.isArray(property.value) ? property.value : (property.default ?? []);
+            const labels = current.map(v => {
+                const opt = links.manager.abResolveSelectOption({ options: property.options, value: v });
+                return opt?.label ?? opt?.value ?? String(v);
+            });
+            tags.label = (property.label ?? property.key) + ': ' + (labels.length > 0 ? labels.join(', ') : 'unset');
         }),
     })
 } else if (property.type === 'number') {
     menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
+        formAddress: 'numbers',
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyNumber;
+            const current = property.value ?? property.default;
+            tags.label = (property.label ?? property.key) + ': ' + (current != null ? String(current) : 'unset');
         }),
+        onClick: ListenerString(async () => {
+            const property = tags.property as ABConfiguratorPropertyNumber;
+            const current = property.value ?? property.default ?? 0;
+            const input = await os.showInput(current, {
+                type: 'number',
+                title: property.label ?? property.key,
+            });
+            if (input != null) {
+                let parsed = Number(input);
+                if (!isNaN(parsed)) {
+                    if (property.step != null) {
+                        const decimals = (String(property.step).split('.')[1] ?? '').length;
+                        parsed = parseFloat((Math.ceil(parsed / property.step) * property.step).toFixed(decimals));
+
+                        if (property.max != null && parsed > property.max) {
+                            parsed = parseFloat((Math.floor(property.max / property.step) * property.step).toFixed(decimals));
+                        }
+
+                        if (property.min != null && parsed < property.min) {
+                            parsed = parseFloat((Math.ceil(property.min / property.step) * property.step).toFixed(decimals));
+                        }
+                    }
+
+                    if (property.integer) {
+                        parsed = Math.round(parsed);
+                    }
+
+                    if (property.max != null && parsed > property.max) {
+                        parsed = property.max;
+                    }
+
+                    if (property.min != null && parsed < property.min) {
+                        parsed = property.min;
+                    }
+
+                    thisBot.updatePropertyField({ name: 'value', value: parsed });
+                }
+            }
+        })
     })
 } else if (property.type === 'text') {
     menuItem = ab.links.menu.abCreateMenuInput({
@@ -149,7 +259,7 @@ if (property.type === 'boolean') {
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyText;
             tags.label = property.placeholder ?? property.label ?? property.key;
-            tags.menuItemText = property.value;
+            tags.menuItemText = property.value ?? property.default;
         }),
         onInputTyping: ListenerString(() => {
             const { text } = that;
@@ -170,7 +280,7 @@ if (property.type === 'boolean') {
             tags.label = property.label ?? property.key;
         }),
     })
-}  else {
+} else {
     console.error(`[${tags.system}.${tagName}] configurator property type ${property.type} is not implemented.`);
 }
 

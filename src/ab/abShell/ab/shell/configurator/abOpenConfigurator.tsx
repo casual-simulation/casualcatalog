@@ -66,6 +66,32 @@ if (dataFound) {
 
     createPropertyMenuItems(configuratorData.properties);
 
+    const defaultsButton = ab.links.menu.abCreateMenuButton({
+        space: 'tempLocal',
+        name: 'abConfiguratorMenuDefaults',
+        abConfiguratorMenu: true,
+        abConfiguratorMenuSortOrder: Number.MAX_SAFE_INTEGER - 1,
+        abConfiguratorMenuReset: ListenerString(() => {
+            destroy(thisBot);
+        }),
+        manager: getLink(thisBot),
+        menuItemBots: getLink(menuItemBots),
+        abConfiguratorGroup,
+        formAddress: 'restart_alt',
+        label: 'defaults',
+        onClick: ListenerString(() => {
+            for (const menuItemBot of links.menuItemBots) {
+                const property = menuItemBot.tags.property as ABConfiguratorProperty;
+                if (property) {
+                    property.value = undefined;
+                    menuItemBot.tags.property = '🧬' + JSON.stringify(property);
+                }
+            }
+        }),
+        menuItemStyle: {},
+        menuItemLabelStyle: {},
+    })
+
     const submitButton = ab.links.menu.abCreateMenuButton({ 
         space: 'tempLocal',
         name: 'abConfiguratorMenuSubmit',
@@ -84,23 +110,22 @@ if (dataFound) {
         shadowColor: 'black',
         onClick: ListenerString(() => {
             // Create a configurator data object and collect all the menu item property tags.
-            const configuratorData: ABConfiguratorData = {
-                group: tags.abConfiguratorGroup,
-                properties: []
-            }
+            const properties: ABConfiguratorProperty[] = [];
 
             for (const menuItemBot of links.menuItemBots) {
                 const property = menuItemBot.tags.property as ABConfiguratorProperty;
 
-                if (property)
-                if (menuItemBot.tags.property) {
-                    configuratorData.properties.push(menuItemBot.tags.property);
+                if (property && property.type !== 'group') {
+                    properties.push(property);
                 }
             }
             
             if (links.manager.tags.debug) {
-                console.log(`[${tags.name}] submit configurator data:`, configuratorData);
+                console.log(`[${tags.name}] submit properties:`, properties);
             }
+
+            links.manager.abApplyConfiguratorProperties({ abConfiguratorGroup: tags.abConfiguratorGroup, properties });
+            links.manager.abCloseConfigurator();
         }),
         menuItemStyle: {
         },

@@ -1,0 +1,1 @@
+ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: 'rc-configuratorTest' });

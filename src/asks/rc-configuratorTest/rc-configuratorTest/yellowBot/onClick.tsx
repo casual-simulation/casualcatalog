@@ -1,0 +1,1 @@
+os.toast(`yellow bot: ${tags.clickMessage ?? 'unset'}`);

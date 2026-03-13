@@ -1,5 +1,5 @@
 if (tags.currAnimation == "incomplete_in") {
-    os.startFormAnimation(thisBot, "incomplete_static", {clampWhenFinished: true});
+    os.startFormAnimation(thisBot, "incomplete_static", {loop: true});
     tags.currAnimation = "incomplete_static";
 }
 
@@ -20,11 +20,11 @@ else if (tags.currAnimation == "processing_out") {
 }
 
 else if (tags.currAnimation == "error_in") {
-    os.startFormAnimation(thisBot, "error_static", {clampWhenFinished: true});
+    os.startFormAnimation(thisBot, "error_static", {loop: true});
     tags.currAnimation = "error_static";
 }
 
 else if (tags.currAnimation == "complete_in") {
-    os.startFormAnimation(thisBot, "complete_static", {clampWhenFinished: true});
+    os.startFormAnimation(thisBot, "complete_static", {loop: true});
     tags.currAnimation = "complete_static";
 }

@@ -225,7 +225,8 @@ if (property.type === 'boolean') {
                 if (!isNaN(parsed)) {
                     if (property.step != null) {
                         const decimals = (String(property.step).split('.')[1] ?? '').length;
-                        parsed = parseFloat((Math.ceil(parsed / property.step) * property.step).toFixed(decimals));
+                        const snap = parsed >= 0 ? Math.ceil : Math.floor;
+                        parsed = parseFloat((snap(parsed / property.step) * property.step).toFixed(decimals));
 
                         if (property.max != null && parsed > property.max) {
                             parsed = parseFloat((Math.floor(property.max / property.step) * property.step).toFixed(decimals));

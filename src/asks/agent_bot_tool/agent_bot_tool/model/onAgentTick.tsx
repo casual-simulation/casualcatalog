@@ -1,4 +1,4 @@
-if (!tags.task) {
+if (!tags.task || masks.taskInProgress) {
     return;
 }
 
@@ -56,3 +56,5 @@ thisBot.agentOnRequest({
     data: requestData, 
     model: tags.aiModel
 });
+
+masks.taskInProgress = true;

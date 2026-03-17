@@ -12,7 +12,7 @@ const App = () => {
                 </button>
             </div>
             <span className="info-itemName">{tags.itemName}</span>
-            <div id="imageDiv"><img className="info-img" src={tags.imageSrc} alt="Image of Artifact" /></div>
+            <div id="imageDiv"><img className="info-img" src={tags.imageSrc} alt="Image of Landmark" /></div>
             <br />
             <span className="info-scroll">{tags.itemInfo}</span>
             <a className="info-grpm-link" href={tags.itemLink} target="_blank" rel="noopener noreferrer"><span>{(tags.itemLink) ? "GRPM Digital Collection" : ""}</span></a>

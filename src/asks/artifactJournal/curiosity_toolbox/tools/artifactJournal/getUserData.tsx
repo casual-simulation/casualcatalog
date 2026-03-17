@@ -6,7 +6,7 @@ if (!authBot) {
     return;
 }
 
-const data = await os.getData("RoTSave", authBot.id);
+const data = await os.getData(authBot.id, "RoTSave");
 
 if (!data.success) {
     tags.userData = {

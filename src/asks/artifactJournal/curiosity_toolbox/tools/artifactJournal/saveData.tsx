@@ -8,4 +8,4 @@ if (!authBot) {
     return;
 }
 
-await os.recordData("RoTSave", authBot.id, userData);
+await os.recordData(authBot.id, "RoTSave", userData);

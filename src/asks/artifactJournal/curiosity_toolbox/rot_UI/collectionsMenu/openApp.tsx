@@ -12,11 +12,10 @@ for (let i = 0; i < artifactData.tags.collectableIDs.length; i++){ //i is the in
     }
 }
 
-os.unregisterApp("collectionsMenuApp");
-os.registerApp("collectionsMenuApp", thisBot);
+os.unregisterApp(artifactData.tags.currentRegisteredApp ?? "collectionsMenuApp");
 
-let journal = getBot(byTag("artifactJournal", true));
-journal.tags.currentRegisteredApp = "collectionsMenuApp";
+artifactData.tags.currentRegisteredApp = "collectionsMenuApp";
+os.registerApp("collectionsMenuApp", thisBot);
 
 const App = thisBot.getApp();
 

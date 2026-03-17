@@ -1,8 +1,8 @@
-os.unregisterApp("landmarkInfoApp");
-os.registerApp("landmarkInfoApp", thisBot);
-
 let journal = getBot(byTag("artifactJournal", true));
+os.unregisterApp(journal.tags.currentRegisteredApp ?? "landmarkInfoApp");
+
 journal.tags.currentRegisteredApp = "landmarkInfoApp";
+os.registerApp("landmarkInfoApp", thisBot);
 
 const landmark = getBot("landmarkID", that);
 tags.itemName = landmark.tags.landmarkName;

@@ -122,10 +122,7 @@ patchResults.push({
 - `os.showInput(currentValue?, options?): Promise<string>` — text input dialog
 - `os.showConfirm(options): Promise<boolean>` — confirm/cancel dialog
 - `os.tip(message, pixelX?, pixelY?, duration?): Promise<number>` — tooltip at position
-- `os.focusOn(botOrPosition, options?): Promise<void>` — move camera to bot/position
-- `os.goToDimension(dim)` — navigate player to dimension
 - `os.showUploadFiles(): Promise<UploadedFile[]>` — file picker dialog
-- `os.download(data, filename, mimeType?)` — trigger file download
 
 **Animation:**
 - `animateTag(bot, tag, options): Promise<void>` — animate tag value over time (options: `fromValue`, `toValue`, `duration` ms, `easing`)
@@ -134,14 +131,27 @@ patchResults.push({
 **Utilities:**
 - `uuid(): string` — generate random UUID
 - `os.sleep(ms): Promise<void>` — pause execution
+- `os.focusOn(botOrPosition, options?): Promise<void>` — move camera to bot/position
+- `os.goToDimension(dim)` — navigate player to dimension
+- `os.download(data, filename, mimeType?)` — trigger file download
+- `os.playSound(url): Promise<void>` — play audio from a URL
 - `changeState(bot, stateName, groupName?)` — switch bot state: sets `[groupName]` tag to `stateName` (default group `"state"`) and whispers `@[groupName][oldState]OnExit` then `@[groupName][newState]OnEnter` to the bot
 - `DateTime` — Luxon DateTime class (available globally)
 
-**Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelSize`, `labelPosition` (top/front/floating/left/right), `progressBar`, `progressBarColor`
+**HTTP requests:**
+- `web.hook(options): Promise<{ data, status, statusText, headers }>` — make an HTTP request; `options: { method: 'GET'|'POST'|..., url: string, data?: any, headers?: object }`
+
+**Bot spaces:** Bots exist in a `space` which controls sync and lifetime. The most relevant spaces for patch code:
+- `shared` (default) — synchronized across all connected users; persisted
+- `tempLocal` — local machine only, not synced; destroyed on page reload. Use for effects, animations, and UI-only bots that don't need to be shared.
+
+To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
+
+**Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite image or mesh file; for GLTF/GLB models also set `formSubtype: 'gltf'`), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelSize`, `labelPosition` (top/front/floating/left/right), `progressBar`, `progressBarColor`, `lineTo` (bot ID or array of bot IDs to draw a line to), `lineStyle`, `lineWidth`, `lineColor`
 
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
 
-**Common listener tags:** `onClick`, `onDrop`, `onDrag`, `onDragAny`, `onCreate`, `onDestroy`, `onPointerEnter`, `onPointerExit`, `onPointerDown`, `onPointerUp`, `onKeyDown`, `onKeyUp`, `onKeyRepeat`, `onBotAdded` (whispered when bot is added to local inst — fires after scripts finish, unlike `onCreate` which fires immediately), `onBotChanged` (whispered when any tag on the bot is updated — fires once after scripts finish even if multiple tags changed), `onInstJoined` (shouted when inst is fully loaded — all bots in all spaces are available, safe to query the entire inst). You can also define custom listener tags with any name (e.g. `onPing`) and trigger them via `shout('onPing')` or `whisper(bot, 'onPing')`.
+**Common listener tags:** `onClick`, `onDrop`, `onDrag`, `onCreate`, `onDestroy`, `onPointerEnter`, `onPointerExit`, `onPointerDown`, `onPointerUp`, `onKeyDown`, `onKeyUp`, `onKeyRepeat`, `onBotAdded` (whispered when bot is added to local inst — fires after scripts finish, unlike `onCreate` which fires immediately), `onBotChanged` (whispered when any tag on the bot is updated — fires once after scripts finish even if multiple tags changed), `onInstJoined` (shouted when inst is fully loaded — all bots in all spaces are available, safe to query the entire inst). You can also define custom listener tags with any name (e.g. `onPing`) and trigger them via `shout('onPing')` or `whisper(bot, 'onPing')`.
 
 **Listener `that` argument shapes:**
 - `onClick`: `{ face: 'left'|'right'|'front'|'back'|'top'|'bottom', dimension: string, uv: Vector2, modality: 'mouse'|'touch'|'controller'|'finger', buttonId: 'left'|'middle'|'right' }`
@@ -200,7 +210,7 @@ Response:
 ```json
 [
   { "function": { "name": "chat", "args": { "message": "Updating bot_abc to be green at double scale." } } },
-  { "function": { "name": "makePatch", "args": { "code": "ab.log('Made bot green and doubled scale');\nconst bot = getBot('id', 'bot_abc');\nconst pre = getSnapshot(bot);\nsetTag(bot, 'color', 'green');\nsetTag(bot, 'scale', (bot.tags.scale ?? 1) * 2);\nconst post = getSnapshot(bot);\nreturn [{ botId: bot.id, created: false, rollbackDiff: diffSnapshots(post, pre) }];" } } }
+  { "function": { "name": "makePatch", "args": { "code": "const bot = getBot('id', 'bot_abc');\nconst pre = getSnapshot(bot);\nsetTag(bot, 'color', 'green');\nsetTag(bot, 'scale', (bot.tags.scale ?? 1) * 2);\nconst post = getSnapshot(bot);\nreturn [{ botId: bot.id, created: false, rollbackDiff: diffSnapshots(post, pre) }];" } } }
 ]
 ```
 
@@ -221,7 +231,7 @@ Response (turn 1 — call getInst to see current bots):
 After getInst result is injected, response (turn 2):
 ```json
 [
-  { "function": { "name": "makePatch", "args": { "code": "ab.log('Made all blue bots red');\nconst blueBots = getBots('color', 'blue');\nconst results = [];\nfor (const bot of blueBots) {\n  const pre = getSnapshot(bot);\n  setTag(bot, 'color', 'red');\n  const post = getSnapshot(bot);\n  results.push({ botId: bot.id, created: false, rollbackDiff: diffSnapshots(post, pre) });\n}\nreturn results;" } } }
+  { "function": { "name": "makePatch", "args": { "code": "const blueBots = getBots('color', 'blue');\nconst results = [];\nfor (const bot of blueBots) {\n  const pre = getSnapshot(bot);\n  setTag(bot, 'color', 'red');\n  const post = getSnapshot(bot);\n  results.push({ botId: bot.id, created: false, rollbackDiff: diffSnapshots(post, pre) });\n}\nreturn results;" } } }
 ]
 ```
 
@@ -238,7 +248,7 @@ Response:
 ```json
 [
   { "function": { "name": "chat", "args": { "message": "Creating a stacking spawner bot at (-6, 9) in home. Each click spawns a colored copy on top with the same behavior." } } },
-  { "function": { "name": "makePatch", "args": { "code": "ab.log('Creating stacking spawner bot');\n\nconst dim = 'home';\nconst x = -6;\nconst y = 9;\n\nconst behavior = ListenerString(() => {\n  const dim = thisBot.tags.stackDimension ?? 'home';\n  const x = thisBot.tags[dim + 'X'] ?? 0;\n  const y = thisBot.tags[dim + 'Y'] ?? 0;\n  const z = thisBot.tags[dim + 'Z'] ?? 0; // CasualOS is z-up\n\n  const colors = ['red','orange','yellow','green','cyan','blue','purple','magenta','pink','brown','white','black','gray'];\n  const color = colors[Math.floor(Math.random() * colors.length)];\n\n  const bot = create({\n    [dim]: true,\n    [dim + 'X']: x,\n    [dim + 'Y']: y,\n    [dim + 'Z']: z + 1,\n    color,\n    label: 'Stack',\n    stackDimension: dim,\n    onClick: thisBot.tags.onClick\n  });\n\n  os.toast('Spawned: ' + color);\n});\n\nconst root = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  [dim + 'Z']: 0,\n  color: 'white',\n  label: 'Stack Spawner',\n  stackDimension: dim,\n  onClick: behavior\n});\n\nreturn [{ botId: root.id, created: true, rollbackDiff: null }];" } } }
+  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = -6;\nconst y = 9;\n\nconst behavior = ListenerString(() => {\n  const dim = thisBot.tags.stackDimension ?? 'home';\n  const x = thisBot.tags[dim + 'X'] ?? 0;\n  const y = thisBot.tags[dim + 'Y'] ?? 0;\n  const z = thisBot.tags[dim + 'Z'] ?? 0; // CasualOS is z-up\n\n  const colors = ['red','orange','yellow','green','cyan','blue','purple','magenta','pink','brown','white','black','gray'];\n  const color = colors[Math.floor(Math.random() * colors.length)];\n\n  const bot = create({\n    [dim]: true,\n    [dim + 'X']: x,\n    [dim + 'Y']: y,\n    [dim + 'Z']: z + 1,\n    color,\n    label: 'Stack',\n    stackDimension: dim,\n    onClick: thisBot.tags.onClick\n  });\n\n  os.toast('Spawned: ' + color);\n});\n\nconst root = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  [dim + 'Z']: 0,\n  color: 'white',\n  label: 'Stack Spawner',\n  stackDimension: dim,\n  onClick: behavior\n});\n\nreturn [{ botId: root.id, created: true, rollbackDiff: null }];" } } }
 ]
 ```
 
@@ -248,14 +258,14 @@ Response:
 <context>
   <focus>{"type":"grid","dimension":"home","x":0,"y":0}</focus>
 </context>
-<message>Make a counter bot here that increments and shows its count when clicked</message>
+<message>Make a counter bot here that increments when clicked and disappears when it hits 5</message>
 ```
 
 Response:
 ```json
 [
-  { "function": { "name": "chat", "args": { "message": "Creating a counter bot at (0, 0) in home." } } },
-  { "function": { "name": "makePatch", "args": { "code": "ab.log('Creating counter bot');\n\nconst dim = 'home';\nconst x = 0;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'blue',\n  label: '0',\n  count: 0,\n  onClick: ListenerString(() => {\n    const next = (thisBot.tags.count ?? 0) + 1;\n    setTag(thisBot, 'count', next);\n    setTag(thisBot, 'label', String(next));\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } }
+  { "function": { "name": "chat", "args": { "message": "Creating a counter bot at (0, 0) in home. It will destroy itself at 5." } } },
+  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = 0;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'blue',\n  label: '0',\n  count: 0,\n  maxCount: 5,\n  onClick: ListenerString(() => {\n    const next = (thisBot.tags.count ?? 0) + 1;\n    if (next >= thisBot.tags.maxCount) {\n      destroy(thisBot);\n    } else {\n      setTag(thisBot, 'count', next);\n      setTag(thisBot, 'label', String(next));\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } }
 ]
 ```
 
@@ -272,7 +282,7 @@ Response:
 ```json
 [
   { "function": { "name": "chat", "args": { "message": "Creating a self-renaming bot at (2, 0) in home." } } },
-  { "function": { "name": "makePatch", "args": { "code": "ab.log('Creating rename bot');\n\nconst dim = 'home';\nconst x = 2;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'green',\n  label: 'Click to rename',\n  onClick: ListenerString(async () => {\n    const name = await os.showInput(thisBot.tags.label, { placeholder: 'Enter a new name' });\n    if (name != null) {\n      setTag(thisBot, 'label', name);\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } }
+  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = 2;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'green',\n  label: 'Click to rename',\n  onClick: ListenerString(async () => {\n    const name = await os.showInput(thisBot.tags.label, { placeholder: 'Enter a new name' });\n    if (name != null) {\n      setTag(thisBot, 'label', name);\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } }
 ]
 ```
 
@@ -289,6 +299,6 @@ Response:
 ```json
 [
   { "function": { "name": "chat", "args": { "message": "Creating a Ping button at (0, 0) and a Receiver at (2, 0) in home." } } },
-  { "function": { "name": "makePatch", "args": { "code": "ab.log('Creating ping broadcaster and receiver');\n\nconst dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];" } } }
+  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];" } } }
 ]
 ```

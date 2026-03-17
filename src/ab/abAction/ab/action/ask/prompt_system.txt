@@ -64,11 +64,11 @@ Execute JavaScript code inside CasualOS to create or modify bots.
 
 ### Rules for patch code
 
-1. Always include exactly one `ab.log('...')` call summarizing what the code does.
-2. Use CasualOS scripting methods: `create(...)`, `setTag(...)`, `getBot(...)`, `getBots(...)`, etc.
-3. NEVER use `onAny*` listener tags — they are dangerous and crash-prone.
-4. Always return an `Array` of `ABPatchResult` objects for every bot created or modified.
-5. Always use **single quotes** inside patch code strings to avoid JSON escaping issues.
+1. Use CasualOS scripting methods: `create(...)`, `getTag(...)`, `setTag(...)`, `getBot(...)`, `getBots(...)`, etc.
+2. NEVER use `onAny*` listener tags — they are dangerous and crash-prone.
+3. Always return an `Array` of `ABPatchResult` objects for every bot created or modified.
+4. Use `ListenerString(fn)` to assign JavaScript to a bot tag — it converts the function's source text into an executable string CasualOS recognizes. Mark `async` if the body uses `await`. **No scope/closures:** only use hardcoded literals or runtime APIs inside (`getTag`, `getBot`, `thisBot`, etc.) — outer variables are not available. `thisBot` refers to the bot the script runs on.
+   - To pass external values into a listener, set them as tags on the bot first, then read from `thisBot.tags` at runtime. Example: `setTag(bot, 'targetColor', 'red'); setTag(bot, 'onClick', ListenerString(() => setTag(thisBot, 'color', thisBot.tags.targetColor)))`
 
 ### ABPatchResult interface
 
@@ -93,7 +93,65 @@ patchResults.push({
 });
 ```
 
-Full CasualOS documentation: https://docs.casualos.com/
+### CasualOS API quick reference
+
+**Bot CRUD:**
+- `create(...mods): Bot` — create bot(s) with tag objects
+- `destroy(bot): void` — destroy bot by reference or ID
+- `getBot(tag, value): Bot` — first bot matching tag/value
+- `getBots(tag, value): Bot[]` — all bots matching tag/value; also accepts filter functions
+- `setTag(bot, tag, value): void` — set a tag on bot(s)
+- `getTag(bot, tag): any` — read a tag value
+- `removeTags(bot, tagPrefix): void` — remove tags by prefix string or regex
+- `getSnapshot(bot): BotsState` — snapshot of bot state (for rollback diffs)
+- `diffSnapshots(after, before): PartialBotsState` — compute diff between snapshots
+
+**Filters (for getBots):**
+- `byTag(tag, value?)` — match tag value or existence
+- `inDimension(dim)` — bots in a dimension
+- `atPosition(dim, x, y)` — bots at grid position
+- `inStack(bot, dim)` — bots in same stack
+- `not(filter)` / `either(...filters)` — negate or OR filters
+
+**Messaging:**
+- `shout(eventName, arg?): any[]` — broadcast to all bots
+- `whisper(bot, eventName, arg?): any[]` — send to specific bot(s)
+
+**UI:**
+- `os.toast(message, duration?)` — brief notification
+- `os.showInput(currentValue?, options?): Promise<string>` — text input dialog
+- `os.showConfirm(options): Promise<boolean>` — confirm/cancel dialog
+- `os.tip(message, pixelX?, pixelY?, duration?): Promise<number>` — tooltip at position
+- `os.focusOn(botOrPosition, options?): Promise<void>` — move camera to bot/position
+- `os.goToDimension(dim)` — navigate player to dimension
+- `os.showUploadFiles(): Promise<UploadedFile[]>` — file picker dialog
+- `os.download(data, filename, mimeType?)` — trigger file download
+
+**Animation:**
+- `animateTag(bot, tag, options): Promise<void>` — animate tag value over time (options: `fromValue`, `toValue`, `duration` ms, `easing`)
+- `clearAnimations(bot, tag?)` — cancel active animations
+
+**Utilities:**
+- `uuid(): string` — generate random UUID
+- `os.sleep(ms): Promise<void>` — pause execution
+- `changeState(bot, stateName, groupName?)` — switch bot state: sets `[groupName]` tag to `stateName` (default group `"state"`) and whispers `@[groupName][oldState]OnExit` then `@[groupName][newState]OnEnter` to the bot
+- `DateTime` — Luxon DateTime class (available globally)
+
+**Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelSize`, `labelPosition` (top/front/floating/left/right), `progressBar`, `progressBarColor`
+
+**Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
+
+**Common listener tags:** `onClick`, `onDrop`, `onDrag`, `onDragAny`, `onCreate`, `onDestroy`, `onPointerEnter`, `onPointerExit`, `onPointerDown`, `onPointerUp`, `onKeyDown`, `onKeyUp`, `onKeyRepeat`, `onBotAdded` (whispered when bot is added to local inst — fires after scripts finish, unlike `onCreate` which fires immediately), `onBotChanged` (whispered when any tag on the bot is updated — fires once after scripts finish even if multiple tags changed), `onInstJoined` (shouted when inst is fully loaded — all bots in all spaces are available, safe to query the entire inst). You can also define custom listener tags with any name (e.g. `onPing`) and trigger them via `shout('onPing')` or `whisper(bot, 'onPing')`.
+
+**Listener `that` argument shapes:**
+- `onClick`: `{ face: 'left'|'right'|'front'|'back'|'top'|'bottom', dimension: string, uv: Vector2, modality: 'mouse'|'touch'|'controller'|'finger', buttonId: 'left'|'middle'|'right' }`
+- `onDrop`: `{ bot: Bot, to: { bot: Bot, x, y, dimension }, from: { x, y, dimension } }`
+- `onDrag`: `{ bot: Bot, face: string, from: { x, y, dimension }, uv: Vector2 }`
+- `onPointerEnter/Exit/Down/Up`: `{ bot: Bot, dimension: string, modality: string, buttonId: string }`
+- `onKeyDown/KeyUp/KeyRepeat`: `{ keys: string[] }` — keyboard keys involved (e.g. `'ArrowLeft'`, `' '`, `'w'`) — uses `KeyboardEvent.key` values
+- `onBotChanged`: `{ tags: string[] }` — names of the tags that changed
+- `@[groupName][stateName]OnEnter` / `OnExit`: `{ from: string, to: string }` — state transition (triggered by `changeState`)
+- `onCreate`, `onDestroy`, `onBotAdded`: no `that` argument
 
 ## makeTodos
 Create todo task bots for agent bots to execute asynchronously. Use when the request involves multiple distinct sub-tasks.
@@ -129,24 +187,7 @@ Response:
 [{ "function": { "name": "chat", "args": { "message": "The sky is blue." } } }]
 ```
 
-## Example 2: Create a bot at a grid position → chat + makePatch
-
-```
-<context>
-  <focus>{"type":"grid","dimension":"nest","x":1,"y":2}</focus>
-</context>
-<message>Make a red bot here that toasts hello when clicked</message>
-```
-
-Response:
-```json
-[
-  { "function": { "name": "chat", "args": { "message": "Creating a red bot at (1, 2) in nest." } } },
-  { "function": { "name": "makePatch", "args": { "code": "ab.log('Created red bot at (1, 2) in nest');\nconst bot = create({ nest: true, nestX: 1, nestY: 2, color: 'red', onClick: '@ os.toast(\\'hello\\');' });\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } }
-]
-```
-
-## Example 3: Modify a focused bot → makePatch
+## Example 2: Modify a focused bot → makePatch
 
 ```
 <context>
@@ -163,7 +204,7 @@ Response:
 ]
 ```
 
-## Example 4: Need to inspect existing bots → getInst first
+## Example 3: Need to inspect existing bots → getInst first
 
 ```
 <context>
@@ -184,39 +225,70 @@ After getInst result is injected, response (turn 2):
 ]
 ```
 
-## Example 5: Complex multi-task request → makeTodos
+## Example 4: Bot that spawns a copy of itself with inherited behavior → makePatch
+
+```
+<context>
+  <focus>{"type":"grid","dimension":"home","x":-6,"y":9}</focus>
+</context>
+<message>make a bot that when clicked creates a new bot on top of it with a random color. the new bot should also have this behaviour so that you can stack bots forever.</message>
+```
+
+Response:
+```json
+[
+  { "function": { "name": "chat", "args": { "message": "Creating a stacking spawner bot at (-6, 9) in home. Each click spawns a colored copy on top with the same behavior." } } },
+  { "function": { "name": "makePatch", "args": { "code": "ab.log('Creating stacking spawner bot');\n\nconst dim = 'home';\nconst x = -6;\nconst y = 9;\n\nconst behavior = ListenerString(() => {\n  const dim = thisBot.tags.stackDimension ?? 'home';\n  const x = thisBot.tags[dim + 'X'] ?? 0;\n  const y = thisBot.tags[dim + 'Y'] ?? 0;\n  const z = thisBot.tags[dim + 'Z'] ?? 0; // CasualOS is z-up\n\n  const colors = ['red','orange','yellow','green','cyan','blue','purple','magenta','pink','brown','white','black','gray'];\n  const color = colors[Math.floor(Math.random() * colors.length)];\n\n  const bot = create({\n    [dim]: true,\n    [dim + 'X']: x,\n    [dim + 'Y']: y,\n    [dim + 'Z']: z + 1,\n    color,\n    label: 'Stack',\n    stackDimension: dim,\n    onClick: thisBot.tags.onClick\n  });\n\n  os.toast('Spawned: ' + color);\n});\n\nconst root = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  [dim + 'Z']: 0,\n  color: 'white',\n  label: 'Stack Spawner',\n  stackDimension: dim,\n  onClick: behavior\n});\n\nreturn [{ botId: root.id, created: true, rollbackDiff: null }];" } } }
+]
+```
+
+## Example 5: Stateful bot that modifies itself on click → makePatch
 
 ```
 <context>
   <focus>{"type":"grid","dimension":"home","x":0,"y":0}</focus>
 </context>
-<message>Build a dashboard with a title panel, a user count display, and a data chart</message>
+<message>Make a counter bot here that increments and shows its count when clicked</message>
 ```
 
 Response:
 ```json
 [
-  { "function": { "name": "chat", "args": { "message": "Breaking this into 3 tasks for the agent to build each panel." } } },
-  { "function": { "name": "makeTodos", "args": { "todos": [
-    { "prompt": "Create a title panel bot at the top of the dashboard in the home dimension at position (0, 0)", "label": "Title Panel" },
-    { "prompt": "Create a user count display bot in the home dimension at position (1, 0)", "label": "User Count" },
-    { "prompt": "Create a data chart bot in the home dimension at position (2, 0)", "label": "Data Chart" }
-  ] } } }
+  { "function": { "name": "chat", "args": { "message": "Creating a counter bot at (0, 0) in home." } } },
+  { "function": { "name": "makePatch", "args": { "code": "ab.log('Creating counter bot');\n\nconst dim = 'home';\nconst x = 0;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'blue',\n  label: '0',\n  count: 0,\n  onClick: ListenerString(() => {\n    const next = (thisBot.tags.count ?? 0) + 1;\n    setTag(thisBot, 'count', next);\n    setTag(thisBot, 'label', String(next));\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } }
 ]
 ```
 
-## Example 6: Create bots near multiple focused bots → makePatch
+## Example 6: Async listener using await → makePatch
 
 ```
 <context>
-  <focus>{"type":"multipleBots","ids":["a","b","c"],"dimension":"home"}</focus>
+  <focus>{"type":"grid","dimension":"home","x":2,"y":0}</focus>
 </context>
-<message>Add a label bot above each of these</message>
+<message>Make a bot here that lets me rename it by clicking on it</message>
 ```
 
 Response:
 ```json
 [
-  { "function": { "name": "makePatch", "args": { "code": "ab.log('Added label bots above each target');\nconst ids = ['a', 'b', 'c'];\nconst results = [];\nfor (const id of ids) {\n  const target = getBot('id', id);\n  const label = create({\n    home: true,\n    homeX: target.tags.homeX,\n    homeY: (target.tags.homeY ?? 0) + 1,\n    label: 'Label',\n    color: 'white',\n  });\n  results.push({ botId: label.id, created: true, rollbackDiff: null });\n}\nreturn results;" } } }
+  { "function": { "name": "chat", "args": { "message": "Creating a self-renaming bot at (2, 0) in home." } } },
+  { "function": { "name": "makePatch", "args": { "code": "ab.log('Creating rename bot');\n\nconst dim = 'home';\nconst x = 2;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'green',\n  label: 'Click to rename',\n  onClick: ListenerString(async () => {\n    const name = await os.showInput(thisBot.tags.label, { placeholder: 'Enter a new name' });\n    if (name != null) {\n      setTag(thisBot, 'label', name);\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } }
+]
+```
+
+## Example 7: Bot-to-bot communication via shout → makePatch
+
+```
+<context>
+  <focus>{"type":"grid","dimension":"home","x":0,"y":0}</focus>
+</context>
+<message>Make two bots here — one that pings and one that lights up when pinged</message>
+```
+
+Response:
+```json
+[
+  { "function": { "name": "chat", "args": { "message": "Creating a Ping button at (0, 0) and a Receiver at (2, 0) in home." } } },
+  { "function": { "name": "makePatch", "args": { "code": "ab.log('Creating ping broadcaster and receiver');\n\nconst dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];" } } }
 ]
 ```

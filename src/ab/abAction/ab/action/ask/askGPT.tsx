@@ -252,13 +252,20 @@ const functionCalls = parseFunctionCalls(response);
 // ── Legacy fallback ─────────────────────────────────────────────────────
 
 if (functionCalls === null) {
-    // Response is raw code (e.g. a runtime-loaded old-format prompt is in use)
+    // Response is did not contain detectable function calls. Attempting to extract code from response for patch bot.
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] Response is did not contain detectable function calls. Attempting to extract code from response for patch bot. Response:`, response);
+    }
     const extractedCode = extractCode(response);
     await spawnPatchBot(extractedCode);
     return;
 }
 
 // ── Handle getInst ──────────────────────────────────────────────────────
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] parsed functions calls:`, functionCalls);
+}
 
 const hasGetInst = functionCalls.some(fc => fc.function.name === 'getInst');
 

@@ -133,7 +133,7 @@ patchResults.push({
 - `os.showUploadFiles(): Promise<UploadedFile[]>` — file picker dialog
 
 **Animation:**
-- `animateTag(bot, tag, options): Promise<void>` — animate tag value over time (options: `fromValue`, `toValue`, `duration` ms, `easing`)
+- `animateTag(bot, tag, options): Promise<void>` — animate tag value over time (options: `fromValue`, `toValue`, `duration` seconds, `easing`)
 - `clearAnimations(bot, tag?)` — cancel active animations
 
 **Utilities:**

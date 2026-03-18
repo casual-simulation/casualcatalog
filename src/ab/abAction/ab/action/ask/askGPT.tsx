@@ -61,7 +61,7 @@ const patchBotDimension = that.abDimension ?? ab.links.remember.tags.abActiveDim
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
 const conversationHistory: AIChatMessage[] = that.conversationHistory ?? [];
 const callDepth: number = that.callDepth ?? 0;
-const agentMode: string | undefined = that.mode;
+const agentMode: string | undefined = that.agentMode ?? 'build';
 
 const MAX_CALL_DEPTH = 5;
 

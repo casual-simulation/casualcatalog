@@ -169,7 +169,7 @@ To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
 - `onKeyDown/KeyUp/KeyRepeat`: `{ keys: string[] }` — keyboard keys involved (e.g. `'ArrowLeft'`, `' '`, `'w'`) — uses `KeyboardEvent.key` values
 - `onBotChanged`: `{ tags: string[] }` — names of the tags that changed
 - `@[groupName][stateName]OnEnter` / `OnExit`: `{ from: string, to: string }` — state transition (triggered by `changeState`)
-- `onGridClick`: `{ position: { x: number, y: number }, dimension: string, modality: 'mouse'|'touch'|'controller'|'finger', hand: 'left'|'right', finger: 'index'|'middle'|'ring'|'pinky'|'thumb'|'unknown', buttonId: 'left'|'middle'|'right' }`
+- `onGridClick`: `{ position: { x: number, y: number }, dimension: string, modality: 'mouse'|'touch'|'controller'|'finger', buttonId: 'left'|'middle'|'right' }`
 - `onCreate`, `onDestroy`, `onBotAdded`: no `that` argument
 
 ## makeTodos

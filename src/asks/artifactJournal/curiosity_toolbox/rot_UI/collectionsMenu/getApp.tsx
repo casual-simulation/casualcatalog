@@ -20,7 +20,7 @@ function getItems() {
                     <span>{(numFound > 0) ? collectionData.Name : "Undiscovered"}</span>
                     <div className="collectionsM-progressbar">
                         <div id={numFound > 0 ? "collectionsM-progressbar-" + Math.round(numFound/artifactBot.tags.collectableAmounts[i] * 10) : "collectionsM-progressbar-0"}>
-                            {(numFound > 0) ? numFound + "/" + artifactBot.tags.collectableAmounts[1] : "?/?"}
+                            {(numFound > 0) ? numFound + "/" + artifactBot.tags.collectableAmounts[i] : "?/?"}
                         </div>
                     </div>
                 </button>)

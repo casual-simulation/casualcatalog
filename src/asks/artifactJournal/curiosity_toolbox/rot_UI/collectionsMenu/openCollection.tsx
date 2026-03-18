@@ -4,7 +4,7 @@ let artifactData = getBot(byTag("artifactJournal", true));
 let saveLoad = getBot(byTag("name", "saveload"));
 
 let numFound = 0;
-for (let id of artifactData.tags.collectableIDs[i]){
+for (let id of artifactData.tags.collectableIDs[that]){
     if (artifactData.tags.userData.collectedArtifacts.find(item => item.id == id)?.state == "collected") numFound++;
 }
 

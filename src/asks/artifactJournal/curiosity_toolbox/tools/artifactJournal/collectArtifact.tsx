@@ -35,3 +35,5 @@ if (tags.currentRegisteredApp) {
     tags.currentRegisteredApp = null;
 }
 infoBot.openApp();
+
+thisBot.saveData();

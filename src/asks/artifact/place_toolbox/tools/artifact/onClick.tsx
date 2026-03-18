@@ -181,15 +181,15 @@ if (!tags.artifactLocked) {
     ab.links.menu.abCreateMenuButton(lockButton);
 
 } else {
-    ab.links.menu.abCreateMenuText(nameTag);
-    if (tags.artifactDescription) {
-        ab.links.menu.abCreateMenuText(descTag);
-    }
-    if (tags.artifactYear) {
-        ab.links.menu.abCreateMenuText(yearTag);
-    }
-    if (tags.artifactLink) {
-       ab.links.menu.abCreateMenuButton(visitLinkButton); 
-    }
+    // ab.links.menu.abCreateMenuText(nameTag);
+    // if (tags.artifactDescription) {
+    //     ab.links.menu.abCreateMenuText(descTag);
+    // }
+    // if (tags.artifactYear) {
+    //     ab.links.menu.abCreateMenuText(yearTag);
+    // }
+    // if (tags.artifactLink) {
+    //    ab.links.menu.abCreateMenuButton(visitLinkButton); 
+    // }
     ab.links.menu.abCreateMenuButton(collectButton);
 }

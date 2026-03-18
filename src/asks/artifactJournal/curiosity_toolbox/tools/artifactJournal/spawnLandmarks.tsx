@@ -6,7 +6,7 @@ for (let i = 0; i < tags.landmarkData.length; i++) {
     const abArtifactShard = {
         data: {
             label: data.Name,
-            landmarkDescription: data.Description,
+            landmarkDesc: data.Description,
             landmarkLocked: true,
             landmarkName: data.Name,
             landmarkID: tags.landmarkData[i].id,

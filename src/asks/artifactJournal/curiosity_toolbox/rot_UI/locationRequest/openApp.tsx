@@ -1,4 +1,7 @@
-// os.unregisterApp("locationApp");
+let journal = getBot(byTag("artifactJournal", true));
+os.unregisterApp(journal.tags.currentRegisteredApp ?? "locationApp");
+
+journal.tags.currentRegisteredApp = "locationApp";
 os.registerApp("locationApp", thisBot);
 
 console.log("[RoT] Opening App: " + that)
@@ -15,9 +18,6 @@ if (playerBot) {
 }
 
 let menu = that
-
-let journal = getBot(byTag("artifactJournal", true));
-journal.tags.currentRegisteredApp = "locationApp";
 
 const App = thisBot.getApp(menu);
 

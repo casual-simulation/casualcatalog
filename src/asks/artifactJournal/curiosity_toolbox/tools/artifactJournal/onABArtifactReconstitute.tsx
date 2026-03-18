@@ -5,10 +5,7 @@ tags.userData = data.userData;
 tags.continueLocationPull = false;
 
 if (!data.userData) {
-    tags.userData = {
-        discoveredLandmarks: [],
-        collectedArtifacts: []
-    }
+    thisBot.getUserData();
 }
 
 if (data.dimensionData) {

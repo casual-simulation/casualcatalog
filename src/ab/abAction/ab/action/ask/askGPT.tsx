@@ -47,11 +47,6 @@ function isBot(value) {
 
 sanitizeBotReferences(that);
 
-// that.historyStorageBot is now a bot ID string (or undefined) after sanitization
-const historyBot = that.historyStorageBot
-    ? getBot('id', that.historyStorageBot)
-    : undefined;
-
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, that);
 }
@@ -64,10 +59,11 @@ const abDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension
 const abPosition = that.abPosition ?? ab.links.remember.tags[abDimension + 'ABLastPosition'];
 const patchBotDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
-const storedHistory: AIChatMessage[] = historyBot ? thisBot.abConversationHistoryGet({ historyStorageBot: historyBot }) : [];
 const hasInquiry = that.inquiry != null;
 const callDepth: number = that.callDepth ?? 0;
 const agentMode: string | undefined = that.agentMode ?? 'build';
+const historyStorageBot = that.historyStorageBot ? getBot('id', that.historyStorageBot) : undefined;
+const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversationHistoryGet({ historyStorageBot }) : [];
 
 const MAX_CALL_DEPTH = 5;
 
@@ -119,12 +115,15 @@ function getInstBots() {
  * Returns null if the response is not valid JSON (signals legacy code fallback).
  */
 function parseFunctionCalls(response) {
-    // Sanitize invalid JSON escape sequences that models sometimes emit.
-    // \' is not a valid JSON escape — single quotes need no escaping in JSON strings.
-    const trimmed = response.trim().replace(/\\'/g, "'");
-    if (!trimmed.startsWith('[')) return null;
+    // Find the outermost [...] array — handles markdown fences and extra prose before/after the JSON.
+    const start = response.indexOf('[');
+    const end = response.lastIndexOf(']');
+    if (start === -1 || end <= start) return null;
+    // Sanitize invalid JSON escapes (\' is not valid JSON).
+    const extracted = response.slice(start, end + 1);
+    const sanitized = extracted.replace(/\\'/g, "'");
     try {
-        const parsed = JSON.parse(trimmed);
+        const parsed = JSON.parse(sanitized);
         if (!Array.isArray(parsed)) return null;
         for (const item of parsed) {
             if (!item?.function || typeof item.function.name !== 'string') return null;
@@ -132,14 +131,6 @@ function parseFunctionCalls(response) {
         }
         return parsed;
     } catch (e) {
-        // Retry: strip markdown fences and try again (some models wrap JSON in fences)
-        const stripped = extractCode(trimmed);
-        if (stripped !== trimmed && stripped.startsWith('[')) {
-            try {
-                const parsed = JSON.parse(stripped);
-                if (Array.isArray(parsed)) return parsed;
-            } catch (_) { }
-        }
         return null;
     }
 }
@@ -283,22 +274,24 @@ if (hasGetInst) {
     const instBots = getInstBots();
     const getInstUserMessage = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n  <functionResult name="getInst">${JSON.stringify(instBots)}</functionResult>\n</context>`;
 
-    // Save history including the assistant's getInst call and the result.
-    // The recursive call will use storedHistory directly (no new user message).
-    thisBot.abConversationHistorySave({
-        historyStorageBot: historyBot,
-        history: [
-            ...aiChatMessages,
-            { role: 'assistant', content: [{ text: response }] },
-            { role: 'user', content: [{ text: getInstUserMessage }] },
-        ]
-    })
+    if (historyStorageBot) {
+        // Save history including the assistant's getInst call and the result.
+        // The recursive call will use storedHistory directly (no new user message).
+        thisBot.abConversationHistorySave({
+            historyStorageBot,
+            history: [
+                ...aiChatMessages,
+                { role: 'assistant', content: [{ text: response }] },
+                { role: 'user', content: [{ text: getInstUserMessage }] },
+            ]
+        })
+    }
 
     // Fire next turn as a new event-driven askGPT call (not a loop)
     await thisBot.askGPT({
         ...that,
         inquiry: undefined,
-        historyStorageBot: historyBot,
+        historyStorageBot,
         callDepth: callDepth + 1,
     });
     return;
@@ -306,14 +299,16 @@ if (hasGetInst) {
 
 // ── Execute action functions ────────────────────────────────────────────
 
-// Save immediately before executing — history is persisted even if execution throws
-thisBot.abConversationHistorySave({
-    historyStorageBot: historyBot,
-    history: [
-        ...aiChatMessages,
-        { role: 'assistant', content: [{ text: response }] }
-    ]
-})
+if (historyStorageBot) {
+    // Save immediately before executing — history is persisted even if execution throws
+    thisBot.abConversationHistorySave({
+        historyStorageBot,
+        history: [
+            ...aiChatMessages,
+            { role: 'assistant', content: [{ text: response }] }
+        ]
+    })
+}
 
 for (const fc of functionCalls) {
     const { name, args } = fc.function;

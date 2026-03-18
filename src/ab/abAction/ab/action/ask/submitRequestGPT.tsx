@@ -5,6 +5,7 @@ const {
     inquiry,
     model,
     sourceId,
+    messages,
 } = that ?? {};
 
 if (tags.debug) {
@@ -41,30 +42,38 @@ const aiChatOptions: AIChatOptions = {
     preferredModel: model ?? links.personality.tags.abPreferredAIModel
 }
 
-const aiChatMessages: AIChatMessage[] = [];
+let aiChatMessages: AIChatMessage[];
 
-aiChatMessages.push({
-    role: 'system',
-    content: [
-        { text: prompt ? prompt : tags.prompt_core }
-    ]
-})
+if (messages && messages.length > 0) {
+    // Multi-turn: use the provided message history as-is (built by askGPT)
+    aiChatMessages = messages;
+} else {
+    // Legacy single-turn path: build the standard [system, warmup, user] array
+    aiChatMessages = [];
 
-// The following assistant message is a hard requirement for Google Gemini models - that the "model" / "assistant" have a message before the "user" does.
-// It doesnt really hurt to do this for all the ai models though.
-aiChatMessages.push({
-    role: 'assistant',
-    content: [
-        { text: `Thank you for that very detailed and clear explanation of the required deliverable. I will make sure to give you code that meets your expectation while making sure that the Hard Requirements are fulfilled the Hard Requirements! What would you like to ask me?` }
-    ]
-})
+    aiChatMessages.push({
+        role: 'system',
+        content: [
+            { text: prompt ? prompt : tags.prompt_core }
+        ]
+    })
 
-aiChatMessages.push({
-    role: 'user',
-    content: [
-        { text: inquiry }
-    ]
-})
+    // The following assistant message is a hard requirement for Google Gemini models - that the "model" / "assistant" have a message before the "user" does.
+    // It doesnt really hurt to do this for all the ai models though.
+    aiChatMessages.push({
+        role: 'assistant',
+        content: [
+            { text: `Thank you for that very detailed and clear explanation of the required deliverable. I will make sure to give you code that meets your expectation while making sure that the Hard Requirements are fulfilled the Hard Requirements! What would you like to ask me?` }
+        ]
+    })
+
+    aiChatMessages.push({
+        role: 'user',
+        content: [
+            { text: inquiry }
+        ]
+    })
+}
 
 if (!links.menu) {
     await links.learn.abAdapt('abInterface');

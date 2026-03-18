@@ -6,6 +6,7 @@ const inquiryHasSpace = inquiry.indexOf(" ") !== -1;
 const menuBots = getBots(configBot.tags.menuPortal, true);
 const isChannel = that.isChannel ?? false;
 const isUUAB = that.isUUAB ?? false;
+const agentMode = that.agentMode ?? 'build';
 
 whisper(menuBots, "abMenuRefresh");
 
@@ -105,6 +106,6 @@ else if (!inquiryHasSpace) {
             ab.links.sound.abPlaySound({ value: ab.links.remember.tags.abThinkingSound});
         }
         
-        await thisBot.askGPT({ inquiry: inquiry, prompt: menu, data: that, sourceId: 'abBot' });
+        await thisBot.askGPT({ inquiry: inquiry, prompt: menu, agentMode, data: that, sourceId: 'abBot', historyStorageBot: ab.links.remember });
     }
 }

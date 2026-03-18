@@ -1,3 +1,5 @@
+import { AIChatMessage } from 'casualos';
+
 if (authBot.tags.privacyFeatures.allowAI == false) {
     const aiMessage = links.remember.tags.ai_rejection_message ?? "AI not authorized for this account";
     links.utils.abLogAndToast({ message: aiMessage });
@@ -13,34 +15,34 @@ if (authBot.tags.privacyFeatures.allowAI == false) {
  * Recursively processes nested objects and arrays.
  */
 function sanitizeBotReferences(obj) {
-  if (obj == null || typeof obj !== 'object') return;
+    if (obj == null || typeof obj !== 'object') return;
 
-  for (const [key, value] of Object.entries(obj)) {
-    if (isBot(value)) {
-      obj[key] = value.id;
-    } else if (Array.isArray(value)) {
-      for (let i = 0; i < value.length; i++) {
-        if (isBot(value[i])) {
-          value[i] = value[i].id;
-        } else if (value[i] != null && typeof value[i] === 'object' && !Array.isArray(value[i])) {
-          sanitizeBotReferences(value[i]);
+    for (const [key, value] of Object.entries(obj)) {
+        if (isBot(value)) {
+            obj[key] = value.id;
+        } else if (Array.isArray(value)) {
+            for (let i = 0; i < value.length; i++) {
+                if (isBot(value[i])) {
+                    value[i] = value[i].id;
+                } else if (value[i] != null && typeof value[i] === 'object' && !Array.isArray(value[i])) {
+                    sanitizeBotReferences(value[i]);
+                }
+            }
+        } else if (typeof value === 'object' && value !== null) {
+            sanitizeBotReferences(value);
         }
-      }
-    } else if (typeof value === 'object' && value !== null) {
-      sanitizeBotReferences(value);
     }
-  }
 }
 
 function isBot(value) {
-  return (
-    value != null &&
-    typeof value === 'object' &&
-    !Array.isArray(value) &&
-    'id' in value &&
-    'tags' in value &&
-    'space' in value
-  );
+    return (
+        value != null &&
+        typeof value === 'object' &&
+        !Array.isArray(value) &&
+        'id' in value &&
+        'tags' in value &&
+        'space' in value
+    );
 }
 
 sanitizeBotReferences(that);
@@ -50,72 +52,114 @@ if (tags.debug) {
 }
 
 const originalUserInquiry = that.inquiry ?? that;
-const prompt = !that.prompt ? tags.prompt_core : tags["prompt_" + that.prompt];
-const abBot = that.abBot ? getBot('id', that.abBot) : links.manifestation.links.abBot; // Allow custom ab bot to be passed.
+const prompt = tags.prompt_system ?? tags.prompt_core;
+const abBot = that.abBot ? getBot('id', that.abBot) : links.manifestation.links.abBot;
 const sourceId = that.sourceId ?? uuid();
-const abDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension; // Allow custom ab dimension to be passed.
-const abPosition = that.abPosition ?? ab.links.remember.tags[abDimension + 'ABLastPosition']; // Allow custom ab position to be passed.
+const abDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
+const abPosition = that.abPosition ?? ab.links.remember.tags[abDimension + 'ABLastPosition'];
 const patchBotDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
+const hasInquiry = that.inquiry != null;
+const callDepth: number = that.callDepth ?? 0;
+const agentMode: string | undefined = that.agentMode ?? 'build';
+const historyStorageBot = that.historyStorageBot ? getBot('id', that.historyStorageBot) : undefined;
+const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversationHistoryGet({ historyStorageBot }) : [];
 
-links.utils.abLog({ message: `thinking about: "${originalUserInquiry}"` });
-links.manifestation.abBotChat({ bot: abBot, message: `thinking about: "${originalUserInquiry}"` });
+const MAX_CALL_DEPTH = 5;
 
-let inquiry = `INPUT: ${originalUserInquiry}`;
-
-if (that.prompt == "grid") {
-    inquiry += `\nPOSITION: { dimension: "${that.data.dimension}", x: ${that.data.dimensionX}, y: ${that.data.dimensionY} }`;
-
-} else if (that.prompt == "bot") {
-    const targetBot = { id: that.data.bot, dimension: abDimension };
-    inquiry += `\nTARGET_BOT: ${JSON.stringify(targetBot, undefined, 2)}`;
-
-} else if (that.prompt == "multipleBot") {
-    const targetBots = [];
-    for (let id of that.data.bots) {
-        if (id) {
-            targetBots.push({ id, dimension: abDimension })
-        }
-    }
-    inquiry += `\nTARGET_BOTS: ${JSON.stringify(targetBots, undefined, 2)}`;
-
-} else if (that.prompt == "core") {
-    inquiry += `\nTARGET_DIMENSION: ${abDimension}`;
+if (callDepth >= MAX_CALL_DEPTH) {
+    links.utils.abLog({ message: 'AI call depth limit reached' });
+    return;
 }
 
-// Create a bot that signals (locally) when calls to ai have begun and ended.
+if (callDepth === 0) {
+    links.utils.abLog({ message: `thinking...` });
+    links.manifestation.abBotChat({ bot: abBot, message: `thinking...` });
+}
 
-const response = await thisBot.submitRequestGPT({ inquiry: inquiry, prompt: prompt, model: that.model, sourceId });
+// ── Inner helpers ───────────────────────────────────────────────────────
 
-if (response) {
-    if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] raw submitRequestGPT response:\n`, response);
+/**
+ * Builds the <focus> context block from the that.prompt + that.data context.
+ */
+function buildFocusContext() {
+    if (that.prompt === 'bot' && that.data?.bot) {
+        return { type: 'bot', id: that.data.bot, dimension: abDimension };
+    } else if (that.prompt === 'grid' && that.data?.dimension) {
+        return { type: 'grid', dimension: that.data.dimension, x: that.data.dimensionX ?? 0, y: that.data.dimensionY ?? 0 };
+    } else if (that.prompt === 'multipleBot' && that.data?.bots?.length) {
+        return { type: 'multipleBots', ids: that.data.bots.filter(Boolean), dimension: abDimension };
+    } else {
+        return { type: 'dimension', dimension: abDimension };
     }
+}
 
-    /**
-     * Extracts code content from an LLM response, stripping markdown
-     * code fences and language tags if present. If no fenced code block
-     * is found, returns the trimmed response as-is.
-     */
-    function extractCode(response) {
-      const match = response.match(/```(?:\w*)\s*\n([\s\S]*?)```/);
-      return match ? match[1].trim() : response.trim();
+/**
+ * Returns bots in the inst that are:
+ * 1. are in the shared space
+ * 2. NOT ab bots
+ * 3. NOT ignored by ab.
+ */
+function getInstBots() {
+    const bots = getBots((b) => {
+        return b.space === 'shared' &&
+               !b.tags.abBot &&
+               !b.tags.abIgnore
+    });
+
+    return bots;
+}
+
+/**
+ * Parses a JSON function call array from an AI response string.
+ * Returns null if the response is not valid JSON (signals legacy code fallback).
+ */
+function parseFunctionCalls(response) {
+    // Find the outermost [...] array — handles markdown fences and extra prose before/after the JSON.
+    const start = response.indexOf('[');
+    const end = response.lastIndexOf(']');
+    if (start === -1 || end <= start) return null;
+    // Sanitize invalid JSON escapes (\' is not valid JSON).
+    const extracted = response.slice(start, end + 1);
+    const sanitized = extracted.replace(/\\'/g, "'");
+    try {
+        const parsed = JSON.parse(sanitized);
+        if (!Array.isArray(parsed)) return null;
+        for (const item of parsed) {
+            if (!item?.function || typeof item.function.name !== 'string') return null;
+            item.function.args = item.function.args ?? {};
+        }
+        return parsed;
+    } catch (e) {
+        return null;
     }
+}
 
-    let extractedCode = extractCode(response);
-    
-    links.utils.abLog({ message: `[generated code]:\n${extractedCode}` });
+/**
+ * Extracts code content from an LLM response, stripping markdown
+ * code fences and language tags if present.
+ */
+function extractCode(response) {
+    const match = response.match(/```(?:\w*)\s*\n([\s\S]*?)```/);
+    return match ? match[1].trim() : response.trim();
+}
+
+/**
+ * Spawns a patch bot with the given code.
+ */
+async function spawnPatchBot(code) {
+    links.utils.abLog({ message: `[generated code]:\n${code}` });
 
     const eggParameters = {
-        patchCode: extractedCode,
+        patchCode: code,
         askInput: that,
         dimension: patchBotDimension,
         position: patchBotPosition,
         alwaysApprove: false,
-    }
+    };
 
     const patchBotTemplate = getBot(b => b.tags.abPatchBot && !b.tags.abPatchBotIntance && !b.tags.abIgnore);
-    
+
     if (patchBotTemplate) {
         if (tags.debug) {
             console.log(`[${tags.system}.${tagName}] cloning patch bot ${patchBotTemplate.id} from template bot that was found`);
@@ -126,7 +170,7 @@ if (response) {
             botData,
             eggParameters,
             sourceEvent: 'ask_gpt',
-        })
+        });
     } else {
         await ab.links.search.onLookupAskID({
             askID: 'abPatchBot',
@@ -135,6 +179,148 @@ if (response) {
             eggParameters,
             sourceEvent: 'ask_gpt',
             ignoreReserved: true,
+        });
+    }
+}
+
+/**
+ * Creates todo bots via the artifact system.
+ */
+async function executeMakeTodos(todos) {
+    for (const todo of todos) {
+        const abArtifactShard = {
+            data: {
+                prompt: todo.prompt,
+                label: todo.label ?? todo.prompt,
+                eggParameters: {
+                    gridInformation: {
+                        dimension: abDimension ?? 'home',
+                        position: { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0 }
+                    }
+                }
+            },
+            dependencies: [{ askID: 'toDoBot' }]
+        };
+        await ab.links.artifact.abCreateArtifactPromiseBot({
+            abArtifactName: 'toDoBot',
+            abArtifactInstanceID: uuid(),
+            abArtifactShard,
+        });
+    }
+}
+
+// ── Build messages for this turn ────────────────────────────────────────
+
+let aiChatMessages: AIChatMessage[];
+// Focus is injected with every user message (fresh each turn)
+const focusJson = JSON.stringify(buildFocusContext());
+const modeXml = agentMode ? `\n  <mode>${agentMode}</mode>` : '';
+const contextBlock = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n</context>`;
+
+if (!hasInquiry && storedHistory.length > 0) {
+    // getInst continuation — history already ends with the getInst result user message
+    aiChatMessages = storedHistory;
+} else if (storedHistory.length > 0) {
+    // New user message continuing an existing session
+    aiChatMessages = [
+        ...storedHistory,
+        { role: 'user', content: [{ text: `${contextBlock}\n<message>${originalUserInquiry}</message>` }] }
+    ];
+} else {
+    // Fresh start — build full initial message structure
+    aiChatMessages = [
+        { role: 'system', content: [{ text: prompt }] },
+        { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
+        { role: 'user', content: [{ text: `${contextBlock}\n<message>${originalUserInquiry}</message>` }] },
+    ];
+}
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] sending to AI (depth ${callDepth}):`, aiChatMessages);
+}
+
+// ── Call AI ─────────────────────────────────────────────────────────────
+
+const response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model: that.model, sourceId });
+if (!response) return;
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] raw response:`, response);
+}
+
+const functionCalls = parseFunctionCalls(response);
+
+// ── Legacy fallback ─────────────────────────────────────────────────────
+
+if (functionCalls === null) {
+    // Response is did not contain detectable function calls. Attempting to extract code from response for patch bot.
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] Response is did not contain detectable function calls. Attempting to extract code from response for patch bot. Response:`, response);
+    }
+    const extractedCode = extractCode(response);
+    await spawnPatchBot(extractedCode);
+    return;
+}
+
+// ── Handle getInst ──────────────────────────────────────────────────────
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] parsed functions calls:`, functionCalls);
+}
+
+const hasGetInst = functionCalls.some(fc => fc.function.name === 'getInst');
+
+if (hasGetInst) {
+    const instBots = getInstBots();
+    const getInstUserMessage = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n  <functionResult name="getInst">${JSON.stringify(instBots)}</functionResult>\n</context>`;
+
+    if (historyStorageBot) {
+        // Save history including the assistant's getInst call and the result.
+        // The recursive call will use storedHistory directly (no new user message).
+        thisBot.abConversationHistorySave({
+            historyStorageBot,
+            history: [
+                ...aiChatMessages,
+                { role: 'assistant', content: [{ text: response }] },
+                { role: 'user', content: [{ text: getInstUserMessage }] },
+            ]
         })
+    }
+
+    // Fire next turn as a new event-driven askGPT call (not a loop)
+    await thisBot.askGPT({
+        ...that,
+        inquiry: undefined,
+        historyStorageBot,
+        callDepth: callDepth + 1,
+    });
+    return;
+}
+
+// ── Execute action functions ────────────────────────────────────────────
+
+if (historyStorageBot) {
+    // Save immediately before executing — history is persisted even if execution throws
+    thisBot.abConversationHistorySave({
+        historyStorageBot,
+        history: [
+            ...aiChatMessages,
+            { role: 'assistant', content: [{ text: response }] }
+        ]
+    })
+}
+
+for (const fc of functionCalls) {
+    const { name, args } = fc.function;
+
+    if (name === 'chat') {
+        links.utils.abLog({ message: args.message });
+        links.manifestation.abBotChat({ bot: abBot, message: args.message });
+
+    } else if (name === 'makePatch') {
+        await spawnPatchBot(args.code);
+
+    } else if (name === 'makeTodos') {
+        await executeMakeTodos(args.todos ?? []);
     }
 }

@@ -111,7 +111,9 @@ function getInstBots() {
  * Returns null if the response is not valid JSON (signals legacy code fallback).
  */
 function parseFunctionCalls(response) {
-    const trimmed = response.trim();
+    // Sanitize invalid JSON escape sequences that models sometimes emit.
+    // \' is not a valid JSON escape — single quotes need no escaping in JSON strings.
+    const trimmed = response.trim().replace(/\\'/g, "'");
     if (!trimmed.startsWith('[')) return null;
     try {
         const parsed = JSON.parse(trimmed);

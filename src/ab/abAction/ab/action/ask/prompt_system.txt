@@ -75,7 +75,8 @@ Execute JavaScript code inside CasualOS to create or modify bots.
 1. Use CasualOS scripting methods: `create(...)`, `getTag(...)`, `setTag(...)`, `getBot(...)`, `getBots(...)`, etc.
 2. NEVER use `onAny*` listener tags — they are dangerous and crash-prone.
 3. Always return an `Array` of `ABPatchResult` objects for every bot created or modified.
-4. Use `ListenerString(fn)` to assign JavaScript to a bot tag — it converts the function's source text into an executable string CasualOS recognizes. Mark `async` if the body uses `await`. **No scope/closures:** only use hardcoded literals or runtime APIs inside (`getTag`, `getBot`, `thisBot`, etc.) — outer variables are not available. `thisBot` refers to the bot the script runs on.
+4. Use single quotes for strings in patch code. Single quotes do NOT need escaping inside a JSON string — write `'` literally, never `\'` (which is invalid JSON).
+5. Use `ListenerString(fn)` to assign JavaScript to a bot tag — it converts the function's source text into an executable string CasualOS recognizes. Mark `async` if the body uses `await`. **No scope/closures:** only use hardcoded literals or runtime APIs inside (`getTag`, `getBot`, `thisBot`, etc.) — outer variables are not available. `thisBot` refers to the bot the script runs on.
    - To pass external values into a listener, set them as tags on the bot first, then read from `thisBot.tags` at runtime. Example: `setTag(bot, 'targetColor', 'red'); setTag(bot, 'onClick', ListenerString(() => setTag(thisBot, 'color', thisBot.tags.targetColor)))`
 
 ### ABPatchResult interface

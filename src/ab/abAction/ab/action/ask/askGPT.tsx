@@ -64,7 +64,7 @@ const abDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension
 const abPosition = that.abPosition ?? ab.links.remember.tags[abDimension + 'ABLastPosition'];
 const patchBotDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
-const storedHistory: AIChatMessage[] = historyBot?.tags.abConversationHistory ?? [];
+const storedHistory: AIChatMessage[] = historyBot ? thisBot.abConversationHistoryGet({ historyStorageBot: historyBot }) : [];
 const hasInquiry = that.inquiry != null;
 const callDepth: number = that.callDepth ?? 0;
 const agentMode: string | undefined = that.agentMode ?? 'build';
@@ -193,19 +193,6 @@ async function spawnPatchBot(code) {
 }
 
 /**
- * Persists conversation history to a history bot via tag mask.
- * No-op if no history bot is provided.
- */
-function saveHistoryToBot(bot: any, history: AIChatMessage[]) {
-    if (!bot) return;
-    const MAX_HISTORY_MESSAGES = 40;
-    const trimmed = history.length > MAX_HISTORY_MESSAGES
-        ? [history[0], history[1], ...history.slice(history.length - (MAX_HISTORY_MESSAGES - 2))]
-        : history;
-    setTagMask(bot, 'abConversationHistory', trimmed, 'shared');
-}
-
-/**
  * Creates todo bots via the artifact system.
  */
 async function executeMakeTodos(todos) {
@@ -298,11 +285,14 @@ if (hasGetInst) {
 
     // Save history including the assistant's getInst call and the result.
     // The recursive call will use storedHistory directly (no new user message).
-    saveHistoryToBot(historyBot, [
-        ...aiChatMessages,
-        { role: 'assistant', content: [{ text: response }] },
-        { role: 'user', content: [{ text: getInstUserMessage }] },
-    ]);
+    thisBot.abConversationHistorySave({
+        historyStorageBot: historyBot,
+        history: [
+            ...aiChatMessages,
+            { role: 'assistant', content: [{ text: response }] },
+            { role: 'user', content: [{ text: getInstUserMessage }] },
+        ]
+    })
 
     // Fire next turn as a new event-driven askGPT call (not a loop)
     await thisBot.askGPT({
@@ -317,10 +307,13 @@ if (hasGetInst) {
 // ── Execute action functions ────────────────────────────────────────────
 
 // Save immediately before executing — history is persisted even if execution throws
-saveHistoryToBot(historyBot, [
-    ...aiChatMessages,
-    { role: 'assistant', content: [{ text: response }] }
-]);
+thisBot.abConversationHistorySave({
+    historyStorageBot: historyBot,
+    history: [
+        ...aiChatMessages,
+        { role: 'assistant', content: [{ text: response }] }
+    ]
+})
 
 for (const fc of functionCalls) {
     const { name, args } = fc.function;

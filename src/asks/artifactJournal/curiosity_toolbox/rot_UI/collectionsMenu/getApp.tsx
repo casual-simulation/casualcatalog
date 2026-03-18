@@ -16,10 +16,10 @@ function getItems() {
             continue;
         }
         
-        elems.push(<button className="nb-btn collectionsM-btn" id="unlocked" onClick={numFound > 0 ? () => thisBot.openCollection(1) : () => {}}>
+        elems.push(<button className="nb-btn collectionsM-btn" id="unlocked" onClick={numFound > 0 ? () => thisBot.openCollection(i) : () => {}}>
                     <span>{(numFound > 0) ? collectionData.Name : "Undiscovered"}</span>
                     <div className="collectionsM-progressbar">
-                        <div id={numFound > 0 ? "collectionsM-progressbar-" + Math.round(numFound/artifactBot.tags.collectableAmounts[1] * 10) : "collectionsM-progressbar-0"}>
+                        <div id={numFound > 0 ? "collectionsM-progressbar-" + Math.round(numFound/artifactBot.tags.collectableAmounts[i] * 10) : "collectionsM-progressbar-0"}>
                             {(numFound > 0) ? numFound + "/" + artifactBot.tags.collectableAmounts[1] : "?/?"}
                         </div>
                     </div>

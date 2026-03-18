@@ -12,6 +12,12 @@ if (bot) {
     if (Number.isNaN(timestamp)) {
         timestamp = os.localTime;
     }
-
-    setTagMask(bot, 'abCreateTime', timestamp, 'shared');
+    
+    if (bot.space !== 'remoteTempShared') {
+        if (bot.space === 'tempLocal') {
+            setTag(bot, 'abCreateTime', timestamp);
+        } else {
+            setTagMask(bot, 'abCreateTime', timestamp, bot.space);
+        }
+    }
 }

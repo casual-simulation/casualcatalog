@@ -159,7 +159,7 @@ To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
 
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
 
-**Common listener tags:** `onClick`, `onDrop`, `onDrag`, `onCreate`, `onDestroy`, `onPointerEnter`, `onPointerExit`, `onPointerDown`, `onPointerUp`, `onKeyDown`, `onKeyUp`, `onKeyRepeat`, `onBotAdded` (whispered when bot is added to local inst — fires after scripts finish, unlike `onCreate` which fires immediately), `onBotChanged` (whispered when any tag on the bot is updated — fires once after scripts finish even if multiple tags changed), `onInstJoined` (shouted when inst is fully loaded — all bots in all spaces are available, safe to query the entire inst). You can also define custom listener tags with any name (e.g. `onPing`) and trigger them via `shout('onPing')` or `whisper(bot, 'onPing')`.
+**Common listener tags:** `onClick`, `onDrop`, `onDrag`, `onCreate`, `onDestroy`, `onPointerEnter`, `onPointerExit`, `onPointerDown`, `onPointerUp`, `onKeyDown`, `onKeyUp`, `onKeyRepeat`, `onGridClick` (shouted when the user clicks on empty grid space), `onBotAdded` (whispered when bot is added to local inst — fires after scripts finish, unlike `onCreate` which fires immediately), `onBotChanged` (whispered when any tag on the bot is updated — fires once after scripts finish even if multiple tags changed), `onInstJoined` (shouted when inst is fully loaded — all bots in all spaces are available, safe to query the entire inst). You can also define custom listener tags with any name (e.g. `onPing`) and trigger them via `shout('onPing')` or `whisper(bot, 'onPing')`.
 
 **Listener `that` argument shapes:**
 - `onClick`: `{ face: 'left'|'right'|'front'|'back'|'top'|'bottom', dimension: string, uv: Vector2, modality: 'mouse'|'touch'|'controller'|'finger', buttonId: 'left'|'middle'|'right' }`
@@ -169,6 +169,7 @@ To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
 - `onKeyDown/KeyUp/KeyRepeat`: `{ keys: string[] }` — keyboard keys involved (e.g. `'ArrowLeft'`, `' '`, `'w'`) — uses `KeyboardEvent.key` values
 - `onBotChanged`: `{ tags: string[] }` — names of the tags that changed
 - `@[groupName][stateName]OnEnter` / `OnExit`: `{ from: string, to: string }` — state transition (triggered by `changeState`)
+- `onGridClick`: `{ position: { x: number, y: number }, dimension: string, modality: 'mouse'|'touch'|'controller'|'finger', hand: 'left'|'right', finger: 'index'|'middle'|'ring'|'pinky'|'thumb'|'unknown', buttonId: 'left'|'middle'|'right' }`
 - `onCreate`, `onDestroy`, `onBotAdded`: no `that` argument
 
 ## makeTodos

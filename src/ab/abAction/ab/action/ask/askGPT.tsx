@@ -47,6 +47,11 @@ function isBot(value) {
 
 sanitizeBotReferences(that);
 
+// that.historyStorageBot is now a bot ID string (or undefined) after sanitization
+const historyBot = that.historyStorageBot
+    ? getBot('id', that.historyStorageBot)
+    : undefined;
+
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, that);
 }
@@ -59,7 +64,8 @@ const abDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension
 const abPosition = that.abPosition ?? ab.links.remember.tags[abDimension + 'ABLastPosition'];
 const patchBotDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
-const conversationHistory: AIChatMessage[] = that.conversationHistory ?? [];
+const storedHistory: AIChatMessage[] = historyBot?.tags.abConversationHistory ?? [];
+const hasInquiry = that.inquiry != null;
 const callDepth: number = that.callDepth ?? 0;
 const agentMode: string | undefined = that.agentMode ?? 'build';
 
@@ -70,8 +76,10 @@ if (callDepth >= MAX_CALL_DEPTH) {
     return;
 }
 
-links.utils.abLog({ message: `thinking about: "${originalUserInquiry}"` });
-links.manifestation.abBotChat({ bot: abBot, message: `thinking about: "${originalUserInquiry}"` });
+if (callDepth === 0) {
+    links.utils.abLog({ message: `thinking about: "${originalUserInquiry}"` });
+    links.manifestation.abBotChat({ bot: abBot, message: `thinking about: "${originalUserInquiry}"` });
+}
 
 // ── Inner helpers ───────────────────────────────────────────────────────
 
@@ -185,6 +193,19 @@ async function spawnPatchBot(code) {
 }
 
 /**
+ * Persists conversation history to a history bot via tag mask.
+ * No-op if no history bot is provided.
+ */
+function saveHistoryToBot(bot: any, history: AIChatMessage[]) {
+    if (!bot) return;
+    const MAX_HISTORY_MESSAGES = 40;
+    const trimmed = history.length > MAX_HISTORY_MESSAGES
+        ? [history[0], history[1], ...history.slice(history.length - (MAX_HISTORY_MESSAGES - 2))]
+        : history;
+    setTagMask(bot, 'abConversationHistory', trimmed, 'shared');
+}
+
+/**
  * Creates todo bots via the artifact system.
  */
 async function executeMakeTodos(todos) {
@@ -216,25 +237,23 @@ let aiChatMessages: AIChatMessage[];
 // Focus is injected with every user message (fresh each turn)
 const focusJson = JSON.stringify(buildFocusContext());
 const modeXml = agentMode ? `\n  <mode>${agentMode}</mode>` : '';
+const contextBlock = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n</context>`;
 
-if (conversationHistory.length > 0) {
-    // Continuation turn: history has prior messages; inject fresh focus into a
-    // context-only user message (no <message> — AI already has the original request)
+if (!hasInquiry && storedHistory.length > 0) {
+    // getInst continuation — history already ends with the getInst result user message
+    aiChatMessages = storedHistory;
+} else if (storedHistory.length > 0) {
+    // New user message continuing an existing session
     aiChatMessages = [
-        ...conversationHistory,
-        {
-            role: 'user',
-            content: [{ text: `<context>${modeXml}\n  <focus>${focusJson}</focus>\n</context>` }]
-        }
+        ...storedHistory,
+        { role: 'user', content: [{ text: `${contextBlock}\n<message>${originalUserInquiry}</message>` }] }
     ];
 } else {
-    // First turn: build initial messages from the user's inquiry
-    const userMessage = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n</context>\n<message>${originalUserInquiry}</message>`;
-
+    // Fresh start — build full initial message structure
     aiChatMessages = [
         { role: 'system', content: [{ text: prompt }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
-        { role: 'user', content: [{ text: userMessage }] },
+        { role: 'user', content: [{ text: `${contextBlock}\n<message>${originalUserInquiry}</message>` }] },
     ];
 }
 
@@ -275,24 +294,33 @@ const hasGetInst = functionCalls.some(fc => fc.function.name === 'getInst');
 
 if (hasGetInst) {
     const instBots = getInstBots();
-    const instJson = JSON.stringify(instBots);
+    const getInstUserMessage = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n  <functionResult name="getInst">${JSON.stringify(instBots)}</functionResult>\n</context>`;
 
-    const updatedHistory: AIChatMessage[] = [
+    // Save history including the assistant's getInst call and the result.
+    // The recursive call will use storedHistory directly (no new user message).
+    saveHistoryToBot(historyBot, [
         ...aiChatMessages,
         { role: 'assistant', content: [{ text: response }] },
-        { role: 'user', content: [{ text: `<context>\n  <functionResult name="getInst">${instJson}</functionResult>\n</context>` }] },
-    ];
+        { role: 'user', content: [{ text: getInstUserMessage }] },
+    ]);
 
     // Fire next turn as a new event-driven askGPT call (not a loop)
     await thisBot.askGPT({
         ...that,
-        conversationHistory: updatedHistory,
+        inquiry: undefined,
+        historyStorageBot: historyBot,
         callDepth: callDepth + 1,
     });
     return;
 }
 
 // ── Execute action functions ────────────────────────────────────────────
+
+// Save immediately before executing — history is persisted even if execution throws
+saveHistoryToBot(historyBot, [
+    ...aiChatMessages,
+    { role: 'assistant', content: [{ text: response }] }
+]);
 
 for (const fc of functionCalls) {
     const { name, args } = fc.function;

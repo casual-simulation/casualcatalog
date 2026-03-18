@@ -106,6 +106,6 @@ else if (!inquiryHasSpace) {
             ab.links.sound.abPlaySound({ value: ab.links.remember.tags.abThinkingSound});
         }
         
-        await thisBot.askGPT({ inquiry: inquiry, prompt: menu, agentMode, data: that, sourceId: 'abBot' });
+        await thisBot.askGPT({ inquiry: inquiry, prompt: menu, agentMode, data: that, sourceId: 'abBot', historyStorageBot: ab.links.remember });
     }
 }

@@ -1,1 +1,2 @@
 thisBot.spawnPlayer();
+thisBot.getDataFromStrapi();

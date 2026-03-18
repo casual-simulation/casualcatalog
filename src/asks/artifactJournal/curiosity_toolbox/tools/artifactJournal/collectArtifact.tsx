@@ -14,6 +14,7 @@ if (!tags.userData.collectedArtifacts.find(item => item.id == that)) {
         id: that,
         state: "collected"
     });
+    thisBot.saveData();
 }
 
 //open info menu
@@ -35,5 +36,3 @@ if (tags.currentRegisteredApp) {
     tags.currentRegisteredApp = null;
 }
 infoBot.openApp();
-
-thisBot.saveData();

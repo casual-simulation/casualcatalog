@@ -11,6 +11,6 @@ if (!that) {
 
 if (!tags.userData.discoveredLandmarks.includes(that)) {
     tags.userData.discoveredLandmarks.push(that);
+    thisBot.saveData();
 }
 
-thisBot.saveData();

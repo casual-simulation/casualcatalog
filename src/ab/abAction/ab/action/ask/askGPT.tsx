@@ -61,6 +61,7 @@ const patchBotDimension = that.abDimension ?? ab.links.remember.tags.abActiveDim
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
 const conversationHistory: AIChatMessage[] = that.conversationHistory ?? [];
 const callDepth: number = that.callDepth ?? 0;
+const agentMode: string | undefined = that.mode;
 
 const MAX_CALL_DEPTH = 5;
 
@@ -212,6 +213,7 @@ async function executeMakeTodos(todos) {
 let aiChatMessages: AIChatMessage[];
 // Focus is injected with every user message (fresh each turn)
 const focusJson = JSON.stringify(buildFocusContext());
+const modeXml = agentMode ? `\n  <mode>${agentMode}</mode>` : '';
 
 if (conversationHistory.length > 0) {
     // Continuation turn: history has prior messages; inject fresh focus into a
@@ -220,12 +222,12 @@ if (conversationHistory.length > 0) {
         ...conversationHistory,
         {
             role: 'user',
-            content: [{ text: `<context>\n  <focus>${focusJson}</focus>\n</context>` }]
+            content: [{ text: `<context>${modeXml}\n  <focus>${focusJson}</focus>\n</context>` }]
         }
     ];
 } else {
     // First turn: build initial messages from the user's inquiry
-    const userMessage = `<context>\n  <focus>${focusJson}</focus>\n</context>\n<message>${originalUserInquiry}</message>`;
+    const userMessage = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n</context>\n<message>${originalUserInquiry}</message>`;
 
     aiChatMessages = [
         { role: 'system', content: [{ text: prompt }] },

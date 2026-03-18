@@ -8,7 +8,7 @@
     text-align: center;
 
     width: min(300px, 95vw);
-    max-height: 98%;
+    max-height: 98vh;
     
     position: absolute;
     top: 50dvh;
@@ -76,6 +76,17 @@
     padding: 12px 12px 0 12px;
     flex-direction: column;
     width: 68%;
+}
+
+.collectionsM-list-container {
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: center;
+    align-items: center;
 }
 
 #locked {

@@ -8,4 +8,4 @@ const trimmed = history.length > MAX_HISTORY_MESSAGES
     ? [history[0], history[1], ...history.slice(history.length - (MAX_HISTORY_MESSAGES - 2))]
     : history;
 
-setTagMask(bot, 'abConversationHistory', trimmed, historyStorageBot.space);
+setTagMask(historyStorageBot, 'abConversationHistory', trimmed, historyStorageBot.space);

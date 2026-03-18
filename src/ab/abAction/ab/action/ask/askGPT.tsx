@@ -77,8 +77,8 @@ if (callDepth >= MAX_CALL_DEPTH) {
 }
 
 if (callDepth === 0) {
-    links.utils.abLog({ message: `thinking about: "${originalUserInquiry}"` });
-    links.manifestation.abBotChat({ bot: abBot, message: `thinking about: "${originalUserInquiry}"` });
+    links.utils.abLog({ message: `thinking...` });
+    links.manifestation.abBotChat({ bot: abBot, message: `thinking...` });
 }
 
 // ── Inner helpers ───────────────────────────────────────────────────────

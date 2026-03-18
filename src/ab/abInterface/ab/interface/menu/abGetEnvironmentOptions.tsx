@@ -264,10 +264,25 @@ if (links.gpt) {
                 destroy(thisBot);
             }
 
-            tags.label = 'edit ' + links.personality.tags.abBuilderIdentity + ' prompt'; tags.gptBot = getLink(getBot('system', 'ab.action.ask'));
+            tags.label = 'edit ' + links.personality.tags.abBuilderIdentity + ' prompt'; 
+            tags.gptBot = getLink(ab.links.ask);
         }),
         onClick: ListenerString(() => {
             links.gptBot.editPrompt();
+        }),
+    })
+
+    options.push({
+        label: `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history`,
+        formAddress: 'clear_all',
+        abEnvironmentMenuSortOrder: 650,
+        onCreate: ListenerString(() => {
+            const history = ab.links.ask.abConversationHistoryGet({ historyStorageBot: ab.links.remember }) ?? [];
+            tags.label = `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history (${history.length > 0 ? `${history.length} messages` : `empty`})`;
+        }),
+        onClick: ListenerString(() => {
+            ab.links.ask.abConversationHistoryClear({ historyStorageBot: ab.links.remember });
+            shout('abMenuRefresh');
         }),
     })
 }

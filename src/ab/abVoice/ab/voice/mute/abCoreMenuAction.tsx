@@ -9,9 +9,8 @@ if (menuBot) {
         menuBot.tags.label = "mute";
         menuBot.tags.formAddress = 'mic';
         
-        const voiceBot = getBot("system", "ab.ai.voice");
-        if (voiceBot && !voiceBot.vars.humeSocket) {
-            voiceBot.startHume();
+        if (links.voice && !links.voice.vars.humeSocket) {
+            links.voice.startHume();
         }
     }
 }

@@ -53,9 +53,8 @@ humeSocket.addEventListener('close', (event) => {
     console.warn("Hume Socket closed: ", event);
     thisBot.endHume();
 
-    const muteBot = getBot("system", "ab.ai.mute");
-    if (muteBot && !muteBot.tags.muted) {
-        muteBot.abCoreMenuAction();
+    if (links.mute && !links.mute.tags.muted) {
+        links.mute.abCoreMenuAction();
     }
 
     setTagMask(thisBot, "latestInquiry", null);

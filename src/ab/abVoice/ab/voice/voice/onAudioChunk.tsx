@@ -1,6 +1,5 @@
-const muteBot = getBot("system", "ab.ai.mute");
 let audioData;
-if (muteBot && muteBot.tags.muted && tags.sentInitChunk) {
+if (links.mute && links.mute.tags.muted && tags.sentInitChunk) {
     const silence = new Blob([new Uint8Array(that.size)], { type: 'audio/wav' });
     audioData = await blobToBase64(silence);
 } else {

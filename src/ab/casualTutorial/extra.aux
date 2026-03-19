@@ -16,8 +16,7 @@
         "scaleZ": "0.15",
         "sequence": "morePortals",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "0c3b9d13-e17a-4de4-918a-d1ad2cfaa859": {
@@ -32,8 +31,7 @@
         "pointable": "false",
         "sequence": "introDeep",
         "step": "4",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "0cc4433b-91a9-4408-824f-5c2160798c3a": {
@@ -43,8 +41,7 @@
         "help": "true",
         "label": "help",
         "onClick": "@shout(\"help\")",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "0cd622ed-9171-4f2f-abfe-daba6dee967c": {
@@ -60,8 +57,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "0d14cbac-92ba-42d7-b91b-b1fdf94d6b41": {
@@ -78,8 +74,7 @@
         "scale": "1",
         "sequence": "intro",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "0faba1bd-502e-4214-a756-72decee727da": {
@@ -99,8 +94,7 @@
         "startY": 3,
         "step": 1,
         "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "122eb8a8-d83f-4aca-a49c-b2ee15aa606d": {
@@ -115,8 +109,7 @@
         "pointable": "false",
         "sequence": "intro",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "13d793e2-dbc2-4df9-af9e-c112610d489d": {
@@ -132,8 +125,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "14fe5cab-d62e-4f83-a57a-b9373db082f0": {
@@ -156,8 +148,7 @@
         "slide": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 0.5,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0.5,\n    toValue: 0,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nif (tags.homeY == 4) {\n    await animateTag(thisBot, \"homeY\", {\n        fromValue: 4,\n        toValue: 1,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n} else {\n    await animateTag(thisBot, \"homeY\", {\n        fromValue: 1,\n        toValue: 4,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n}",
         "spin": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 0,\n    toValue: 3.14159,\n    duration: 0.5,\n    easing: {\n        type: 'cubic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 3.14159,\n    toValue: 6.28318,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'out'\n    }\n})\n",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "17df9b9b-7ef0-47da-ae9c-51fa4f5a3381": {
@@ -176,8 +167,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "18b8b5e5-5310-4da5-a41c-a244d3811610": {
@@ -192,8 +182,7 @@
         "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"color\"})",
         "sequence": "intro",
         "step": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "18e8787b-dcc5-4e57-b694-0297977a9702": {
@@ -213,8 +202,7 @@
         "startY": 4,
         "step": 1,
         "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "19e3a05e-6725-4554-9c14-1cad8ba3f7d5": {
@@ -234,8 +222,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "1bbcb363-db33-41a8-a878-9f04e01df351": {
@@ -256,8 +243,7 @@
         "scaleZ": "-0.25",
         "step1": "true",
         "type": "floor",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "1dcab76d-6852-439c-a1b1-b5e503ddfa13": {
@@ -276,8 +262,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 7,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "1e1d4f8c-23da-4bd1-ac51-f4b3d427a1a3": {
@@ -291,8 +276,7 @@
         "onClick": "@tags.color = tags.color == '#30c48d' ? '#3e82f8' : '#30c48d'",
         "sequence": "interactions",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "24688af8-b3f9-4021-8140-f14ddf86eadb": {
@@ -305,8 +289,7 @@
         "name": "purple",
         "sequence": "saving",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "250d5eab-f43c-4e19-8271-5fa49528ba36": {
@@ -326,8 +309,7 @@
         "startY": 1,
         "step": 1,
         "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "25276b2b-22da-4e00-8cca-56c75387f6a7": {
@@ -346,8 +328,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 8,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "260ff4e1-5716-4d2a-8622-16641c6c01ef": {
@@ -369,8 +350,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "274fad23-fda1-43d8-a8ca-bbca2b47ac82": {
@@ -389,8 +369,7 @@
         "scaleZ": "0.2",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "28158843-8a9c-45b7-b9f0-4eaac94c9a0d": {
@@ -405,8 +384,7 @@
         "sequence": "intro",
         "step": "2",
         "step1": "true",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "2a3f03f6-9b09-47a3-b3b5-0c3a756e9e01": {
@@ -421,8 +399,7 @@
         "onClick": "@tags.homeX = Number(tags.homeX) + 1",
         "sequence": "interactions",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "2b508f07-91e8-4ea5-871c-af10bdd1dfc7": {
@@ -441,8 +418,7 @@
         "scaleZ": "0.1",
         "sequence": "portals",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "2c10dfcb-d02e-459b-b810-d1799b11af23": {
@@ -456,8 +432,7 @@
         "onClick": "@await animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 5,\n    duration: 1\n})",
         "sequence": "interactions",
         "step": 8,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "2c40dbbd-421a-4be3-a767-c461cddd0e8a": {
@@ -472,8 +447,7 @@
         "label": "Popup \"Hey there!\"",
         "onClick": "@os.showHtml(`<h1 style=\"padding: 2rem\">Hey there!</h1>`)",
         "scaleX": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "2f8c8851-aa5f-45a2-8735-d739f225af7a": {
@@ -488,8 +462,7 @@
         "sequence": "intro",
         "step": 1,
         "step1": "true",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "300c58a2-535d-4e4c-8f7c-c1b07b064afe": {
@@ -509,8 +482,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 6,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "314efb61-3de9-4a3b-95e3-ec29765f4df9": {
@@ -524,8 +496,7 @@
         "pointable": "false",
         "sequence": "introDeep",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "33ceb378-0592-4e02-84da-5fdbbdcc3e12": {
@@ -544,8 +515,7 @@
         "scaleZ": "0.2",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "35277e04-8f63-485d-a80b-6984ceed389f": {
@@ -564,8 +534,7 @@
         "scaleZ": "0.5",
         "sequence": "introDeep",
         "step": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "36044b9e-319c-40e6-8a0f-4d8c21db3e6f": {
@@ -583,8 +552,7 @@
         "scaleZ": "0.15",
         "sequence": "morePortals",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "375b67db-c1cc-43a4-86e3-008f495c510b": {
@@ -597,8 +565,7 @@
         "name": "grey",
         "sequence": "saving",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "3aad8f33-83af-4148-a88a-3092b6cd0a4b": {
@@ -618,8 +585,7 @@
         "sequence": "portals",
         "startFloat": "@await animateTag(thisBot, \"outerSpaceZ\", {\n    fromValue: 0,\n    toValue: -1,\n    duration: 3,\n    easing: 'sinusoidal',\n})\n\nawait animateTag(thisBot, \"outerSpaceZ\", {\n    fromValue: -1,\n    toValue: 0,\n    duration: 3,\n    easing: 'sinusoidal',\n})\n\nif (tags.floating) {\n    whisper(thisBot, 'startFloat')\n}",
         "step": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "3c43104b-b6c8-4413-9f11-5601e74acac6": {
@@ -638,8 +604,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 7,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "3c980d12-2431-451b-909b-56c27e9cc325": {
@@ -660,8 +625,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "3defff70-28ae-4c19-bd4e-a71be4679d1a": {
@@ -679,8 +643,7 @@
         "onPointerUp": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05,\n})",
         "scale": "0.5",
         "scaleZ": "0.5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "401b6220-c1b5-4c56-8e09-a13c90e2f84f": {
@@ -699,8 +662,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": "6",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "42615938-2c3e-4aee-b8e9-5680647cba70": {
@@ -715,8 +677,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "468308ff-5ba3-49c4-9cbf-fd521c922e32": {
@@ -739,8 +700,7 @@
         "shuffleX": "-2",
         "shuffleY": "2",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "47886fdd-fce3-4fa2-973c-40149a0c0fe5": {
@@ -759,8 +719,7 @@
         "onPointerUp": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05,\n})",
         "scale": "0.5",
         "scaleZ": "0.5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "49a19c43-50e8-4e16-bfec-a0d7a7ed1c3f": {
@@ -774,8 +733,7 @@
         "onClick": "@// If the portal is open, close it\nif (configBot.tags.miniMapPortal) {\n    configBot.tags.miniMapPortal = \"\"\n\n// If the portal is not open, open it\n} else {\n    configBot.tags.miniMapPortal = \"home\"\n}\n\n// Change the size of the mini map portal\nminiMapPortalBot.tags.miniPortalHeight = 0.4",
         "sequence": "morePortals",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "4c19050f-8a17-4e79-a5fa-36833f21887b": {
@@ -791,8 +749,7 @@
         "scaleX": "3",
         "sequence": "intro",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "4c24c439-44f6-4509-8ae8-7a965806b2e6": {
@@ -815,8 +772,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "4d19fdf5-379f-4640-8677-495e54863b59": {
@@ -838,8 +794,7 @@
         "scaleZ": "0.25",
         "sequence": "interactions",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "4dabb6aa-fbad-4e77-bcdd-868bf2595f1a": {
@@ -857,8 +812,7 @@
         "onDrag": "@os.enableCustomDragging()",
         "sequence": "intro",
         "step": 5,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "4eea2900-8942-4566-9388-485b8234f736": {
@@ -874,8 +828,7 @@
         "outerSpaceY": "1.25",
         "outerSpaceZ": "1",
         "scale": "0.5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "4f7894a7-64cc-4957-a829-ee12c1682469": {
@@ -890,8 +843,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "520a27eb-b5a4-475d-9202-f9a89fb3a144": {
@@ -905,8 +857,7 @@
         "onClick": "@configBot.tags.menuPortal = \"hello\"\n",
         "sequence": "morePortals",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "532f22c9-d8b8-4903-97f1-6d079b197c50": {
@@ -925,8 +876,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "548bfc72-a2ea-44fd-b6df-e84c4cee533a": {
@@ -943,8 +893,7 @@
         "undefined": true,
         "undefinedX": 0,
         "undefinedY": 0,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "5877cb41-3321-4990-b6b7-b1777142bf08": {
@@ -963,8 +912,7 @@
         "scaleY": "1.316",
         "sequence": "introDeep",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "59b602b9-4e86-4c82-92ab-aa4a67cfa890": {
@@ -986,8 +934,7 @@
         "slide": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 0.5,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0.5,\n    toValue: 0,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nif (tags.homeY == 3) {\n    await animateTag(thisBot, \"homeY\", {\n        fromValue: 3,\n        toValue: 0,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n} else {\n    await animateTag(thisBot, \"homeY\", {\n        fromValue: 0,\n        toValue: 3,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n}",
         "spin": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 0,\n    toValue: 3.14159,\n    duration: 0.5,\n    easing: {\n        type: 'cubic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 3.14159,\n    toValue: 6.28318,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'out'\n    }\n})\n",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "5a274070-a644-402c-98cb-ce8bec476240": {
@@ -1006,8 +953,7 @@
         "scaleZ": "0.1",
         "sequence": "shoutListen",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "5be3ce23-9d11-4257-a2ef-2fd5102c9ef5": {
@@ -1029,8 +975,7 @@
         "scaleZ": "0.25",
         "sequence": "interactions",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "5c8a15b2-7957-4399-9b82-bb4f56ceefb9": {
@@ -1049,8 +994,7 @@
         "scale": "10000",
         "sequence": "morePortals",
         "step": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "5cc0e68d-b44e-4c41-9493-7e030bcb2f48": {
@@ -1070,8 +1014,7 @@
         "startY": 4,
         "step": 1,
         "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "5cf42817-5f09-45d7-9f9e-d6f9c720ff32": {
@@ -1089,8 +1032,7 @@
         "shuffleX": "2",
         "shuffleY": "-3",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "5fdb0db3-f0ff-43ea-8b00-0e2003efa719": {
@@ -1104,8 +1046,7 @@
         "onClick": "@",
         "sequence": "interactions",
         "step": 5,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "63178dc7-5a75-4979-a955-2c566efdbb84": {
@@ -1121,8 +1062,7 @@
         "onClick": "@shout(\"openTagPortal\", {id: thisBot.id, tag: \"form\"})",
         "sequence": "intro",
         "step": "5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "662c2e41-6092-47ab-ac40-0354a9104666": {
@@ -1137,8 +1077,7 @@
         "sequence": "intro",
         "step": 1,
         "step1": "true",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "667a131a-4a9e-4879-9caf-09092f882982": {
@@ -1152,8 +1091,7 @@
         "onClick": "@// If the portal is open, close it\nif (configBot.tags.miniGridPortal) {\n    configBot.tags.miniGridPortal = \"\"\n\n// If the portal is not open, open it\n} else {\n    configBot.tags.miniGridPortal = \"hello\"\n}\n\n// Change some settings for the mini grid portal\nminiGridPortalBot.tags.miniPortalHeight = 0.4\nminiGridPortalBot.tags.portalGridScale = 1",
         "sequence": "morePortals",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "66d1d4e0-03d4-4f86-8ae2-eeee435ba4b3": {
@@ -1169,8 +1107,7 @@
         "scaleY": "4",
         "sequence": "intro",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "683f10c0-becd-4527-bb52-540f2fe66683": {
@@ -1186,8 +1123,7 @@
         "scaleZ": "0.2",
         "sequence": "introDeep",
         "step": "4",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "6863290b-27ac-4bf6-8b96-565d4a0eaed1": {
@@ -1206,8 +1142,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 6,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "6a3633b2-7b96-4be2-85f0-40a2b13829b6": {
@@ -1222,8 +1157,7 @@
         "onPortalChanged": "@if (that.portal == 'sheetPortal'        // Make sure it was the sheet portal\n    && !that.dimension                  // Check that it was closed\n    && tags.color !== 'royalblue') {    // Make sure color was changed\n\n        shout('executeDialogue', {\n            sequence: 'portals',\n            step: 1,\n            dialogueIndex: 4\n        })\n\n}",
         "sequence": "portals",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "6aedd96b-24d2-4740-b2c1-bf4ad21bd4cf": {
@@ -1237,8 +1171,7 @@
         "onBotChanged": "@if (that.tags.includes('home') || that.tags.includes('scale')) {\n    if (gridPortalBot.tags.pixelWidth > 500) {\n        setTagMask(thisBot, \"home\", false, \"local\")\n    }\n} ",
         "sequence": "interactions",
         "step": "3",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "6ba85466-5373-48b7-beb0-06359f730592": {
@@ -1256,8 +1189,7 @@
         "outerSpaceY": "1.25",
         "outerSpaceZ": "1",
         "scale": "0.5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "6cb21851-c548-4f7e-8289-bc58c8604f13": {
@@ -1271,8 +1203,7 @@
         "homeX": 0,
         "homeY": 0,
         "type": "environment",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "6d54a9dd-24df-4dc8-92eb-3ce0bb1bc24e": {
@@ -1291,8 +1222,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "6f21c7f9-1f9a-4c8e-9558-82238e35a0df": {
@@ -1315,8 +1245,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "6ff66115-7e06-4aa2-96e2-557820cbae8a": {
@@ -1336,8 +1265,7 @@
         "startY": 1,
         "step": 1,
         "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "702520c2-1127-4971-8db1-412a7fd57f0a": {
@@ -1357,8 +1285,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 5,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "70655cad-a446-4a18-8021-a84bdb0e1118": {
@@ -1374,8 +1301,7 @@
         "scaleZ": "2",
         "sequence": "intro",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "7269a021-43b2-4c71-8f9d-83161d4332d3": {
@@ -1394,8 +1320,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "74c8860f-eaa5-4abe-b3c4-488df6bd62eb": {
@@ -1414,8 +1339,7 @@
         "scaleZ": "0.1",
         "sequence": "portals",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "789157a4-e00b-46cf-841d-cc13808ba3c2": {
@@ -1431,8 +1355,7 @@
         "outerSpaceY": "-10",
         "outerSpaceZ": "-50",
         "scale": "200",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "79e375f6-381a-458f-86b2-6ecf8d04dc32": {
@@ -1450,8 +1373,7 @@
         "shuffleX": "4",
         "shuffleY": "3",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "7a228d71-11c5-4d02-9aef-09c8b2f80c44": {
@@ -1471,8 +1393,7 @@
         "scale": "5",
         "sequence": "introDeep",
         "step": "4",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "81a31846-cb4f-42c9-bee6-86e38f32f99e": {
@@ -1487,8 +1408,7 @@
         "scale": "2",
         "sequence": "intro",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "829ae3c3-b3fe-4472-b6a2-f3ca7ace5b8b": {
@@ -1503,8 +1423,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "83e6fcef-95d0-4f64-9b68-75af1f1b00fb": {
@@ -1517,8 +1436,7 @@
         "sequence": "introDeep",
         "step": 2,
         "casualTutorial": true,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "87c8b81b-6612-4b25-905e-f8aef854a7c4": {
@@ -1532,8 +1450,7 @@
         "onClick": "@os.showHtml(`\n    <div style=\"padding: 24px\">\n        Hello, world!\n    </div>\n`)",
         "sequence": "interactions",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "88f17221-2bbb-49a2-99c6-06fc7dcfc592": {
@@ -1553,8 +1470,7 @@
         "startY": 0,
         "step": 1,
         "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "89ed08bb-1345-4eae-a05f-c7f18902c6a0": {
@@ -1573,8 +1489,7 @@
         "scaleZ": "0.2",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "89ee1ad1-8344-457d-aac9-6838af6a33f8": {
@@ -1589,8 +1504,7 @@
         "scale": "0.5",
         "sequence": "intro",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "8a8c816e-dbb7-42b5-a873-9f7641810c06": {
@@ -1609,8 +1523,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 5,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "8ca0d513-2d97-428b-baab-27d1ec3b0258": {
@@ -1624,8 +1537,7 @@
         "onPortalChanged": "@if (that.portal == 'systemPortal') {\n    if (that.dimension) {\n        shout('executeDialogue', {sequence: 'morePortals', step: 4, dialogueIndex: 6})\n    }\n}",
         "sequence": "morePortals",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "8e819542-02fd-49ab-9ba1-a823c61b94ea": {
@@ -1639,8 +1551,7 @@
         "homeZ": "-1",
         "onClick": "@\n    shout('openTagPortal', {id: thisBot.id, tag: 'formAddress'});\n    configBot.tags.codeToolsPortal = 'help';\n",
         "scale": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "8e8e4628-6d02-4841-8200-251047236da0": {
@@ -1659,8 +1570,7 @@
         "scaleY": "1",
         "sequence": "intro",
         "step": 6,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "8ede09e1-b56b-4439-a239-9d2a8567da0d": {
@@ -1677,8 +1587,7 @@
         "scaleZ": "2.75",
         "sequence": "introDeep",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "8fc6e672-5fc6-4d66-ad5c-2e7bfa7af51f": {
@@ -1692,8 +1601,7 @@
         "sequence": "introDeep",
         "step": 2,
         "casualTutorial": true,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "8ff1b8fc-a7f7-4678-b831-46955e297111": {
@@ -1712,8 +1620,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 5,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "91c17354-7e61-4899-a472-380a9ed167fa": {
@@ -1734,8 +1641,7 @@
         "scaleZ": "0.15",
         "sequence": "saving",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "925d03b9-5f04-46d2-a1d8-8f94e3c36492": {
@@ -1755,8 +1661,7 @@
         "slide": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 0.5,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'out'\n    }\n})\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 0.5,\n    toValue: 0,\n    duration: 0.125,\n    easing: {\n        type: 'quadratic',\n        mode: 'in'\n    }\n})\n\nif (tags.homeX == -1) {\n    await animateTag(thisBot, \"homeX\", {\n        fromValue: -1,\n        toValue: -4,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n} else {\n    await animateTag(thisBot, \"homeX\", {\n        fromValue: -4,\n        toValue: -1,\n        duration: 1,\n        easing: {\n            type: 'exponential',\n            mode: 'out'\n        }\n    })\n}",
         "spin": "@if (!tags.home) return\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 0,\n    toValue: 3.14159,\n    duration: 0.5,\n    easing: {\n        type: 'cubic',\n        mode: 'in'\n    }\n})\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: 3.14159,\n    toValue: 6.28318,\n    duration: 2,\n    easing: {\n        type: 'elastic',\n        mode: 'out'\n    }\n})\n",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "9469bdcc-c86a-44cb-bf63-f6fca35d5da1": {
@@ -1773,8 +1678,7 @@
         "sequence": "intro",
         "step": 1,
         "step1": "true",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "94e372f9-fcab-41cd-adf3-af7f1c1999ea": {
@@ -1788,8 +1692,7 @@
         "onClick": "@",
         "sequence": "interactions",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "960e440a-148b-41db-810d-1a3ea776ecac": {
@@ -1807,8 +1710,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 7,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "9a671afc-8fac-44a2-a547-9e184389d323": {
@@ -1821,8 +1723,7 @@
         "name": "green",
         "sequence": "saving",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "9a785555-9d40-45a3-94c6-384c60dabb4c": {
@@ -1841,8 +1742,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 8,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "9fee6b49-87e5-4496-aa49-7c57bc0f8f9d": {
@@ -1861,8 +1761,7 @@
         "scaleZ": "0.2",
         "sequence": "shoutListen",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "a0e09a3c-d670-4987-a35f-ddccb8b36504": {
@@ -1875,8 +1774,7 @@
         "name": "teal",
         "sequence": "saving",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "a12c1af7-40d8-4682-9094-349cceba4a60": {
@@ -1892,8 +1790,7 @@
         "pointable": "false",
         "sequence": "portals",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "a3240003-c60a-4c06-a1da-cea07e4e583e": {
@@ -1907,8 +1804,7 @@
         "label": "Toast \"Hello\"",
         "onClick": "@os.toast(\"Hello\")",
         "scaleX": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "a6d8f90c-394f-4f12-8db4-0afb89871e40": {
@@ -1927,8 +1823,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 5,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "a6f743e6-3955-4b42-a4dd-fac26aee9768": {
@@ -1942,8 +1837,7 @@
         "onAnyCreate": "@if (!tags.home) return;\n\nif (that.bot.tags.form == 'sprite') {\n    // Make that bot open its #formAddress tag when clicked\n    that.bot.tags.onClick = `@\n    shout('openTagPortal', {id: thisBot.id, tag: 'formAddress'});\n    configBot.tags.codeToolsPortal = 'help';\n`\n    that.bot.tags.scale = 3\n    // Say the next dialogue part\n    shout('executeDialogue', {sequence: 1, step: 8, dialogueIndex: 3})\n}",
         "sequence": "introDeep",
         "step": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "a8328974-ef07-4aca-8fb0-1a5847b717f7": {
@@ -1957,8 +1851,7 @@
         "onBotChanged": "@if (!that.tags.includes(\"home\")) return;\n\nif (!tags.home) { // Stop listening if not home\n    setTagMask(thisBot, \"onKeyDown\", null, \"local\")\n\n} else { // Reset location & start listening if home\n    tags.homeX = -2\n    tags.homeY = -4\n\n    setTagMask(thisBot, \"onKeyDown\",\n`@if (that.keys.includes(\"ArrowDown\")) {\n    tags.homeY = tags.homeY - 1\n}\n\nif (that.keys.includes(\"ArrowUp\")) {\n    tags.homeY = tags.homeY + 1\n}\n\nif (that.keys.includes(\"ArrowLeft\")) {\n    tags.homeX = tags.homeX - 1\n}\n\nif (that.keys.includes(\"ArrowRight\")) {\n    tags.homeX = tags.homeX + 1\n}`,\n    \"local\"\n    )\n}",
         "sequence": "interactions",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "adb7d84e-5547-4a6e-ba68-1ffb5f59b881": {
@@ -1973,8 +1866,7 @@
         "label": "Tip \"Hey\"",
         "onClick": "@os.tip(\"Hey\")",
         "scaleX": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "ae68fda3-2a38-4144-933f-2cbc9145b6a7": {
@@ -1997,8 +1889,7 @@
         "shuffleX": "2",
         "shuffleY": "-4",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "aecb0061-088d-468d-9867-c8d8a0483a19": {
@@ -2015,8 +1906,7 @@
         "name": "soda",
         "sequence": "introDeep",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "b0b205f1-49d6-4121-9b81-39fa2343fe4b": {
@@ -2035,8 +1925,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 8,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "b1c437c4-f8ad-43cf-b673-4274dfbfcbb4": {
@@ -2050,8 +1939,7 @@
         "pointable": "false",
         "sequence": "introDeep",
         "step": "3",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "b2d4ecc9-06dc-48a3-8b7b-30b57986b89e": {
@@ -2067,8 +1955,7 @@
         "scaleX": "1.25",
         "scaleY": "1.125",
         "scaleZ": "0.25",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "b340029e-f10e-4f06-8372-5e61f26e78aa": {
@@ -2086,8 +1973,7 @@
         "scaleZ": "0.15",
         "sequence": "morePortals",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "b5f65777-c155-42d3-a080-cf299fcf0395": {
@@ -2101,8 +1987,7 @@
         "pointable": "false",
         "sequence": "intro",
         "step": 6,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "b61ed651-3330-4eaf-b9db-143dc8bac047": {
@@ -2120,8 +2005,7 @@
         "scaleZ": "0.1",
         "sequence": "introDeep",
         "step": "4",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "b8c9bf76-1f88-4aca-87c9-e1e5b23612b7": {
@@ -2135,8 +2019,7 @@
         "onClick": "@os.toast(\"Hey there!\")",
         "sequence": "interactions",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "bba49a6b-083d-4374-8e68-578ebfc2b1ab": {
@@ -2155,8 +2038,7 @@
         "scale": "0.5",
         "sequence": "introDeep",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "be67fc42-deb5-47e9-914f-75bb449e2eb7": {
@@ -2170,8 +2052,7 @@
         "pointable": "false",
         "sequence": "interactions",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "be917254-8046-4874-993b-0613639ea056": {
@@ -2187,8 +2068,7 @@
         "pointable": "false",
         "sequence": "portals",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "c35fbc22-0add-43f8-ab27-235e86c8bad9": {
@@ -2203,8 +2083,7 @@
         "name": "pink",
         "sequence": "intro",
         "step": "5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "c5bd648f-e979-4fea-869f-ec26b44e0644": {
@@ -2223,8 +2102,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 5,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "c798dc3c-38f6-4523-81d4-f438cb1f6914": {
@@ -2237,8 +2115,7 @@
         "name": "pink",
         "sequence": "saving",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "c8a93b76-e37f-4284-bd56-75f243387995": {
@@ -2254,8 +2131,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "c93bca0a-22e5-47cf-9ea6-6ffce712723f": {
@@ -2274,8 +2150,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "c9ebd682-b323-4aeb-8e8b-2d549383e966": {
@@ -2289,8 +2164,7 @@
         "pointable": "false",
         "sequence": "portals",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "cb14d7a5-eefc-422a-b014-bc72b05daf93": {
@@ -2310,8 +2184,7 @@
         "startY": 5,
         "step": 1,
         "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "cc633493-5deb-4136-a3fb-da316beda199": {
@@ -2330,8 +2203,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 7,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "cca7bee9-e6e1-40ea-8f3c-b67d586fcb50": {
@@ -2353,8 +2225,7 @@
         "scaleZ": "0.25",
         "sequence": "interactions",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "ce592445-fcd9-4d54-9417-52caf974e80f": {
@@ -2374,8 +2245,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 7,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "cf1b856c-0c62-4358-867c-30311706aaf8": {
@@ -2389,8 +2259,7 @@
         "onClick": "@os.tip(\"Howdy!\")",
         "sequence": "interactions",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "d102f14a-b005-4537-be86-257b8ad2240f": {
@@ -2405,8 +2274,7 @@
         "name": "yellow",
         "sequence": "intro",
         "step": "5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "d196f886-53c3-40e0-a511-85245d8244c9": {
@@ -2420,8 +2288,7 @@
         "onClick": "@",
         "sequence": "interactions",
         "step": 7,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "d33613e3-89fc-4e45-b0e3-2e989fea4032": {
@@ -2434,8 +2301,7 @@
         "sequence": "introDeep",
         "step": 2,
         "casualTutorial": true,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "d371d929-91f4-43db-b4ba-ccb599cbe6cf": {
@@ -2453,8 +2319,7 @@
         "onPointerUp": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05,\n})",
         "scale": "0.5",
         "scaleZ": "0.5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "d5031cdc-9185-425a-aea2-30d841f12a2a": {
@@ -2468,8 +2333,7 @@
         "onClick": "@os.tip(\"Hello!\")",
         "sequence": "interactions",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "d506596d-f8f1-4fc6-83fb-fbcc42681cdf": {
@@ -2487,8 +2351,7 @@
         "name": "pizza",
         "sequence": "introDeep",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "d7a6330c-13a3-4371-883a-01de4cff3f91": {
@@ -2505,8 +2368,7 @@
         "scaleZ": "0.75",
         "sequence": "interactions",
         "step": 6,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "d7ab6fea-1f11-4ae8-87a8-e2fcb1f5fcc0": {
@@ -2521,8 +2383,7 @@
         "sequence": "intro",
         "step": 1,
         "step1": "true",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "da615654-cc05-4dbd-a67c-8f88a9ec6143": {
@@ -2540,8 +2401,7 @@
         "onPointerUp": "@await animateTag(thisBot, \"scaleZ\", {\n    fromValue: 0.4,\n    toValue: 0.5,\n    duration: 0.05,\n})",
         "scale": "0.5",
         "scaleZ": "0.5",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "dae044d9-7d98-4bac-9bbe-4e9fe923bc72": {
@@ -2564,8 +2424,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "dbc9112c-bd60-41cc-bec1-9250900b7ab7": {
@@ -2580,8 +2439,7 @@
         "onClick": "@await animateTag(thisBot, \"homeZ\", {\n    fromValue: 0,\n    toValue: 3,\n    duration: 0.5,\n    easing: {type: \"quadratic\", mode: \"out\"}\n})\nawait animateTag(thisBot, \"homeZ\", {\n    fromValue: 3,\n    toValue: 0,\n    duration: 1,\n    easing: {type: \"elastic\", mode: \"out\"}\n})",
         "sequence": "interactions",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "ddacb6d2-639a-47dd-9b64-8e0c37ebbfc8": {
@@ -2600,8 +2458,7 @@
         "scaleZ": "0.15",
         "sequence": "morePortals",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "de8d6b64-09d7-4b1b-a24b-34ff944d7056": {
@@ -2621,8 +2478,7 @@
         "startX": "0",
         "startY": "2",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "e0577ac0-d66e-4511-bf67-17e1ebdf07ae": {
@@ -2641,8 +2497,7 @@
         "scaleZ": "0.2",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "e15b5ba0-9572-4510-a4dc-783768eb458f": {
@@ -2665,8 +2520,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "e262e213-de35-4a6b-a8f9-602d821aa806": {
@@ -2684,8 +2538,7 @@
         "scale": "5",
         "sequence": "introDeep",
         "step": "1",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "e26dd47a-7fd4-47d3-80b7-8efcbf473d89": {
@@ -2704,8 +2557,7 @@
         "scaleZ": "0.1",
         "sequence": "interactions",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "e3a6cd82-66c8-4e94-9179-f2ee45caf508": {
@@ -2728,8 +2580,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "e3e75729-f96b-4eda-aede-61ace2df105d": {
@@ -2742,8 +2593,7 @@
         "name": "blue",
         "sequence": "portals",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "e75d2140-cf3c-48bb-b71d-4b50de55a14c": {
@@ -2761,8 +2611,7 @@
         "scaleZ": 1,
         "sequence": "interactions",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "eab82098-6958-4d45-b5e2-7b48b1c311b6": {
@@ -2781,8 +2630,7 @@
         "scaleZ": "0.2",
         "sequence": "interactions",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "eb8c304e-4868-4788-a93e-74e683f4b28e": {
@@ -2797,8 +2645,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "ec4768be-b3b2-4d9a-bf4d-df95f9283bc5": {
@@ -2817,8 +2664,7 @@
         "scaleZ": "0.2",
         "sequence": "shoutListen",
         "step": 4,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "ef26e72c-40a7-4d37-9d05-e485f0c72244": {
@@ -2833,8 +2679,7 @@
         "outerSpaceX": "4",
         "outerSpaceY": "2",
         "scale": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "efd16e69-9d70-4c54-9512-81ebcf0523d5": {
@@ -2849,8 +2694,7 @@
         "label": "Close",
         "onClick": "@configBot.tags.menuPortal = \"\"",
         "scaleX": "2",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "f278864a-b1f1-4751-b761-b051de8a3a7d": {
@@ -2871,8 +2715,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "f3633edf-2dad-4b90-8fb3-8d9209fa056d": {
@@ -2892,8 +2735,7 @@
         "scaleY": "1",
         "sequence": "intro",
         "step": 6,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "f37b62a0-e3bd-4768-9d11-26c7eb8f4d9a": {
@@ -2907,8 +2749,7 @@
         "onAbAdded": "@if (!tags.finished && tags.home) {\n    setTagMask(thisBot, 'finished', true, 'local')\n    shout(\"executeDialogue\", {sequence: 'saving', step: 3, dialogueIndex: 5})\n}",
         "sequence": "saving",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "f56d8f0e-fbf2-4944-978d-378e329a8b4e": {
@@ -2924,8 +2765,7 @@
         "scaleX": "3.25",
         "scaleY": "1.25",
         "scaleZ": "0.25",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "f6b8046a-80c5-40ef-8ae2-7b3e3cf945a0": {
@@ -2946,8 +2786,7 @@
         "scaleZ": "0.25",
         "sequence": "saving",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "f7a9b9b6-c272-40aa-90fc-ea2bea3fec7f": {
@@ -2964,8 +2803,7 @@
         "scale": "2",
         "sequence": "introDeep",
         "step": "3",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "f87c51e6-5bdf-48cc-a349-ce6ab5617663": {
@@ -2984,8 +2822,7 @@
         "scaleZ": "0.1",
         "sequence": "shoutListen",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "f8a88421-773b-4330-bd5a-4d64cc969fc8": {
@@ -3000,8 +2837,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 3,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "fbd5ab30-f439-472c-b99c-aac3d05c5d12": {
@@ -3021,8 +2857,7 @@
         "startY": 0,
         "step": 1,
         "turn": "@await os.sleep(tags.delay)\n\nawait animateTag(thisBot, \"homeRotationZ\", {\n    fromValue: tags.homeRotationZ,\n    toValue: tags.homeRotationZ == 0 ? 2 : 0,\n    duration: 0.25,\n})",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "fc12bdc9-535f-435d-99b2-b06b7d0d7929": {
@@ -3045,8 +2880,7 @@
         "scaleZ": "0.5",
         "sequence": "shoutListen",
         "step": 2,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "fcd61994-7168-407b-9345-65022ab68659": {
@@ -3061,8 +2895,7 @@
         "sequence": "intro",
         "step": 1,
         "step1": "true",
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     },
     "fedf48c7-ec57-464c-b880-06ce6acf31b7": {
@@ -3078,8 +2911,7 @@
         "scaleZ": "0.25",
         "sequence": "shoutListen",
         "step": 1,
-        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee",
-        "abVersion": "9.65.1.1728866444854"
+        "abIDStudio": "62435408-dd5d-4856-a29c-ef4eb04f7fee"
       }
     }
   }

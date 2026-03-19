@@ -27,16 +27,8 @@ if (args && args.length > 0) {
     }
 }
 
-const majorVersion = links.learn.tags.abCoreMajorVersion;
-const minorVersion = links.learn.tags.abCoreMinorVersion;
-const abVersion = `${majorVersion}.${minorVersion}`;
-
 for (let group of groups) {
     const groupBots = getBots(byMod({ [group]: true, space: 'shared' }));
-
-    for (let i = 0; i < groupBots.length; i++) {
-        groupBots[i].tags.abVersion = abVersion;
-    }
 
     if (group == "abConfig") {
         group = "ab1";

@@ -9,6 +9,11 @@ if (authBot.tags.privacyFeatures.allowAI == false) {
     return;
 }
 
+if (!links.todoManager) {
+    // Load abTodo skill. This manages agent's working on todo bots.
+    await links.learn.abAdapt('abTodo');
+}
+
 /**
  * Sanitizes an object in place by replacing any bot objects with their ids.
  * A bot is identified by having `id`, `tags`, and `space` properties.

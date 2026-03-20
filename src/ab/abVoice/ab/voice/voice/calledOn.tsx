@@ -1,3 +1,2 @@
 destroy(that);
-
 thisBot.playQueuedAudio();

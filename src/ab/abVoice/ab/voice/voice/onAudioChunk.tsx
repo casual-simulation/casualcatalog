@@ -10,10 +10,11 @@ setTagMask(thisBot, "sentInitChunk", true);
 
 const humeSocket = thisBot.vars.humeSocket;
 
-const packetHash = crypto.hash('sha1', 'hex', audioData);
-
 if(humeSocket) {
-    console.log("packet here", packetHash);
+    if (tags.debugMode) {
+        const packetHash = crypto.hash('sha1', 'hex', audioData);
+        console.log(`[${tags.system}.${tagName}] audio_input packet hash:`, packetHash);
+    }
 
     humeSocket.send(JSON.stringify({
         "type": "audio_input",

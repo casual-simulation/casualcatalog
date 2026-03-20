@@ -1,7 +1,8 @@
 const endpoint = "wss://api.hume.ai/v0/evi/chat";
 const accessToken = (await ai.hume.getAccessToken()).accessToken;
-//const configID = "e04b02d5-cb78-4292-aba4-a912d8926ddd";
-const configID = "ff1133fb-2a27-4a9c-8801-258ecf7eb2aa";
+// const configID = "e04b02d5-cb78-4292-aba4-a912d8926ddd";
+// const configID = "ff1133fb-2a27-4a9c-8801-258ecf7eb2aa";
+const configID = "93f3cb31-d098-484e-b511-1a444730beda";
 
 const url = new URL(endpoint);
 url.searchParams.set("access_token", accessToken);
@@ -11,22 +12,11 @@ const humeSocket = new WebSocket(url.toString());
 thisBot.vars.humeSocket = humeSocket;
 thisBot.vars.playingQueue = false;
 
-const session_settings = {
-    "type": "session_settings",
-    "variables": {
-        "name": abPersonality.tags.abBuilderIdentity,
-        "catalog_asks": await thisBot.getCatalogAsks()
-    }
-};
-
 humeSocket.addEventListener('open', (event) => {
-    console.warn("Hume Socket opened: ", event);
+    console.log(`[${tags.system}.${tagName}] Hume Socket opened: `, event);
 
     thisBot.clearQueues();
     setTagMask(thisBot, "handRaised", false);
-
-    setTagMask(thisBot, "latestInquiry", null);
-    setTagMask(thisBot, "latestInquiryID", null);
 
     thisBot.vars.playHumeAudio = true;
 
@@ -36,7 +26,7 @@ humeSocket.addEventListener('open', (event) => {
         links.console.masks.open = true;
     }
 
-    humeSocket.send(JSON.stringify(session_settings));
+    thisBot.sendSessionSettings();
 
     setTagMask(thisBot, "sentInitChunk", false);
 
@@ -50,39 +40,34 @@ humeSocket.addEventListener('open', (event) => {
 });
 
 humeSocket.addEventListener('close', (event) => {
-    console.warn("Hume Socket closed: ", event);
+    console.log(`[${tags.system}.${tagName}] Hume Socket closed: `, event);
     thisBot.endHume();
 
     if (links.mute && !links.mute.tags.muted) {
         links.mute.abCoreMenuAction();
     }
 
-    setTagMask(thisBot, "latestInquiry", null);
-    setTagMask(thisBot, "latestInquiryID", null);
-
     os.toast("Hume closed...");
-    // shout("onHumeChatEnded", event);
+    shout("onHumeSocketClosed");
 });
 
 humeSocket.addEventListener('message', async (event) => {
     const data = JSON.parse(event.data);
 
+    if (tags.debugMode) {
+        console.log(`[${tags.system}.${tagName}] message received:`, data);
+    }
+
     if (data.type == "audio_output") {
         thisBot.queueAudio(data.data);
-    }
-    else if (data.type == "assistant_message") {
+    } else if (data.type == "assistant_message") {
         const message = data.message.content;
-
-        thisBot.queueText(message); 
-        
-    }
-    else if (data.type == "assistant_end") {
-        //tags.thinking = true;
-    }
-    else if (data.type == "error") {
-        console.warn('error: ', data.message);
-    }
-    else if (data.type == "user_message") {
+        thisBot.queueText(message);
+    } else if (data.type == "assistant_end") {
+        // do nothing
+    } else if (data.type == "error") {
+        console.error(`[${tags.system}.${tagName}] hume error:`, data);
+    } else if (data.type == "user_message") {
         let username = await thisBot.getUserName();
         setTagMask(thisBot, "handRaised", false);
 
@@ -98,42 +83,35 @@ humeSocket.addEventListener('message', async (event) => {
         }
     }
     else if (data.type == "tool_call") {
-        console.log("Tool called: ", data.name, data);
-        if (tags.debugMode == true && data.name != 'think') {
-            ab.log({
-                message: data.name + ': ' + data.parameters,
-                name: abPersonality.tags.abBuilderIdentity,
-                space: "shared",
-                messageOrigin: configBot.id,
-            });
-        }
-        if (data.name == "think") {
-            if (JSON.parse(data.parameters).message) {
-                ab.log({ message: JSON.parse(data.parameters).message, name: abPersonality.tags.abBuilderIdentity, space: "shared", messageOrigin: configBot.id });
-            }
-        } else if (data.name == "makeToDoBot") {
-            thisBot.makeToDoBot({id: data.tool_call_id, data: data.parameters});
-        } else if (data.name == "completeToDos") {
-            thisBot.completeToDos({id: data.tool_call_id});
-        }  else if (data.name == "make") {
-            thisBot.makeSomething({id: data.tool_call_id, data: data.parameters});
-        }  else if (data.name == "pullFromCatalog") {
-            thisBot.pullFromCatalog({id: data.tool_call_id, data: data.parameters});
-        }  else if (data.name == "getSceneData") {
-            thisBot.getSceneData({id: data.tool_call_id, data: data.parameters});
-        }  else if (data.name == "seeUserFocus") {
-            thisBot.seeUserFocus({id: data.tool_call_id, data: data.parameters});
-        }  else if (data.name == "clickOn") {
-            thisBot.aiClick(data.parameters);
-            thisBot.sendToolCompleteMessage({id: data.tool_call_id});
-        }  
-    }
-    else if (data.type == "user_interruption") {
-        thisBot.clearQueues();
+        console.log(`[${tags.system}.${tagName}] tool call: `, data);
 
+        if (data.name == "think") {
+            const parameters = JSON.parse(data.parameters);
+            if (parameters.message) {
+                ab.log({ message: parameters.message, name: `${abPersonality.tags.abBuilderIdentity} thoughts:`, space: "shared", messageOrigin: configBot.id });
+            }
+
+            thisBot.sendToolResponse({ id: data.tool_call_id });
+        } else if (data.name == "ask") {
+            const parameters = JSON.parse(data.parameters);
+
+            await ab.links.ask.askGPT({
+                inquiry: parameters.ask,
+                prompt: "core",
+                data: null,
+                sourceId: "abBot",
+                historyStorageBot: ab.links.remember,
+            })
+            
+            thisBot.sendSessionSettings();
+            thisBot.sendToolResponse({ id: data.tool_call_id });
+        } else {
+            console.error(`[${tags.system}.${tagName}] tool ${data.name} is not implemented.`, data);
+        }
+    } else if (data.type == "user_interruption") {
+        thisBot.clearQueues();
         thisBot.vars.playHumeAudio = true;
-    }
-    else {
-        console.log("unexpected message:", data.type, data);
+    } else {
+        console.warn(`[${tags.system}.${tagName}] ignoring message:`, data);
     }
 });

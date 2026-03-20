@@ -1,4 +1,4 @@
 if (tags.awaitingText) {
-    thisBot.textResponse(tags.awaitingText);
+    thisBot.sendUserInput(tags.awaitingText);
     setTagMask(thisBot, "awaitingText", null);
 }

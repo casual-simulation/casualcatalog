@@ -55,7 +55,7 @@ if (data && data.ask) {
           abArtifactShard,
       });
       shout("abMenuRefresh");
-      thisBot.sendToolCompleteMessage({id: that.id});
+      thisBot.sendToolResponse({id: that.id});
     } 
     //is not artifact
     else {
@@ -69,9 +69,9 @@ if (data && data.ask) {
       });
       shout("abMenuRefresh");
       if (response.success) {
-        thisBot.sendToolCompleteMessage({id: that.id});
+        thisBot.sendToolResponse({id: that.id});
       } else {
-        thisBot.sendToolCompleteMessage({id: that.id, content: "failed"});
+        thisBot.sendToolResponse({id: that.id, content: "failed"});
       }
     }
   }

@@ -1,5 +1,5 @@
 if (that && that.message) {
-    if (that.message == '.stopHume') {
+    if (that.message.toLowerCase() == '.stophume') {
         thisBot.endHume();
         return;
     }
@@ -10,6 +10,6 @@ if (that && that.message) {
         setTagMask(thisBot, "awaitingText", {user: username, message: that.message});
         await thisBot.startHume();
     } else {
-        thisBot.textResponse({user: username, message: that.message});
+        thisBot.sendUserInput({user: username, message: that.message});
     }
 }

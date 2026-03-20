@@ -21,6 +21,8 @@ if (that.eggParameters) {
     tags.abPatchAskInput = `🧬${JSON.stringify(that.eggParameters?.askInput)}`;
 
     tags.alwaysApprove = that.eggParameters?.alwaysApprove ?? false;
+
+    tags.aiModel = abPersonality.tags.abPreferredAIModel;
 } 
 
 tags.formAnimations = await os.listFormAnimations(thisBot);

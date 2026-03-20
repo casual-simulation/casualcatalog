@@ -1,1 +1,2 @@
 shout('abPatchMenuReset');
+shout('patchTodoMenuReset');

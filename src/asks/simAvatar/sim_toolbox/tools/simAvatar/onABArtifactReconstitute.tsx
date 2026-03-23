@@ -16,6 +16,9 @@ tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPerso
 tags.labelColor = data.labelColor ?? 'white';
 tags.strokeColor = data.strokeColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 
+tags.draggable = true;
+tags.usingGPS = false;
+
 thisBot.setIcon(data.formAddress);
 
 setTagMask(thisBot, "abIgnore", true, "shared");

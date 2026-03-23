@@ -26,4 +26,7 @@ if (!avatarBot) {
     });
 
     tags.avatar = getLink(avatar);
+    if (tags.continueLocationPull) {
+        avatar.useGPS(true);
+    }
 }

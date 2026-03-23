@@ -1,4 +1,4 @@
-if (tags.remoteID != getID(configBot)) {
+if (tags.remoteID != getID(configBot) || tags.usingGPS) {
     return;
 }
 

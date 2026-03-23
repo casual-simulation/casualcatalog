@@ -9,7 +9,7 @@ if (!that) {
     return;
 }
 
-if (!tags.userData.collectedArtifacts.find(item => item.id == that)) {
+if (!tags.userData.collectedArtifacts.find(item => item.id == that) && tags.continueLocationPull) {
     tags.userData.collectedArtifacts.push({
         id: that,
         state: "collected"

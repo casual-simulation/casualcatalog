@@ -320,7 +320,6 @@ for (const fc of functionCalls) {
 
     if (name === 'chat') {
         links.utils.abLog({ message: args.message });
-        links.manifestation.abBotChat({ bot: abBot, message: args.message });
 
     } else if (name === 'makePatch') {
         await spawnPatchBot(args.code);

@@ -1,12 +1,14 @@
 let audioData;
-if (links.mute && links.mute.tags.muted && tags.sentInitChunk) {
+if (tags.muted && tags.sentInitChunk) {
     const silence = new Blob([new Uint8Array(that.size)], { type: 'audio/wav' });
     audioData = await blobToBase64(silence);
 } else {
     audioData = await blobToBase64(that);
 }
 
-setTagMask(thisBot, "sentInitChunk", true);
+if (!masks.sentInitChunk) {
+    setTagMask(thisBot, "sentInitChunk", true);
+}
 
 const humeSocket = thisBot.vars.humeSocket;
 

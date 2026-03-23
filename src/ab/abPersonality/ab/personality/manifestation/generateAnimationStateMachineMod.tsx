@@ -58,11 +58,20 @@ return {
             thisBot.changeAnimState(nextState);
         }
     }),
+    onABUserInputAskGPT: ListenerString(() => {
+        const { sourceId } = that;
+
+        if (sourceId === (tags.gptSourceId ?? thisBot.id)) {
+            thisBot.changeAnimState('ThinkingBegin');
+        }
+    }),
     onABRequestGPTStarted: ListenerString(() => {
         const { input } = that;
 
         if (input.sourceId === (tags.gptSourceId ?? thisBot.id)) {
-            thisBot.changeAnimState('ThinkingBegin');
+            if (tags.animState !== 'Thinking') {
+                thisBot.changeAnimState('ThinkingBegin');
+            }
         }
     }),
     onABRequestGPTSuccess: ListenerString(() => {

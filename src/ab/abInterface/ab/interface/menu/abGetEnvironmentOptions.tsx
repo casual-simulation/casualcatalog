@@ -187,41 +187,125 @@ options.push({
     ]
 })
 
+const aiDropdownOptions = [];
+
+if (links.voice) {
+    aiDropdownOptions.push({
+        label: "voice enabled",
+        voice: tags.voice,
+        onCreate: ListenerString(() => {
+            thisBot.vars.onVoiceBotChanged = (that) => {
+                if (that.tags.includes('voiceEnabled')) {
+                    thisBot.refreshDisplay();
+                }
+            }
+
+            os.addBotListener(links.voice, 'onBotChanged', thisBot.vars.onVoiceBotChanged);
+
+            thisBot.refreshDisplay();
+        }),
+        refreshDisplay: ListenerString(() => {
+            links.voice.tags.voiceEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
+        }),
+        onClick: ListenerString(() => {
+            setTagMask(links.voice, 'voiceEnabled', !!!links.voice.tags.voiceEnabled, 'tempLocal');
+        }),
+        onDestroy: ListenerString(() => {
+            os.removeBotListener(links.voice, 'onBotChanged', thisBot.vars.onVoiceBotChanged);
+        })
+    });
+
+    aiDropdownOptions.push({
+        label: "auto speaks",
+        voice: tags.voice,
+        onCreate: ListenerString(() => {
+            thisBot.vars.onVoiceBotChanged = (that) => {
+                if (that.tags.includes('autoSpeak') || that.tags.includes('voiceEnabled')) {
+                    thisBot.refreshDisplay();
+                }
+            }
+
+            os.addBotListener(links.voice, 'onBotChanged', thisBot.vars.onVoiceBotChanged);
+
+            thisBot.refreshDisplay();
+        }),
+        refreshDisplay: ListenerString(() => {
+            tags.abMenu = links.voice.tags.voiceEnabled;
+            links.voice.tags.autoSpeak ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
+        }),
+        onClick: ListenerString(() => {
+            setTagMask(links.voice, 'autoSpeak', !!!links.voice.tags.autoSpeak, 'tempLocal');
+        }),
+        onDestroy: ListenerString(() => {
+            os.removeBotListener(links.voice, 'onBotChanged', thisBot.vars.onVoiceBotChanged);
+        })
+    });
+
+    aiDropdownOptions.push({
+        label: "mic muted",
+        voice: tags.voice,
+        onCreate: ListenerString(() => {
+            thisBot.vars.onVoiceBotChanged = (that) => {
+                if (that.tags.includes('muted') || that.tags.includes('voiceEnabled')) {
+                    thisBot.refreshDisplay();
+                }
+            }
+
+            os.addBotListener(links.voice, 'onBotChanged', thisBot.vars.onVoiceBotChanged);
+
+            thisBot.refreshDisplay();
+        }),
+        refreshDisplay: ListenerString(() => {
+            tags.abMenu = links.voice.tags.voiceEnabled;
+            links.voice.tags.muted ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
+        }),
+        onClick: ListenerString(() => {
+            setTagMask(links.voice, 'muted', !!!links.voice.tags.muted, 'tempLocal');
+        }),
+        onDestroy: ListenerString(() => {
+            os.removeBotListener(links.voice, 'onBotChanged', thisBot.vars.onVoiceBotChanged);
+        })
+    });
+}
+
 if (links.gpt) {
+    aiDropdownOptions.push({
+        formAddress: "edit_note",
+        onCreate: ListenerString(() => {
+            if (!authBot) {
+                destroy(thisBot);
+            } else if (authBot.tags.subscriptionTier == 'FreePlay' || authBot.tags.subscriptionTier == undefined) {
+                destroy(thisBot);
+            }
+
+            tags.label = 'edit ' + links.personality.tags.abBuilderIdentity + ' prompt';
+            tags.gptBot = getLink(ab.links.ask);
+        }),
+        onClick: ListenerString(() => {
+            links.gptBot.editPrompt();
+        }),
+    });
+
+    aiDropdownOptions.push({
+        label: `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history`,
+        formAddress: 'clear_all',
+        onCreate: ListenerString(() => {
+            const history = ab.links.ask.abConversationHistoryGet({ historyStorageBot: ab.links.remember }) ?? [];
+            tags.label = `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history (${history.length > 0 ? `${history.length} messages` : `empty`})`;
+        }),
+        onClick: ListenerString(() => {
+            ab.links.ask.abConversationHistoryClear({ historyStorageBot: ab.links.remember });
+            shout('abMenuRefresh');
+        }),
+    });
+}
+
+if (aiDropdownOptions && aiDropdownOptions.length > 0) {
     options.push({
         label: `${links.personality.tags.abBuilderIdentity} ai`,
         abEnvironmentMenuSortOrder: 400,
         menuItemType: 'dropdown',
-        dropdownOptions: [
-            {
-                formAddress: "edit_note",
-                onCreate: ListenerString(() => {
-                    if (!authBot) {
-                        destroy(thisBot);
-                    } else if (authBot.tags.subscriptionTier == 'FreePlay' || authBot.tags.subscriptionTier == undefined) {
-                        destroy(thisBot);
-                    }
-
-                    tags.label = 'edit ' + links.personality.tags.abBuilderIdentity + ' prompt';
-                    tags.gptBot = getLink(ab.links.ask);
-                }),
-                onClick: ListenerString(() => {
-                    links.gptBot.editPrompt();
-                }),
-            },
-            {
-                label: `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history`,
-                formAddress: 'clear_all',
-                onCreate: ListenerString(() => {
-                    const history = ab.links.ask.abConversationHistoryGet({ historyStorageBot: ab.links.remember }) ?? [];
-                    tags.label = `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history (${history.length > 0 ? `${history.length} messages` : `empty`})`;
-                }),
-                onClick: ListenerString(() => {
-                    ab.links.ask.abConversationHistoryClear({ historyStorageBot: ab.links.remember });
-                    shout('abMenuRefresh');
-                }),
-            }
-        ]
+        dropdownOptions: aiDropdownOptions
     })
 }
 

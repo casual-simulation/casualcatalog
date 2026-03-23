@@ -1,3 +1,7 @@
+if (tags.debugMode) {
+    console.log(`[${tags.system}.${tagName}] that:`, that);
+}
+
 if (that.tags.includes("handRaised")) {
     //create bot above ab with special clickable label
     
@@ -35,5 +39,13 @@ if (that.tags.includes("handRaised")) {
     } else {
         const notifBots = getBots("abVoiceNotificationBot", true);
         destroy(notifBots);
+    }
+}
+
+if (that.tags.includes('voiceEnabled')) {
+    if (tags.voiceEnabled) {
+        thisBot.startHume();
+    } else {
+        thisBot.endHume();
     }
 }

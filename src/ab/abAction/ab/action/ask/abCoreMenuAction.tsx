@@ -102,10 +102,28 @@ else if (!inquiryHasSpace) {
 
         links.manifestation.abClick();
     } else {
+        const askGPTParams = { inquiry: inquiry, prompt: menu, agentMode, data: that, sourceId: 'abBot', historyStorageBot: ab.links.remember };
+        
+        // Give an external bot a chance to eat the user input. If nothing takes it, then we call askGPT directly.
+        let consumedInput = false;
+        const receiverBots = getBots(byTag('onABUserInputAskGPT'));
+
         if (ab.links.remember.tags.abThinkingSound) {
             ab.links.sound.abPlaySound({ value: ab.links.remember.tags.abThinkingSound});
         }
+
+        if (receiverBots && receiverBots.length > 0) {
+            for (let receiverBot of receiverBots) {
+                const result = await whisper(receiverBot, 'onABUserInputAskGPT', askGPTParams)[0];
+                if (result) {
+                    consumedInput = true;
+                    break;
+                }
+            }
+        }
         
-        await thisBot.askGPT({ inquiry: inquiry, prompt: menu, agentMode, data: that, sourceId: 'abBot', historyStorageBot: ab.links.remember });
+        if (!consumedInput) {
+            await thisBot.askGPT(askGPTParams);
+        }
     }
 }

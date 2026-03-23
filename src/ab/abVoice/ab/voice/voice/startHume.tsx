@@ -1,3 +1,7 @@
+if (thisBot.vars.humeSocket) {
+    return;
+}
+
 const endpoint = "wss://api.hume.ai/v0/evi/chat";
 const accessToken = (await ai.hume.getAccessToken()).accessToken;
 // const configID = "e04b02d5-cb78-4292-aba4-a912d8926ddd";
@@ -42,10 +46,6 @@ humeSocket.addEventListener('open', (event) => {
 humeSocket.addEventListener('close', (event) => {
     console.log(`[${tags.system}.${tagName}] Hume Socket closed: `, event);
     thisBot.endHume();
-
-    if (links.mute && !links.mute.tags.muted) {
-        links.mute.abCoreMenuAction();
-    }
 
     os.toast("Hume closed...");
     shout("onHumeSocketClosed");

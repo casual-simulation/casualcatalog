@@ -22,23 +22,44 @@ if (!configBot.tags.abStayAwake) {
     })
 }
 
+if (authBot) {
+    options.push({
+        label: "account info",
+        abEnvironmentMenuSortOrder: 200,
+        formAddress: "badge",
+        onClick: ListenerString(() => {
+            os.showAccountInfo(); 
+            shout('abMenuRefresh');
+        }),
+    })
+}
+
 options.push({
-    label: "optimize mode",
-    abEnvironmentMenuSortOrder: 200,
+    label: "nuggets",
+    abEnvironmentMenuSortOrder: 250,
     onCreate: ListenerString(() => {
-        thisBot.refreshDisplay();
-    }),
-    refreshDisplay: ListenerString(() => {
-        configBot.tags.abOptimized ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
-    }),
-    onClick: ListenerString(() => {
-        configBot.tags.abOptimized ? configBot.tags.abOptimized = false : configBot.tags.abOptimized = true;
-        thisBot.onCreate();
+        tags.nugManager = getLink(getBot('system', 'ab.interface.nugget')); 
+        
+        if (links.nugManager.tags.listening) { 
+            tags.onClick = ListenerString(() => {
+                shout('abMenuRefresh'); 
+                links.manifestation.abClick();
+                setTagMask(links.nugManager, 'listening', null);
+            });
+            tags.formAddress = `check_box`; 
+        } else { 
+            tags.onClick = ListenerString(() => {
+                shout('abMenuRefresh'); 
+                inks.manifestation.abClick();
+                setTagMask(links.nugManager, 'listening', true, 'local');
+            });
+            tags.formAddress = `check_box_outline_blank`;
+        }
     }),
 })
 
 options.push({
-    label: "customize: ab personality",
+    label: `${links.personality.tags.abBuilderIdentity} personality`,
     abEnvironmentMenuSortOrder: 300,
     menuItemType: 'dropdown',
     dropdownOptions: [
@@ -166,164 +187,134 @@ options.push({
     ]
 })
 
-options.push({
-    label: "chat",
-    abEnvironmentMenuSortOrder: 400,
-    formAddress: "chat",
-    onClick: ListenerString(() => {
-        shout('abChatBarOpen'); shout('abMenuRefresh');
-    }),
-})
+if (links.gpt) {
+    options.push({
+        label: `${links.personality.tags.abBuilderIdentity} ai`,
+        abEnvironmentMenuSortOrder: 400,
+        menuItemType: 'dropdown',
+        dropdownOptions: [
+            {
+                formAddress: "edit_note",
+                onCreate: ListenerString(() => {
+                    if (!authBot) {
+                        destroy(thisBot);
+                    } else if (authBot.tags.subscriptionTier == 'FreePlay' || authBot.tags.subscriptionTier == undefined) {
+                        destroy(thisBot);
+                    }
 
-options.push({
-    label: "nuggets",
-    abEnvironmentMenuSortOrder: 500,
-    onCreate: ListenerString(() => {
-        tags.nugManager = getLink(getBot('system', 'ab.interface.nugget')); 
-        
-        if (links.nugManager.tags.listening) { 
-            tags.onClick = ListenerString(() => {
-                shout('abMenuRefresh'); 
-                links.manifestation.abClick();
-                setTagMask(links.nugManager, 'listening', null);
-            });
-            tags.formAddress = `check_box`; 
-        } else { 
-            tags.onClick = ListenerString(() => {
-                shout('abMenuRefresh'); 
-                inks.manifestation.abClick();
-                setTagMask(links.nugManager, 'listening', true, 'local');
-            });
-            tags.formAddress = `check_box_outline_blank`;
-        }
-    }),
-})
+                    tags.label = 'edit ' + links.personality.tags.abBuilderIdentity + ' prompt';
+                    tags.gptBot = getLink(ab.links.ask);
+                }),
+                onClick: ListenerString(() => {
+                    links.gptBot.editPrompt();
+                }),
+            },
+            {
+                label: `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history`,
+                formAddress: 'clear_all',
+                onCreate: ListenerString(() => {
+                    const history = ab.links.ask.abConversationHistoryGet({ historyStorageBot: ab.links.remember }) ?? [];
+                    tags.label = `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history (${history.length > 0 ? `${history.length} messages` : `empty`})`;
+                }),
+                onClick: ListenerString(() => {
+                    ab.links.ask.abConversationHistoryClear({ historyStorageBot: ab.links.remember });
+                    shout('abMenuRefresh');
+                }),
+            }
+        ]
+    })
+}
 
 if (links.presence) {
     options.push({
-        label: "camera presence",
+        label: "presence",
         abEnvironmentMenuSortOrder: 510,
-        presence: tags.presence,
-        onCreate: ListenerString(() => {
-            thisBot.vars.onPresenceBotChanged = (that) => {
-                if (that.tags.includes('cameraEnabled')) {
+        menuItemType: 'dropdown',
+        dropdownOptions: [
+            {
+                label: "camera presence",
+                presence: tags.presence,
+                onCreate: ListenerString(() => {
+                    thisBot.vars.onPresenceBotChanged = (that) => {
+                        if (that.tags.includes('cameraEnabled')) {
+                            thisBot.refreshDisplay();
+                        }
+                    }
+
+                    os.addBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+
                     thisBot.refreshDisplay();
-                }
-            }
-            
-            os.addBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+                }),
+                refreshDisplay: ListenerString(() => {
+                    links.presence.tags.cameraEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
+                }),
+                onClick: ListenerString(() => {
+                    setTagMask(links.presence, 'cameraEnabled', !!!links.presence.tags.cameraEnabled, 'local');
+                }),
+                onDestroy: ListenerString(() => {
+                    os.removeBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+                })
+            },
+            {
 
-            thisBot.refreshDisplay();
-        }),
-        refreshDisplay: ListenerString(() => {
-            links.presence.tags.cameraEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
-        }),
-        onClick: ListenerString(() => {
-            setTagMask(links.presence, 'cameraEnabled', !!!links.presence.tags.cameraEnabled, 'local');
-        }),
-        onDestroy: ListenerString(() => {
-            os.removeBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
-        })
-    })
+                label: "cursor presence",
+                presence: tags.presence,
+                onCreate: ListenerString(() => {
+                    thisBot.vars.onPresenceBotChanged = (that) => {
+                        if (that.tags.includes('cursorEnabled')) {
+                            thisBot.refreshDisplay();
+                        }
+                    }
 
-    options.push({
-        label: "cursor presence",
-        abEnvironmentMenuSortOrder: 520,
-        presence: tags.presence,
-        onCreate: ListenerString(() => {
-            thisBot.vars.onPresenceBotChanged = (that) => {
-                if (that.tags.includes('cursorEnabled')) {
+                    os.addBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+
                     thisBot.refreshDisplay();
-                }
+                }),
+                refreshDisplay: ListenerString(() => {
+                    links.presence.tags.cursorEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
+                }),
+                onClick: ListenerString(() => {
+                    setTagMask(links.presence, 'cursorEnabled', !!!links.presence.tags.cursorEnabled, 'local');
+                }),
+                onDestroy: ListenerString(() => {
+                    os.removeBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+                })
             }
-            
-            os.addBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
-
-            thisBot.refreshDisplay();
-        }),
-        refreshDisplay: ListenerString(() => {
-            links.presence.tags.cursorEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
-        }),
-        onClick: ListenerString(() => {
-            setTagMask(links.presence, 'cursorEnabled', !!!links.presence.tags.cursorEnabled, 'local');
-        }),
-        onDestroy: ListenerString(() => {
-            os.removeBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
-        })
-    })
-}
-
-if (links.gpt) {
-    options.push({
-        formAddress: "edit_note",
-        abEnvironmentMenuSortOrder: 600,
-        onCreate: ListenerString(() => {
-            if (!authBot) {
-                destroy(thisBot);
-            } else if (authBot.tags.subscriptionTier == 'FreePlay' || authBot.tags.subscriptionTier == undefined) {
-                destroy(thisBot);
-            }
-
-            tags.label = 'edit ' + links.personality.tags.abBuilderIdentity + ' prompt'; 
-            tags.gptBot = getLink(ab.links.ask);
-        }),
-        onClick: ListenerString(() => {
-            links.gptBot.editPrompt();
-        }),
-    })
-
-    options.push({
-        label: `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history`,
-        formAddress: 'clear_all',
-        abEnvironmentMenuSortOrder: 650,
-        onCreate: ListenerString(() => {
-            const history = ab.links.ask.abConversationHistoryGet({ historyStorageBot: ab.links.remember }) ?? [];
-            tags.label = `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history (${history.length > 0 ? `${history.length} messages` : `empty`})`;
-        }),
-        onClick: ListenerString(() => {
-            ab.links.ask.abConversationHistoryClear({ historyStorageBot: ab.links.remember });
-            shout('abMenuRefresh');
-        }),
+        ]
     })
 }
 
 options.push({
-    label: "grid snap",
+    label: "snap",
     abEnvironmentMenuSortOrder: 700,
-    onCreate: ListenerString(() => {
-        tags.formAddress = links.remember.tags.abGridSnapState ? 'check_box' : 'check_box_outline_blank'
-    }),
-    onClick: ListenerString(() => {
-        links.remember.tags.abGridSnapState = !links.remember.tags.abGridSnapState; tags.formAddress = links.remember.tags.abGridSnapState ? 'check_box' : 'check_box_outline_blank';
-    }),
+    menuItemType: 'dropdown',
+    dropdownOptions: [
+        {
+            label: "grid snap",
+            onCreate: ListenerString(() => {
+                tags.formAddress = links.remember.tags.abGridSnapState ? 'check_box' : 'check_box_outline_blank'
+            }),
+            onClick: ListenerString(() => {
+                links.remember.tags.abGridSnapState = !links.remember.tags.abGridSnapState; tags.formAddress = links.remember.tags.abGridSnapState ? 'check_box' : 'check_box_outline_blank';
+            }),
+        },
+        {
+            label: "bot snap",
+            onCreate: ListenerString(() => {
+                tags.formAddress = links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
+            }),
+            onClick: ListenerString(() => {
+                links.remember.tags.abBotSnapState = !links.remember.tags.abBotSnapState; tags.formAddress = links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
+            }),
+        }
+    ]
 })
 
-options.push({
-    label: "bot snap",
-    abEnvironmentMenuSortOrder: 800,
-    onCreate: ListenerString(() => {
-        tags.formAddress = links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
-    }),
-    onClick: ListenerString(() => {
-        links.remember.tags.abBotSnapState = !links.remember.tags.abBotSnapState; tags.formAddress = links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
-    }),
-})
+const developerDropdownOptions = [];
 
-if (authBot) {
-    options.push({
-        label: "account",
-        abEnvironmentMenuSortOrder: 900,
-        formAddress: "badge",
-        onClick: ListenerString(() => {
-            os.showAccountInfo(); shout('abMenuRefresh');
-        }),
-    })
-}
-
-if (links.tests) {
-    options.push({
+if (links.test) {
+    developerDropdownOptions.push({
         label: "record test",
-        abEnvironmentMenuSortOrder: 1000,
         formAddress: "science",
         onClick: ListenerString(() => {
             shout('abRecordTest');
@@ -331,14 +322,58 @@ if (links.tests) {
         }),
     })
 
-    options.push({
+    developerDropdownOptions.push({
         label: "record trace",
-        abEnvironmentMenuSortOrder: 1100,
         formAddress: "timeline",
         onClick: ListenerString(() => {
             shout('abRecordTrace');
             shout('abMenuRefresh');
         }),
+    })
+}
+
+developerDropdownOptions.push({
+    label: "command bar",
+    formAddress: "terminal",
+    onClick: ListenerString(() => {
+        shout('abChatBarOpen'); shout('abMenuRefresh');
+    }),
+})
+
+developerDropdownOptions.push({
+    label: "permanently delete",
+    formAddress: "delete_forever",
+    labelColor: 'black',
+    onCreate: ListenerString(() => {
+        tags.label += " " + links.personality.tags.abBuilderIdentity;
+        tags.color = links.remember.tags.abBaseContrastColor ?? "#D93030";
+    }),
+    onClick: ListenerString(async () => {
+        const confirmed = await os.showConfirm({
+            title: 'Permanently delete ' + links.personality.tags.abBuilderIdentity,
+            content: 'Are you sure you want to delete ' + links.personality.tags.abBuilderIdentity + ' from ' + links.learn.tags.abInst + '? This is not reversible!',
+        })
+
+        destroy(links.manifestation.links.abBot);
+
+        const abBots = getBots((b) => {
+            return b.space === 'shared' &&
+                b.tags.system &&
+                b.tags.system.startsWith('ab');
+        });
+
+        if (confirmed) {
+            destroy(abBots);
+        }
+    })
+})
+
+if (developerDropdownOptions.length > 0) {
+    options.push({
+        label: 'developer',
+        abEnvironmentMenuSortOrder: 1000,
+        menuItemType: 'dropdown',
+        dropdownOptions: developerDropdownOptions,
     })
 }
 
@@ -410,35 +445,6 @@ options.push({
     onDestroy: ListenerString(() => {
         if (thisBot.vars.busyIndicator) {
             destroy(thisBot.vars.busyIndicator);
-        }
-    }),
-})
-
-options.push({
-    label: "permanently delete",
-    abEnvironmentMenuSortOrder: 9999,
-    formAddress: "delete_forever",
-    labelColor: 'black',
-    onCreate: ListenerString(() => {
-        tags.label += " " + links.personality.tags.abBuilderIdentity;
-        tags.color = links.remember.tags.abBaseContrastColor ?? "#D93030";
-    }),
-    onClick: ListenerString(async () => {
-        const confirmed = await os.showConfirm({
-            title: 'Permanently delete ' + links.personality.tags.abBuilderIdentity,
-            content: 'Are you sure you want to delete ' + links.personality.tags.abBuilderIdentity + ' from ' + links.learn.tags.abInst + '? This is not reversible!',
-        })
-
-        destroy(links.manifestation.links.abBot);
-
-        const abBots = getBots((b) => {
-            return b.space === 'shared' &&
-                b.tags.system &&
-                b.tags.system.startsWith('ab');
-        });
-
-        if (confirmed) {
-            destroy(abBots);
         }
     }),
 })

@@ -3,7 +3,7 @@ if (!tags.continueLocationPull) {
     shout("onAwaitingLocation")
     // attempts to find geoLocation
     let loc = await os.getGeolocation()
-    let locationBot = getBot("#name", "locationRequest")
+    let locationBot = getBot("name", "locationRequest")
     locationBot.closeApp()
 }
 // grabs location without changing GUI
@@ -11,11 +11,10 @@ let loc = await os.getGeolocation()
 if (loc.success) {
     // find map dimension
     const mapDimension = configBot.tags.mapPortal ?? "map"
-    // sets virutal location to physical one
     const yLoc = loc.latitude;
     const xLoc = loc.longitude;
 
-    // moves bot to new locattion
+    // moves bot to new location
     const playerBot = getBot(byTag("simAvatar", true), byTag("remoteID", getID(configBot)))
     if (playerBot) {
         whisper(playerBot, "onGridClick", {
@@ -23,9 +22,10 @@ if (loc.success) {
             position: {
                 x: xLoc,
                 y: yLoc
-            } 
+            },
+            gpsOverride: true
         })
-        await os.focusOn(playerBot, {
+        os.focusOn({x: xLoc, y: yLoc}, {
             portal: mapDimension,
             duration: 0.5,
             easing: {

@@ -5,4 +5,4 @@ if (!journal.tags.continueLocationPull) {
 else {
     thisBot.closeApp()
 }
-whisper(journal, "updateLocation")
+journal.updateLocation();

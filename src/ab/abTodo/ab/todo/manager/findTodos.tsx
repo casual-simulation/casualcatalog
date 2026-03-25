@@ -1,20 +1,18 @@
-const todoBots = getBots("toDo", true);
+console.warn(`[${tags.system}.${tagName}] deprecated.`);
+return;
+
+/*
+const todoBots = getBots((b) => {
+    return b.tags.abPatchTodo &&
+           b.tags.abPatchTodoInstance
+});
 const plans = [];
 
 for (let i = 0 ; i < todoBots.length; ++i) {
-//     if (todoBots[i].tags.prevTodoBot) {
-//         continue;
-//     } else {
-//         plans.push([todoBots[i].id]);
-//     }
-// }
-
-// for (let j = 0; j < plans.length; ++j) {
-    
-// }
     const abBot = ab.links.manifestation.links.abBot;
     let aiModel = todoBots[i].tags.aiModel ?? abPersonality.tags.abPreferredAIModel;
-    //spawn agent
+
+    // Spawn agent
     await ab.links.search.onLookupAskID({
         askID: 'agent_bot_tool',
         eggParameters: {
@@ -35,10 +33,9 @@ for (let i = 0 ; i < todoBots.length; ++i) {
         return;
     }
 
-    //assign task
+    // Assign task
     agentBot.assignTask(todoBots[i].id)
-
-
 }
 
 thisBot.onStartAgentCycle();
+*/

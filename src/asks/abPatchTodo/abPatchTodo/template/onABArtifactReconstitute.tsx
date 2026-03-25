@@ -4,7 +4,7 @@ tags.abPatchAskInput = data.abPatchAskInput;
 tags.alwaysApprove = data.alwaysApprove;
 tags.prompt = data.prompt;
 tags.todoLabel = data.todoLabel;
-tags.aiModel = data.aiModel;
+tags.aiModel = data.aiModel ?? ab.links.personality.tags.abPreferredAIModel;
 tags.debug = data.debug;
 
 if (data.eggParameters) {

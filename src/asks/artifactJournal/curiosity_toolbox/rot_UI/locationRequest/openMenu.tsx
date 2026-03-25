@@ -2,6 +2,7 @@
  * Returns the allow/deny menu for location
 */
 const { useState, useEffect } = os.appHooks;
+const journal = getBot("artifactJournal", true);
 
 const App = () => {
     return (<>
@@ -15,10 +16,10 @@ const App = () => {
                 <span>Would you like to enable location?</span>
             </div>
             <div class="locationR-btn-container">
-                <button className="nb-btn locationR-btn" onClick={() => thisBot.retryLocAccess()}>
+                <button className="nb-btn locationR-btn" onClick={() => journal.toggleLocationPull(true)}>
                     <span>Allow</span>
                 </button>
-                <button className="nb-btn locationR-btn" onClick={() => thisBot.stopLocationPulling()}>
+                <button className="nb-btn locationR-btn" onClick={() => journal.toggleLocationPull(false)}>
                     <span>Deny</span>
                 </button>
             </div>

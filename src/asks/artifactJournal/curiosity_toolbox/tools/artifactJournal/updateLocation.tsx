@@ -1,14 +1,15 @@
 // only runs this if the user is re-iniatalizing location access
 if (!tags.continueLocationPull) {
-    shout("onAwaitingLocation")
-    // attempts to find geoLocation
-    let loc = await os.getGeolocation()
-    let locationBot = getBot("name", "locationRequest")
-    locationBot.closeApp()
+    return;
 }
 // grabs location without changing GUI
 let loc = await os.getGeolocation()
 if (loc.success) {
+    let locationBot = getBot("name", "locationRequest");
+    if (tags.currentRegisteredApp == "locationApp") {
+        locationBot.closeApp()
+    }
+
     // find map dimension
     const mapDimension = configBot.tags.mapPortal ?? "map"
     const yLoc = loc.latitude;
@@ -17,25 +18,18 @@ if (loc.success) {
     // moves bot to new location
     const playerBot = getBot(byTag("simAvatar", true), byTag("remoteID", getID(configBot)))
     if (playerBot) {
-        whisper(playerBot, "onGridClick", {
+        whisper(playerBot, "moveAvatar", {
             dimension: mapDimension,
             position: {
                 x: xLoc,
                 y: yLoc
-            },
-            gpsOverride: true
-        })
-        os.focusOn({x: xLoc, y: yLoc}, {
-            portal: mapDimension,
-            duration: 0.5,
-            easing: {
-                type: "quadratic",
-                mode: "inout"
             }
+        });
+        await os.focusOn({x: xLoc, y: yLoc}, {
+            duration: 0.5
         })
     }
     
-    tags.continueLocationPull = true
     // continues the locationLoop
     thisBot.locationLoop()
 }

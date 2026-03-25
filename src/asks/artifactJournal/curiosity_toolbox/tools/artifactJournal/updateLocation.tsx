@@ -16,7 +16,7 @@ if (loc.success) {
     const xLoc = loc.longitude;
 
     // moves bot to new location
-    const playerBot = getBot(byTag("simAvatar", true), byTag("remoteID", getID(configBot)))
+    const playerBot = getBot(byTag("mapAvatar", true), byTag("remoteID", getID(configBot)))
     if (playerBot) {
         whisper(playerBot, "moveAvatar", {
             dimension: mapDimension,
@@ -25,9 +25,7 @@ if (loc.success) {
                 y: yLoc
             }
         });
-        await os.focusOn({x: xLoc, y: yLoc}, {
-            duration: 0.5
-        })
+        os.focusOn(playerBot, {portal: 'map', zoom: 2000});
     }
     
     // continues the locationLoop

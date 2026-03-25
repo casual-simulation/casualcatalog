@@ -1,5 +1,5 @@
 for (let j = 0; j < that.length; ++j) {
-    if (that[j].bot && that[j].bot.tags.simAvatar == true && that[j].bot.tags.remoteID == getID(configBot)) {
+    if (that[j].bot && that[j].bot.tags.mapAvatar == true && that[j].bot.tags.remoteID == getID(configBot)) {
         const isNearby = await links.navigation.isNearby({bot1: thisBot, bot2: that[j].bot});
         if (isNearby) {
             if (tags.nearbyPlayer != getID(that[j].bot)) {

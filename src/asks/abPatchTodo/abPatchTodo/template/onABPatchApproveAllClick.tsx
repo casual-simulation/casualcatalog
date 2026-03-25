@@ -1,3 +1,3 @@
-if (tags.abPatchBotInstance) {
+if (tags.abPatchTodoInstance) {
     shout('onABPatchApproveClick');
 }

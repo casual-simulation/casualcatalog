@@ -1,12 +1,12 @@
 if (tags.currAnimation?.includes("incomplete")) {
-    thisBot.handleAnimationState("incomplete_in");
+    thisBot.changeAnimationState("incomplete_in");
 }
 else if (tags.currAnimation?.includes("error")) {
-    thisBot.handleAnimationState("error_in");
+    thisBot.changeAnimationState("error_in");
 }
 else if (tags.currAnimation?.includes("complete")) {
-    thisBot.handleAnimationState("complete_in");
+    thisBot.changeAnimationState("complete_in");
 }
 else if (tags.currAnimation?.includes("processing")) {
-    thisBot.handleAnimationState("processing_in");
+    thisBot.changeAnimationState("processing_in");
 }

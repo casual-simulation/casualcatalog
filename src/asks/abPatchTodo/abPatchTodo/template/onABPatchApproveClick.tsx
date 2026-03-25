@@ -1,4 +1,4 @@
-if (tags.abPatchApplied && tags.abPatchBotInstance) {
+if (tags.abPatchApplied && tags.abPatchTodoInstance) {
     shout('onABPatchApprove', { 
         botId: thisBot.id,
         abPatchBotIdentity: tags.abPatchBotIdentity,

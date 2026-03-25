@@ -1,4 +1,4 @@
-if (tags.abPatchApplied && tags.abPatchBotInstance) {
+if (tags.abPatchApplied && tags.abPatchTodoInstance) {
     const abAppliedPatchBots = thisBot.abGetAppliedPatchBots();
     
     for (const abPatchBot of abAppliedPatchBots) {

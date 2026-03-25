@@ -75,7 +75,7 @@ if (tags.abPatchInvalid) {
         label: 'approve patch',
         formAddress: 'done',
         onClick: `@
-            if (links.patchBot.tags.abPatchBotInstance) {
+            if (links.patchBot.tags.abPatchTodoInstance) {
                 whisper(links.patchBot, 'onABPatchApproveClick');
             } else {
                 os.toast('do nothing: this is a patch bot template');
@@ -87,7 +87,7 @@ if (tags.abPatchInvalid) {
         label: 'undo patch',
         formAddress: 'undo',
         onClick: `@
-            if (links.patchBot.tags.abPatchBotInstance) {
+            if (links.patchBot.tags.abPatchTodoInstance) {
                 whisper(links.patchBot, 'onABPatchUndoClick');
             } else {
                 os.toast('do nothing: this is a patch bot template');
@@ -100,7 +100,7 @@ patchMenuGroup.menuItems.push({
     label: 'try again',
     formAddress: 'replay',
     onClick: ListenerString(() => {
-        if (links.patchBot.tags.abPatchBotInstance) {
+        if (links.patchBot.tags.abPatchTodoInstance) {
             whisper(links.patchBot, 'onABPatchTryAgainClick');
         } else {
             os.toast('do nothing: this is patch bot template');
@@ -128,7 +128,7 @@ if (!tags.abPatchInvalid) {
                     label: 'approve all patches',
                     formAddress: 'done_all',
                     onClick: `@
-                        if (links.patchBot.tags.abPatchBotInstance) {
+                        if (links.patchBot.tags.abPatchTodoInstance) {
                             whisper(links.patchBot, 'onABPatchApproveAllClick');
                         } else {
                             os.toast('do nothing: this is a patch bot template');
@@ -139,7 +139,7 @@ if (!tags.abPatchInvalid) {
                     label: 'undo all patches',
                     formAddress: 'fast_rewind',
                     onClick: `@
-                        if (links.patchBot.tags.abPatchBotInstance) {
+                        if (links.patchBot.tags.abPatchTodoInstance) {
                             whisper(links.patchBot, 'onABPatchUndoAllClick');
                         } else {
                             os.toast('do nothing: this is a patch bot template');

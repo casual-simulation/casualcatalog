@@ -6,7 +6,7 @@ const inquiryHasSpace = inquiry.indexOf(" ") !== -1;
 const menuBots = getBots(configBot.tags.menuPortal, true);
 const isChannel = that.isChannel ?? false;
 const isUUAB = that.isUUAB ?? false;
-const agentMode = that.agentMode ?? 'build';
+const agentMode = that.agentMode ?? 'plan';
 
 whisper(menuBots, "abMenuRefresh");
 

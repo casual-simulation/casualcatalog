@@ -1,9 +1,9 @@
-let locationBot = getBot(byTag("name", "locationRequest"));
-if (that)
+let journal = getBot(byTag("artifactJournal", true));
+if (that == true)
 {
-    locationBot.retryLocAccess()
+    journal.toggleLocationPull(true);
 }
 else
 {
-    locationBot.stopLocationPulling()
+    journal.toggleLocationPull(false);
 }

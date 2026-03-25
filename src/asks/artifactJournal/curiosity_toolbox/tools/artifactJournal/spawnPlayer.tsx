@@ -27,6 +27,7 @@ if (!avatarBot) {
 
     tags.avatar = getLink(avatar);
     if (tags.continueLocationPull) {
+        await os.sleep(500);
         avatar.useGPS(true);
     }
 }

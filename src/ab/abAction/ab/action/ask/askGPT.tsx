@@ -192,15 +192,22 @@ async function spawnPatchBot(code) {
  * Creates todo bots via the artifact system.
  */
 async function executeMakeTodos(todos) {
-    for (const todo of todos) {
+    for (let i = 0; i < todos.length; i++) {
+        const todo = todos[i];
         const abArtifactShard: ABArtifactShard = {
             data: {
                 prompt: todo.prompt,
                 todoLabel: todo.label,
-                dimension: abDimension ?? 'home',
-                dimensionX: abPosition?.x ?? 0,
-                dimensionY: abPosition?.y ?? 0,
-                dimensionZ: 0,
+                eggParameters: {
+                    gridInformation: {
+                        dimension: abDimension ?? 'home',
+                        position: {
+                            x: (abPosition?.x ?? 0) + ((i+1) * 2),
+                            y: abPosition?.y ?? 0,
+                            z: 0,
+                        }
+                    }
+                }
             },
             dependencies: [{ askID: 'abPatchTodo' }]
         };

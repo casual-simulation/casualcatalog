@@ -191,5 +191,11 @@ if (!tags.artifactLocked) {
     // if (tags.artifactLink) {
     //    ab.links.menu.abCreateMenuButton(visitLinkButton); 
     // }
-    ab.links.menu.abCreateMenuButton(collectButton);
+    const journal = getBot("artifactJournal", true);
+    if (journal.tags.continueLocationPulling == true) {
+        ab.links.menu.abCreateMenuButton(collectButton);
+    }
+    else {
+        thisBot.showArtifactInfo();
+    }
 }

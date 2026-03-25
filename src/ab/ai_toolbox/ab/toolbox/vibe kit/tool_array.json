@@ -4,8 +4,8 @@
         "targetAB": "agent_bot_tool"
     },
     {
-        "name": "toDo bot",
-        "targetAB": "toDoBot",
+        "name": "create a todo bot",
+        "targetAB": "abPatchTodo",
         "artifact": true
     }
 ]

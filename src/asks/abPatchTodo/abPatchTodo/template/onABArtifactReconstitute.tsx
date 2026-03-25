@@ -3,6 +3,7 @@ const data = that.data;
 tags.abPatchAskInput = data.abPatchAskInput;
 tags.alwaysApprove = data.alwaysApprove;
 tags.prompt = data.prompt;
+tags.todoLabel = data.todoLabel;
 tags.aiModel = data.aiModel;
 tags.debug = data.debug;
 

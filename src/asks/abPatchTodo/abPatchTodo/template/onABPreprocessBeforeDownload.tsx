@@ -10,6 +10,9 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.alwaysApprove;
     delete thisBotData.tags.currAnimation;
     delete thisBotData.tags.debug;
+    delete thisBotData.tags.prompt;
+    delete thisBotData.tags.todoLabel;
+    delete thisBotData.tags.aiModel;
 
     const dimension = thisBot.tags.dimension;
     delete thisBotData.tags.dimension;

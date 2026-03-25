@@ -193,23 +193,22 @@ async function spawnPatchBot(code) {
  */
 async function executeMakeTodos(todos) {
     for (const todo of todos) {
-        const abArtifactShard = {
+        const abArtifactShard: ABArtifactShard = {
             data: {
                 prompt: todo.prompt,
-                label: todo.label ?? todo.prompt,
-                eggParameters: {
-                    gridInformation: {
-                        dimension: abDimension ?? 'home',
-                        position: { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0 }
-                    }
-                }
+                todoLabel: todo.label,
+                dimension: abDimension ?? 'home',
+                dimensionX: abPosition?.x ?? 0,
+                dimensionY: abPosition?.y ?? 0,
+                dimensionZ: 0,
             },
-            dependencies: [{ askID: 'toDoBot' }]
+            dependencies: [{ askID: 'abPatchTodo' }]
         };
+
         await ab.links.artifact.abCreateArtifactPromiseBot({
-            abArtifactName: 'toDoBot',
+            abArtifactName: 'abPatchTodo',
             abArtifactInstanceID: uuid(),
-            abArtifactShard,
+            abArtifactShard
         });
     }
 }

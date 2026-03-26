@@ -2,7 +2,7 @@ const data = that.data;
 
 tags.journalURL = data.url ?? undefined;
 tags.userData = data.userData;
-tags.continueLocationPull = false;
+tags.continueLocationPull = true;
 
 if (!data.userData) {
     thisBot.getUserData();
@@ -35,3 +35,4 @@ if (data.eggParameters) {
 await thisBot.getDataFromStrapi();
 thisBot.spawnPlayer();
 thisBot.showRoT();
+thisBot.updateLocation();

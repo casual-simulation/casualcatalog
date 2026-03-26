@@ -1,10 +1,10 @@
-shout('patchTodoMenuReset');
+shout('abTodoMenuReset');
 
-configBot.masks.menuPortal = 'patchTodoMenu';
+configBot.masks.menuPortal = 'abTodoMenu';
 
 const menuOptions = {
-    patchTodoMenu: true,
-    patchTodoMenuReset: `@destroy(thisBot)`,
+    abTodoMenu: true,
+    abTodoMenuReset: `@destroy(thisBot)`,
     patchBot: getLink(thisBot),
 }
 
@@ -13,7 +13,7 @@ const promptButton = {
     label: 'prompt',
     formAddress: 'edit',
     onSubmit: `@
-        links.patchBot.setPrompt(that.text);
+        links.patchBot.tags.prompt = that.text;
     `,
     onCreate: `@
         masks.menuItemText = links.patchBot.tags.prompt;
@@ -36,10 +36,10 @@ if (aiChatModels.length > 0) {
             label: aiChatModels[i].name,
             aiProvider: aiChatModels[i].provider,
             aiModel: aiChatModels[i].name,
-            toDoBot: await getLink(thisBot),
+            todoBot: await getLink(thisBot),
             onClick: `@
-                links.toDoBot.tags.aiModel = tags.aiModel;
-                links.toDoBot.onClick();
+                links.todoBot.tags.aiModel = tags.aiModel;
+                links.todoBot.onClick();
             `,
         }
 

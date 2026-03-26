@@ -30,10 +30,8 @@ if (typeof thisBot.abPatchCode === 'function') {
 
         thisBot.changeAnimationState("complete_in");
 
-        shout('onABPatchApplied', { 
+        shout('onAnyABPatchApplied', { 
             botId: thisBot.id,
-            abPatchBotIdentity: tags.abPatchBotIdentity,
-            abPatchAskInput: tags.abPatchAskInput,
             abPatchCode: tags.abPatchCode,
             abPatchAppliedTimestamp: tags.abPatchAppliedTimestamp,
             abPatchResults: tags.abPatchResults,
@@ -52,10 +50,8 @@ if (typeof thisBot.abPatchCode === 'function') {
 
             thisBot.changeAnimationState("error_in");
 
-            shout('onABPatchFailed', { 
+            shout('onAnyABPatchFailed', { 
                 botId: thisBot.id,
-                abPatchBotIdentity: tags.abPatchBotIdentity,
-                abPatchAskInput: tags.abPatchAskInput,
                 abPatchCode: tags.abPatchCode
             });
         }

@@ -36,7 +36,7 @@ const patchMenuGroup = {
 }
 
 patchMenuGroup.menuItems.push({
-    label: `${tags.abPatchAskInput.inquiry}`,
+    label: `${tags.prompt}`,
     menuItemType: 'text',
     formAddress: 'notes',
     menuItemStyle: {

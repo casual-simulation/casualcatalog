@@ -7,7 +7,7 @@ if (tags.activeTodoId) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] Monitoring active todo: ${tags.activeTodoId}`);
     }
-    const todoBot = getBot(byID(tags.activeTodoId));
+    const todoBot = getBot('id', tags.activeTodoId);
 
     if (!todoBot) {
         if (tags.debug) {

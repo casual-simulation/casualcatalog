@@ -3,7 +3,6 @@ const shard: ABArtifactShard = {
         prompt: tags.prompt,
         todoLabel: tags.todoLabel,
         aiModel: tags.aiModel,
-        abPatchAskInput: tags.abPatchAskInput,
         alwaysApprove: tags.alwaysApprove,
         debug: tags.debug,
         todoPlanId: tags.todoPlanId,

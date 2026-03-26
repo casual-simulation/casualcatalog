@@ -4,7 +4,6 @@ if (tags.debug) {
 
 const data = that.data;
 
-tags.abPatchAskInput = data.abPatchAskInput;
 tags.alwaysApprove = data.alwaysApprove;
 tags.prompt = data.prompt;
 tags.todoLabel = data.todoLabel;

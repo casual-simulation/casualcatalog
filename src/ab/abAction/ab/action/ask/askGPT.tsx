@@ -69,6 +69,7 @@ const callDepth: number = that.callDepth ?? 0;
 const agentMode: string | undefined = that.agentMode ?? 'build';
 const historyStorageBot = that.historyStorageBot ? getBot('id', that.historyStorageBot) : undefined;
 const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversationHistoryGet({ historyStorageBot }) : [];
+const todoBot = that.todoBot ? getBot('id', that.todoBot) : undefined;
 
 const MAX_CALL_DEPTH = 5;
 
@@ -192,7 +193,6 @@ async function spawnPatchBot(code) {
  * Sends generated code to an existing todo bot instead of spawning a new patch bot.
  */
 async function sendCodeToTodoBot(code) {
-    const todoBot = getBot(byID(that.todoBot));
     if (todoBot) {
         whisper(todoBot, 'updatePatch', { patchCode: code });
     }
@@ -283,7 +283,7 @@ if (functionCalls === null) {
         console.log(`[${tags.system}.${tagName}] Response is did not contain detectable function calls. Attempting to extract code from response for patch bot. Response:`, response);
     }
     const extractedCode = extractCode(response);
-    if (that.todoBot) {
+    if (todoBot) {
         await sendCodeToTodoBot(extractedCode);
     } else {
         await spawnPatchBot(extractedCode);
@@ -346,7 +346,7 @@ for (const fc of functionCalls) {
         links.utils.abLog({ message: args.message });
 
     } else if (name === 'makePatch') {
-        if (that.todoBot) {
+        if (todoBot) {
             await sendCodeToTodoBot(args.code);
         } else {
             await spawnPatchBot(args.code);

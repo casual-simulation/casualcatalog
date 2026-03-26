@@ -1,18 +1,20 @@
-if (!tags.task || masks.taskInProgress) {
+if (!links.todoBot || masks.taskInProgress) {
     return;
 }
 
-const toDoBot = getBot(byID(tags.task));
+const todoBot = links.todoBot;
 
 //check for closeness
-const xPos = toDoBot.tags[toDoBot.tags.dimension + 'X'];
-const yPos = toDoBot.tags[toDoBot.tags.dimension + 'Y'];
+const xPos = todoBot.tags[todoBot.tags.dimension + 'X'];
+const yPos = todoBot.tags[todoBot.tags.dimension + 'Y'];
 
-const agentXPos = (tags[toDoBot.tags.dimension + 'X'] && tags[toDoBot.tags.dimension + 'X'] > toDoBot.tags[toDoBot.tags.dimension + 'X']) ? toDoBot.tags[toDoBot.tags.dimension + 'X'] + 3 : toDoBot.tags[toDoBot.tags.dimension + 'X'] - 3;
-const agentYPos = (tags[toDoBot.tags.dimension + 'Y'] && tags[toDoBot.tags.dimension + 'Y'] > toDoBot.tags[toDoBot.tags.dimension + 'Y']) ? toDoBot.tags[toDoBot.tags.dimension + 'Y'] + 3 : toDoBot.tags[toDoBot.tags.dimension + 'Y'] - 3;
+const agentXPos = (tags[todoBot.tags.dimension + 'X'] && tags[todoBot.tags.dimension + 'X'] > todoBot.tags[todoBot.tags.dimension + 'X']) ? todoBot.tags[todoBot.tags.dimension + 'X'] + 3 : todoBot.tags[todoBot.tags.dimension + 'X'] - 3;
+const agentYPos = (tags[todoBot.tags.dimension + 'Y'] && tags[todoBot.tags.dimension + 'Y'] > todoBot.tags[todoBot.tags.dimension + 'Y']) ? todoBot.tags[todoBot.tags.dimension + 'Y'] + 3 : todoBot.tags[todoBot.tags.dimension + 'Y'] - 3;
 
 const inMap = configBot.tags.mapPortal ? true : false;
-if ((inMap && (agentXPos - xPos > .001 || agentYPos - yPos > .001)) || (!inMap && (agentXPos - xPos > 3.5 || agentYPos - yPos > 3.5))) {
+if ((inMap && (agentXPos - xPos > .001 || agentYPos - yPos > .001)) || 
+    (!inMap && (agentXPos - xPos > 3.5 || agentYPos - yPos > 3.5))
+) {
     await thisBot.moveBot({
         bot: thisBot,
         dimension: configBot.tags.gridPortal ?? 'home',
@@ -28,7 +30,7 @@ if ((inMap && (agentXPos - xPos > .001 || agentYPos - yPos > .001)) || (!inMap &
 if (!links.armBot) {
     links.arm_tool.abCreateArm({
         originBot: thisBot,
-        dimension: toDoBot.tags.dimension,
+        dimension: todoBot.tags.dimension,
         position: {
             x: xPos,
             y: yPos,
@@ -49,13 +51,13 @@ if (thisBot.links.armBot) {
     requestData.armDimensionY = armBot.tags[armDimension + "Y"];
 }
 
-masks.targetBot = getLink(toDoBot);
+masks.targetBot = getLink(todoBot);
 masks.promptType = 'grid';
 thisBot.agentOnRequest({
-    inquiry: toDoBot.tags.prompt,
+    inquiry: todoBot.tags.prompt,
     data: requestData,
     model: tags.aiModel,
-    todoBot: toDoBot.id,
+    todoBotId: todoBot.id,
 });
 
 masks.taskInProgress = true;

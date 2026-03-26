@@ -1,6 +1,7 @@
 thisBot.agentReset();
 
 let inquiry = that.inquiry ?? that;
+const todoBotId = that?.todoBotId;
 
 const abAskBot = ab.links.ask;
 
@@ -45,7 +46,7 @@ abAskBot.askGPT({
     abDimension: tags.dimension,
     abPosition: patchBotPosition,
     data,
-    todoBot: that.todoBot,
+    todoBot: todoBotId,
 })
 
 // Wait some amount of time before bringing bot label back.

@@ -1,3 +1,7 @@
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] invoke`);
+}
+
 const data = that.data;
 
 tags.abPatchAskInput = data.abPatchAskInput;
@@ -6,6 +10,7 @@ tags.prompt = data.prompt;
 tags.todoLabel = data.todoLabel;
 tags.aiModel = data.aiModel ?? ab.links.personality.tags.abPreferredAIModel;
 tags.debug = data.debug;
+tags.system = `abPatchTodo.instance_${thisBot.id.substring(0, 5)}`;
 
 if (data.eggParameters) {
     if (data.eggParameters.gridInformation) {
@@ -24,7 +29,4 @@ if (data.eggParameters) {
 
 tags.abPatchTodoInstance = true;
 
-masks.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/toDoBot_checklist_animated.glb");
-await os.listFormAnimations(thisBot); // MUST run this before triggering animations. Without it, animations may try to trigger before the animation system is ready.
-
-thisBot.changeAnimationState("incomplete_in");
+thisBot.initialize();

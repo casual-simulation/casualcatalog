@@ -1,6 +1,8 @@
 const { botData, filename, sourceEvent } = that;
 
-console.log(`[${tags.system}.${tagName}] that:`, that);
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] that:`, that);
+}
 
 if (sourceEvent === 'download_artifact_pattern') {
     const thisBotData = botData[thisBot.id];
@@ -13,6 +15,8 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.prompt;
     delete thisBotData.tags.todoLabel;
     delete thisBotData.tags.aiModel;
+
+    thisBotData.tags.system = 'abPatchTodo.template';
 
     const dimension = thisBot.tags.dimension;
     delete thisBotData.tags.dimension;

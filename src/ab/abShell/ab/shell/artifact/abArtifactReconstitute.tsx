@@ -155,7 +155,7 @@ try {
             shardBots,
         };
 
-        whisper(shardBots, 'onReconstituted', reconstitutionResult);
+        whisper(shardBots, 'onABArtifactReconstituted', reconstitutionResult);
         shout('onAnyABArtifactReconstituted', reconstitutionResult);
 
         links.utils.abLogAndToast({ message: `Artifact '${abArtifactBundle.name}' (instance id: ${abArtifactInstanceID}) finished reconstitution.`, toast: toast });

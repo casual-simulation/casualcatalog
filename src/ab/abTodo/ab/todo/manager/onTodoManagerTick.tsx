@@ -1,14 +1,30 @@
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] Starting tick`);
+}
+
 // If there's an active todo being processed, monitor it
 if (tags.activeTodoId) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] Monitoring active todo: ${tags.activeTodoId}`);
+    }
     const todoBot = getBot(byID(tags.activeTodoId));
 
     if (!todoBot) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] Active todo was destroyed, marking finished`);
+        }
         // Todo was destroyed — move to next
         thisBot.onTodoFinished({ todoId: tags.activeTodoId });
     } else if (todoBot.tags.abPatchError) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] Active todo failed: ${todoBot.id}, error: ${todoBot.tags.abPatchError}`);
+        }
         // Patch failed — stop this plan
         thisBot.onTodoFailed({ todoId: todoBot.id, planId: todoBot.tags.todoPlanId });
     } else if (todoBot.tags.abPatchApplied) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] Active todo applied: ${todoBot.id}`);
+        }
         // Patch applied — move to next
         thisBot.onTodoFinished({ todoId: todoBot.id });
     }
@@ -17,6 +33,9 @@ if (tags.activeTodoId) {
 
 // No active todo — find the next one to process
 const todoBots = thisBot.abGetTodoBots();
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] Found ${todoBots?.length ?? 0} todo bots`);
+}
 if (!todoBots || todoBots.length === 0) {
     return;
 }
@@ -30,7 +49,14 @@ const pendingTodos = todoBots.filter(b =>
     b.tags.todoPlanId !== tags.failedPlanId
 );
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] Pending todos count: ${pendingTodos.length}`);
+}
+
 if (pendingTodos.length === 0) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] No pending todos`);
+    }
     return;
 }
 
@@ -46,20 +72,37 @@ pendingTodos.sort((a, b) => {
     return (a.tags.todoOrder ?? 0) - (b.tags.todoOrder ?? 0);
 });
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] Selected next todo: ${pendingTodos[0].id} (planId: ${pendingTodos[0].tags.todoPlanId}, order: ${pendingTodos[0].tags.todoOrder})`);
+}
+
 const nextTodo = pendingTodos[0];
 tags.activePlanId = nextTodo.tags.todoPlanId;
 tags.activeTodoId = nextTodo.id;
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] Emitting onTodoStarted for: ${nextTodo.id}`);
+}
 thisBot.onTodoStarted({ todoId: nextTodo.id });
 
 // Find or spawn an agent
 let agentBot = tags.activeAgentId ? getBot(byID(tags.activeAgentId)) : null;
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] Agent state: activeAgentId=${tags.activeAgentId}, agentBot=${!!agentBot}`);
+}
+
 if (!agentBot) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] No active agent, trying abAgent tag`);
+    }
     agentBot = getBot('abAgent', true);
 }
 
 if (!agentBot) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] Spawning new agent for model: ${nextTodo.tags.aiModel}`);
+    }
     const abBot = ab.links.manifestation.links.abBot;
     const dimension = configBot.tags.gridPortal ?? 'home';
     await ab.links.search.onLookupAskID({
@@ -78,6 +121,9 @@ if (!agentBot) {
 
     agentBot = getBot('abAgent', true);
     if (!agentBot) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] Could not create AI agent`);
+        }
         links.utils.abLog({ message: 'Could not create AI agent' });
         tags.activeTodoId = null;
         return;
@@ -86,5 +132,8 @@ if (!agentBot) {
 
 tags.activeAgentId = agentBot.id;
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] Assigning todo ${nextTodo.id} to agent ${agentBot.id}`);
+}
 // Assign the todo to the agent
 whisper(agentBot, 'assignTodo', nextTodo.id);

@@ -30,5 +30,3 @@ if (data.eggParameters) {
 }
 
 tags.abPatchTodoInstance = true;
-
-thisBot.initialize();

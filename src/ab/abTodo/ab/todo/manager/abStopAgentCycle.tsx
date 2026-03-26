@@ -1,4 +1,4 @@
-if (thisBot.vars.cycleIntervalId) {
-    clearInterval(thisBot.vars.cycleIntervalId);
-    thisBot.vars.cycleIntervalId = null;
+if (thisBot.vars.cycleTimeoutId) {
+    clearTimeout(thisBot.vars.cycleTimeoutId);
+    thisBot.vars.cycleTimeoutId = null;
 }

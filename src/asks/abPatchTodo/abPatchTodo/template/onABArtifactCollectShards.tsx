@@ -6,6 +6,8 @@ const shard: ABArtifactShard = {
         abPatchAskInput: tags.abPatchAskInput,
         alwaysApprove: tags.alwaysApprove,
         debug: tags.debug,
+        todoPlanId: tags.todoPlanId,
+        todoOrder: tags.todoOrder,
         eggParameters: {
             gridInformation: {
                 dimension: tags.dimension,

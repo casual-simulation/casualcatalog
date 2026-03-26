@@ -189,15 +189,29 @@ async function spawnPatchBot(code) {
 }
 
 /**
+ * Sends generated code to an existing todo bot instead of spawning a new patch bot.
+ */
+async function sendCodeToTodoBot(code) {
+    const todoBot = getBot(byID(that.todoBot));
+    if (todoBot) {
+        whisper(todoBot, 'updatePatch', { patchCode: code });
+    }
+}
+
+/**
  * Creates todo bots via the artifact system.
  */
 async function executeMakeTodos(todos) {
+    const todoPlanId = uuid();
+
     for (let i = 0; i < todos.length; i++) {
         const todo = todos[i];
         const abArtifactShard: ABArtifactShard = {
             data: {
                 prompt: todo.prompt,
                 todoLabel: todo.label,
+                todoPlanId,
+                todoOrder: i,
                 eggParameters: {
                     gridInformation: {
                         dimension: abDimension ?? 'home',
@@ -269,7 +283,11 @@ if (functionCalls === null) {
         console.log(`[${tags.system}.${tagName}] Response is did not contain detectable function calls. Attempting to extract code from response for patch bot. Response:`, response);
     }
     const extractedCode = extractCode(response);
-    await spawnPatchBot(extractedCode);
+    if (that.todoBot) {
+        await sendCodeToTodoBot(extractedCode);
+    } else {
+        await spawnPatchBot(extractedCode);
+    }
     return;
 }
 
@@ -328,7 +346,11 @@ for (const fc of functionCalls) {
         links.utils.abLog({ message: args.message });
 
     } else if (name === 'makePatch') {
-        await spawnPatchBot(args.code);
+        if (that.todoBot) {
+            await sendCodeToTodoBot(args.code);
+        } else {
+            await spawnPatchBot(args.code);
+        }
 
     } else if (name === 'makeTodos') {
         await executeMakeTodos(args.todos ?? []);

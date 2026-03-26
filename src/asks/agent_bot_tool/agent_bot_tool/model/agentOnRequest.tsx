@@ -45,6 +45,7 @@ abAskBot.askGPT({
     abDimension: tags.dimension,
     abPosition: patchBotPosition,
     data,
+    todoBot: that.todoBot,
 })
 
 // Wait some amount of time before bringing bot label back.

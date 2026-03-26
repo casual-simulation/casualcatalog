@@ -14,6 +14,8 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.debug;
     delete thisBotData.tags.prompt;
     delete thisBotData.tags.todoLabel;
+    delete thisBotData.tags.todoPlanId;
+    delete thisBotData.tags.todoOrder;
     delete thisBotData.tags.aiModel;
 
     thisBotData.tags.system = 'abPatchTodo.template';

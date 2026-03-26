@@ -52,9 +52,10 @@ if (thisBot.links.armBot) {
 masks.targetBot = getLink(toDoBot);
 masks.promptType = 'grid';
 thisBot.agentOnRequest({
-    inquiry: toDoBot.tags.abPatchAskInput.inquiry,
-    data: requestData, 
-    model: tags.aiModel
+    inquiry: toDoBot.tags.prompt,
+    data: requestData,
+    model: tags.aiModel,
+    todoBot: toDoBot.id,
 });
 
 masks.taskInProgress = true;

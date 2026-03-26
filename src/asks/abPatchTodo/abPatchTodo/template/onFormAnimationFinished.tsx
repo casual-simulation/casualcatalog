@@ -27,4 +27,15 @@ else if (tags.currAnimation == "error_in") {
 else if (tags.currAnimation == "complete_in") {
     os.startFormAnimation(thisBot, "complete_static", {loop: true});
     tags.currAnimation = "complete_static";
+
+    // If this was the last todo in the plan, destroy all plan todos
+    if (tags.lastPlanTodoApproved && tags.todoPlanId) {
+        const planTodos = getBots(b =>
+            b.tags.abPatchTodoInstance &&
+            b.tags.todoPlanId === tags.todoPlanId
+        );
+        for (const todo of planTodos) {
+            destroy(todo);
+        }
+    }
 }

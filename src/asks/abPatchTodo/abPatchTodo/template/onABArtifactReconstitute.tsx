@@ -10,6 +10,8 @@ tags.prompt = data.prompt;
 tags.todoLabel = data.todoLabel;
 tags.aiModel = data.aiModel ?? ab.links.personality.tags.abPreferredAIModel;
 tags.debug = data.debug;
+tags.todoPlanId = data.todoPlanId;
+tags.todoOrder = data.todoOrder ?? 0;
 tags.system = `abPatchTodo.instance_${thisBot.id.substring(0, 5)}`;
 
 if (data.eggParameters) {

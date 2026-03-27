@@ -9,10 +9,16 @@ if (sourceEvent === 'download_artifact_pattern') {
 
     // Need to cleanup some tags that might be set when downloading as artifact pattern.
     delete thisBotData.tags.abPatchTodoInstance;
+    delete thisBotData.tags.abPatchCode;
+    delete thisBotData.tags.abPatchResults;
+    delete thisBotData.tags.abPatchApplied;
+    delete thisBotData.tags.abPatchAppliedTimestamp;
+    delete thisBotData.tags.abPatchError;
     delete thisBotData.tags.alwaysApprove;
     delete thisBotData.tags.currAnimation;
     delete thisBotData.tags.debug;
     delete thisBotData.tags.prompt;
+    delete thisBotData.tags.lineTo;
     delete thisBotData.tags.todoLabel;
     delete thisBotData.tags.todoPlanId;
     delete thisBotData.tags.todoOrder;

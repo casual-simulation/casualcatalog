@@ -1,3 +1,7 @@
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] currAnimation: ${tags.currAnimation}, that:`, that);
+}
+
 const animTransitions = {
     'incomplete_in': 'incomplete_static',
     'incomplete_out': 'processing_in',

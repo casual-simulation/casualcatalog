@@ -25,7 +25,7 @@ const inGridPortal = configBot.tags.gridPortal === tags.dimension || configBot.t
 let patchBotPosition = getBotPosition(thisBot, tags.dimension);
 
 if (!inMapPortal && inGridPortal) {
-    const openPosition = thisBot.findOpenPositionAround({
+    const openPosition = ab.links.utils.findOpenPositionAround({
         originPosition: getBotPosition(thisBot, tags.dimension),
         distance: 3,
         dimension: tags.dimension,

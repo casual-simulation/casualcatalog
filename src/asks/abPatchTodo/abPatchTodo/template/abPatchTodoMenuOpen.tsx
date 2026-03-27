@@ -39,7 +39,12 @@ menuOptions.menuItems.push({
 });
 
 if (isBusy) {
-    menuOptions.menuItems.push({ label: 'being worked on...', menuItemType: 'text', formAddress: 'hourglass_top' });
+    ab.links.menu.abCreateMenuBusyIndicator({
+        abPatchTodoMenu: true,
+        abPatchTodoMenuReset: `@destroy(thisBot)`,
+        abPatchTodoMenuSortOrder: 100.02,
+        label: 'being worked on',
+    });
 } else if (allApplied) {
     menuOptions.menuItems.push({
         label: 'approve',

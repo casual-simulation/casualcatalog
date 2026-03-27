@@ -118,15 +118,24 @@ if (!agentBot) {
     }
     const abBot = ab.links.manifestation.links.abBot;
     const dimension = configBot.tags.gridPortal ?? 'home';
+
+    let agentPosition = {
+        x: abBot.tags[dimension + 'X'] ?? 1,
+        y: abBot.tags[dimension + 'Y'] ?? 0
+    }
+
+    const openPosition = await ab.links.utils.findOpenPositionAround({ originPosition: agentPosition, dimension });
+
+    if (openPosition) {
+        agentPosition = openPosition;
+    }
+
     await ab.links.search.onLookupAskID({
         askID: 'agent_bot_tool',
         eggParameters: {
             gridInformation: {
                 dimension,
-                position: {
-                    x: abBot.tags[dimension + 'X'] ?? 1,
-                    y: (abBot.tags[dimension + 'Y'] + 2) ?? 0
-                }
+                position: agentPosition,
             },
             aiModel: nextTodo.tags.aiModel,
         }

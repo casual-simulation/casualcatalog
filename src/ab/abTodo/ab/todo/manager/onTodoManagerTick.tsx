@@ -124,7 +124,7 @@ if (!agentBot) {
                 dimension,
                 position: {
                     x: abBot.tags[dimension + 'X'] ?? 1,
-                    y: abBot.tags[dimension + 'Y'] ?? 0
+                    y: (abBot.tags[dimension + 'Y'] + 2) ?? 0
                 }
             },
             aiModel: nextTodo.tags.aiModel,

@@ -19,8 +19,8 @@ async function tick() {
     }
 
     // Claim/renew the lock
-    manager.tags.executorClientId = myClientId;
-    manager.tags.executorHeartbeat = now;
+    setTagMask(manager, 'executorClientId', myClientId, 'shared');
+    setTagMask(manager, 'executorHeartbeat', now, 'shared');
 
     if (manager.tags.debug) {
         console.log(`[${manager.tags.system}.${tagName}] agent tick`);

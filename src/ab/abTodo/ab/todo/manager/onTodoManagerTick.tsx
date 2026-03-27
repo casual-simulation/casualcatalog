@@ -38,10 +38,10 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Found ${todoBots?.length ?? 0} todo bots`);
 }
 if (!todoBots || todoBots.length === 0) {
-    const idleAgent = tags.activeAgentId ? getBot(byID(tags.activeAgentId)) : null;
+    const idleAgent = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
     if (idleAgent) {
         destroy(idleAgent);
-        tags.activeAgentId = null;
+        setTagMask(thisBot, 'activeAgentId', null, 'shared');
     }
     return;
 }
@@ -63,10 +63,10 @@ if (pendingTodos.length === 0) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] No pending todos`);
     }
-    const idleAgent = tags.activeAgentId ? getBot(byID(tags.activeAgentId)) : null;
+    const idleAgent = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
     if (idleAgent) {
         destroy(idleAgent);
-        tags.activeAgentId = null;
+        setTagMask(thisBot, 'activeAgentId', null, 'shared');
     }
     return;
 }
@@ -88,8 +88,8 @@ if (tags.debug) {
 }
 
 const nextTodo = pendingTodos[0];
-tags.activePlanId = nextTodo.tags.todoPlanId;
-tags.activeTodoId = nextTodo.id;
+setTagMask(thisBot, 'activePlanId', nextTodo.tags.todoPlanId, 'shared');
+setTagMask(thisBot, 'activeTodoId', nextTodo.id, 'shared');
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Emitting onTodoStarted for: ${nextTodo.id}`);
@@ -97,7 +97,7 @@ if (tags.debug) {
 thisBot.onTodoStarted({ todoId: nextTodo.id });
 
 // Find or spawn an agent
-let agentBot = tags.activeAgentId ? getBot(byID(tags.activeAgentId)) : null;
+let agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Agent state: activeAgentId=${tags.activeAgentId}, agentBot=${!!agentBot}`);
@@ -108,7 +108,7 @@ if (agentBot && nextTodo.tags.aiModel && agentBot.tags.aiModel !== nextTodo.tags
         console.log(`[${tags.system}.${tagName}] Agent model mismatch (agent: ${agentBot.tags.aiModel}, todo: ${nextTodo.tags.aiModel}), destroying old agent`);
     }
     destroy(agentBot);
-    tags.activeAgentId = null;
+    setTagMask(thisBot, 'activeAgentId', null, 'shared');
     agentBot = null;
 }
 
@@ -130,7 +130,7 @@ if (!agentBot) {
         agentPosition = openPosition;
     }
 
-    await ab.links.search.onLookupAskID({
+    const lookupResult: ABLookupAskIDResult = await ab.links.search.onLookupAskID({
         askID: 'agent_bot_tool',
         eggParameters: {
             gridInformation: {
@@ -140,19 +140,33 @@ if (!agentBot) {
             aiModel: nextTodo.tags.aiModel,
         }
     });
+    
+    const agentMakerBot = lookupResult?.hatchedBots?.find(b => b.tags.createAIAgent != null);
+    
+    if (agentMakerBot) {
+        const aiChatModels = configBot.tags.aiChatModels ?? (await ai.listChatModels());
+        const match = aiChatModels.find(e => e.name === nextTodo.tags.aiModel);
 
-    agentBot = getBot('abAgent', true);
+        agentBot = agentMakerBot.createAIAgent({
+            dimension,
+            aiModel: match.name,
+            aiProvider: match.provider
+        })
+    } else {
+        console.error(`[${tags.system}.${tagName}] could not find agent bot maker in agent_bot_tool ask.`)
+    }
+
     if (!agentBot) {
         if (tags.debug) {
-            console.log(`[${tags.system}.${tagName}] Could not create AI agent`);
+            console.error(`[${tags.system}.${tagName}] Could not create AI agent`);
         }
         links.utils.abLog({ message: 'Could not create AI agent' });
-        tags.activeTodoId = null;
+        setTagMask(thisBot, 'activeTodoId', null, 'shared');
         return;
     }
 }
 
-tags.activeAgentId = agentBot.id;
+setTagMask(thisBot, 'activeAgentId', agentBot.id, 'shared');
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Assigning todo ${nextTodo.id} to agent ${agentBot.id}`);

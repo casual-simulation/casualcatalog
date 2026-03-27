@@ -37,6 +37,11 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Found ${todoBots?.length ?? 0} todo bots`);
 }
 if (!todoBots || todoBots.length === 0) {
+    const idleAgent = tags.activeAgentId ? getBot(byID(tags.activeAgentId)) : null;
+    if (idleAgent) {
+        destroy(idleAgent);
+        tags.activeAgentId = null;
+    }
     return;
 }
 
@@ -56,6 +61,11 @@ if (tags.debug) {
 if (pendingTodos.length === 0) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] No pending todos`);
+    }
+    const idleAgent = tags.activeAgentId ? getBot(byID(tags.activeAgentId)) : null;
+    if (idleAgent) {
+        destroy(idleAgent);
+        tags.activeAgentId = null;
     }
     return;
 }
@@ -92,11 +102,13 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Agent state: activeAgentId=${tags.activeAgentId}, agentBot=${!!agentBot}`);
 }
 
-if (!agentBot) {
+if (agentBot && nextTodo.tags.aiModel && agentBot.tags.aiModel !== nextTodo.tags.aiModel) {
     if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] No active agent, trying abAgent tag`);
+        console.log(`[${tags.system}.${tagName}] Agent model mismatch (agent: ${agentBot.tags.aiModel}, todo: ${nextTodo.tags.aiModel}), destroying old agent`);
     }
-    agentBot = getBot('abAgent', true);
+    destroy(agentBot);
+    tags.activeAgentId = null;
+    agentBot = null;
 }
 
 if (!agentBot) {

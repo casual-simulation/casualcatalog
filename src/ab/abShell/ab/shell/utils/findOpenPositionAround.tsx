@@ -1,13 +1,13 @@
 const { 
     originPosition, 
-    distance, 
     dimension,
-    interval,
+    distance = 5, 
+    interval = 1,
 } = that;
 
 assert(originPosition, `[${tags.system}.${tagName}] originPosition is a required parameter.`);
-assert(distance > 0, `[${tags.system}.${tagName}] distance must be greater than zero.`);
 assert(dimension, `[${tags.system}.${tagName}] dimension is a required parameter.`);
+assert(distance > 0, `[${tags.system}.${tagName}] distance must be greater than zero.`);
 assert(interval > 0, `[${tags.system}.${tagName}] interval must be greater than zero.`);
 
 const DEBUG = true;

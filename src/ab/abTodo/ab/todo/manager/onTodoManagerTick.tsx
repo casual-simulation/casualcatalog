@@ -28,6 +28,16 @@ if (tags.activeTodoId) {
         }
         // Patch applied — move to next
         thisBot.onTodoFinished({ todoId: todoBot.id });
+    } else {
+        // Todo still pending — verify an agent is actually working on it
+        const agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
+        if (!agentBot || agentBot.tags.task !== tags.activeTodoId) {
+            if (tags.debug) {
+                console.log(`[${tags.system}.${tagName}] No agent working on active todo ${tags.activeTodoId}, resetting for re-assignment`);
+            }
+            setTagMask(thisBot, 'activeTodoId', null, 'shared');
+            setTagMask(thisBot, 'activeAgentId', null, 'shared');
+        }
     }
     return;
 }
@@ -120,8 +130,8 @@ if (!agentBot) {
     const dimension = configBot.tags.gridPortal ?? 'home';
 
     let agentPosition = {
-        x: abBot.tags[dimension + 'X'] ?? 1,
-        y: abBot.tags[dimension + 'Y'] ?? 0
+        x: abBot?.tags[dimension + 'X'] ?? 1,
+        y: abBot?.tags[dimension + 'Y'] ?? 0
     }
 
     const openPosition = await ab.links.utils.findOpenPositionAround({ originPosition: agentPosition, dimension });

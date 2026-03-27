@@ -1,5 +1,9 @@
 const { dimension, aiModel, aiProvider } = that;
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] that:`, that);
+}
+
 shout("clearAiKitAgentBotMenu");
 
 const defaultConfig = tags.agentConfigs['default'];
@@ -71,7 +75,15 @@ botTags[dimension + 'X'] = dimensionX;
 botTags[dimension + 'Y'] = dimensionY;
 
 if (links.agentModel) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] create bot with tags:`, botTags);
+    }
+
     const bot = create(links.agentModel, botTags);
+
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] created bot:`, bot);
+    }
 
     if (bot && tags.destroyAfterUse) {
         destroy(links.agentModel);

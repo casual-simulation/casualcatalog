@@ -170,7 +170,7 @@ if (!agentBot) {
         if (tags.debug) {
             console.error(`[${tags.system}.${tagName}] Could not create AI agent`);
         }
-        links.utils.abLog({ message: 'Could not create AI agent' });
+        ab.links.utils.abLog({ message: 'Could not create AI agent' });
         setTagMask(thisBot, 'activeTodoId', null, 'shared');
         return;
     }

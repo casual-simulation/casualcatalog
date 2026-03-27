@@ -23,6 +23,7 @@ if (that.eggParameters) {
                 dimension,
                 aiModel: match.name,
                 aiProvider: match.provider
+            });
               
 
             openMenu = false;

@@ -4,15 +4,15 @@ if (tags.debug) {
 
 // Mark this plan as failed — remaining todos in this plan will be skipped
 if (that?.planId) {
-    tags.failedPlanId = that.planId;
+    setTagMask(thisBot, 'failedPlanId', that.planId, 'shared');
 }
 
-tags.activeTodoId = null;
+setTagMask(thisBot, 'activeTodoId', null, 'shared');
 
-const agentBot = tags.activeAgentId ? getBot(byID(tags.activeAgentId)) : null;
+const agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
 if (agentBot) {
-    agentBot.tags.task = null;
-    setTagMask(agentBot, 'taskInProgress', false, 'tempLocal');
+    agentBot.tags.todoBot = null;
+    agentBot.tags.todoInProgress = false;
 }
 
 shout('onAnyTodoFailed', that);

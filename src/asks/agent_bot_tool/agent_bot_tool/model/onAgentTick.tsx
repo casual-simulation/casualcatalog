@@ -1,4 +1,4 @@
-if (!links.todoBot || masks.taskInProgress) {
+if (!links.todoBot || tags.todoInProgress) {
     return;
 }
 
@@ -40,7 +40,7 @@ if (!links.armBot) {
     return;
 }
 
-//do task
+//work on todo
 const requestData = {};
 if (thisBot.links.armBot) {
     const armBot = links.armBot;
@@ -60,4 +60,4 @@ thisBot.agentOnRequest({
     todoBotId: todoBot.id,
 });
 
-masks.taskInProgress = true;
+tags.todoInProgress = true;

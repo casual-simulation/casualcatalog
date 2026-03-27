@@ -2,13 +2,13 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] todo finished:`, that?.todoId);
 }
 
-tags.activeTodoId = null;
+setTagMask(thisBot, 'activeTodoId', null, 'shared');
 
-// Reset agent's task state so it can pick up the next todo
-const agentBot = tags.activeAgentId ? getBot(byID(tags.activeAgentId)) : null;
+// Reset agent's todo state so it can pick up the next todo
+const agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
 if (agentBot) {
-    agentBot.tags.task = null;
-    setTagMask(agentBot, 'taskInProgress', false, 'tempLocal');
+    agentBot.tags.todoBot = null;
+    agentBot.tags.todoInProgress = false;
 }
 
 shout('onAnyTodoFinished', that);

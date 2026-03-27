@@ -147,7 +147,7 @@ if (!agentBot) {
                 dimension,
                 position: agentPosition,
             },
-            aiModel: nextTodo.tags.aiModel,
+            openMenu: false,
         }
     });
     

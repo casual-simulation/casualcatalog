@@ -19,11 +19,11 @@ if (that.eggParameters) {
         const match = aiChatModels.find(e => e.name === that.eggParameters.aiModel);
 
         if (match) {
-            thisBot.createAIAgent({
+            const agentBot = thisBot.createAIAgent({
                 dimension,
                 aiModel: match.name,
                 aiProvider: match.provider
-            })
+              
 
             openMenu = false;
         } else {

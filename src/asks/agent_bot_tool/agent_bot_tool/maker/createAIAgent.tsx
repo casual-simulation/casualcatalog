@@ -71,11 +71,14 @@ botTags[dimension + 'X'] = dimensionX;
 botTags[dimension + 'Y'] = dimensionY;
 
 if (links.agentModel) {
-    const bot = await create(links.agentModel, botTags);
+    const bot = create(links.agentModel, botTags);
 
     if (bot && tags.destroyAfterUse) {
         destroy(links.agentModel);
         destroy(thisBot);
     }
-}
 
+    shout('onAnyAgentBotCreated', { bot });
+
+    return bot;
+}

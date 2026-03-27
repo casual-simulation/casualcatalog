@@ -2,6 +2,7 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Starting tick`);
 }
 
+
 // If there's an active todo being processed, monitor it
 if (tags.activeTodoId) {
     if (tags.debug) {

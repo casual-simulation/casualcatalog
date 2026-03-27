@@ -1,4 +1,4 @@
-let openMenu = true;
+let openMenu = that.eggParameters?.openMenu ?? true;
 
 if (that.eggParameters) {
     const dimension = that.eggParameters.gridInformation?.dimension ?? 'home';

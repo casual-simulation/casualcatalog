@@ -1,14 +1,16 @@
-// Need to reimplement undo functionaltiy, its much more complex now that todo bots could be part of a larger plan.
-// Its possible that we would need to undo any patches on todo bots that are in the plan after this one.
-console.warn('TODO: need to reimplement undo functionality functionality. defaulting to old naive behavior.');
+const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
 
-if (tags.abPatchApplied && tags.abPatchTodoInstance) {
-    shout('onAnyABPatchUndo', { 
-        botId: thisBot.id,
-        abPatchCode: tags.abPatchCode,
-        abPatchAppliedTimestamp: tags.abPatchAppliedTimestamp,
-        abPatchResults: tags.abPatchResults,
-    });
-
-    thisBot.abPatchUndo();
+// Undo applied todos in reverse todoOrder (each abPatchUndo destroys the todo bot itself)
+const appliedTodos = planTodos.filter(b => b.tags.abPatchApplied)
+    .sort((a, b) => (b.tags.todoOrder ?? 0) - (a.tags.todoOrder ?? 0));
+for (const todo of appliedTodos) {
+    whisper(todo, 'abPatchUndo');
 }
+
+// Destroy remaining unapplied todos
+const unappliedTodos = planTodos.filter(b => !b.tags.abPatchApplied);
+for (const todo of unappliedTodos) {
+    destroy(todo);
+}
+
+shout('abPatchTodoMenuReset');

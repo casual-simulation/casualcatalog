@@ -18,7 +18,7 @@ const shard: ABArtifactShard = {
             }
         },
     },
-    dependencies: [{ askID: 'abPatchTodo '}]
+    dependencies: [{ askID: 'abPatchTodo' }]
 }
 
 return shard;

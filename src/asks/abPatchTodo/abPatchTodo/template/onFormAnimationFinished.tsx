@@ -1,41 +1,27 @@
-if (tags.currAnimation == "incomplete_in") {
-    os.startFormAnimation(thisBot, "incomplete_static", {loop: true});
-    tags.currAnimation = "incomplete_static";
+const animTransitions = {
+    'incomplete_in': 'incomplete_static',
+    'incomplete_out': 'processing_in',
+    'processing_in': 'processing_loop',
+    'processing_out': tags.nextAnimation,
+    'error_in': 'error_static',
+    'error_out': 'blank',
+    'complete_in': 'complete_static',
+    'complete_out': 'blank',
+};
+
+const next = animTransitions[tags.currAnimation];
+
+if (next) {
+    thisBot.changeAnimationState(next);
 }
 
-else if (tags.currAnimation == "incomplete_out") {
-    os.startFormAnimation(thisBot, "processing_in");
-    tags.currAnimation = "processing_in";
-}
-
-else if (tags.currAnimation == "processing_in") {
-    os.startFormAnimation(thisBot, "processing_loop", {loop: true});
-    tags.currAnimation = "processing_loop";
-}
-
-else if (tags.currAnimation == "processing_out") {
-    os.startFormAnimation(thisBot, tags.newAnimation);
-    tags.currAnimation = tags.newAnimation;
-    tags.newAnimation = null;
-}
-
-else if (tags.currAnimation == "error_in") {
-    os.startFormAnimation(thisBot, "error_static", {loop: true});
-    tags.currAnimation = "error_static";
-}
-
-else if (tags.currAnimation == "complete_in") {
-    os.startFormAnimation(thisBot, "complete_static", {loop: true});
-    tags.currAnimation = "complete_static";
-
-    // If this was the last todo in the plan, destroy all plan todos
-    if (tags.lastPlanTodoApproved && tags.todoPlanId) {
-        const planTodos = getBots(b =>
-            b.tags.abPatchTodoInstance &&
-            b.tags.todoPlanId === tags.todoPlanId
-        );
-        for (const todo of planTodos) {
-            destroy(todo);
-        }
+// After the last approved todo transitions to complete_static, destroy all todos in the plan
+if (tags.currAnimation === 'complete_in' && tags.lastPlanTodoApproved && tags.todoPlanId) {
+    const planTodos = getBots(b =>
+        b.tags.abPatchTodoInstance &&
+        b.tags.todoPlanId === tags.todoPlanId
+    );
+    for (const todo of planTodos) {
+        destroy(todo);
     }
 }

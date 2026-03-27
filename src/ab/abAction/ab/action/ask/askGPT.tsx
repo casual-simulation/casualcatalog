@@ -210,6 +210,7 @@ async function executeMakeTodos(todos) {
             data: {
                 prompt: todo.prompt,
                 todoLabel: todo.label,
+                aiModel: that.model,
                 todoPlanId,
                 todoOrder: i,
                 eggParameters: {

@@ -31,7 +31,7 @@ if (tags.activeTodoId) {
     } else {
         // Todo still pending — verify an agent is actually working on it
         const agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
-        if (!agentBot || agentBot.tags.task !== tags.activeTodoId) {
+        if (!agentBot || agentBot.links.todoBot?.id !== tags.activeTodoId) {
             if (tags.debug) {
                 console.log(`[${tags.system}.${tagName}] No agent working on active todo ${tags.activeTodoId}, resetting for re-assignment`);
             }

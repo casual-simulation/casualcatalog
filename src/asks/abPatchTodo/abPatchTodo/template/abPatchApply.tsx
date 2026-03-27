@@ -57,7 +57,6 @@ if (typeof thisBot.abPatchCode === 'function') {
         }
     }
 } else {
-
     thisBot.changeAnimationState("error_in");
 
     const errorMessage = `Patch code is not a valid function.`;

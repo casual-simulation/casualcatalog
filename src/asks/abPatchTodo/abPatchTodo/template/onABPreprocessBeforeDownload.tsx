@@ -18,6 +18,7 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.todoOrder;
     delete thisBotData.tags.aiModel;
 
+    thisBotData.tags.form = 'nothing';
     thisBotData.tags.system = 'abPatchTodo.template';
 
     const dimension = thisBot.tags.dimension;

@@ -14,14 +14,3 @@ const next = animTransitions[tags.currAnimation];
 if (next) {
     thisBot.changeAnimationState(next);
 }
-
-// After the last approved todo transitions to complete_static, destroy all todos in the plan
-if (tags.currAnimation === 'complete_in' && tags.lastPlanTodoApproved && tags.todoPlanId) {
-    const planTodos = getBots(b =>
-        b.tags.abPatchTodoInstance &&
-        b.tags.todoPlanId === tags.todoPlanId
-    );
-    for (const todo of planTodos) {
-        destroy(todo);
-    }
-}

@@ -9,8 +9,16 @@ const staticMap = {
     'error': 'error_static',
 };
 
+const inMap = {
+    'incomplete': 'incomplete_in',
+    'processing': 'processing_in',
+    'complete': 'complete_in',
+    'error': 'error_in',
+};
+
+const expectedInAnim = inMap[tags.animationState];
 const staticAnim = staticMap[tags.animationState];
-if (!staticAnim || !masks.formAddressAnimations || that.animation === staticAnim) return;
+if (!staticAnim || !masks.formAddressAnimations || that.animation !== expectedInAnim) return;
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] start form animation: ${staticAnim}`);

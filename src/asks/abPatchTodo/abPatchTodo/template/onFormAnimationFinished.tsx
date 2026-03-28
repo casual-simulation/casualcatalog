@@ -1,5 +1,5 @@
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] animationState: ${tags.animationState}`);
+    console.log(`[${tags.system}.${tagName}] animationState: ${tags.animationState}, finished animation: ${that.animation}`);
 }
 
 const staticMap = {
@@ -10,10 +10,13 @@ const staticMap = {
 };
 
 const staticAnim = staticMap[tags.animationState];
-if (!staticAnim || !masks.formAddressAnimations) return;
+if (!staticAnim || !masks.formAddressAnimations || that.animation === staticAnim) return;
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] start form animation: ${staticAnim}`);
+}
 
 os.startFormAnimation(thisBot, staticAnim, {
-    initialTime: 0,
     crossFadeWarp: true,
     crossFadeDuration: 200,
     loop: { mode: 'repeat' },

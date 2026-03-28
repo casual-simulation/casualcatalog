@@ -1,4 +1,4 @@
-if (!masks.initialized && tags.abArtifactShardReconstituted) {
+if (!masks.initialized && tags.abArtifactShardReconstituted && masks.abInitialized) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] invoke`);
     }

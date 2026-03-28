@@ -16,13 +16,13 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.abPatchError;
     delete thisBotData.tags.alwaysApprove;
     delete thisBotData.tags.currAnimation;
-    delete thisBotData.tags.debug;
     delete thisBotData.tags.prompt;
     delete thisBotData.tags.lineTo;
     delete thisBotData.tags.todoLabel;
     delete thisBotData.tags.todoPlanId;
     delete thisBotData.tags.todoOrder;
     delete thisBotData.tags.aiModel;
+    delete thisBotData.tags.animationState;
 
     thisBotData.tags.form = 'nothing';
     thisBotData.tags.system = 'abPatchTodo.template';

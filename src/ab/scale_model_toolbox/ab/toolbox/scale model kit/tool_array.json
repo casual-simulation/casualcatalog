@@ -1,0 +1,27 @@
+[
+    {
+        "name": "scale model",
+        "studio": "AB",
+        "targetAB": "scaleModel",
+        "artifact": true
+    },
+    {
+        "name": "scale model wizard",
+        "studio": "AB",
+        "targetAB": "scaleModelWizard",
+        "artifact": true
+    },
+    {
+        "name": "timeline marker",
+        "studio": "AB",
+        "targetAB": "timelineMarker",
+        "artifact": true
+    },
+    {
+        "name": "timeline manager",
+        "studio": "AB",
+        "targetAB": "timelineManager",
+        "artifact": true
+    }
+    
+]

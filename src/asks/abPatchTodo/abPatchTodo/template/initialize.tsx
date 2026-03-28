@@ -12,4 +12,5 @@ if (!masks.initialized && tags.abArtifactShardReconstituted) {
     }
 
     thisBot.changeAnimationState("incomplete_in");
+    whisper(thisBot, 'refreshConnections');
 }

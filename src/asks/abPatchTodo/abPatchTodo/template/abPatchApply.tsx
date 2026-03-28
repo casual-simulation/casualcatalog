@@ -26,7 +26,6 @@ if (typeof thisBot.abPatchCode === 'function') {
 
         tags.abPatchApplied = true;
         tags.abPatchAppliedTimestamp = os.isCollaborative() ? os.agreedUponTime : os.localTime;
-        tags.lineTo = getLink(abPatchResults.map(r => getBot('id', r.botId)));
 
         thisBot.changeAnimationState("complete_in");
 

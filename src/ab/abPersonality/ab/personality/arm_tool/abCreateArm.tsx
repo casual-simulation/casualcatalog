@@ -252,6 +252,11 @@ const arm = {
         }
     }),
     onAnyBotsRemoved: ListenerString(() => {
+        if (!links.originBot) {
+            destroy(thisBot);
+            return;
+        }
+
         if (links.originBot.masks.armSelectedBots) {
             // Check that we still have some active selected bots.
             let activeSelectedBots = false;
@@ -280,14 +285,15 @@ const arm = {
         }
     }),
     onDestroy: ListenerString(() => {
-        links.originBot.masks.armBot = null;
-        links.originBot.masks.draggable = null;
-
         if (tags.debug) {
             console.log(`[${tags.system}.${tagName}] that:`, that);
         }
 
-        whisper(links.originBot, 'onArmDestroy');
+        if (links.originBot) {
+            links.originBot.masks.armBot = null;
+            links.originBot.masks.draggable = null;
+            whisper(links.originBot, 'onArmDestroy');
+        }
     }),
 };
 

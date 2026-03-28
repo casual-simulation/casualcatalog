@@ -1,3 +1,6 @@
+if (!masks.formAddressAnimations) {
+    return;
+}
 const loopAnimations = ['incomplete_static', 'processing_loop', 'error_static', 'complete_static'];
 tags.currAnimation = that;
 

@@ -45,16 +45,21 @@ if (isBusy) {
         abPatchTodoMenuSortOrder: 100.02,
         label: 'being worked on',
     });
+    menuOptions.menuItems.push({
+        label: 'undo',
+        formAddress: 'undo',
+        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
+    });
 } else if (allApplied) {
     menuOptions.menuItems.push({
         label: 'approve',
         formAddress: 'done',
-        onClick: `@whisper(links.patchBot, 'onABPatchApproveClick');`,
+        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchApproveClick'); }),
     });
     menuOptions.menuItems.push({
         label: 'undo',
         formAddress: 'undo',
-        onClick: `@whisper(links.patchBot, 'onABPatchUndoClick');`,
+        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
     menuOptions.menuItems.push({
         label: 'restart',
@@ -74,7 +79,7 @@ if (isBusy) {
     menuOptions.menuItems.push({
         label: 'undo',
         formAddress: 'undo',
-        onClick: `@whisper(links.patchBot, 'onABPatchUndoClick');`,
+        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
     menuOptions.menuItems.push({
         label: 'try again',

@@ -18,8 +18,15 @@ async function tick() {
         return;
     }
 
-    // Claim/renew the lock
-    setTagMask(manager, 'executorClientId', myClientId, 'shared');
+    const prevExecutorClientId = manager.tags.executorClientId;
+    if (prevExecutorClientId && prevExecutorClientId !== myClientId) {
+        // Claim the lock.
+        setTagMask(manager, 'executorClientId', myClientId, 'shared');
+
+        shout('onABTodoExecutorChanged', { executorClientId: myClientId });
+    }
+    
+    // Renew the lock.
     setTagMask(manager, 'executorHeartbeat', now, 'shared');
 
     if (manager.tags.debug) {

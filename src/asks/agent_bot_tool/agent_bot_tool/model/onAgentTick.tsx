@@ -41,6 +41,8 @@ if (!links.armBot) {
 }
 
 //work on todo
+whisper(todoBot, 'changeAnimationState', 'processing_in');
+
 const requestData = {};
 if (thisBot.links.armBot) {
     const armBot = links.armBot;

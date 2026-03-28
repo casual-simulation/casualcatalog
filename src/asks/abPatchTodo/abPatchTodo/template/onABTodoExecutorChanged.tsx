@@ -1,3 +1,3 @@
-if (tags.currAnimation === 'processing_in' || tags.currAnimation === 'processing_loop') {
-    thisBot.changeAnimationState('incomplete_in');
+if (tags.animationState === 'processing') {
+    tags.animationState = 'incomplete';
 }

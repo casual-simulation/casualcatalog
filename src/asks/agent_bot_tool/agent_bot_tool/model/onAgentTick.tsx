@@ -42,7 +42,7 @@ if (!links.armBot) {
 }
 
 //work on todo
-whisper(todoBot, 'changeAnimationState', 'processing_in');
+setTag(todoBot, 'animationState', 'processing');
 
 const requestData = {};
 if (thisBot.links.armBot) {

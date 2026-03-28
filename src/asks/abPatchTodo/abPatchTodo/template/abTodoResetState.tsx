@@ -5,4 +5,4 @@ setTag(thisBot, 'abPatchApplying', null);
 setTag(thisBot, 'abPatchResults', null);
 setTag(thisBot, 'abPatchError', null);
 setTag(thisBot, 'abPatchApproved', null);
-thisBot.changeAnimationState('incomplete_in');
+tags.animationState = 'incomplete';

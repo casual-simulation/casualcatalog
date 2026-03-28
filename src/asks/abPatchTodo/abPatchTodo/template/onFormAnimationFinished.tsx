@@ -1,20 +1,20 @@
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] currAnimation: ${tags.currAnimation}, that:`, that);
+    console.log(`[${tags.system}.${tagName}] animationState: ${tags.animationState}`);
 }
 
-const animTransitions = {
-    'incomplete_in': 'incomplete_static',
-    'incomplete_out': 'processing_in',
-    'processing_in': 'processing_loop',
-    'processing_out': tags.nextAnimation,
-    'error_in': 'error_static',
-    'error_out': 'blank',
-    'complete_in': 'complete_static',
-    'complete_out': 'blank',
+const staticMap = {
+    'incomplete': 'incomplete_static',
+    'processing': 'processing_loop',
+    'complete': 'complete_static',
+    'error': 'error_static',
 };
 
-const next = animTransitions[tags.currAnimation];
+const staticAnim = staticMap[tags.animationState];
+if (!staticAnim || !masks.formAddressAnimations) return;
 
-if (next) {
-    thisBot.changeAnimationState(next);
-}
+os.startFormAnimation(thisBot, staticAnim, {
+    initialTime: 0,
+    crossFadeWarp: true,
+    crossFadeDuration: 200,
+    loop: { mode: 'repeat' },
+});

@@ -11,6 +11,9 @@ if (!masks.initialized && tags.abArtifactShardReconstituted) {
         masks.formAddressAnimations = await os.listFormAnimations(thisBot); // MUST run this before triggering animations. Without it, animations may try to trigger before the animation system is ready.
     }
 
-    thisBot.changeAnimationState("incomplete_in");
+    if (!tags.animationState) {
+        tags.animationState = 'incomplete';
+    }
+    whisper(thisBot, 'refreshAnimation');
     whisper(thisBot, 'refreshConnections');
 }

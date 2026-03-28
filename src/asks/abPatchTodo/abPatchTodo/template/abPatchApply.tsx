@@ -27,7 +27,7 @@ if (typeof thisBot.abPatchCode === 'function') {
         tags.abPatchApplied = true;
         tags.abPatchAppliedTimestamp = os.isCollaborative() ? os.agreedUponTime : os.localTime;
 
-        thisBot.changeAnimationState("complete_in");
+        tags.animationState = 'complete';
 
         shout('onAnyABPatchApplied', { 
             botId: thisBot.id,
@@ -36,7 +36,7 @@ if (typeof thisBot.abPatchCode === 'function') {
             abPatchResults: tags.abPatchResults,
         });
     } catch (e) {
-        thisBot.changeAnimationState("error_in");
+        tags.animationState = 'error';
         const errorMessage = `Something went wrong applying patch — ${ab.links.utils.getErrorMessage(e)}`;
         ab.links.utils.abLogAndToast({ name: tags.patchLabel, message: errorMessage, logType: 'error' });
         tags.abPatchError = errorMessage;
@@ -47,7 +47,7 @@ if (typeof thisBot.abPatchCode === 'function') {
             // If patch is not applied or results are not successfully recorded, then we mark this patch as invalid.
             tags.abPatchInvalid = true;
 
-            thisBot.changeAnimationState("error_in");
+            tags.animationState = 'error';
 
             shout('onAnyABPatchFailed', { 
                 botId: thisBot.id,
@@ -56,7 +56,7 @@ if (typeof thisBot.abPatchCode === 'function') {
         }
     }
 } else {
-    thisBot.changeAnimationState("error_in");
+    tags.animationState = 'error';
 
     const errorMessage = `Patch code is not a valid function.`;
     ab.links.utils.abLogAndToast({ name: tags.patchLabel, message: errorMessage, logType: 'error' });

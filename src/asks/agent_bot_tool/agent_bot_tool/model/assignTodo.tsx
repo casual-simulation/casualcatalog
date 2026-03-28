@@ -13,3 +13,4 @@ if (!ab.links.utils.isBot(todoBot) || !todoBot.tags.abPatchTodoInstance) {
 
 tags.todoBot = getLink(todoBot);
 tags.todoInProgress = null;
+setTagMask(thisBot, 'agentArm', null, 'shared');

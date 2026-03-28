@@ -10,11 +10,12 @@ const animMap = {
 };
 
 const animName = animMap[tags.animationState];
-if (!animName) return;
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] start form animation '${animName}'`);
+    console.log(`[${tags.system}.${tagName}] animationState: '${tags.animationState}' → animName: '${animName}'`);
 }
+
+if (!animName) return;
 
 os.startFormAnimation(thisBot, animName, {
     initialTime: 0,

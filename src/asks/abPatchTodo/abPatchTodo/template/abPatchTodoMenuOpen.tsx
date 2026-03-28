@@ -52,6 +52,11 @@ if (isBusy) {
         onClick: `@whisper(links.patchBot, 'onABPatchApproveClick');`,
     });
     menuOptions.menuItems.push({
+        label: 'undo',
+        formAddress: 'undo',
+        onClick: `@whisper(links.patchBot, 'onABPatchUndoClick');`,
+    });
+    menuOptions.menuItems.push({
         label: 'restart',
         formAddress: 'replay',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchRestartClick'); }),

@@ -108,8 +108,8 @@ const setButton = {
 
 
 if (!tags.markerLocked) {
-    ab.links.menu.abCreateMenuInput(unitButton);  
-    ab.links.menu.abCreateMenuDropdown(valueButton);  
+    ab.links.menu.abCreateMenuInput(valueButton);  
+    ab.links.menu.abCreateMenuDropdown(unitButton);  
     ab.links.menu.abCreateMenuButton(setButton);
 } else {
     shout("setDelta", {value: tags.timeValue, unit: tags.timeUnit});

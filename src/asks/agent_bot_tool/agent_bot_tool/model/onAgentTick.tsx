@@ -37,7 +37,7 @@ if (!links.armBot) {
             z: 0
         }
     })
-    setTagMask(thisBot, 'agentArm', `🧬${JSON.stringify({ dimension: todoBot.tags.dimension, position: { x: xPos, y: yPos } })}`, 'shared');
+    tags.agentArm = `🧬${JSON.stringify({ dimension: todoBot.tags.dimension, position: { x: xPos, y: yPos } })}`;
     return;
 }
 

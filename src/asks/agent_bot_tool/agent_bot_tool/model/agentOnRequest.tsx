@@ -1,4 +1,4 @@
-thisBot.agentReset();
+thisBot.agentReset({ keepArm: true });
 
 let inquiry = that.inquiry ?? that;
 const todoBotId = that?.todoBotId;

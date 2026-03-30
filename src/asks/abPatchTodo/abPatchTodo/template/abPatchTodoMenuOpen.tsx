@@ -46,23 +46,23 @@ if (isBusy) {
         label: 'being worked on',
     });
     menuOptions.menuItems.push({
-        label: 'undo',
+        label: 'undo ask',
         formAddress: 'undo',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
 } else if (allApplied) {
     menuOptions.menuItems.push({
-        label: 'approve',
+        label: 'approve ask',
         formAddress: 'done',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchApproveClick'); }),
     });
     menuOptions.menuItems.push({
-        label: 'undo',
+        label: 'undo ask',
         formAddress: 'undo',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
     menuOptions.menuItems.push({
-        label: 'restart',
+        label: 'restart ask',
         formAddress: 'replay',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchRestartClick'); }),
     });
@@ -77,7 +77,7 @@ if (isBusy) {
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     });
     menuOptions.menuItems.push({
-        label: 'undo',
+        label: 'undo ask',
         formAddress: 'undo',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });

@@ -2,10 +2,5 @@
     {
         "name": "create an agent bot",
         "targetAB": "agent_bot_tool"
-    },
-    {
-        "name": "create a todo bot",
-        "targetAB": "abPatchTodo",
-        "artifact": true
     }
 ]

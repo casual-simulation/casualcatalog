@@ -11,7 +11,7 @@ tags.aiModel = data.aiModel ?? ab.links.personality.tags.abPreferredAIModel;
 tags.debug = data.debug;
 tags.todoPlanId = data.todoPlanId;
 tags.todoOrder = data.todoOrder ?? 0;
-tags.system = `abPatchTodo.instance_${thisBot.id.substring(0, 5)}`;
+tags.system = `abPatchTodo.${(tags.todoPlanId ?? thisBot.id).substring(0, 5)}_${String(tags.todoOrder).padStart(3, '0')}`;
 
 if (data.eggParameters) {
     if (data.eggParameters.gridInformation) {

@@ -267,11 +267,30 @@ if (tags.debug) {
 
 // ── Call AI ─────────────────────────────────────────────────────────────
 
-const response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model: that.model, sourceId });
-if (!response) return;
+let response;
+let requestErrorMsg;
+
+try {
+    response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model: that.model, sourceId });
+} catch (e) {
+    requestErrorMsg = ab.links.utils.getErrorMessage(e);
+}
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] raw response:`, response);
+}
+
+if (requestErrorMsg || !response) {
+    if (todoBot) {
+        todoBot.tags.animationState = 'error';
+
+        if (requestErrorMsg) {
+            todoBot.tags.abPatchError = `AI request failed — ${requestErrorMsg}`;
+        } else {
+            todoBot.tags.abPatchError = 'AI request failed — no response received';
+        }
+    }
+    return;
 }
 
 const functionCalls = parseFunctionCalls(response);

@@ -1,7 +1,7 @@
 const relativePath = that;
 
-const url = new URL(links.remember.tags.casualCatalogURL);
-const env = links.remember.tags.casualCatalogEnv;
+const url = new URL(links.remember.tags.abCasualCatalogURL);
+const env = links.remember.tags.abCasualCatalogEnv;
 
 url.pathname = relativePath;
 

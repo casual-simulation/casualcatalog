@@ -47,6 +47,7 @@ abAskBot.askGPT({
     abPosition: patchBotPosition,
     data,
     todoBot: todoBotId,
+    historyStorageBot: thisBot.id,
 })
 
 // Wait some amount of time before bringing bot label back.

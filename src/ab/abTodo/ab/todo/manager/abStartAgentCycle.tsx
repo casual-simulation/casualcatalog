@@ -23,16 +23,19 @@ async function tick() {
                         (now - manager.tags.executorHeartbeat) >= lockExpiry;
 
     if (manager.tags.executorClientId !== myClientId && !lockIsStale) {
+        // Executor is another client and they are active.
         thisBot.vars.cycleTimeoutId = setTimeout(tick, intervalMS);
         return;
     }
 
     const prevExecutorClientId = manager.tags.executorClientId;
-    if (prevExecutorClientId && prevExecutorClientId !== myClientId) {
+    if (prevExecutorClientId !== myClientId) {
         // Claim the lock.
         setTagMask(manager, 'executorClientId', myClientId, 'shared');
 
-        shout('onABTodoExecutorChanged', { executorClientId: myClientId });
+        if (prevExecutorClientId) {
+            shout('onABTodoExecutorChanged', { executorClientId: myClientId });
+        }
     }
 
     // Renew the lock.

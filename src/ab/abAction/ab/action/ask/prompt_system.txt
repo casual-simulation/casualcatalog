@@ -130,7 +130,8 @@ patchResults.push({
 
 **Messaging:**
 - `shout(eventName, arg?): any[]` — broadcast to all bots
-- `whisper(bot, eventName, arg?): any[]` — send to specific bot(s)
+- `whisper(bot, eventName, arg?): any[]` — send to specific bot(s). Always returns an array even when targeting a single bot — use index 0 to get the result: `const result = whisper(botA, 'addNumbers', { x: 2, y: 3 })[0]`
+- You can also call listener tags directly as functions on a bot reference: `const result = botA.addNumbers({ x: 2, y: 3 })` — equivalent to the whisper above
 
 **UI:**
 - `os.toast(message, duration?)` — brief notification

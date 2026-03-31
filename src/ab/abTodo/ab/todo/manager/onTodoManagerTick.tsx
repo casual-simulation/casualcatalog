@@ -1,3 +1,9 @@
+const cycleId = that?.cycleId;
+
+function isStaleCycle() {
+    return cycleId != null && thisBot.vars.currentCycleId !== cycleId;
+}
+
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Starting tick`);
 }
@@ -136,6 +142,13 @@ if (!agentBot) {
 
     const openPosition = await ab.links.utils.findOpenPositionAround({ originPosition: agentPosition, dimension });
 
+    if (isStaleCycle()) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] Stale cycle detected after findOpenPositionAround, aborting`);
+        }
+        return;
+    }
+
     if (openPosition) {
         agentPosition = openPosition;
     }
@@ -150,11 +163,26 @@ if (!agentBot) {
             openMenu: false,
         }
     });
-    
+
+    if (isStaleCycle()) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] Stale cycle detected after onLookupAskID, aborting`);
+        }
+        return;
+    }
+
     const agentMakerBot = lookupResult?.hatchedBots?.find(b => b.tags.createAIAgent != null);
-    
+
     if (agentMakerBot) {
         const aiChatModels = configBot.tags.aiChatModels ?? (await ai.listChatModels());
+
+        if (isStaleCycle()) {
+            if (tags.debug) {
+                console.log(`[${tags.system}.${tagName}] Stale cycle detected after listChatModels, aborting`);
+            }
+            return;
+        }
+
         const match = aiChatModels.find(e => e.name === nextTodo.tags.aiModel);
 
         agentBot = agentMakerBot.createAIAgent({

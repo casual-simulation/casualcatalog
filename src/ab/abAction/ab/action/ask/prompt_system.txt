@@ -162,6 +162,8 @@ patchResults.push({
 
 To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
 
+**System tag:** Always set `system` on every bot you create — it assigns the bot to a named organizational group visible in the systemPortal. Format: `appName.area.botName` (three dot-separated parts). For AI-created bots, use the `ask` prefix: e.g. `ask.ui.counter`, `ask.game.spawner`, `ask.util.timer`. Users can then open the systemPortal and browse all bots created by the AI agent under the `ask` namespace.
+
 **Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite image or mesh file; for GLTF/GLB models also set `formSubtype: 'gltf'`), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelSize`, `labelPosition` (top/front/floating/left/right), `progressBar`, `progressBarColor`, `lineTo` (bot ID or array of bot IDs to draw a line to), `lineStyle`, `lineWidth`, `lineColor`
 
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
@@ -267,7 +269,7 @@ After getInst result is injected, response (turn 2):
 Response:
 ```json
 [
-  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = -6;\nconst y = 9;\n\nconst behavior = ListenerString(() => {\n  const dim = thisBot.tags.stackDimension ?? 'home';\n  const x = thisBot.tags[dim + 'X'] ?? 0;\n  const y = thisBot.tags[dim + 'Y'] ?? 0;\n  const z = thisBot.tags[dim + 'Z'] ?? 0; // CasualOS is z-up\n\n  const colors = ['red','orange','yellow','green','cyan','blue','purple','magenta','pink','brown','white','black','gray'];\n  const color = colors[Math.floor(Math.random() * colors.length)];\n\n  const bot = create({\n    [dim]: true,\n    [dim + 'X']: x,\n    [dim + 'Y']: y,\n    [dim + 'Z']: z + 1,\n    color,\n    label: 'Stack',\n    stackDimension: dim,\n    onClick: thisBot.tags.onClick\n  });\n\n  os.toast('Spawned: ' + color);\n});\n\nconst root = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  [dim + 'Z']: 0,\n  color: 'white',\n  label: 'Stack Spawner',\n  stackDimension: dim,\n  onClick: behavior\n});\n\nreturn [{ botId: root.id, created: true, rollbackDiff: null }];" } } },
+  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = -6;\nconst y = 9;\n\nconst behavior = ListenerString(() => {\n  const dim = thisBot.tags.stackDimension ?? 'home';\n  const x = thisBot.tags[dim + 'X'] ?? 0;\n  const y = thisBot.tags[dim + 'Y'] ?? 0;\n  const z = thisBot.tags[dim + 'Z'] ?? 0; // CasualOS is z-up\n\n  const colors = ['red','orange','yellow','green','cyan','blue','purple','magenta','pink','brown','white','black','gray'];\n  const color = colors[Math.floor(Math.random() * colors.length)];\n\n  const bot = create({\n    [dim]: true,\n    [dim + 'X']: x,\n    [dim + 'Y']: y,\n    [dim + 'Z']: z + 1,\n    color,\n    label: 'Stack',\n    system: 'ask.stack.clone',\n    stackDimension: dim,\n    onClick: thisBot.tags.onClick\n  });\n\n  os.toast('Spawned: ' + color);\n});\n\nconst root = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  [dim + 'Z']: 0,\n  color: 'white',\n  label: 'Stack Spawner',\n  system: 'ask.stack.spawner',\n  stackDimension: dim,\n  onClick: behavior\n});\n\nreturn [{ botId: root.id, created: true, rollbackDiff: null }];" } } },
   { "function": { "name": "chat", "args": { "message": "Created a stacking spawner bot at (-6, 9) in home. Each click will spawn a colored copy on top with the same behavior." } } }
 ]
 ```
@@ -284,7 +286,7 @@ Response:
 Response:
 ```json
 [
-  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = 0;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'blue',\n  label: '0',\n  count: 0,\n  maxCount: 5,\n  onClick: ListenerString(() => {\n    const next = (thisBot.tags.count ?? 0) + 1;\n    if (next >= thisBot.tags.maxCount) {\n      destroy(thisBot);\n    } else {\n      setTag(thisBot, 'count', next);\n      setTag(thisBot, 'label', String(next));\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } },
+  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = 0;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'blue',\n  label: '0',\n  count: 0,\n  maxCount: 5,\n  system: 'ask.counter.counter',\n  onClick: ListenerString(() => {\n    const next = (thisBot.tags.count ?? 0) + 1;\n    if (next >= thisBot.tags.maxCount) {\n      destroy(thisBot);\n    } else {\n      setTag(thisBot, 'count', next);\n      setTag(thisBot, 'label', String(next));\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } },
   { "function": { "name": "chat", "args": { "message": "Created a counter bot at (0, 0) in home. It will destroy itself when it hits 5." } } }
 ]
 ```
@@ -301,7 +303,7 @@ Response:
 Response:
 ```json
 [
-  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = 2;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'green',\n  label: 'Click to rename',\n  onClick: ListenerString(async () => {\n    const name = await os.showInput(thisBot.tags.label, { placeholder: 'Enter a new name' });\n    if (name != null) {\n      setTag(thisBot, 'label', name);\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } },
+  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\nconst x = 2;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'green',\n  label: 'Click to rename',\n  system: 'ask.ui.renameable',\n  onClick: ListenerString(async () => {\n    const name = await os.showInput(thisBot.tags.label, { placeholder: 'Enter a new name' });\n    if (name != null) {\n      setTag(thisBot, 'label', name);\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];" } } },
   { "function": { "name": "chat", "args": { "message": "Created a self-renaming bot at (2, 0) in home. Click it to rename." } } }
 ]
 ```
@@ -318,7 +320,7 @@ Response:
 Response:
 ```json
 [
-  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];" } } },
+  { "function": { "name": "makePatch", "args": { "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  system: 'ask.ping.receiver',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  system: 'ask.ping.broadcaster',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];" } } },
   { "function": { "name": "chat", "args": { "message": "Created a Ping button at (0, 0) and a Receiver at (2, 0) in home." } } }
 ]
 ```
@@ -335,7 +337,7 @@ Response:
 Response:
 ```json
 [
-  { "function": { "name": "makeTodos", "args": { "todos": [{ "prompt": "Create a bot in dimension 'home' at position (2, -3). Tags: color: 'white', label: 'Player', draggable: false. Add an onKeyDown listener that reads that.keys: if 'w' is present decrement homeY by 1, if 's' increment homeY by 1, if 'a' decrement homeX by 1, if 'd' increment homeX by 1. Use setTag to update the position tags on thisBot.", "label": "WASD character" }] } } },
+  { "function": { "name": "makeTodos", "args": { "todos": [{ "prompt": "Create a bot in dimension 'home' at position (2, -3). Tags: color: 'white', label: 'Player', draggable: false, system: 'ask.player.player'. Add an onKeyDown listener that reads that.keys: if 'w' is present decrement homeY by 1, if 's' increment homeY by 1, if 'a' decrement homeX by 1, if 'd' increment homeX by 1. Use setTag to update the position tags on thisBot.", "label": "WASD character" }] } } },
   { "function": { "name": "chat", "args": { "message": "I'll queue up a task to build a WASD-controlled character at (2, -3) in home." } } }
 ]
 ```
@@ -353,8 +355,8 @@ Response:
 ```json
 [
   { "function": { "name": "makeTodos", "args": { "todos": [
-    { "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.", "label": "Scoreboard" },
-    { "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner'. Add an async onCreate listener that loops forever: await os.sleep(2000), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, and an onClick listener that calls shout('onAddScore') then destroy(thisBot).", "label": "Target spawner" }
+    { "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5, system: 'ask.clicker.scoreboard'. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.", "label": "Scoreboard" },
+    { "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner', system: 'ask.clicker.spawner'. Add an async onCreate listener that loops forever: await os.sleep(2000), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, system: 'ask.clicker.target', and an onClick listener that calls shout('onAddScore') then destroy(thisBot).", "label": "Target spawner" }
   ] } } },
   { "function": { "name": "chat", "args": { "message": "Breaking this into a scoreboard and a target spawner." } } }
 ]

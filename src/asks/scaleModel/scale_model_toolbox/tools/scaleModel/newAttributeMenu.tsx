@@ -104,9 +104,9 @@ const attrUnitButton = {
     scaleModelAttribute_menuSortOrder: 5,
     dropdownSortOrder: 5,
     dropdownOptions: [
-        {
+         {
             ...menuOptions,
-            label: 'hours',
+            label: 'minute',
             onClick: `@
                 links.model.masks.tempAttributeTimeUnit = tags.label;
                 links.model.newAttributeMenu();
@@ -114,7 +114,7 @@ const attrUnitButton = {
         },
         {
             ...menuOptions,
-            label: 'days',
+            label: 'hour',
             onClick: `@
                 links.model.masks.tempAttributeTimeUnit = tags.label;
                 links.model.newAttributeMenu();
@@ -122,7 +122,7 @@ const attrUnitButton = {
         },
         {
             ...menuOptions,
-            label: 'weeks',
+            label: 'day',
             onClick: `@
                 links.model.masks.tempAttributeTimeUnit = tags.label;
                 links.model.newAttributeMenu();
@@ -130,7 +130,7 @@ const attrUnitButton = {
         },
         {
             ...menuOptions,
-            label: 'months',
+            label: 'week',
             onClick: `@
                 links.model.masks.tempAttributeTimeUnit = tags.label;
                 links.model.newAttributeMenu();
@@ -138,7 +138,7 @@ const attrUnitButton = {
         },
         {
             ...menuOptions,
-            label: 'quarters',
+            label: 'month',
             onClick: `@
                 links.model.masks.tempAttributeTimeUnit = tags.label;
                 links.model.newAttributeMenu();
@@ -146,7 +146,15 @@ const attrUnitButton = {
         },
         {
             ...menuOptions,
-            label: 'years',
+            label: 'quarter',
+            onClick: `@
+                links.model.masks.tempAttributeTimeUnit = tags.label;
+                links.model.newAttributeMenu();
+            `
+        },
+        {
+            ...menuOptions,
+            label: 'year',
             onClick: `@
                 links.model.masks.tempAttributeTimeUnit = tags.label;
                 links.model.newAttributeMenu();

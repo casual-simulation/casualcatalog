@@ -42,24 +42,22 @@ function convertToUnit(value: number, unit: string) {
 }
 
 for (const attr in tags.modelAttributes) {
-    
-    const convertedStart = convertToSeconds(tags.modelAttributes[attr].start, tags.modelAttributes[attr].unit)
-    const convertedRate = convertToSeconds(tags.modelAttributes[attr].delta, tags.modelAttributes[attr].unit);
     const convertedValue = convertToSeconds(value, unit);
 
     const deltaMod = tags.modelAttributes[attr].deltaMod;
     let endValue;   
     
     if (deltaMod == '+') {
-        endValue = convertedStart + (convertedRate * convertedValue);
+        endValue = tags.modelAttributes[attr].start + (tags.modelAttributes[attr].delta * convertedValue);
     } else if (deltaMod == '-') {
-        endValue = convertedStart - (convertedRate * convertedValue);
+        endValue = tags.modelAttributes[attr].start - (tags.modelAttributes[attr].delta * convertedValue);
     } else if (deltaMod == '/') {
-        endValue = convertedStart / (convertedRate * convertedValue);
+        endValue = tags.modelAttributes[attr].start / (tags.modelAttributes[attr].delta * convertedValue);
     } else if (deltaMod == '*') {
-        endValue = convertedStart * (convertedRate * convertedValue);
+        endValue = tags.modelAttributes[attr].start * (tags.modelAttributes[attr].delta * convertedValue);
     }
 
     const convertedEndValue = convertToUnit(endValue, tags.modelAttributes[attr].unit);
+
     thisBot.editAttribute({attributeName: attr, value: convertedEndValue});
 }

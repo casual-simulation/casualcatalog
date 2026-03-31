@@ -8,6 +8,16 @@ const menuOptions = {
     model: getLink(thisBot)
 }
 
+const clearAttrButton = {
+    ...menuOptions,
+    formAddress: 'delete_forever',
+    label: 'clear attributes',
+    onClick: `@
+        links.model.tags.modelAttributes = {};
+        shout('abMenuRefresh');
+    `
+}
+
 const modelMenuButton = {
     ...menuOptions,
     formAddress: 'lock_open',
@@ -21,6 +31,7 @@ const modelMenuButton = {
     `
 }
 
+ab.links.menu.abCreateMenuButton(clearAttrButton);
 if (tags.modelLocked) {
     ab.links.menu.abCreateMenuButton(modelMenuButton); 
 }

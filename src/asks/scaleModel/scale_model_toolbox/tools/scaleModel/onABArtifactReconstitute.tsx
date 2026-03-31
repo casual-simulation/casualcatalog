@@ -7,7 +7,6 @@ tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? 'white';
 tags.modelAttributes = data.modelAttributes;
-tags.modelAttributesStartingValues = data.modelAttributes;
 tags.scaleX = data.scaleX ?? 2;
 tags.scaleY = data.scaleY ?? 2;
 tags.scaleZ = data.scaleZ ?? 1;

@@ -1,5 +1,5 @@
 const data = that.data;
-tags.label = data.label ?? 'sim wizard';
+tags.label = data.label ?? 'scale model wizard';
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? 'white';

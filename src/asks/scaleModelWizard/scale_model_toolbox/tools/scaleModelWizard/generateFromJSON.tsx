@@ -8,27 +8,33 @@ const parsedJsonData = JSON.parse(cleanedJSON);
 
 thisBot.provideReceipt({raw: jsonData, parsed: parsedJsonData});
 
-for (const item of jsonData) {
+for (const item of parsedJsonData) {
     if (item["type"]) {
         const xVal = Math.floor(Math.random() * (15 - (-15) + 1)) + (-15);
         const yVal = Math.floor(Math.random() * (15 - (-15) + 1)) + (-15);
+        const zVal = 0;
         let dimensionName = ab.links.remember.tags.currentDimension ?? 'home';
 
         //SCALE MODEL
         if (item["type"] == 'MODEL') {
-            const conData = item["configuration"];
             const abArtifactShard = {
                 data: {
                     config: {
-                        label: conData.name,
-                        modelAttributes: conData.attributes,
+                        label: item.name,
+                        modelName: item.name,
+                        modelAttributes: item.attributes,
                         modelLocked: true,
                         dimensionData: {
                             dimension: dimensionName,
                             [dimensionName]: true,
-                            [dimensionName + 'X']: conData.location?.x ?? xVal,
-                            [dimensionName + 'Y']: conData.location?.y ?? yVal
-                        }
+                            [dimensionName + 'X']: item.location?.x ?? xVal,
+                            [dimensionName + 'Y']: item.location?.y ?? yVal,
+                            [dimensionName + 'Z']: item.location?.z ?? zVal
+                        },
+                        scaleX: item.scale.x,
+                        scaleY: item.scale.y,
+                        scaleZ: item.scale.z,
+                        color: item.color
                     }
                 },
                 dependencies: [
@@ -46,17 +52,18 @@ for (const item of jsonData) {
         } 
         //TIMELINE MARKER
         else if (item["type"] == 'TIMELINE_MARKER') {
-            const conData = item["configuration"];
             const abArtifactShard = {
                 data: {
                     config: {
-                        label: conData.label,
-
+                        label: item.timeUnit + ' ' + item.step,
+                        timeUnit: item.timeUnit,
+                        timeValue: item.step,
+                        markerLocked: true,
                         dimensionData: {
                             dimension: dimensionName,
                             [dimensionName]: true,
-                            [dimensionName + 'X']: conData.location?.x ?? xVal,
-                            [dimensionName + 'Y']: conData.location?.y ?? yVal
+                            [dimensionName + 'X']: item.location?.x ?? xVal,
+                            [dimensionName + 'Y']: item.location?.y ?? yVal
                         }
                     }
                 },

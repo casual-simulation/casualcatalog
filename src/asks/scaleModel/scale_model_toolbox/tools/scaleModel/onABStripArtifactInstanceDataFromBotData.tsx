@@ -13,7 +13,6 @@ delete data.tags[data.tags.dimension + "RotationZ"];
 delete data.tags[data.tags.dimension];
 delete data.tags.dimension;
 delete data.tags.modelAttributes;
-delete data.tags.modelAttributesStartingValues;
 delete data.tags.statsButton;
 delete data.tags.scaleX;
 delete data.tags.scaleY;

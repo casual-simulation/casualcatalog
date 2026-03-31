@@ -172,7 +172,7 @@ const addButton = {
         const attr = {};
         attr.start = links.model.masks.tempAttributeStart;
         attr.delta = links.model.masks.tempAttributeDelta;
-        attr.deltaMod = links.model.masks.tempAttributeDeltaMod;
+        attr.deltaModifier = links.model.masks.tempAttributeDeltaMod;
         attr.unit = links.model.masks.tempAttributeTimeUnit;
 
         if (!links.model.tags.modelAttributes) {

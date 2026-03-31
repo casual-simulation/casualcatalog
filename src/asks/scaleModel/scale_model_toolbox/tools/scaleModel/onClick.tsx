@@ -84,7 +84,6 @@ const lockModelButton = {
         });
         if (response) {
             links.model.tags.modelLocked = true;
-            links.model.tags.modelAttributesStartingValues = links.model.tags.modelAttributes;
         }
         links.model.onClick();
     `

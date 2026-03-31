@@ -11,7 +11,7 @@ const loadingBar = ab.links.menu.abCreateMenuBusyIndicator({
     scaleModelWizardLoading: true
 });
 
-const basePrompt = tags.oldPrompt;
+const basePrompt = tags.basePrompt;
 const aiChatMessages: AIChatMessage[] = [];
 
 aiChatMessages.push({
@@ -43,11 +43,11 @@ try {
     const response = await ai.chat(aiChatMessages, aiChatOptions);
     console.log(response);
     if (response) {
-        thisBot.generateFromCSV(response.content);
+        thisBot.generateFromJSON(response.content);
     }  
 } catch (e) {
-    os.toast("Error generating sim. Please try again", 8);
-    console.log("Error generating sim. Please try again", e);
+    os.toast("Error generating scale model. Please try again", 8);
+    console.log("Error generating scale model. Please try again", e);
     destroy(loadingBar);
 }
 

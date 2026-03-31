@@ -42,6 +42,7 @@ const addAttributeButton = {
         links.model.masks.tempAttributeStart = null;
         links.model.masks.tempAttributeDelta = null;
         links.model.masks.tempAttributeTimeUnit = null;
+        links.model.masks.tempAttributeDeltaMod = null;
         links.model.newAttributeMenu();
     `
 }

@@ -23,3 +23,4 @@ delete data.tags.currentValues;
 delete data.tags.formAddress;
 delete data.tags.form;
 delete data.tags.formSubtype;
+delete data.tags.modelName;

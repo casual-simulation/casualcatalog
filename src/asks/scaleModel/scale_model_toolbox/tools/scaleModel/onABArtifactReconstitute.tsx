@@ -15,6 +15,7 @@ tags.modelLocked = data.modelLocked;
 tags.formAddress = data.formAddress;
 tags.form = data.form;
 tags.formSubtype = data.formSubtype;
+tags.modelName = data.modelName;
 
 if (!tags.modelAttributes) {
     tags.modelAttributes = {};

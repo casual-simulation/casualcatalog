@@ -22,6 +22,7 @@ const shard: ABArtifactShard = {
         formAddress: tags.formAddress,
         form: tags.form,
         formSubtype: tags.formSubtype,
+        modelName: tags.modelName
     },
     dependencies: [
         {

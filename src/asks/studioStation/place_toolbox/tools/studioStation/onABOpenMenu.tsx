@@ -20,15 +20,8 @@ if (tags.studioId == authBot?.id) {
     //reconstitute homeworld
     menuGroup.menuItems.push({
         formAddress: 'refresh',
-        label: 'reconstitute homeworld',
+        label: 'refresh homeworld',
         onClick: `@links.place.updateHomeWorld(); shout('abMenuRefresh');`
-    });
-
-    //backup homeworld
-    menuGroup.menuItems.push({
-        formAddress: 'save',
-        label: 'backup homeworld',
-        onClick: `@links.place.backupHomeworld(); shout('abMenuRefresh');`
     });
 
     //homeworld version history

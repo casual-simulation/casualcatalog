@@ -1,63 +1,63 @@
-const confirm = await os.showConfirm({
-    title: "Reconstitute Homeworld?",
-    content: "Reconstituting this homeworld will remove any unsaved bots. Please make sure you have backed up this homeworld before proceeding.",
-    confirmText: "proceed",
-    cancelText: "cancel"
-})
-
-if (!confirm) {
-   return;
-}
-
 configBot.tags.menuPortal = 'home_place_update_menu';
-let busyIndicator = await ab.links.menu.abCreateMenuBusyIndicator({ home_place_update_menu: true, label: `reconstituting homeworld` });
+let busyIndicator = await ab.links.menu.abCreateMenuBusyIndicator({ home_place_update_menu: true, label: `refreshing homeworld` });
 
-try {
-    await links.learn.updateAB({ reloadPage: false, showIndicator: false });
+//backup
+const result = await thisBot.backupHomeworld();
 
-    const artifactInstances = links.artifact.abGetArtifactInstances();
-    
-    // Naively update all artifact shards in this inst before we begin reconstituting.
-    await links.artifact.abUpdateAllArtifactShards();
+if (result.success) {
+    try {
+        // await links.learn.updateAB({ reloadPage: false, showIndicator: false });
 
-    // Scrape the artifact instances for artifact bundles.
-    const toReconstitute = [];
+        // const artifactInstances = links.artifact.abGetArtifactInstances();
+        
+        // // Naively update all artifact shards in this inst before we begin reconstituting.
+        // await links.artifact.abUpdateAllArtifactShards();
 
-    for (const abArtifactInstanceID in artifactInstances) {
-        const shardBots = artifactInstances[abArtifactInstanceID];
-        const abArtifactBundle = shardBots[0].tags.abArtifactBundle;
+        // // Scrape the artifact instances for artifact bundles.
+        // const toReconstitute = [];
 
-        toReconstitute.push({
-            abArtifactInstanceID,
-            abArtifactBundle
-        })
+        // for (const abArtifactInstanceID in artifactInstances) {
+        //     const shardBots = artifactInstances[abArtifactInstanceID];
+        //     const abArtifactBundle = shardBots[0].tags.abArtifactBundle;
 
-        // Bye bye old shard bots.
-        destroy(shardBots);
-    }
+        //     toReconstitute.push({
+        //         abArtifactInstanceID,
+        //         abArtifactBundle
+        //     })
 
-    // Reconsitute using the data we scraped from the previous artifact instances.
-    for (const entry of toReconstitute) {
-        await links.artifact.abArtifactReconstitute({
-            abArtifactInstanceID: entry.abArtifactInstanceID,
-            abArtifactBundle: entry.abArtifactBundle,
-            toast: false,
-        })
-    }
+        //     // Bye bye old shard bots.
+        //     destroy(shardBots);
+        // }
 
-    // Tell everyone to reload the page. This gets handled by abCore.
-    const remoteDataEvent = 'update_ab_reload_page';
-    const remoteDataArg = { reloadPage: true };
+        // // Reconsitute using the data we scraped from the previous artifact instances.
+        // for (const entry of toReconstitute) {
+        //     await links.artifact.abArtifactReconstitute({
+        //         abArtifactInstanceID: entry.abArtifactInstanceID,
+        //         abArtifactBundle: entry.abArtifactBundle,
+        //         toast: false,
+        //     })
+        // }
 
-    if (os.isCollaborative()) {
-        const remotes = await os.remotes();
-        sendRemoteData(remotes, remoteDataEvent, remoteDataArg);
-    } else {
-        ab.onRemoteData({ name: remoteDataEvent, that: remoteDataArg, remoteId: configBot.id });
-    }
-} catch(e) {
-    ab.links.utils.abLogAndToast({ message: `Reconstituting homeworld failed. ${ab.links.utils.getErrorMessage(e)}`, logType: 'error' });
-} finally {
-    configBot.tags.menuPortal = null;
-    destroy(busyIndicator);
+        os.eraseInst(authBot.id, 'home');
+
+        // Tell everyone to reload the page. This gets handled by abCore.
+        const remoteDataEvent = 'update_ab_reload_page';
+        const remoteDataArg = { reloadPage: true };
+
+        if (os.isCollaborative()) {
+            const remotes = await os.remotes();
+            sendRemoteData(remotes, remoteDataEvent, remoteDataArg);
+        } else {
+            ab.onRemoteData({ name: remoteDataEvent, that: remoteDataArg, remoteId: configBot.id });
+        }
+    } catch(e) {
+        ab.links.utils.abLogAndToast({ message: `Refreshing home failed. ${ab.links.utils.getErrorMessage(e)}`, logType: 'error' });
+    } finally {
+        configBot.tags.menuPortal = null;
+        destroy(busyIndicator);
+    } 
+} else {
+    os.toast("Could not backup home, canceling refresh.");
 }
+
+

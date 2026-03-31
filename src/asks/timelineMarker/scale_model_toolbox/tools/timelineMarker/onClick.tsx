@@ -39,6 +39,14 @@ const unitButton = {
     dropdownOptions: [
         {
             ...menuOptions,
+            label: 'minute',
+            onClick: `@
+                links.marker.tags.timeUnit = tags.label;
+                links.marker.onClick();
+            `
+        },
+        {
+            ...menuOptions,
             label: 'hour',
             onClick: `@
                 links.marker.tags.timeUnit = tags.label;

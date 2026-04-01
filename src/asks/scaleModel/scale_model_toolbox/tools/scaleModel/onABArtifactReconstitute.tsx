@@ -15,9 +15,24 @@ tags.formAddress = data.formAddress;
 tags.form = data.form;
 tags.formSubtype = data.formSubtype;
 tags.modelName = data.modelName;
+tags.modelStates = data.modelStates;
+tags.modelListeners = data.modelListeners;
+
+const listeners = {...data.modelListeners};
+for (const listener in listeners) {
+    tags[listener] = listeners[listener].code;
+}
 
 if (!tags.modelAttributes) {
     tags.modelAttributes = {};
+}
+
+if (!tags.modelStates) {
+    tags.modelStates = {};
+}
+
+if (!tags.modelListeners) {
+    tags.modelListeners = {};
 }
 
 //Place bot correctly

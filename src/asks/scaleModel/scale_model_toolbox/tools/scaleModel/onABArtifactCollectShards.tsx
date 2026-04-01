@@ -1,3 +1,8 @@
+const listeners = {...tags.modelListeners};
+for (const listener in listeners) {
+    listeners[listener].code = raw[listener];
+}
+
 const shard: ABArtifactShard = {
     data: {
         label: tags.label,
@@ -22,7 +27,9 @@ const shard: ABArtifactShard = {
         formAddress: tags.formAddress,
         form: tags.form,
         formSubtype: tags.formSubtype,
-        modelName: tags.modelName
+        modelName: tags.modelName,
+        modelStates: tags.modelStates,
+        modelListeners: listeners,
     },
     dependencies: [
         {

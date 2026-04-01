@@ -11,11 +11,7 @@ if (!newValue && newValue != 0) {
     return;
 }
 
-if (!tags.currentValues) {
-    masks.currentValues = {};
-}
-
-masks.currentValues[attributeName] = newValue;
+tags[attributeName] = newValue;
 
 shout("clearScaleModelMenu");
 

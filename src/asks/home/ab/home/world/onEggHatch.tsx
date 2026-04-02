@@ -29,7 +29,9 @@ if (!authBot) {
 }
 
 if (that.eggParameters && that.eggParameters.saveOnLoad) {
+    await thisBot.handleStudioStationSetup();
     thisBot.saveData();
+    thisBot.onPortalChanged({ portal: 'mapPortal', dimension: currentDim });
     return;
 }
 

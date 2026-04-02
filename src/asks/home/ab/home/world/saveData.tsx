@@ -15,7 +15,8 @@ if (!tags.saveEnabled) {
 const studio = configBot.tags.studio ?? authBot.id;
 configBot.tags.selected_studioID = studio;
 
-const homeBots = getBots("homeWorldBot", true);
+const currentDim = ab.links.remember.tags.abActiveDimension ?? 'home';
+const homeBots = getBots(byTag(currentDim, true), not(byTag("system", sys => sys?.substring(0, 3) == 'ab.')), not(byTag("abIgnore", true)), byTag("space", 'shared'));
 
 const publishAttempt = await ab.links.store.abPublishAB({ab: 'home', target: homeBots, sourceEvent: 'home_egg_publish', keepMenu: true});
 

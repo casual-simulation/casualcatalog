@@ -33,7 +33,7 @@ for (let i = 0; i < reversedArr.length; ++i) {
         label: "version " + (i + 1),
         versionUrl: reversedArr[i],
         versionIndex: i + 1,
-        homeWorldCore: getLink(homeWorldCore), 
+        studio: getLink(thisBot), 
         onClick: `@
             let confirmed = await os.showConfirm({
                 title: 'Confirm',
@@ -45,7 +45,7 @@ for (let i = 0; i < reversedArr.length; ++i) {
                 return;
             }
 
-            links.homeWorldCore.changeHomeVersion(tags.versionIndex);
+            links.studio.changeHomeVersion(tags.versionIndex);
             shout("clearHomeWorldVersionMenu");
         `
     }

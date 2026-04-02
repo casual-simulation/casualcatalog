@@ -24,22 +24,6 @@ if (tags.abAwake !== awake) {
         if (links.remember.tags.abInitialAnimation) {
             await links.animation[links.remember.tags.abInitialAnimation]();
         }
-        
-        // Show initial message if one is defined on abConfig.
-        if (links.remember.tags.abInitialMessage) {
-            shout("showConsole");
-
-            if (Array.isArray(links.remember.tags.abInitialMessage)) {
-                for (let i = 0; i < links.remember.tags.abInitialMessage.length; i++) {
-                    ab.log(links.personality.tags.abBuilderIdentity + ": " + links.remember.tags.abInitialMessage[i]);
-
-                    await os.sleep(2000);
-                }
-            }
-            else {
-                ab.log(links.personality.tags.abBuilderIdentity + ": " + links.remember.tags.abInitialMessage);
-            }
-        }
     }
 
     // Update abAwake shared tag mask.
@@ -55,6 +39,24 @@ if (tags.abAwake !== awake) {
         const position = { x: 0, y: 0 };
 
         await thisBot.abManifestBot({ dimension, position });
+
+        if (initial) {
+            // Show initial message if one is defined on abConfig.
+            if (links.remember.tags.abInitialMessage) {
+                shout("showConsole");
+
+                if (Array.isArray(links.remember.tags.abInitialMessage)) {
+                    for (let i = 0; i < links.remember.tags.abInitialMessage.length; i++) {
+                        ab.log(links.personality.tags.abBuilderIdentity + ": " + links.remember.tags.abInitialMessage[i]);
+
+                        await os.sleep(2000);
+                    }
+                }
+                else {
+                    ab.log(links.personality.tags.abBuilderIdentity + ": " + links.remember.tags.abInitialMessage);
+                }
+            }
+        }
 
         shout("onABAwake", { dimension, position, initial });
     } else {

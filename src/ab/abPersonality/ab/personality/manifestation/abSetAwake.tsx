@@ -39,6 +39,8 @@ if (tags.abAwake !== awake) {
         const position = { x: 0, y: 0 };
 
         await thisBot.abManifestBot({ dimension, position });
+        
+        shout("onABAwake", { dimension, position, initial });
 
         if (initial) {
             // Show initial message if one is defined on abConfig.
@@ -58,7 +60,6 @@ if (tags.abAwake !== awake) {
             }
         }
 
-        shout("onABAwake", { dimension, position, initial });
     } else {
         destroy(links.abBot);
 

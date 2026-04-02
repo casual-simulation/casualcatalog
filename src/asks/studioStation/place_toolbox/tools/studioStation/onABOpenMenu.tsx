@@ -25,11 +25,11 @@ if (tags.studioId == authBot?.id) {
     });
 
     //homeworld version history
-    menuGroup.menuItems.push({
-        formAddress: 'history',
-        label: 'homeworld version history',
-        onClick: `@links.place.showHomeVersionHistory(); shout('abMenuRefresh');`
-    });
+    // menuGroup.menuItems.push({
+    //     formAddress: 'history',
+    //     label: 'homeworld version history',
+    //     onClick: `@links.place.showHomeVersionHistory(); shout('abMenuRefresh');`
+    // });
 }
 
 if (tags.draggable == false) {

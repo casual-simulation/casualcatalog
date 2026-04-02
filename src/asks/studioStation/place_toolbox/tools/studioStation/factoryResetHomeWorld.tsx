@@ -1,10 +1,25 @@
 let confirmed = await os.showConfirm({
     title: 'Confirm',
-    content: 'Please confirm the action.'
+    content: 'This will destroy all bots on your homeworld. Please confirm the action.'
 });
 
 if (!confirmed) {
     return;
+}
+
+os.toast("backing up home world...");
+
+const backup = await thisBot.backupHomeworld();
+
+if (!backup.success) {
+    let confirmed = await os.showConfirm({
+        title: 'Backup failed',
+        content: 'proceed anyways?'
+    });
+
+    if (!confirmed) {
+        return;
+    }
 }
 
 os.toast("resetting home base...");

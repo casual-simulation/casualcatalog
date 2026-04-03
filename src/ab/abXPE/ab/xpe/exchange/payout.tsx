@@ -1,4 +1,4 @@
-import { JSONAccountBalance } from 'casualos';
+import { JSONAccountBalance, GenericResult, SimpleError } from 'casualos';
 
 const {
     amount,
@@ -31,15 +31,29 @@ if (tags.mock) {
     }
 } else {
     const response: GenericResult<void, SimpleError> = await xp.payout({ amount, destination });
-    const curCredits = await thisBot.getCredits();
+
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] payout response:`, response);
+    }
 
     if (response.success) {
-        const result: ABXPEPayoutResultSuccess = { success: true, payAmount: amount, curCredits, sourceId };
+        const curCredits = await thisBot.getCredits();
+
+        const result: ABXPEPayoutResultSuccess = {
+            ...response,
+            payAmount: amount,
+            curCredits,
+            sourceId
+        };
+
         shout('onABXPEPaidOut', result);
 
         return result;
     } else {
-        const result: ABXPEPayoutResultFailure = { success: false, errorCode: repsonse.errorCode, errorMessage: response.errorMessage, sourceId };
+        const result: ABXPEPayoutResultFailure = { 
+            ...response,
+            sourceId,
+        };
 
         return result;
     }

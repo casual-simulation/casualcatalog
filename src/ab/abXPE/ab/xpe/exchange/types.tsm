@@ -17,5 +17,6 @@ interface ABXPEPayoutResultFailure {
     success: false;
     errorCode: string;
     errorMessage: string;
+    issues: any[];
     sourceId?: string;
 }

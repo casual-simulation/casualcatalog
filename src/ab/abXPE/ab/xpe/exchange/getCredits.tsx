@@ -1,6 +1,10 @@
 import { JSONAccountBalance } from 'casualos';
 
 const balance: JSONAccountBalance = await thisBot.getAccountBalance();
-const creditsNum = Number.parseFloat(balance.credits);
 
-return creditsNum;
+if (balance) {
+    const creditsNum = Number.parseFloat(balance.credits);
+    return creditsNum;
+} else {
+    return null;
+}

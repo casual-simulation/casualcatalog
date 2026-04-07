@@ -28,13 +28,14 @@ if (that.eggParameters) {
             customAgentConfig: {
                 meshPath: "/asks/agent-assets/stc_map_icon.glb",
                 armMeshPath: "/ab/meshes/webslinger.glb",
-                armColor: "#4F008C",
+                armColor: "#FF375E",
                 chatBarColor: "#FF375E",
                 labelColor: "black",
                 scale: 2.5,
                 formOpacity: null,
                 showName: false,
-                agentName: "stcbot"
+                agentName: "stcbot",
+                draggable: false
             }
         }
     })

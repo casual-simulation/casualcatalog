@@ -34,7 +34,8 @@ if (that.eggParameters) {
                 scale: 0.9999,
                 formOpacity: null,
                 showName: false,
-                agentName: "humainbot"
+                agentName: "humainbot",
+                draggable: false
             }
         }
     })

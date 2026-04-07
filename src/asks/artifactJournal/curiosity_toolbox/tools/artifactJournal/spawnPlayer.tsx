@@ -7,8 +7,8 @@ if (!avatarBot) {
                 gridInformation: {
                     dimension: 'home',
                     position: {
-                        x: tags[tags.dimension + 'X'],
-                        y: tags[tags.dimension + 'Y']
+                        x: -85.67523722726739,
+                        y: 42.96666666666667
                     }
                 }
             }

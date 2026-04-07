@@ -19,3 +19,17 @@ const menuOptions = {
     abMenuRefresh: "@ destroy(thisBot);",
     avatar: getLink(thisBot)
 }
+
+const leaveGPSButton = {
+    ...menuOptions,
+    label: tags.usingGPS ? 'disable' : 'enable' + ' gps tracking',
+    formAddress: tags.usingGPS ? 'near_me_disabled' : 'near_me',
+    onClick: `@
+        const journal = getBot("artifactJournal", true);
+        journal.toggleLocationPull(!journal.continueLocationPull);
+
+        thisBot.onClick();
+    `,
+}
+
+ab.links.menu.abCreateMenuButton(leaveGPSButton);

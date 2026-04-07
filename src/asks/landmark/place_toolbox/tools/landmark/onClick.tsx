@@ -85,6 +85,7 @@ if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(addLinkButton);
     ab.links.menu.abCreateMenuButton(lockButton);
 } else {
+    shout("onLandmarkClicked", tags.landmarkID);
     const landmarkInfoMenu = getBot("name", "landmarkInfoMenu");
     if (landmarkInfoMenu) {
         landmarkInfoMenu.openApp(tags.landmarkID);

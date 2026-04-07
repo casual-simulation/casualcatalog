@@ -44,8 +44,8 @@ if (!userStudioBot) {
                 positionY = geolocation.latitude;
             }
         } else {
-            positionX = -85.6761894822434;
-            positionY = 42.9656756756756;
+            positionX = -85.6753464267489;
+            positionY = 42.96621621621622;
         }
 
     } else {

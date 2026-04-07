@@ -10,10 +10,10 @@ if (that) {
     }
 }
 
-thisBot.moveAvatar({
-        dimension: configBot.tags.mapPortal ?? "home",
-        position: {
-            x: that.position.x,
-            y: that.position.y
-        }
-    })
+// thisBot.moveAvatar({
+//         dimension: configBot.tags.mapPortal ?? "home",
+//         position: {
+//             x: that.position.x,
+//             y: that.position.y
+//         }
+//     })

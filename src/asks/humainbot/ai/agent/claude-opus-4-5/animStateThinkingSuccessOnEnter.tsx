@@ -1,0 +1,1 @@
+os.startFormAnimation(thisBot, 'thinking_out', { crossFadeWarp: true, crossFadeDuration: 500 });

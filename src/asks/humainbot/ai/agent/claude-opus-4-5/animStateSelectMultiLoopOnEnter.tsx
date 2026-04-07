@@ -1,0 +1,1 @@
+os.startFormAnimation(thisBot, 'select_single_loop', { crossFadeWarp: true, fadeDuration: 200, crossFadeDuration: 300, loop: { mode: 'repeat' } });

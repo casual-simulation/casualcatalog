@@ -1,0 +1,13 @@
+{
+  "Blink:blink": "Idle",
+  "Click:hover_action": "Idle",
+  "Click:happy_webslinger": "Idle",
+  "ThinkingBegin:thinking_in": "ThinkingLoop",
+  "ThinkingFailure:thinking_out_fail": "Idle",
+  "ThinkingFailure:thinking_out": "Idle",
+  "ThinkingSuccess:thinking_out": "Idle",
+  "SelectSingleBegin:select_single_in": "SelectSingleLoop",
+  "SelectSingleEnd:select_single_out": "Idle",
+  "SelectMultiBegin:select_multi": "SelectMultiLoop",
+  "SelectMultiEnd:select_single_out": "Idle"
+}

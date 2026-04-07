@@ -1,12 +1,6 @@
 const locaRequestBot = getBot("name", "journalRequest");
 
-if (!that) {
-    tags.continueLocationPull = false;
-
-    if (locaRequestBot) {
-        locaRequestBot.openApp("awaitingLocationPermission");
-    }
-} else {
+if (that == true) {
     tags.continueLocationPull = true;
     
     if (tags.currentRegisteredApp == "locationApp") {
@@ -14,4 +8,10 @@ if (!that) {
     }
     
     thisBot.updateLocation();
+} else {
+    tags.continueLocationPull = false;
+
+    if (locaRequestBot) {
+        locaRequestBot.openApp("awaitingLocationPermission");
+    }
 }

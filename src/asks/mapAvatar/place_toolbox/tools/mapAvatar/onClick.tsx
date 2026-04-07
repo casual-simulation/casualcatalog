@@ -30,7 +30,7 @@ const leaveGPSButton = {
         const journal = getBot("artifactJournal", true);
         journal.toggleLocationPull(!journal.tags.continueLocationPull);
 
-        thisBot.onClick();
+        shout("clearMapAvatarMenu");
     `,
 }
 

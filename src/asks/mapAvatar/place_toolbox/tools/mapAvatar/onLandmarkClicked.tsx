@@ -8,15 +8,15 @@ let xPos;
 let yPos;
 
 if (tags[landmark.tags.dimension + 'X'] > landmark.tags[landmark.tags.dimension + 'X']) {
-    xPos = landmark.tags[landmark.tags.dimension + 'X'] + 2;
+    xPos = landmark.tags[landmark.tags.dimension + 'X'] + .0002;
 } else {
-    xPos = landmark.tags[landmark.tags.dimension + 'X'] - 2;
+    xPos = landmark.tags[landmark.tags.dimension + 'X'] - .0002;
 }
 
 if (tags[landmark.tags.dimension + 'Y'] > landmark.tags[landmark.tags.dimension + 'Y']) {
-    xPos = landmark.tags[landmark.tags.dimension + 'Y'] + 2;
+    xPos = landmark.tags[landmark.tags.dimension + 'Y'] + .0002;
 } else {
-    xPos = landmark.tags[landmark.tags.dimension + 'Y'] - 2;
+    xPos = landmark.tags[landmark.tags.dimension + 'Y'] - .0002;
 }
 
 thisBot.moveAvatar({

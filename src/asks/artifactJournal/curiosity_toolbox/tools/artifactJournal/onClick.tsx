@@ -34,10 +34,7 @@ const menuOptions = {
 if (tags.currentRegisteredApp) {
     os.unregisterApp(tags.currentRegisteredApp);
     tags.currentRegisteredApp = null;
-    os.unregisterApp("hudApp");
+} 
 
-} else {
-    const collectionsMenu = getBot("name", "collectionsMenu");
-    collectionsMenu.openApp();
-}
-
+const collectionsMenu = getBot("name", "collectionsMenu");
+collectionsMenu.openApp();

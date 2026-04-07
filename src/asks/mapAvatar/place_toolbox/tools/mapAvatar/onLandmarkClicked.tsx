@@ -14,9 +14,9 @@ if (tags[landmark.tags.dimension + 'X'] > landmark.tags[landmark.tags.dimension 
 }
 
 if (tags[landmark.tags.dimension + 'Y'] > landmark.tags[landmark.tags.dimension + 'Y']) {
-    xPos = landmark.tags[landmark.tags.dimension + 'Y'] + .0002;
+    yPos = landmark.tags[landmark.tags.dimension + 'Y'] + .0002;
 } else {
-    xPos = landmark.tags[landmark.tags.dimension + 'Y'] - .0002;
+    yPos = landmark.tags[landmark.tags.dimension + 'Y'] - .0002;
 }
 
 thisBot.moveAvatar({

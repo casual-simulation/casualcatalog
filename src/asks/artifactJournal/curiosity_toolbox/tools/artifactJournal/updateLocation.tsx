@@ -21,8 +21,8 @@ if (loc.success) {
         const distance = Math.sqrt(Math.pow((xLoc - playerBot.tags[mapDimension + 'X']), 2) + Math.pow((yLoc - playerBot.tags[mapDimension + 'Y']), 2));
         if (distance > .0005) {
             clearAnimations(playerBot);
-            setTagMask(playerBot, mapDimension + 'X', xLoc, "shared");
-            setTagMask(playerBot, mapDimension + 'Y', yLoc, "shared");
+            playerBot.tags[mapDimension + 'X'] = xLoc;
+            playerBot.tags[mapDimension + 'Y'] = yLoc;
         }
         else {
            whisper(playerBot, "moveAvatar", {

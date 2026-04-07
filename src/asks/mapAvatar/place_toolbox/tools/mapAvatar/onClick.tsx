@@ -20,10 +20,12 @@ const menuOptions = {
     avatar: getLink(thisBot)
 }
 
+const journal = getBot("artifactJournal", true);
+
 const leaveGPSButton = {
     ...menuOptions,
-    label: tags.usingGPS ? 'disable' : 'enable' + ' gps tracking',
-    formAddress: tags.usingGPS ? 'near_me_disabled' : 'near_me',
+    label: journal.tags.continueLocationPull ? 'disable' : 'enable' + ' gps tracking',
+    formAddress: journal.tags.continueLocationPull ? 'near_me_disabled' : 'near_me',
     onClick: `@
         const journal = getBot("artifactJournal", true);
         journal.toggleLocationPull(!journal.continueLocationPull);

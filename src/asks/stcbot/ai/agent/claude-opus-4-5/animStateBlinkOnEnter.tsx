@@ -1,1 +1,0 @@
-os.startFormAnimation(thisBot, 'blink', { crossFadeWarp: true, crossFadeDuration: 300 });

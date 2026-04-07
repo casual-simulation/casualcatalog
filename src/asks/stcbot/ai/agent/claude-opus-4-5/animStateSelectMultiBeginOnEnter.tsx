@@ -1,1 +1,0 @@
-os.startFormAnimation(thisBot, 'select_multi', { crossFadeWarp: true, crossFadeDuration: 300 });

@@ -1,1 +1,0 @@
-os.startFormAnimation(thisBot, 'select_single_loop', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });

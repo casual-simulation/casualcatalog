@@ -1,1 +1,0 @@
-os.startFormAnimation(thisBot, 'thinking_loop', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });

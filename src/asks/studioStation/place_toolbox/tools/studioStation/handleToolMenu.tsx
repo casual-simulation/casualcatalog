@@ -1,9 +1,12 @@
 const gridInformation = {dimension: that?.dimension, position: { x: that?.x, y: that?.y}} ?? abRemember.tags.abGridFocus;
 const toolboxTools = [...tags.tool_array] ?? [];
 
+await os.sleep(0);
+
 const menuOptions = {};
 
 shout("clearStudioStationToolMenu");
+configBot.masks.menuPortal = null;
 configBot.tags.menuPortal = 'studioStation_toolMenu';
 
 menuOptions.dimension = 'studioStation_toolMenu';

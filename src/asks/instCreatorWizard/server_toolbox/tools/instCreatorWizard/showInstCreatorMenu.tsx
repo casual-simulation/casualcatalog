@@ -1,10 +1,11 @@
 shout('clearInstCreatorMenu');
 
-configBot.masks.menuPortal = 'instCreatorMenu';
+configBot.tags.menuPortal = 'instCreatorMenu';
 
 const menuOptions = {
     clearInstCreatorMenu: `@destroy(thisBot);`,
     instCreatorMenu: true,
+    abMenuRefresh: `@destroy(thisBot);`,
     wizard: getLink(thisBot)
 }
 
@@ -104,6 +105,7 @@ ab.links.menu.abCreateMenuGroup(menuGroup);
 
 const createButton = {
         clearInstCreatorMenu: `@destroy(thisBot);`,
+        abMenuRefresh: `@destroy(thisBot);`,
         instCreatorMenu: true,
         label: "create server",
         wizard: getLink(thisBot),

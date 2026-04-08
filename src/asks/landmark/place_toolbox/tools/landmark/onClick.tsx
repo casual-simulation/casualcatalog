@@ -80,10 +80,27 @@ const visitLinkButton = {
     `
 }
 
+const visitButton = {
+    ...menuOptions,
+    formAddress: 'link',
+    label: 'check in',
+    landmark_menuSortOrder: 1,
+    onClick: `@
+        links.place.checkIn();
+        shout('clearLandmarkMenu');
+    `
+}
+
+const journal = getBot("artifactJournal", true);
+const usingGPS = journal.continueLocationPull
+
 if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(nameButton);
     ab.links.menu.abCreateMenuButton(addLinkButton);
     ab.links.menu.abCreateMenuButton(lockButton);
+} else if (!tags.discovered && journal.tags.continueLocationPull) {
+    ab.links.menu.abCreateMenuButton(visitButton);
+    shout("onLandmarkClicked", tags.landmarkID);
 } else {
     shout("onLandmarkClicked", tags.landmarkID);
     const landmarkInfoMenu = getBot("name", "landmarkInfoMenu");

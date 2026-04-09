@@ -4,7 +4,7 @@
         "armMeshPath": "/ab/meshes/webslinger.glb",
         "armColor": "#76a298",
         "chatBarColor": "#76a298",
-        "scale": 0.9999,
+        "scale": 0.6,
         "formOpacity": null,
         "showName": false
     },
@@ -13,7 +13,7 @@
         "armMeshPath": "/ab/meshes/webslinger.glb",
         "armColor": "#3187ea",
         "chatBarColor": "#3187ea",
-        "scale": 0.9999,
+        "scale": 0.6,
         "formOpacity": null,
         "showName": false
     },
@@ -22,7 +22,7 @@
         "armMeshPath": "/ab/meshes/webslinger.glb",
         "armColor": "#d4825a",
         "chatBarColor": "#d4825a",
-        "scale": 0.9999,
+        "scale": 0.6,
         "formOpacity": null,
         "showName": false
     },
@@ -33,7 +33,7 @@
         "chatBarColor": "gold",
         "namePlateColor": "gold",
         "labelColor": "black",
-        "scale": 0.9,
+        "scale": 0.6,
         "formOpacity": 0.33,
         "showName": true,
         "agentName": null

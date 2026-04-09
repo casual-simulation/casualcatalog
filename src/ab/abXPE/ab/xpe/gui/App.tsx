@@ -60,8 +60,13 @@ const App = () => {
             }
         }
 
+        const refreshCredits = async (listenerThat) => {
+            // TODO: get the current available credits (abXPE.getAvailableCredits()) and then update the display.
+        }
+
         os.addBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
         os.addBotListener(thisBot, 'spawnCoins', spawnCoins);
+        os.addBotListener(thisBot, 'refreshCredits', refreshCredits);
 
         // Grab current credits amount.
         abXPE.getAvailableCredits().then((curCredits) => {
@@ -77,6 +82,7 @@ const App = () => {
         return () => {
             os.removeBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
             os.removeBotListener(thisBot, 'spawnCoins', spawnCoins);
+            os.removeBotListener(thisBot, 'refreshCredits', refreshCredits);
         };
     }, []);
 

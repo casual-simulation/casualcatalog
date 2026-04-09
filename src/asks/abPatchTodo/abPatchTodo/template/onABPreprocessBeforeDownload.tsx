@@ -19,6 +19,7 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.prompt;
     delete thisBotData.tags.lineTo;
     delete thisBotData.tags.todoLabel;
+    delete thisBotData.tags.budgetCredits;
     delete thisBotData.tags.todoPlanId;
     delete thisBotData.tags.todoOrder;
     delete thisBotData.tags.aiModel;

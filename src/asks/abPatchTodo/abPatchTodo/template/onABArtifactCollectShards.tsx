@@ -2,6 +2,7 @@ const shard: ABArtifactShard = {
     data: {
         prompt: tags.prompt,
         todoLabel: tags.todoLabel,
+        budgetCredits: tags.budgetCredits,
         aiModel: tags.aiModel,
         alwaysApprove: tags.alwaysApprove,
         debug: tags.debug,

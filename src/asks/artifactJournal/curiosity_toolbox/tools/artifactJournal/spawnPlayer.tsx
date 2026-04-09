@@ -29,5 +29,6 @@ if (!avatarBot) {
     if (tags.continueLocationPull) {
         await os.sleep(500);
         avatar.useGPS(true);
+        shout('clearLandmarkMenu');
     }
 }

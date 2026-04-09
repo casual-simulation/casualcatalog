@@ -63,7 +63,7 @@ if (currentPortal == 'map') {
             onClick: `@
                 if (links.place) {
                     os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
-                    links.place.onClick();
+                    shout("clearMapAvatarMenu");
                 }
                 `
         }

@@ -7,8 +7,8 @@ if (!avatarBot) {
                 gridInformation: {
                     dimension: 'home',
                     position: {
-                        x: -85.67523722726739,
-                        y: 42.96666666666667
+                        x: -85.6733605741107,
+                        y: 42.965495495495496
                     }
                 }
             }

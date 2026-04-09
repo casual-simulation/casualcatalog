@@ -1,5 +1,8 @@
 const options = [];
 
+// ========================================
+// ■ HIDE
+// ========================================
 if (!configBot.tags.abStayAwake) {
     options.push({
         label: `hide`,
@@ -11,6 +14,9 @@ if (!configBot.tags.abStayAwake) {
     })
 }
 
+// ========================================
+// ■ SLEEP
+// ========================================
 if (!configBot.tags.abStayAwake) {
     options.push({
         label: "sleep",
@@ -22,6 +28,9 @@ if (!configBot.tags.abStayAwake) {
     })
 }
 
+// ========================================
+// ■ ACCOUNT
+// ========================================
 if (authBot) {
     options.push({
         label: "account info",
@@ -34,30 +43,9 @@ if (authBot) {
     })
 }
 
-options.push({
-    label: "nuggets",
-    abEnvironmentMenuSortOrder: 250,
-    onCreate: ListenerString(() => {
-        tags.nugManager = getLink(getBot('system', 'ab.interface.nugget')); 
-        
-        if (links.nugManager.tags.listening) { 
-            tags.onClick = ListenerString(() => {
-                shout('abMenuRefresh'); 
-                links.manifestation.abClick();
-                setTagMask(links.nugManager, 'listening', null);
-            });
-            tags.formAddress = `check_box`; 
-        } else { 
-            tags.onClick = ListenerString(() => {
-                shout('abMenuRefresh'); 
-                inks.manifestation.abClick();
-                setTagMask(links.nugManager, 'listening', true, 'local');
-            });
-            tags.formAddress = `check_box_outline_blank`;
-        }
-    }),
-})
-
+// ========================================
+// ▼ PERSONALITY
+// ========================================
 options.push({
     label: `${links.personality.tags.abBuilderIdentity} personality`,
     abEnvironmentMenuSortOrder: 300,
@@ -187,6 +175,9 @@ options.push({
     ]
 })
 
+// ========================================
+// ▼ AI
+// ========================================
 const aiDropdownOptions = [];
 
 if (links.voice) {
@@ -309,6 +300,10 @@ if (aiDropdownOptions && aiDropdownOptions.length > 0) {
     })
 }
 
+
+// ========================================
+// ▼ PRESENCE
+// ========================================
 if (links.presence) {
     options.push({
         label: "presence",
@@ -368,6 +363,10 @@ if (links.presence) {
     })
 }
 
+
+// ========================================
+// ▼ SNAP
+// ========================================
 options.push({
     label: "snap",
     abEnvironmentMenuSortOrder: 700,
@@ -394,6 +393,47 @@ options.push({
     ]
 })
 
+// ========================================
+// ▼ EXPERIMENTAL
+// ========================================
+const experimentalDropdownOptions = [];
+
+experimentalDropdownOptions.push({
+    label: "nuggets",
+    onCreate: ListenerString(() => {
+        tags.nugManager = getLink(getBot('system', 'ab.interface.nugget')); 
+        
+        if (links.nugManager.tags.listening) { 
+            tags.onClick = ListenerString(() => {
+                shout('abMenuRefresh'); 
+                links.manifestation.abClick();
+                setTagMask(links.nugManager, 'listening', null);
+            });
+            tags.formAddress = `check_box`; 
+        } else { 
+            tags.onClick = ListenerString(() => {
+                shout('abMenuRefresh'); 
+                inks.manifestation.abClick();
+                setTagMask(links.nugManager, 'listening', true, 'local');
+            });
+            tags.formAddress = `check_box_outline_blank`;
+        }
+    })
+})
+
+if (experimentalDropdownOptions.length > 0) {
+    options.push({
+        label: 'experimental',
+        abEnvironmentMenuSortOrder: 900,
+        menuItemType: 'dropdown',
+        dropdownOptions: experimentalDropdownOptions,
+    })
+}
+
+
+// ========================================
+// ▼ DEVELOPER
+// ========================================
 const developerDropdownOptions = [];
 
 if (links.test) {
@@ -461,6 +501,9 @@ if (developerDropdownOptions.length > 0) {
     })
 }
 
+// ========================================
+// ■ SAVE HOME EGG
+// ========================================
 if (getBot("system", "ab.home.egg")) {
     options.push({
         label: "save home egg",
@@ -472,6 +515,9 @@ if (getBot("system", "ab.home.egg")) {
     })
 }
 
+// ========================================
+// ■ CHECK FOR UPDATES
+// ========================================
 options.push({
     label: "check for " + ab.links.personality.tags.abBuilderIdentity + " updates",
     abEnvironmentMenuSortOrder: 1300,

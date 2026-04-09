@@ -31,7 +31,7 @@ if (that.eggParameters) {
                 armColor: "#D1F949",
                 chatBarColor: "#D1F949",
                 labelColor: "black",
-                scale: 0.9999,
+                scale: 0.6,
                 formOpacity: null,
                 showName: false,
                 agentName: "humainbot",

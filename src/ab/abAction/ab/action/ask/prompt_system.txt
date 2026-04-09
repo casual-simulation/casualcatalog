@@ -190,10 +190,18 @@ Prefer `makeTodos` over `makePatch` when the task involves new bot creation with
 When writing todo prompts, be specific — include dimension, position, relevant tag names, and behavior details so the agent can execute without ambiguity.
 
 ```json
-{ "function": { "name": "makeTodos", "args": { "todos": [{ "prompt": "<string>", "label": "<string>" }] } } }
+{ "function": { "name": "makeTodos", "args": { "todos": [{ "prompt": "<string>", "label": "<string>", "budget_credits": <number> }] } } }
 ```
 
 Each todo becomes a visible bot in the inst that agent bots will pick up and execute.
+
+### Credit Budgets
+
+Every todo requires a `budget_credits` field (always a `number`). Credits are a compute cost unit — 100,000,000 credits is roughly $2.00, so a typical task budget is in the range of 100,000–10,000,000 credits.
+
+When the user specifies a credit budget for their request (e.g. "build this with 1,000,000 credits"), distribute the total across todos in proportion to their estimated complexity — more complex todos receive more credits. The sum across all todos must equal the user-specified budget.
+
+If no budget is mentioned, assume a total budget of 100,000 credits for the request and distribute it across todos by complexity, exactly as you would for an explicit budget. Users can adjust individual todo budgets after creation.
 
 ## getInst
 Returns all bots in the current inst with all their tags. Call this when you need to inspect existing bots to answer a question or make targeted modifications.
@@ -338,7 +346,7 @@ Response:
 Response:
 ```json
 [
-  { "function": { "name": "makeTodos", "args": { "todos": [{ "prompt": "Create a bot in dimension 'home' at position (2, -3). Tags: color: 'white', label: 'Player', draggable: false, system: 'ask.player.player'. Add an onKeyDown listener that reads that.keys: if 'w' is present decrement homeY by 1, if 's' increment homeY by 1, if 'a' decrement homeX by 1, if 'd' increment homeX by 1. Use setTag to update the position tags on thisBot.", "label": "WASD character" }] } } },
+  { "function": { "name": "makeTodos", "args": { "todos": [{ "prompt": "Create a bot in dimension 'home' at position (2, -3). Tags: color: 'white', label: 'Player', draggable: false, system: 'ask.player.player'. Add an onKeyDown listener that reads that.keys: if 'w' is present decrement homeY by 1, if 's' increment homeY by 1, if 'a' decrement homeX by 1, if 'd' increment homeX by 1. Use setTag to update the position tags on thisBot.", "label": "WASD character", "budget_credits": 100000 }] } } },
   { "function": { "name": "chat", "args": { "message": "I'll queue up a task to build a WASD-controlled character at (2, -3) in home." } } }
 ]
 ```
@@ -356,9 +364,29 @@ Response:
 ```json
 [
   { "function": { "name": "makeTodos", "args": { "todos": [
-    { "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5, system: 'ask.clicker.scoreboard'. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.", "label": "Scoreboard" },
-    { "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner', system: 'ask.clicker.spawner'. Add an async onCreate listener that loops forever: await os.sleep(2000), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, system: 'ask.clicker.target', and an onClick listener that calls shout('onAddScore') then destroy(thisBot).", "label": "Target spawner" }
+    { "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5, system: 'ask.clicker.scoreboard'. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.", "label": "Scoreboard", "budget_credits": 25000 },
+    { "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner', system: 'ask.clicker.spawner'. Add an async onCreate listener that loops forever: await os.sleep(2000), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, system: 'ask.clicker.target', and an onClick listener that calls shout('onAddScore') then destroy(thisBot).", "label": "Target spawner", "budget_credits": 75000 }
   ] } } },
   { "function": { "name": "chat", "args": { "message": "Breaking this into a scoreboard and a target spawner." } } }
+]
+```
+
+## Example 10: Credit budget allocation → makeTodos with budget_credits
+
+```
+<context>
+  <focus>{"type":"dimension","dimension":"home"}</focus>
+</context>
+<message>Build a clicker game within a budget of 1,000,000 credits</message>
+```
+
+Response:
+```json
+[
+  { "function": { "name": "makeTodos", "args": { "todos": [
+    { "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5, system: 'ask.clicker.scoreboard'. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.", "label": "Scoreboard", "budget_credits": 250000 },
+    { "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner', system: 'ask.clicker.spawner'. Add an async onCreate listener that loops forever: await os.sleep(2000), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, system: 'ask.clicker.target', and an onClick listener that calls shout('onAddScore') then destroy(thisBot).", "label": "Target spawner", "budget_credits": 750000 }
+  ] } } },
+  { "function": { "name": "chat", "args": { "message": "Splitting 1,000,000 credits: 250,000 for the scoreboard (simple listener), 750,000 for the target spawner (async loop + dynamic bot creation)." } } }
 ]
 ```

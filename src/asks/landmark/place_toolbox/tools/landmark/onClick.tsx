@@ -91,19 +91,11 @@ const visitButton = {
     `
 }
 
-const journal = getBot("artifactJournal", true);
-
 if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(nameButton);
     ab.links.menu.abCreateMenuButton(addLinkButton);
     ab.links.menu.abCreateMenuButton(lockButton);
-} else if (!tags.discovered && journal?.tags?.continueLocationPull) {
+} else {
     ab.links.menu.abCreateMenuButton(visitButton);
     shout("onLandmarkClicked", tags.landmarkID);
-} else {
-    shout("onLandmarkClicked", tags.landmarkID);
-    const landmarkInfoMenu = getBot("name", "landmarkInfoMenu");
-    if (landmarkInfoMenu) {
-        landmarkInfoMenu.openApp(tags.landmarkID);
-    }
 }

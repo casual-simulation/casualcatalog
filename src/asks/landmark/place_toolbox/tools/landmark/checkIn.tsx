@@ -1,9 +1,12 @@
+const journal = getBot("artifactJournal", true);
+
 tags.discovered = true; 
 thisBot.setStatusVisuals();
 
-const artifactData = getBot("artifactJournal", true);
-if (artifactData) {
-    artifactData.discoverLandmark(tags.landmarkID);
+if (journal?.tags?.continueLocationPull) {
+    if (journal) {
+        journal.discoverLandmark(tags.landmarkID);
+    }
 }
 
 const landmarkInfoMenu = getBot("name", "landmarkInfoMenu");

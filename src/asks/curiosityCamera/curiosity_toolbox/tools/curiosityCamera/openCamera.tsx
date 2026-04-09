@@ -37,7 +37,7 @@ try {
             role: 'user',
             content: [
                 {
-                    text: `Look at the descriptions and names of these objects "${arrayString}", which are listed in order of closest to furthest from my current location, and find which object is likely in this image and have the response be only the link associated with it with no other characters. If there are no likely matches, say "There are no matching objects"`
+                    text: `Look at the descriptions and names of these objects "${arrayString}", which are listed in order of closest to furthest from my current location, and find which object is most likely in this image by comparing the name with any labels in the image and have the response be only the link associated with it with no other characters. If there are no likely matches, say "There are no matching objects"`
                 },
                 {
                     base64: bytes.toBase64String(new Uint8Array(await img.data.arrayBuffer())),

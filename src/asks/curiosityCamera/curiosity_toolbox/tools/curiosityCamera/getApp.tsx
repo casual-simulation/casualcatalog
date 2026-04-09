@@ -78,7 +78,7 @@ else
                     </button>
                                 </div>
                 <div className="locationR-title">
-                    <span><br></br>Landmark identified! However, the webpage cannot be found, please try again!<br></br><br></br><br></br><br></br></span>
+                    <span><br></br>Discoverable identified! However, the webpage cannot be found, please try again!<br></br><br></br><br></br><br></br></span>
                 </div>
                 <div class="locationR-btn-container">
                 </div>

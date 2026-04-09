@@ -15,6 +15,8 @@ create({
     `,
 });
 
+masks.menuOpen = true;
+
 const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
 const allApplied = planTodos.every(b => b.tags.abPatchApplied);
 const anyFailed  = planTodos.some(b => b.tags.abPatchError);

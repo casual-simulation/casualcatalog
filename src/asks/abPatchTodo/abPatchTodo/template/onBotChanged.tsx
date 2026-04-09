@@ -7,13 +7,13 @@ for (const tag of that.tags) {
         whisper(thisBot, 'refreshAnimation');
     }
 
-    if (tag === 'pointerOver') {
+    if (tag === 'pointerOver' || tag === 'menuOpen') {
         clearAnimations(thisBot, 'scale');
 
         const maxDuration = 0.125;
         const overScale = 1.3;
         const normalScale = 1;
-        const targetScale = tags.pointerOver ? overScale : normalScale;
+        const targetScale = (tags.pointerOver || tags.menuOpen) ? overScale : normalScale;
         const duration = maxDuration * (Math.abs(tags.scale - targetScale) / (overScale - normalScale));
         
         animateTag(thisBot, {
@@ -21,7 +21,7 @@ for (const tag of that.tags) {
                 scale: tags.scale,
             },
             toValue: {
-                scale: tags.pointerOver ? overScale : normalScale,
+                scale: targetScale,
             },
             easing: 'sinusoidal',
             duration

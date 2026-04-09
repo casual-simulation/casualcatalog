@@ -37,7 +37,7 @@ if (tags.mock) {
     }
 
     if (response.success) {
-        const curCredits = await thisBot.getCredits();
+        const curCredits = await thisBot.getAvailableCredits();
 
         const result: ABXPEPayoutResultSuccess = {
             ...response,

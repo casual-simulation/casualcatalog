@@ -64,7 +64,7 @@ const App = () => {
         os.addBotListener(thisBot, 'spawnCoins', spawnCoins);
 
         // Grab current credits amount.
-        abXPE.getCredits().then((curCredits) => {
+        abXPE.getAvailableCredits().then((curCredits) => {
             setCredits(curCredits);
         })
         

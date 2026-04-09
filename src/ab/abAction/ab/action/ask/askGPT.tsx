@@ -210,6 +210,7 @@ async function executeMakeTodos(todos) {
             data: {
                 prompt: todo.prompt,
                 todoLabel: todo.label,
+                budgetCredits: todo.budget_credits,
                 aiModel: that.model,
                 todoPlanId,
                 todoOrder: i,

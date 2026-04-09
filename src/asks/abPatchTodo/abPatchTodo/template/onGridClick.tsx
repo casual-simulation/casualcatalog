@@ -1,2 +1,1 @@
-shout('abPatchMenuReset');
-shout('abTodoMenuReset');
+shout('abPatchTodoMenuReset');

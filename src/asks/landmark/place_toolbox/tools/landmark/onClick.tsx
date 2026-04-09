@@ -82,7 +82,7 @@ const visitLinkButton = {
 
 const visitButton = {
     ...menuOptions,
-    formAddress: 'link',
+    formAddress: 'check_circle',
     label: 'check in',
     landmark_menuSortOrder: 1,
     onClick: `@
@@ -92,13 +92,12 @@ const visitButton = {
 }
 
 const journal = getBot("artifactJournal", true);
-const usingGPS = journal.continueLocationPull
 
 if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(nameButton);
     ab.links.menu.abCreateMenuButton(addLinkButton);
     ab.links.menu.abCreateMenuButton(lockButton);
-} else if (!tags.discovered && journal.tags.continueLocationPull) {
+} else if (!tags.discovered && journal?.tags?.continueLocationPull) {
     ab.links.menu.abCreateMenuButton(visitButton);
     shout("onLandmarkClicked", tags.landmarkID);
 } else {

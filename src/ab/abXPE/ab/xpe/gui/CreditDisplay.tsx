@@ -181,7 +181,7 @@ const CreditDisplay = forwardRef(({
                 style={{ position: 'relative' }}
             >
                 <img src={icon}></img>
-                <span>{displayAmount === 0 ? 'ads mode' : displayAmount}</span>
+                <span>{displayAmount === 0 ? 'ads mode' : displayAmount.toLocaleString()}</span>
                 {floats.map(f => (
                     <span
                         key={f.id}

@@ -32,7 +32,7 @@ if (data.eggParameters) {
     os.focusOn(thisBot);
 }
 
-await thisBot.getDataFromStrapi();
 thisBot.spawnPlayer();
-thisBot.showRoT();
 thisBot.updateLocation();
+await thisBot.getDataFromStrapi();
+thisBot.showRoT();

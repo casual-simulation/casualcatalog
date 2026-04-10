@@ -8,4 +8,3 @@ const avatarBot = getBot(byTag("mapAvatar", true), byTag("remoteID", configBot.t
 if (!avatarBot) {
     thisBot.spawnPlayer();
 }
-

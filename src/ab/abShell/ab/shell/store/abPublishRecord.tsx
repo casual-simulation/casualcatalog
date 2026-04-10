@@ -1,11 +1,11 @@
 await os.requestAuthBot();
 
 let publicFacing = that.publicFacing;
-let recordData = that.data;
+let recordData = that.recordData ?? that.data;
 let recordName = that.recordName;
 let endpoint = that.endpoint ? that.endpoint : links.remember.tags.abEndpoint;
 let markerSet = that.markerSet ?? new Set();
-let userRecord = configBot.tags.selected_studioID ?? authBot.id;
+let userRecord = that.userRecord ?? configBot.tags.selected_studioID ?? authBot.id;
 let toast = that.toast ?? true;
 
 if (!recordData) {

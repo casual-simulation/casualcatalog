@@ -107,11 +107,6 @@ try {
 
     activeRequestSignal.tags.success = true;
     activeRequestSignal.tags.response = aiResponse.content;
-
-    if (globalThis.abXPE) {
-        // MOCK: deduct credits for ai call.
-        const result: ABXPEPayoutResult = await abXPE.payout({ amount: 1, sourceId });
-    }
 } catch(e) {
     aiResponse = null;
 

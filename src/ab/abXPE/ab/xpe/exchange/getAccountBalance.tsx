@@ -1,30 +1,21 @@
 import { JSONAccountBalance } from 'casualos';
 
 const {
-    accountId,
-    accountType,
+    userId,
+    studioId,
+    contractId,
 }: ABXPEGetAccountBalanceParams = that ?? {}
 
+const idProvidedCount = [userId, studioId, contractId].filter(Boolean).length;
+
 assert(masks.initialized, `[${tags.system}.${tagName}] skill must be loaded before first.`);
-assert(accountId, `[${tags.system}.${tagName}] accountId is a required parameter.`);
-assert(accountType, `[${tags.system}.${tagName}] accountType is a required parameter.`);
-
-let userId, studioId, contractId;
-
-if (accountType === 'user') {
-    userId = accountId;
-} else if (accountType === 'studio') {
-    studioId = accountId;
-} else if (accountType === 'contract') {
-    contractId = accountId;
-} else {
-    throw new Error(`[${tags.system}.${tagName}] unknown accountType '${accountType}'`);
-}
+assert(idProvidedCount > 0, `[${tags.system}.${tagName}] a userId, studioId, or contractId must be provided as a parameter`);
+assert(idProvidedCount === 1, `[${tags.system}.${tagName}] can only provide one of the id parameters: userId, studioId, or contractId.`);
 
 const balanceResult = await xp.getAccountBalances({ userId, studioId, contractId });
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] balanceResult:`, balanceResult);
+    console.log(`[${tags.system}.${tagName}] ${userId ?? studioId ?? contractId} balance result:`, balanceResult);
 }
 
 if (balanceResult.success) {

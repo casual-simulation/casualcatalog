@@ -2,6 +2,7 @@ const { useEffect, useState, useRef, useCallback, useImperativeHandle } = os.app
 const { forwardRef } = os.appCompat;
 
 interface CreditDisplayProps {
+    name: string;
     amount: number;
     icon: string;
     animate?: boolean;
@@ -41,6 +42,7 @@ const FLOATS_TIMEOUT_MS = 2000;
 const PULSE_TIMEOUT_MS = 500;
 
 const CreditDisplay = forwardRef(({
+    name,
     amount,
     icon,
     animate = false,

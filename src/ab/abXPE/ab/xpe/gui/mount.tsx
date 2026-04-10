@@ -1,4 +1,4 @@
-if (!ab.abIsPrimary()) {
+if (!globalThis.ab || !ab.abIsPrimary() || !authBot) {
     return;
 }
 

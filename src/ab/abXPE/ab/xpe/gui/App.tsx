@@ -4,11 +4,16 @@ const CreditDisplay = thisBot.CreditDisplay();
         
 const App = () => {
     const [userCredits, setUserCredits] = useState();
-    const [icon, setIcon] = useState();
-    const creditDisplayRef = useRef(null);
+    const [userCreditsIcon, setUserCreditsIcon] = useState();
+    const userCreditDisplayRef = useRef(null);
+
+    const [studioCredits, setStudioCredits] = useState();
+    const [studioCreditsIcon, setStudioCreditsIcon] = useState();
+    const [studioName, setStudioName] = useState();
+    const studioCreditDisplayRef = useRef(null);
 
     // on mount
-    useEffect(() => {
+    useEffect(async () => {
         const onABXPEPaidOut = async (listenerThat) => {
             const { payAmount, curCredits } = listenerThat;
 
@@ -22,7 +27,7 @@ const App = () => {
             const startX = gridPortalBot.tags.pixelWidth - 100;
             const startY = 50;
 
-            if (creditDisplayRef.current && count) {
+            if (userCreditDisplayRef.current && count) {
                 let computedTargetX;
                 let computedTargetY;
 
@@ -39,8 +44,6 @@ const App = () => {
                         dimension = configBot.tags.gridPortal;
                     }
 
-                    console.log(`portal: ${portal}, dimension: ${dimension}`);
-
                     if (portal) {
                         const botPosition = getBotPosition(targetBot, dimension);
                         const botScreenCoords = await os.calculateScreenCoordinatesFromPosition(portal, botPosition);
@@ -50,7 +53,7 @@ const App = () => {
                     }
                 }
 
-                creditDisplayRef.current.spawnCoins(
+                userCreditDisplayRef.current.spawnCoins(
                     Math.min(count, 10),
                     startX,
                     startY,
@@ -63,16 +66,46 @@ const App = () => {
         os.addBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
         os.addBotListener(thisBot, 'spawnCoins', spawnCoins);
 
-        // Grab current credits amount.
-        abXPE.getAvailableCredits().then((curCredits) => {
+        // Grab current user credits.
+        abXPE.getAvailableCredits({ userId: authBot.id }).then((curCredits) => {
             setUserCredits(curCredits);
         })
         
-        // Load icon
-        if (tags.creditIcon) {
-            const iconURL = ab.abBuildCasualCatalogURL(tags.creditIcon);
-            setIcon(iconURL);
+        // Load user credit icon.
+        if (tags.userCreditIcon) {
+            // const iconURL = ab.abBuildCasualCatalogURL(tags.userCreditIcon);
+            // setUserCreditsIcon(iconURL);
         }
+
+        // Load studio credits if we are in an inst that is owned by a studio.
+        if (configBot.tags.owner &&
+            configBot.tags.owner !== 'public' &&
+            configBot.tags.owner !== 'player' &&
+            configBot.tags.owner !== authBot.id
+        ) {
+            // Inst owner is likely a studio.
+            if (!configBot.tags.user_studios) {
+                await ab.abRefreshStudios();
+            }
+            
+            if (configBot.tags.user_studios.success) {
+                const userStudios = configBot.tags.user_studios.studios;
+                const ownerStudio = userStudios.find(s => s.studioId === configBot.tags.owner);
+
+                if (ownerStudio) {
+                    setStudioName(ownerStudio.displayName ?? configBot.tags.owner);
+
+                    // Grab current studio credits.
+                    abXPE.getAvailableCredits({ studioId: configBot.tags.owner }).then((curCredits) => {
+                        setStudioCredits(curCredits);
+                    });
+
+                    // TODO: Load studio credit icon.
+                }
+            }
+        }
+
+
 
         return () => {
             os.removeBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
@@ -95,7 +128,10 @@ const App = () => {
             <div className='ab-xpe-gui'>
                 <div className='top-right'>
                     {userCredits != null && 
-                        <CreditDisplay icon={icon} amount={userCredits} animate={true} onClick={onUserCreditDisplayClick} ref={creditDisplayRef} />
+                        <CreditDisplay name='Your Credits' icon={userCreditsIcon} amount={userCredits} animate={true} onClick={onUserCreditDisplayClick} ref={userCreditDisplayRef} />
+                    }
+                    {studioCredits != null &&
+                        <CreditDisplay name={`${studioName} Credits`} icon={studioCreditsIcon} amount={studioCredits} animate={true} onClick={onStudioCreditDisplayClick} ref={studioCreditDisplayRef} />
                     }
                 </div>
             </div>

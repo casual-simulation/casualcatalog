@@ -1,20 +1,18 @@
-interface ABXPEPayoutParams extends APIPayoutRequest {
+interface ABXPEGetAccountBalanceParams {
+    userId?: string;
+    studioId?: string;
+    contractId?: string;
+}
+
+interface ABXPEGetAvailableCreditsParams extends ABXPEGetAccountBalanceParams {
+    // nothing unique for now
+}
+
+interface ABXPEPayoutParams extends ABXPEGetAccountBalanceParams {
     amount: number;
     destination: 'stripe' | 'cash';
     sourceId?: string
 }
-
-interface ABXPEGetAvailableCreditsParams {
-    accountId?: string;
-    accountType?: ABXPEAccountType;
-}
-
-interface ABXPEGetAccountBalanceParams {
-    accountId?: string;
-    accountType?: ABXPEAccountType;
-}
-
-type ABXPEAccountType = 'user' | 'studio' | 'contract';
 
 type ABXPEPayoutResult = ABXPEPayoutResultSuccess | ABXPEPayoutResultFailure;
 

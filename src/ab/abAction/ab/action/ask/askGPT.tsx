@@ -65,6 +65,7 @@ const abPosition = that.abPosition ?? ab.links.remember.tags[abDimension + 'ABLa
 const patchBotDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
 const hasInquiry = that.inquiry != null;
+const model = that.model;
 const callDepth: number = that.callDepth ?? 0;
 const agentMode: string | undefined = that.agentMode ?? 'build';
 const recordName: string | undefined = that.recordName ?? authBot.id;
@@ -212,7 +213,8 @@ async function executeMakeTodos(todos) {
                 prompt: todo.prompt,
                 todoLabel: todo.label,
                 budgetCredits: todo.budget_credits,
-                aiModel: that.model,
+                budgetRecordName: recordName,
+                aiModel: model,
                 todoPlanId,
                 todoOrder: i,
                 eggParameters: {
@@ -273,7 +275,7 @@ let response;
 let requestErrorMsg;
 
 try {
-    response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model: that.model, recordName, sourceId });
+    response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model, recordName, sourceId });
 } catch (e) {
     requestErrorMsg = ab.links.utils.getErrorMessage(e);
 }

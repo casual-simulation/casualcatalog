@@ -8,6 +8,7 @@ tags.alwaysApprove = data.alwaysApprove;
 tags.prompt = data.prompt;
 tags.todoLabel = data.todoLabel;
 tags.budgetCredits = data.budgetCredits;
+tags.budgetRecordName = data.budgetRecordName;
 tags.aiModel = data.aiModel ?? ab.links.personality.tags.abPreferredAIModel;
 tags.debug = data.debug;
 tags.todoPlanId = data.todoPlanId;

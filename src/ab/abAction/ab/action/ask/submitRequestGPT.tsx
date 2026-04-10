@@ -4,6 +4,7 @@ const {
     prompt,
     inquiry,
     model,
+    recordName,
     sourceId,
     messages,
 } = that ?? {};
@@ -39,7 +40,8 @@ const activeRequestSignal = create({
 const busyIndicator = await links.menu.abCreateMenuBusyIndicator({abMenu: true, label: `asking ${links.personality.tags.abBuilderIdentity}` });
 
 const aiChatOptions: AIChatOptions = { 
-    preferredModel: model ?? links.personality.tags.abPreferredAIModel
+    preferredModel: model ?? links.personality.tags.abPreferredAIModel,
+    recordName,
 }
 
 let aiChatMessages: AIChatMessage[];

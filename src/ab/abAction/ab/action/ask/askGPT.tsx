@@ -67,6 +67,7 @@ const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
 const hasInquiry = that.inquiry != null;
 const callDepth: number = that.callDepth ?? 0;
 const agentMode: string | undefined = that.agentMode ?? 'build';
+const recordName: string | undefined = that.recordName ?? authBot.id;
 const historyStorageBot = that.historyStorageBot ? getBot('id', that.historyStorageBot) : undefined;
 const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversationHistoryGet({ historyStorageBot }) : [];
 const todoBot = that.todoBot ? getBot('id', that.todoBot) : undefined;
@@ -272,7 +273,7 @@ let response;
 let requestErrorMsg;
 
 try {
-    response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model: that.model, sourceId });
+    response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model: that.model, recordName, sourceId });
 } catch (e) {
     requestErrorMsg = ab.links.utils.getErrorMessage(e);
 }

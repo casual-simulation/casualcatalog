@@ -4,6 +4,18 @@ interface ABXPEPayoutParams extends APIPayoutRequest {
     sourceId?: string
 }
 
+interface ABXPEGetAvailableCreditsParams {
+    accountId?: string;
+    accountType?: ABXPEAccountType;
+}
+
+interface ABXPEGetAccountBalanceParams {
+    accountId?: string;
+    accountType?: ABXPEAccountType;
+}
+
+type ABXPEAccountType = 'user' | 'studio' | 'contract';
+
 type ABXPEPayoutResult = ABXPEPayoutResultSuccess | ABXPEPayoutResultFailure;
 
 interface ABXPEPayoutResultSuccess {

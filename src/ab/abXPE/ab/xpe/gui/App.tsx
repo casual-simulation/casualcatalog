@@ -3,7 +3,7 @@ const { useState, useEffect, useCallback, useRef } = os.appHooks;
 const CreditDisplay = thisBot.CreditDisplay();
         
 const App = () => {
-    const [credits, setCredits] = useState();
+    const [userCredits, setUserCredits] = useState();
     const [icon, setIcon] = useState();
     const creditDisplayRef = useRef(null);
 
@@ -12,7 +12,7 @@ const App = () => {
         const onABXPEPaidOut = async (listenerThat) => {
             const { payAmount, curCredits } = listenerThat;
 
-            setCredits(curCredits);
+            setUserCredits(curCredits);
             ab.links.sound.abPlaySound({ value: 'ab/audio/purchase.mp3' });
         }
 
@@ -60,17 +60,12 @@ const App = () => {
             }
         }
 
-        const refreshCredits = async (listenerThat) => {
-            // TODO: get the current available credits (abXPE.getAvailableCredits()) and then update the display.
-        }
-
         os.addBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
         os.addBotListener(thisBot, 'spawnCoins', spawnCoins);
-        os.addBotListener(thisBot, 'refreshCredits', refreshCredits);
 
         // Grab current credits amount.
         abXPE.getAvailableCredits().then((curCredits) => {
-            setCredits(curCredits);
+            setUserCredits(curCredits);
         })
         
         // Load icon
@@ -82,22 +77,25 @@ const App = () => {
         return () => {
             os.removeBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
             os.removeBotListener(thisBot, 'spawnCoins', spawnCoins);
-            os.removeBotListener(thisBot, 'refreshCredits', refreshCredits);
         };
     }, []);
 
-    const onCreditDisplayClick = useCallback(async () => {
+    const onUserCreditDisplayClick = useCallback(async () => {
         const endpoint = await os.getRecordsEndpoint();
         os.openURL(endpoint);
     }, []);
+
+    const onStudioCreditDisplayClick = useCallback(async () => {
+        console.warn('TODO: open studio in auth portal.');
+    }, [])
 
     return (
         <>
             <style>{tags['style.css']}</style>
             <div className='ab-xpe-gui'>
                 <div className='top-right'>
-                    {credits != null && 
-                        <CreditDisplay icon={icon} amount={credits} animate={true} onClick={onCreditDisplayClick} ref={creditDisplayRef} />
+                    {userCredits != null && 
+                        <CreditDisplay icon={icon} amount={userCredits} animate={true} onClick={onUserCreditDisplayClick} ref={creditDisplayRef} />
                     }
                 </div>
             </div>

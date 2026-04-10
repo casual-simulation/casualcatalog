@@ -1,62 +1,37 @@
-import { JSONAccountBalance, GenericResult, SimpleError } from 'casualos';
+import { GenericResult, SimpleError } from 'casualos';
 
 const {
     amount,
     destination,
     sourceId,
-}: ABXPE = that ?? {};
+}: ABXPEPayoutParams = that ?? {};
 
-if (tags.mock) {
-    await os.sleep(100);
+const response: GenericResult<void, SimpleError> = await xp.payout({ amount, destination });
 
-    const balance: JSONAccountBalance = thisBot.vars.mockBalance;
-    let creditsNum = Number.parseFloat(balance.credits);
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] payout response:`, response);
+}
 
-    if (creditsNum >= amount) {
-        if (tags.debug) {
-            console.log(`[${tags.system}.${tagName}] mock: paying ${amount} out a balance of ${creditsNum}.`);
-        }
-        
-        creditsNum -= amount;
-        balance.credits = creditsNum.toString();
+if (response.success) {
+    const curCredits = await thisBot.getAvailableCredits();
 
-        const result: ABXPEPayoutResultSuccess = { success: true, payAmount: amount, curCredits: creditsNum, sourceId };
-        shout('onABXPEPaidOut', result);
+    const result: ABXPEPayoutResultSuccess = {
+        ...response,
+        payAmount: amount,
+        curCredits,
+        sourceId
+    };
 
-        return result;
-    } else {
-        const result: ABXPEPayoutResultFailure = { success: false, errorCode: 'mock_insufficient_funds', errorMessage: 'User has insufficient funds.', sourceId};
-        
-        return result;
-    }
+    shout('onABXPEPaidOut', result);
+
+    return result;
 } else {
-    const response: GenericResult<void, SimpleError> = await xp.payout({ amount, destination });
+    const result: ABXPEPayoutResultFailure = { 
+        ...response,
+        sourceId,
+    };
 
-    if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] payout response:`, response);
-    }
-
-    if (response.success) {
-        const curCredits = await thisBot.getAvailableCredits();
-
-        const result: ABXPEPayoutResultSuccess = {
-            ...response,
-            payAmount: amount,
-            curCredits,
-            sourceId
-        };
-
-        shout('onABXPEPaidOut', result);
-
-        return result;
-    } else {
-        const result: ABXPEPayoutResultFailure = { 
-            ...response,
-            sourceId,
-        };
-
-        return result;
-    }
+    return result;
 }
 
 

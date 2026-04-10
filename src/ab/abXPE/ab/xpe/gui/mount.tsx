@@ -7,5 +7,5 @@ if (!thisBot.vars.appInstance) {
     await os.registerApp(tags.system, thisBot);
 
     const App = thisBot.vars.appInstance;
-    os.compileApp(tags.system, <App/>)
+    os.compileApp(tags.system, <App/>);
 }

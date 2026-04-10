@@ -1,7 +1,7 @@
 const { useState, useEffect, useCallback, useRef } = os.appHooks;
 
 const CreditDisplay = thisBot.CreditDisplay();
-        
+
 const App = () => {
     const [userCredits, setUserCredits] = useState();
     const [userCreditsIcon, setUserCreditsIcon] = useState();
@@ -13,55 +13,6 @@ const App = () => {
     const [studioName, setStudioName] = useState();
     const studioCreditDisplayRef = useRef(null);
     const studioConfigCacheRef = useRef(null);
-
-    const refreshCreditsDisplay = useCallback(async () => {
-        // Grab current user credits.
-        abXPE.getAvailableCredits({ userId: authBot.id }).then((curCredits) => {
-            setUserCredits(curCredits);
-        });
-
-        // Load user credit icon.
-        if (tags.userCreditIcon) {
-            const iconURL = ab.abBuildCasualCatalogURL(tags.userCreditIcon);
-            setUserCreditsIcon(iconURL);
-        }
-
-        // Load studio credits if we are in an inst that is owned by a studio.
-        if (configBot.tags.owner &&
-            configBot.tags.owner !== 'public' &&
-            configBot.tags.owner !== 'player' &&
-            configBot.tags.owner !== authBot.id
-        ) {
-            // Inst owner is likely a studio.
-            if (!configBot.tags.user_studios) {
-                await ab.abRefreshStudios();
-            }
-
-            if (configBot.tags.user_studios.success) {
-                const userStudios = configBot.tags.user_studios.studios;
-                const ownerStudio = userStudios.find(s => s.studioId === configBot.tags.owner);
-
-                if (ownerStudio) {
-                    setStudioName(ownerStudio.displayName);
-
-                    // Grab current studio credits.
-                    abXPE.getAvailableCredits({ studioId: configBot.tags.owner }).then((curCredits) => {
-                        setStudioCredits(curCredits);
-                    });
-
-                    // Load studio config to get custom credit display settings (cached for the session).
-                    if (!studioConfigCacheRef.current) {
-                        const getStudioConfigResponse = await os.getData(configBot.tags.owner, 'abStudioConfig');
-                        studioConfigCacheRef.current = getStudioConfigResponse.success ? getStudioConfigResponse.data : {};
-                    }
-
-                    const studioConfig = studioConfigCacheRef.current;
-                    setStudioCreditsIcon(studioConfig['studio_credit_icon_url'] ?? null);
-                    setStudioCreditsBackgroundColor(studioConfig['studio_credit_background_color'] ?? null);
-                }
-            }
-        }
-    }, []);
 
     // on mount
     useEffect(async () => {
@@ -116,15 +67,65 @@ const App = () => {
 
         os.addBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
         os.addBotListener(thisBot, 'spawnCoins', spawnCoins);
-        os.addBotListener(thisBot, 'abXPERefreshCreditsDisplay', refreshCreditsDisplay);
+        os.addBotListener(thisBot, 'refreshCreditsDisplay', refreshCreditsDisplay);
 
-        await refreshCreditsDisplay();
+        // Kick-off the refresh credits display update loop.
+        thisBot.abXPERefreshCreditsDisplay();
 
         return () => {
             os.removeBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
             os.removeBotListener(thisBot, 'spawnCoins', spawnCoins);
-            os.removeBotListener(thisBot, 'abXPERefreshCreditsDisplay', refreshCreditsDisplay);
+            os.removeBotListener(thisBot, 'onABXPERefreshCreditsDisplay', onABXPERefreshCreditsDisplay);
         };
+    }, []);
+
+    const refreshCreditsDisplay = useCallback(async () => {
+        // Grab current user credits.
+        abXPE.getAvailableCredits({ userId: authBot.id }).then((curCredits) => {
+            setUserCredits(curCredits);
+        });
+
+        // Load user credit icon.
+        if (tags.userCreditIcon) {
+            const iconURL = ab.abBuildCasualCatalogURL(tags.userCreditIcon);
+            setUserCreditsIcon(iconURL);
+        }
+
+        // Load studio credits if we are in an inst that is owned by a studio.
+        if (configBot.tags.owner &&
+            configBot.tags.owner !== 'public' &&
+            configBot.tags.owner !== 'player' &&
+            configBot.tags.owner !== authBot.id
+        ) {
+            // Inst owner is likely a studio.
+            if (!configBot.tags.user_studios) {
+                await ab.abRefreshStudios();
+            }
+
+            if (configBot.tags.user_studios.success) {
+                const userStudios = configBot.tags.user_studios.studios;
+                const ownerStudio = userStudios.find(s => s.studioId === configBot.tags.owner);
+
+                if (ownerStudio) {
+                    setStudioName(ownerStudio.displayName);
+
+                    // Grab current studio credits.
+                    abXPE.getAvailableCredits({ studioId: configBot.tags.owner }).then((curCredits) => {
+                        setStudioCredits(curCredits);
+                    });
+
+                    // Load studio config to get custom credit display settings (cached for the session).
+                    if (!studioConfigCacheRef.current) {
+                        const getStudioConfigResponse = await os.getData(configBot.tags.owner, 'abStudioConfig');
+                        studioConfigCacheRef.current = getStudioConfigResponse.success ? getStudioConfigResponse.data : {};
+                    }
+
+                    const studioConfig = studioConfigCacheRef.current;
+                    setStudioCreditsIcon(studioConfig['studio_credit_icon_url'] ?? null);
+                    setStudioCreditsBackgroundColor(studioConfig['studio_credit_background_color'] ?? null);
+                }
+            }
+        }
     }, []);
 
     const onUserCreditDisplayClick = useCallback(async () => {

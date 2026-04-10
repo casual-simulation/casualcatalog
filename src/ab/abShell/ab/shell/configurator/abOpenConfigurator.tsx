@@ -1,9 +1,10 @@
 interface ABOpenConfiguratorArg {
     abConfiguratorGroup: string;
+    abConfiguratorTitle?: string;
     bots?: Bot[];
 }
 
-const { abConfiguratorGroup, bots: incomingBots } = that as ABOpenConfiguratorArg ?? {};
+const { abConfiguratorGroup, abConfiguratorTitle, bots: incomingBots } = that as ABOpenConfiguratorArg ?? {};
 
 assert(abConfiguratorGroup, `[${tags.system}.${tagName}] abConfiguratorGroup is a required parameter.`);
 
@@ -39,7 +40,7 @@ if (dataFound) {
         abConfiguratorMenuReset: ListenerString(() => {
             destroy(thisBot);
         }),
-        label: `configure:\n${abConfiguratorGroup}`,
+        label: abConfiguratorTitle ?? `configure:\n${abConfiguratorGroup}`,
         labelAlignment: 'center',
         menuItemStyle: {
         },

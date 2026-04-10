@@ -16,13 +16,6 @@ const App = () => {
 
     // on mount
     useEffect(async () => {
-        const onABXPEPaidOut = async (listenerThat) => {
-            const { payAmount, curCredits } = listenerThat;
-
-            setUserCredits(curCredits);
-            ab.links.sound.abPlaySound({ value: 'ab/audio/purchase.mp3' });
-        }
-
         const spawnCoins = async (listenerThat) => {
             const { targetX, targetY, targetBot, count } = listenerThat;
 
@@ -65,7 +58,6 @@ const App = () => {
             }
         }
 
-        os.addBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
         os.addBotListener(thisBot, 'spawnCoins', spawnCoins);
         os.addBotListener(thisBot, 'refreshCreditsDisplay', refreshCreditsDisplay);
 
@@ -73,7 +65,6 @@ const App = () => {
         thisBot.abXPERefreshCreditsDisplay();
 
         return () => {
-            os.removeBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
             os.removeBotListener(thisBot, 'spawnCoins', spawnCoins);
             os.removeBotListener(thisBot, 'onABXPERefreshCreditsDisplay', onABXPERefreshCreditsDisplay);
         };

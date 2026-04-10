@@ -5,6 +5,7 @@ interface CreditDisplayProps {
     name: string;
     amount: number;
     icon: string;
+    backgroundColor: string;
     animate?: boolean;
     onClick?: () => void;
 }
@@ -45,6 +46,7 @@ const CreditDisplay = forwardRef(({
     name,
     amount,
     icon,
+    backgroundColor,
     animate = false,
     onClick
 }: CreditDisplayProps, ref) => {
@@ -180,7 +182,10 @@ const CreditDisplay = forwardRef(({
                 ref={widgetRef}
                 className={`credit-display ${pulse ? 'credit-pulse' : ''} ${displayAmount === 0 ? 'credit-empty' : ''}`}
                 onClick={onClick}
-                style={{ position: 'relative' }}
+                style={{ 
+                    position: 'relative',
+                    backgroundColor: backgroundColor ?? 'rgb(0, 0, 0, 0.5)',
+                }}
             >
                 <img src={icon}></img>
                 <span>{displayAmount === 0 ? 'ads mode' : displayAmount.toLocaleString()}</span>

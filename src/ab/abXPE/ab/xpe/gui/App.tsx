@@ -9,6 +9,7 @@ const App = () => {
 
     const [studioCredits, setStudioCredits] = useState();
     const [studioCreditsIcon, setStudioCreditsIcon] = useState();
+    const [studioCreditsBackgroundColor, setStudioCreditsBackgroundColor] = useState();
     const [studioName, setStudioName] = useState();
     const studioCreditDisplayRef = useRef(null);
 
@@ -100,7 +101,16 @@ const App = () => {
                         setStudioCredits(curCredits);
                     });
 
-                    // TODO: Load studio credit icon.
+                    // Load studio config to get custom credit display settings.
+                    const getStudioConfigResponse = await os.getData(configBot.tags.owner, 'abStudioConfig');
+                    let studioConfig = {};
+
+                    if (getStudioConfigResponse.success) {
+                        studioConfig = getStudioConfigResponse.data;
+                    }
+
+                    setStudioCreditsIcon(studioConfig['studio_credit_icon_url'] ?? null);
+                    setStudioCreditsBackgroundColor(studioConfig['studio_credit_background_color'] ?? null);
                 }
             }
         }
@@ -128,10 +138,26 @@ const App = () => {
             <div className='ab-xpe-gui'>
                 <div className='top-right'>
                     {studioCredits != null &&
-                        <CreditDisplay name={`${studioName} Credits`} icon={studioCreditsIcon} amount={studioCredits} animate={true} onClick={onStudioCreditDisplayClick} ref={studioCreditDisplayRef} />
+                        <CreditDisplay
+                            name={`${studioName} Credits`}
+                            icon={studioCreditsIcon}
+                            backgroundColor={studioCreditsBackgroundColor}
+                            amount={studioCredits}
+                            animate={true}
+                            onClick={onStudioCreditDisplayClick}
+                            ref={studioCreditDisplayRef}
+                        />
                     }
                     {userCredits != null && 
-                        <CreditDisplay name='Your Credits' icon={userCreditsIcon} amount={userCredits} animate={true} onClick={onUserCreditDisplayClick} ref={userCreditDisplayRef} />
+                        <CreditDisplay
+                            name='Your Credits'
+                            icon={userCreditsIcon}
+                            backgroundColor={null}
+                            amount={userCredits}
+                            animate={true}
+                            onClick={onUserCreditDisplayClick}
+                            ref={userCreditDisplayRef}
+                        />
                     }
                 </div>
             </div>

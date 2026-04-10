@@ -13,7 +13,6 @@
 }
 
 .credit-display {
-    background-color: rgba(0, 0, 0, 0.5);
     user-select: none;
     cursor: pointer;
     color: white;
@@ -27,7 +26,6 @@
 
 @media (hover: hover) {
     .credit-display:hover {
-        background-color: rgba(30, 30, 30, 0.7);
         transform: scale(1.06);
         box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
     }

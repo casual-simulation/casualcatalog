@@ -68,10 +68,10 @@ const hasInquiry = that.inquiry != null;
 const model = that.model;
 const callDepth: number = that.callDepth ?? 0;
 const agentMode: string | undefined = that.agentMode ?? 'build';
-const recordName: string | undefined = that.recordName ?? authBot.id;
 const historyStorageBot = that.historyStorageBot ? getBot('id', that.historyStorageBot) : undefined;
 const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversationHistoryGet({ historyStorageBot }) : [];
 const todoBot = that.todoBot ? getBot('id', that.todoBot) : undefined;
+const recordName: string | undefined = that.recordName ?? todoBot?.tags.budgetRecordName ?? authBot.id;
 
 const MAX_CALL_DEPTH = 5;
 

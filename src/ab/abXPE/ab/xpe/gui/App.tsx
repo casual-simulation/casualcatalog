@@ -73,8 +73,8 @@ const App = () => {
         
         // Load user credit icon.
         if (tags.userCreditIcon) {
-            // const iconURL = ab.abBuildCasualCatalogURL(tags.userCreditIcon);
-            // setUserCreditsIcon(iconURL);
+            const iconURL = ab.abBuildCasualCatalogURL(tags.userCreditIcon);
+            setUserCreditsIcon(iconURL);
         }
 
         // Load studio credits if we are in an inst that is owned by a studio.
@@ -93,7 +93,7 @@ const App = () => {
                 const ownerStudio = userStudios.find(s => s.studioId === configBot.tags.owner);
 
                 if (ownerStudio) {
-                    setStudioName(ownerStudio.displayName ?? configBot.tags.owner);
+                    setStudioName(ownerStudio.displayName);
 
                     // Grab current studio credits.
                     abXPE.getAvailableCredits({ studioId: configBot.tags.owner }).then((curCredits) => {
@@ -104,8 +104,6 @@ const App = () => {
                 }
             }
         }
-
-
 
         return () => {
             os.removeBotListener(thisBot, 'onABXPEPaidOut', onABXPEPaidOut);
@@ -119,19 +117,21 @@ const App = () => {
     }, []);
 
     const onStudioCreditDisplayClick = useCallback(async () => {
-        console.warn('TODO: open studio in auth portal.');
-    }, [])
+        const endpoint = await os.getRecordsEndpoint();
+        const url = new URL(`/studios/${configBot.tags.owner}/${studioName}`, endpoint);
+        os.openURL(url.toString());
+    }, [studioName])
 
     return (
         <>
             <style>{tags['style.css']}</style>
             <div className='ab-xpe-gui'>
                 <div className='top-right'>
-                    {userCredits != null && 
-                        <CreditDisplay name='Your Credits' icon={userCreditsIcon} amount={userCredits} animate={true} onClick={onUserCreditDisplayClick} ref={userCreditDisplayRef} />
-                    }
                     {studioCredits != null &&
                         <CreditDisplay name={`${studioName} Credits`} icon={studioCreditsIcon} amount={studioCredits} animate={true} onClick={onStudioCreditDisplayClick} ref={studioCreditDisplayRef} />
+                    }
+                    {userCredits != null && 
+                        <CreditDisplay name='Your Credits' icon={userCreditsIcon} amount={userCredits} animate={true} onClick={onUserCreditDisplayClick} ref={userCreditDisplayRef} />
                     }
                 </div>
             </div>

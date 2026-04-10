@@ -6,7 +6,10 @@
     top: 1.25rem;
     right: 0.5rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: 1rem;
 }
 
 .credit-display {

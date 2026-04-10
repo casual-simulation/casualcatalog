@@ -102,7 +102,30 @@ else if (!inquiryHasSpace) {
 
         links.manifestation.abClick();
     } else {
-        const askGPTParams = { inquiry: inquiry, prompt: menu, agentMode, data: that, sourceId: 'abBot', historyStorageBot: ab.links.remember };
+        // Need to decide where the cost of the ai calls is going to come from.
+        let costRecordName;
+
+         if (configBot.tags.owner &&
+            configBot.tags.owner !== 'public' &&
+            configBot.tags.owner !== 'player' &&
+            configBot.tags.owner !== authBot.id
+        ) { 
+            // Inst owner is likely a studio, the cost of the ai call will come from it.
+            costRecordName = configBot.tags.owner;
+        } else {
+            // Cost of the ai call will come from the user.
+            costRecordName = authBot.id;
+        }
+
+        const askGPTParams = { 
+            inquiry: inquiry,
+            prompt: menu, 
+            agentMode, 
+            recordName: costRecordName,
+            data: that,
+            sourceId: 'abBot', 
+            historyStorageBot: ab.links.remember
+        };
         
         // Give an external bot a chance to eat the user input. If nothing takes it, then we call askGPT directly.
         let consumedInput = false;

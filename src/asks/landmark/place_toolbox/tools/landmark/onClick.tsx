@@ -91,11 +91,15 @@ const visitButton = {
     `
 }
 
+const playerAvatar = getBot(byTag("mapAvatar", true), byTag("remoteID", getID(configBot)));
+
 if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(nameButton);
     ab.links.menu.abCreateMenuButton(addLinkButton);
     ab.links.menu.abCreateMenuButton(lockButton);
-} else {
+} else if (tags.nearbyPlayer == getID(playerAvatar)) {
     ab.links.menu.abCreateMenuButton(visitButton);
+    shout("onLandmarkClicked", tags.landmarkID);
+} else {
     shout("onLandmarkClicked", tags.landmarkID);
 }

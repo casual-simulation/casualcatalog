@@ -5,6 +5,13 @@ if (tags.remoteID != getID(configBot)) {
 shout('abMenuRefresh');
 shout("clearMapAvatarMenu");
 
+const journal = getBot("artifactJournal", true);
+
+if (journal.tags.currentRegisteredApp) {
+    os.unregisterApp(journal.tags.currentRegisteredApp);
+    journal.tags.currentRegisteredApp = null;
+} 
+
 if (that) {
     if (that.modality == 'mouse' && that.buttonId == 'right') { 
         return;
@@ -20,8 +27,6 @@ const menuOptions = {
     avatar: getLink(thisBot)
 }
 
-const journal = getBot("artifactJournal", true);
-
 const leaveGPSButton = {
     ...menuOptions,
     label: (journal.tags.continueLocationPull ? 'disable' : 'enable') + ' gps tracking',
@@ -35,3 +40,7 @@ const leaveGPSButton = {
 }
 
 ab.links.menu.abCreateMenuButton(leaveGPSButton);
+
+if (!journal.tags.continueLocationPull) {
+    thisBot.showPlaceNavMenu();
+}

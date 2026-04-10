@@ -11,3 +11,4 @@ delete data.tags.homeRotationY;
 delete data.tags.homeRotationZ;
 delete data.tags.discoverableURL;
 delete data.tags.takenPhoto;
+delete data.tags.discoverableData;

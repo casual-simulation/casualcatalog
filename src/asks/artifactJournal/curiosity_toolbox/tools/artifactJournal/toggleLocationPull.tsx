@@ -8,6 +8,8 @@ if (that == true) {
     }
     
     thisBot.updateLocation();
+    await os.sleep(500);
+    shout('clearLandmarkMenu');
 } else {
     tags.continueLocationPull = false;
 

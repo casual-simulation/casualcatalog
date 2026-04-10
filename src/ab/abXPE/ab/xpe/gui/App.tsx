@@ -13,6 +13,8 @@ const App = () => {
     const [studioName, setStudioName] = useState();
     const studioCreditDisplayRef = useRef(null);
     const studioConfigCacheRef = useRef(null);
+    const prevUserCreditsRef = useRef(null);
+    const prevStudioCreditsRef = useRef(null);
 
     // on mount
     useEffect(async () => {
@@ -71,8 +73,22 @@ const App = () => {
     }, []);
 
     const refreshCreditsDisplay = useCallback(async () => {
+        // Guards against playing the purchase sound more than once per refresh,
+        // even if both user and studio credits decreased simultaneously.
+        let purchaseSoundPlayed = false;
+        const playPurchaseSoundOnce = () => {
+            if (!purchaseSoundPlayed) {
+                purchaseSoundPlayed = true;
+                ab.links.sound.abPlaySound({ value: 'ab/audio/purchase.mp3' });
+            }
+        };
+
         // Grab current user credits.
         abXPE.getAvailableCredits({ userId: authBot.id }).then((curCredits) => {
+            if (prevUserCreditsRef.current !== null && curCredits < prevUserCreditsRef.current) {
+                playPurchaseSoundOnce();
+            }
+            prevUserCreditsRef.current = curCredits;
             setUserCredits(curCredits);
         });
 
@@ -102,6 +118,10 @@ const App = () => {
 
                     // Grab current studio credits.
                     abXPE.getAvailableCredits({ studioId: configBot.tags.owner }).then((curCredits) => {
+                        if (prevStudioCreditsRef.current !== null && curCredits < prevStudioCreditsRef.current) {
+                            playPurchaseSoundOnce();
+                        }
+                        prevStudioCreditsRef.current = curCredits;
                         setStudioCredits(curCredits);
                     });
 

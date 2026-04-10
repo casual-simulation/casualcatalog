@@ -62,13 +62,14 @@ if (!todoBots || todoBots.length === 0) {
     return;
 }
 
-// Filter to pending todos (no patch yet, not from a failed plan)
+// Filter to pending todos (no patch yet, not from a failed plan, and user has readied them)
 const pendingTodos = todoBots.filter(b =>
     !b.tags.abPatchCode &&
     !b.tags.abPatchApplied &&
     !b.tags.abPatchError &&
     !b.tags.abPatchApplying &&
-    b.tags.todoPlanId !== tags.failedPlanId
+    b.tags.todoPlanId !== tags.failedPlanId &&
+    b.tags.todoReady
 );
 
 if (tags.debug) {

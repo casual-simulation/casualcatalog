@@ -17,10 +17,12 @@ create({
 
 masks.menuOpen = true;
 
-const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
+const planTodos  = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
 const allApplied = planTodos.every(b => b.tags.abPatchApplied);
 const anyFailed  = planTodos.some(b => b.tags.abPatchError);
-const isBusy     = !allApplied && !anyFailed;
+const anyReady   = planTodos.some(b => b.tags.todoReady);
+const notStarted = !anyReady && !allApplied && !anyFailed;
+const isBusy     = anyReady && !allApplied && !anyFailed;
 
 const menuOptions = {
     abPatchTodoMenu: true,
@@ -40,7 +42,13 @@ menuOptions.menuItems.push({
     menuItemLabelStyle: { 'font-style': 'italic' },
 });
 
-if (isBusy) {
+if (notStarted) {
+    menuOptions.menuItems.push({
+        label: 'assign agents',
+        formAddress: 'play',
+        onClick: ListenerString(() => { whisper(links.patchBot, 'onAssignAgentsClick'); }),
+    });
+} else if (isBusy) {
     ab.links.menu.abCreateMenuBusyIndicator({
         abPatchTodoMenu: true,
         abPatchTodoMenuReset: `@destroy(thisBot)`,

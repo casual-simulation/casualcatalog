@@ -10,6 +10,7 @@ tags.todoLabel = data.todoLabel;
 tags.budgetCredits = data.budgetCredits;
 tags.budgetRecordName = data.budgetRecordName;
 tags.aiModel = data.aiModel ?? ab.links.personality.tags.abPreferredAIModel;
+tags.todoReady = data.todoReady ?? false;
 tags.debug = data.debug;
 tags.todoPlanId = data.todoPlanId;
 tags.todoOrder = data.todoOrder ?? 0;

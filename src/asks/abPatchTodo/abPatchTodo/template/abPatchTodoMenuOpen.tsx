@@ -45,8 +45,13 @@ menuOptions.menuItems.push({
 if (notStarted) {
     menuOptions.menuItems.push({
         label: 'assign agents',
-        formAddress: 'play',
+        formAddress: 'slideshow',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onAssignAgentsClick'); }),
+    });
+    menuOptions.menuItems.push({
+        label: 'undo ask',
+        formAddress: 'undo',
+        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
 } else if (isBusy) {
     ab.links.menu.abCreateMenuBusyIndicator({

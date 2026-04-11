@@ -1,20 +1,37 @@
-const result = await os.showInput(tags.budgetCredits, {
-    title: 'Set Budget',
-    placeholder: 'Enter credit amount',
+configBot.masks.menuPortal = 'abPatchTodoBudgetMenu';
+
+ab.links.menu.abCreateMenuInput({
+    abPatchTodoBudgetMenu: true,
+    abPatchTodoBudgetMenuSortOrder: 1,
+    abPatchTodoMenuReset: `@destroy(thisBot)`,
+    label: 'budget (credits)',
+    formAddress: 'savings',
+    patchBot: getLink(thisBot),
+    onCreate: ListenerString(() => {
+        masks.menuItemText = String(links.patchBot.tags.budgetCredits ?? '');
+    }),
+    onABPatchBudgetInput: ListenerString(() => {
+        const parsed = Number(that);
+        if (!isNaN(parsed) && isFinite(parsed) && parsed > 0) {
+            links.patchBot.tags.budgetCredits = parsed;
+        }
+    }),
+    onInputTyping: ListenerString(() => {
+        whisper(thisBot, 'onABPatchBudgetInput', that.text);
+    }),
+    onSubmit: ListenerString(() => {
+        whisper(thisBot, 'onABPatchBudgetInput', that.text);
+    }),
 });
 
-if (result == null) return;
-
-const parsed = Number(result);
-if (isNaN(parsed) || !isFinite(parsed)) {
-    os.toast('Please enter a valid number.');
-    return;
-}
-
-if (parsed <= 0) {
-    os.toast('Budget must be greater than 0.');
-    return;
-}
-
-tags.budgetCredits = parsed;
-whisper(thisBot, 'abPatchTodoMenuOpen');
+ab.links.menu.abCreateMenuButton({
+    abPatchTodoBudgetMenu: true,
+    abPatchTodoBudgetMenuSortOrder: 2,
+    abPatchTodoMenuReset: `@destroy(thisBot)`,
+    label: 'done',
+    formAddress: 'done',
+    patchBot: getLink(thisBot),
+    onClick: ListenerString(() => {
+        whisper(links.patchBot, 'abPatchTodoMenuOpen');
+    }),
+});

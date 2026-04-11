@@ -10,4 +10,6 @@ if (configBot.tags.abDisableXPE) {
 
 globalThis.abXPE = thisBot;
 
+whisper(thisBot, 'abXPERefreshCredits');
+
 shout('onABXPEInitialized');

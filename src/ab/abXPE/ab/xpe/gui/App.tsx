@@ -12,9 +12,6 @@ const App = () => {
     const [studioCreditsBackgroundColor, setStudioCreditsBackgroundColor] = useState();
     const [studioName, setStudioName] = useState();
     const studioCreditDisplayRef = useRef(null);
-    const studioConfigCacheRef = useRef(null);
-    const prevUserCreditsRef = useRef(null);
-    const prevStudioCreditsRef = useRef(null);
 
     // on mount
     useEffect(async () => {
@@ -61,18 +58,21 @@ const App = () => {
         }
 
         os.addBotListener(thisBot, 'spawnCoins', spawnCoins);
-        os.addBotListener(thisBot, 'refreshCreditsDisplay', refreshCreditsDisplay);
+        os.addBotListener(abXPE, 'onABXPEAvailableCreditsChanged', onCreditsChanged);
 
-        // Kick-off the refresh credits update loop.
-        thisBot.abXPERefreshCredits();
+        if (tags.userCreditIcon) {
+            setUserCreditsIcon(ab.abBuildCasualCatalogURL(tags.userCreditIcon));
+        }
 
         return () => {
             os.removeBotListener(thisBot, 'spawnCoins', spawnCoins);
-            os.removeBotListener(thisBot, 'onABXPERefreshCreditsDisplay', onABXPERefreshCreditsDisplay);
+            os.removeBotListener(abXPE, 'onABXPEAvailableCreditsChanged', onCreditsChanged);
         };
     }, []);
 
-    const refreshCreditsDisplay = useCallback(async () => {
+    const onCreditsChanged = useCallback(async () => {
+        const data = abXPE.tags.availableCredits ?? {};
+
         // Guards against playing the purchase sound more than once per refresh,
         // even if both user and studio credits decreased simultaneously.
         let purchaseSoundPlayed = false;
@@ -83,59 +83,21 @@ const App = () => {
             }
         };
 
-        // Grab current user credits.
-        abXPE.getAvailableCredits({ userId: authBot.id }).then((curCredits) => {
-            if (prevUserCreditsRef.current !== null && curCredits < prevUserCreditsRef.current) {
-                playPurchaseSoundOnce();
-            }
-            prevUserCreditsRef.current = curCredits;
-            setUserCredits(curCredits);
-        });
-
-        // Load user credit icon.
-        if (tags.userCreditIcon) {
-            const iconURL = ab.abBuildCasualCatalogURL(tags.userCreditIcon);
-            setUserCreditsIcon(iconURL);
+        if (data.userCreditsPrev !== null && data.userCredits < data.userCreditsPrev) {
+            playPurchaseSoundOnce();
+        }
+        if (data.studioCreditsPrev !== null && data.studioCredits !== null && data.studioCredits < data.studioCreditsPrev) {
+            playPurchaseSoundOnce();
         }
 
-        // Load studio credits if we are in an inst that is owned by a studio.
-        if (configBot.tags.owner &&
-            configBot.tags.owner !== 'public' &&
-            configBot.tags.owner !== 'player' &&
-            configBot.tags.owner !== authBot.id
-        ) {
-            // Inst owner is likely a studio.
-            if (!configBot.tags.user_studios) {
-                await ab.abRefreshStudios();
-            }
+        setUserCredits(data.userCredits);
+        setStudioCredits(data.studioCredits ?? null);
 
-            if (configBot.tags.user_studios.success) {
-                const userStudios = configBot.tags.user_studios.studios;
-                const ownerStudio = userStudios.find(s => s.studioId === configBot.tags.owner);
-
-                if (ownerStudio) {
-                    setStudioName(ownerStudio.displayName);
-
-                    // Grab current studio credits.
-                    abXPE.getAvailableCredits({ studioId: configBot.tags.owner }).then((curCredits) => {
-                        if (prevStudioCreditsRef.current !== null && curCredits < prevStudioCreditsRef.current) {
-                            playPurchaseSoundOnce();
-                        }
-                        prevStudioCreditsRef.current = curCredits;
-                        setStudioCredits(curCredits);
-                    });
-
-                    // Load studio config to get custom credit display settings (cached for the session).
-                    if (!studioConfigCacheRef.current) {
-                        const getStudioConfigResponse = await os.getData(configBot.tags.owner, 'abStudioConfig');
-                        studioConfigCacheRef.current = getStudioConfigResponse.success ? getStudioConfigResponse.data : {};
-                    }
-
-                    const studioConfig = studioConfigCacheRef.current;
-                    setStudioCreditsIcon(studioConfig['studio_credit_icon_url'] ?? null);
-                    setStudioCreditsBackgroundColor(studioConfig['studio_credit_background_color'] ?? null);
-                }
-            }
+        const studioConfig = abXPE.masks.studioConfig;
+        if (studioConfig) {
+            setStudioName(studioConfig.displayName);
+            setStudioCreditsIcon(studioConfig.creditIconUrl ?? null);
+            setStudioCreditsBackgroundColor(studioConfig.creditBackgroundColor ?? null);
         }
     }, []);
 
@@ -146,7 +108,7 @@ const App = () => {
 
     const onStudioCreditDisplayClick = useCallback(async () => {
         const endpoint = await os.getRecordsEndpoint();
-        const url = new URL(`/studios/${configBot.tags.owner}/${studioName}`, endpoint);
+        const url = new URL(`/studios/${abXPE.tags.availableCredits?.studioId}/${studioName}`, endpoint);
         os.openURL(url.toString());
     }, [studioName])
 
@@ -166,7 +128,7 @@ const App = () => {
                             ref={studioCreditDisplayRef}
                         />
                     }
-                    {userCredits != null && 
+                    {userCredits != null &&
                         <CreditDisplay
                             name='Your Credits'
                             icon={userCreditsIcon}

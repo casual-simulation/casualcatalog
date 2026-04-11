@@ -44,7 +44,7 @@ menuOptions.menuItems.push({
 
 // Always: budget (always clickable)
 menuOptions.menuItems.push({
-    label: `budget: ${tags.budgetCredits != null ? tags.budgetCredits + ' credits' : 'not set'}`,
+    label: `budget: ${tags.budgetCredits != null ? Number(tags.budgetCredits).toLocaleString() + ' credits' : 'not set'}`,
     formAddress: 'savings',
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetClick'); }),
 });

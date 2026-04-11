@@ -17,4 +17,4 @@ if (thisBot.vars.currentCycleId !== cycleId) {
     return;
 }
 
-thisBot.vars.refreshCreditsTimeoutId = setTimeout(() => { whisper(thisBot, 'abXPERefreshCreditsDisplay') }, tags.creditsRefreshTimeoutMS)
+thisBot.vars.refreshCreditsTimeoutId = setTimeout(() => { whisper(thisBot, 'abXPERefreshCredits') }, tags.creditsRefreshTimeoutMS)

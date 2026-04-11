@@ -63,8 +63,8 @@ const App = () => {
         os.addBotListener(thisBot, 'spawnCoins', spawnCoins);
         os.addBotListener(thisBot, 'refreshCreditsDisplay', refreshCreditsDisplay);
 
-        // Kick-off the refresh credits display update loop.
-        thisBot.abXPERefreshCreditsDisplay();
+        // Kick-off the refresh credits update loop.
+        thisBot.abXPERefreshCredits();
 
         return () => {
             os.removeBotListener(thisBot, 'spawnCoins', spawnCoins);

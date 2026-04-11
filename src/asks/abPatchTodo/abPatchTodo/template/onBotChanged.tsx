@@ -7,6 +7,12 @@ for (const tag of that.tags) {
         whisper(thisBot, 'refreshAnimation');
     }
 
+    if (tag === 'todoReady') {
+        if (masks.menuOpen) {
+            whisper(thisBot, 'abPatchTodoMenuOpen');
+        }
+    }
+
     if (tag === 'pointerOver' || tag === 'menuOpen') {
         clearAnimations(thisBot, 'scale');
 

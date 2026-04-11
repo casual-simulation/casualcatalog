@@ -14,24 +14,12 @@ ab.links.menu.abCreateMenuInput({
         const parsed = Number(that);
         if (!isNaN(parsed) && isFinite(parsed) && parsed > 0) {
             links.patchBot.tags.budgetCredits = parsed;
+        } else {
+            os.toast('budget must be a positive number');
         }
-    }),
-    onInputTyping: ListenerString(() => {
-        whisper(thisBot, 'onABPatchBudgetInput', that.text);
     }),
     onSubmit: ListenerString(() => {
         whisper(thisBot, 'onABPatchBudgetInput', that.text);
-    }),
-});
-
-ab.links.menu.abCreateMenuButton({
-    abPatchTodoBudgetMenu: true,
-    abPatchTodoBudgetMenuSortOrder: 2,
-    abPatchTodoMenuReset: `@destroy(thisBot)`,
-    label: 'done',
-    formAddress: 'done',
-    patchBot: getLink(thisBot),
-    onClick: ListenerString(() => {
         whisper(links.patchBot, 'abPatchTodoMenuOpen');
     }),
 });

@@ -22,7 +22,7 @@ ab.links.menu.abCreateMenuButton({
     abPatchTodoBudgetStudioMenu: true,
     abPatchTodoBudgetStudioMenuSortOrder: 1,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
-    label: 'your account',
+    label: `${!tags.budgetRecordName || tags.budgetRecordName === authBot.id ? '✓ ' : ''}your account`,
     formAddress: 'person',
     patchBot: getLink(thisBot),
     onClick: ListenerString(() => {
@@ -37,7 +37,7 @@ if (ownerStudio) {
         abPatchTodoBudgetStudioMenu: true,
         abPatchTodoBudgetStudioMenuSortOrder: 2,
         abPatchTodoMenuReset: `@destroy(thisBot)`,
-        label: ownerStudio.displayName,
+        label: `${tags.budgetRecordName === ownerStudio.studioId ? '✓ ' : ''}${ownerStudio.displayName}`,
         formAddress: 'group',
         patchBot: getLink(thisBot),
         studioId: ownerStudio.studioId,

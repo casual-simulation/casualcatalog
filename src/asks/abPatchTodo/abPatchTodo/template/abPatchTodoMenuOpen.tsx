@@ -42,6 +42,13 @@ menuOptions.menuItems.push({
     menuItemLabelStyle: { 'font-style': 'italic' },
 });
 
+// Always: ai model (always clickable)
+menuOptions.menuItems.push({
+    label: `ai model: ${tags.aiModel ?? 'default'}`,
+    formAddress: 'lightbulb',
+    onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchAIModelClick'); }),
+});
+
 // Always: budget (always clickable)
 menuOptions.menuItems.push({
     label: `budget: ${tags.budgetCredits != null ? Number(tags.budgetCredits).toLocaleString() + ' credits' : 'not set'}`,
@@ -58,7 +65,7 @@ const budgetStudioLabel = (() => {
 })();
 menuOptions.menuItems.push({
     label: `budget studio: ${budgetStudioLabel}`,
-    formAddress: 'person',
+    formAddress: 'payment',
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetStudioClick'); }),
 });
 

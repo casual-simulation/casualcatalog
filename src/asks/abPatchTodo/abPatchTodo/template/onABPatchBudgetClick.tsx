@@ -8,14 +8,22 @@ ab.links.menu.abCreateMenuInput({
     formAddress: 'savings',
     patchBot: getLink(thisBot),
     onCreate: ListenerString(() => {
-        masks.menuItemText = String(links.patchBot.tags.budgetCredits ?? '');
+        const initial = links.patchBot.tags.budgetCredits;
+        masks.menuItemText = initial != null ? Number(initial).toLocaleString() : '';
     }),
     onABPatchBudgetInput: ListenerString(() => {
-        const parsed = Number(that);
-        if (!isNaN(parsed) && isFinite(parsed) && parsed > 0) {
+        const parsed = parseInt(String(that).replace(/,/g, ''), 10);
+        if (!isNaN(parsed) && parsed > 0) {
             links.patchBot.tags.budgetCredits = parsed;
         } else {
             os.toast('budget must be a positive number');
+        }
+    }),
+    onInputTyping: ListenerString(() => {
+        const stripped = String(that.text).replace(/,/g, '');
+        const parsed = parseInt(stripped, 10);
+        if (!isNaN(parsed) && String(parsed) === stripped) {
+            masks.menuItemText = parsed.toLocaleString();
         }
     }),
     onSubmit: ListenerString(() => {

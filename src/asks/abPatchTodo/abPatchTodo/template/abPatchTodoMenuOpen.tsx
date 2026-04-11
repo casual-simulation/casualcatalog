@@ -49,6 +49,19 @@ menuOptions.menuItems.push({
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetClick'); }),
 });
 
+// Always: budget studio (always clickable)
+const budgetStudioLabel = (() => {
+    if (!tags.budgetRecordName || tags.budgetRecordName === authBot.id) return 'your account';
+    const studios = configBot.tags.user_studios?.studios;
+    const studio = studios?.find(s => s.studioId === tags.budgetRecordName);
+    return studio?.displayName ?? tags.budgetRecordName;
+})();
+menuOptions.menuItems.push({
+    label: `budget studio: ${budgetStudioLabel}`,
+    formAddress: 'person',
+    onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetStudioClick'); }),
+});
+
 if (notStarted) {
     menuOptions.menuItems.push({
         label: 'assign agents',

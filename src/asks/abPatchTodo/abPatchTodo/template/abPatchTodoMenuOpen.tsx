@@ -42,6 +42,13 @@ menuOptions.menuItems.push({
     menuItemLabelStyle: { 'font-style': 'italic' },
 });
 
+// Always: budget (always clickable)
+menuOptions.menuItems.push({
+    label: `budget: ${tags.budgetCredits != null ? tags.budgetCredits + ' credits' : 'not set'}`,
+    formAddress: 'savings',
+    onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetClick'); }),
+});
+
 if (notStarted) {
     menuOptions.menuItems.push({
         label: 'assign agents',

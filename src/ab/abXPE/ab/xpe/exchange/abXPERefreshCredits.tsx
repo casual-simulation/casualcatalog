@@ -34,11 +34,12 @@ if (isStudioOwned) {
             if (ownerStudio) {
                 const res = await os.getData(studioId, 'abStudioConfig');
                 const data = res.success ? res.data : {};
-                masks.studioConfig = {
+                const studioConfig = {
                     displayName: ownerStudio.displayName,
                     creditIconUrl: data['studio_credit_icon_url'] ?? null,
                     creditBackgroundColor: data['studio_credit_background_color'] ?? null,
                 };
+                setTagMask(thisBot, 'studioConfig', '🧬' + JSON.stringify(studioConfig), 'shared');
             }
         }
     }
@@ -50,13 +51,16 @@ if (thisBot.vars.currentCycleId !== cycleId) {
 
 const prev = masks.availableCredits ?? {};
 
-masks.availableCredits = {
+
+const availableCredits = {
     userCredits,
     userCreditsPrev: prev.userCredits ?? null,
     studioCredits,
     studioCreditsPrev: prev.studioCredits ?? null,
     studioId,
 };
+
+setTagMask(thisBot, 'availableCredits', '🧬' + JSON.stringify(availableCredits), 'tempLocal')
 
 if (thisBot.vars.currentCycleId !== cycleId) {
     return;

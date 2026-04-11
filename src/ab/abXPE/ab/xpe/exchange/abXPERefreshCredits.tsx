@@ -52,7 +52,7 @@ if (thisBot.vars.currentCycleId !== cycleId) {
 const prev = masks.availableCredits ?? {};
 
 
-const availableCredits = {
+const newAvailableCredits = {
     userCredits,
     userCreditsPrev: prev.userCredits ?? null,
     studioCredits,
@@ -60,7 +60,12 @@ const availableCredits = {
     studioId,
 };
 
-setTagMask(thisBot, 'availableCredits', '🧬' + JSON.stringify(availableCredits), 'tempLocal')
+newAvailableCredits.hash = crypto.hash('sha1', 'hex', newAvailableCredits);
+
+if (!masks.availableCredits || masks.availableCredits.hash != newAvailableCredits.hash) {
+    // Available credits values are different.
+    setTagMask(thisBot, 'availableCredits', '🧬' + JSON.stringify(newAvailableCredits), 'tempLocal')
+}
 
 if (thisBot.vars.currentCycleId !== cycleId) {
     return;

@@ -5,4 +5,6 @@ setTag(thisBot, 'abPatchApplying', null);
 setTag(thisBot, 'abPatchResults', null);
 setTag(thisBot, 'abPatchError', null);
 setTag(thisBot, 'abPatchApproved', null);
+setTag(thisBot, 'creditSnapshotStart', null);
+setTag(thisBot, 'creditSnapshotEnd', null);
 tags.animationState = 'incomplete';

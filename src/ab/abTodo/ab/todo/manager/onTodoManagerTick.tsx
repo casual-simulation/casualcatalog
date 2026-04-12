@@ -32,6 +32,21 @@ if (tags.activeTodoId) {
         if (tags.debug) {
             console.log(`[${tags.system}.${tagName}] Active todo applied: ${todoBot.id}`);
         }
+        // Force a fresh snapshot to compute cost before moving on
+        if (globalThis.abXPE && todoBot.tags.creditSnapshotStart != null) {
+            await abXPE.abXPERefreshCredits();
+            if (isStaleCycle()) { return; }
+
+            const availableCredits = abXPE.masks.availableCredits ?? {};
+            const budgetRecordName = todoBot.tags.budgetRecordName;
+            const endCredits = (budgetRecordName && budgetRecordName !== authBot.id)
+                ? availableCredits.studioCredits
+                : availableCredits.userCredits;
+
+            if (endCredits != null) {
+                todoBot.tags.creditSnapshotEnd = endCredits;
+            }
+        }
         // Patch applied — move to next
         thisBot.onTodoFinished({ todoId: todoBot.id });
     } else {
@@ -206,6 +221,19 @@ if (!agentBot) {
 }
 
 setTagMask(thisBot, 'activeAgentId', agentBot.id, 'shared');
+
+// Force a fresh credits snapshot before agent starts to minimize cross-todo contamination
+if (globalThis.abXPE) {
+    await abXPE.abXPERefreshCredits();
+    if (isStaleCycle()) { return; }
+
+    const availableCredits = abXPE.masks.availableCredits ?? {};
+    const budgetRecordName = nextTodo.tags.budgetRecordName;
+    const creditSnapshotStart = (budgetRecordName && budgetRecordName !== authBot.id)
+        ? availableCredits.studioCredits
+        : availableCredits.userCredits;
+    nextTodo.tags.creditSnapshotStart = creditSnapshotStart ?? null;
+}
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Assigning todo ${nextTodo.id} to agent ${agentBot.id}`);

@@ -69,6 +69,18 @@ menuOptions.menuItems.push({
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetStudioClick'); }),
 });
 
+// Always: cost (shows as todos complete, even mid-plan)
+const todosWithSnapshots = planTodos.filter(b => b.tags.creditSnapshotStart != null && b.tags.creditSnapshotEnd != null);
+if (todosWithSnapshots.length > 0) {
+    const totalCost = todosWithSnapshots.reduce((sum, b) => sum + (b.tags.creditSnapshotStart - b.tags.creditSnapshotEnd), 0);
+    menuOptions.menuItems.push({
+        label: `cost: ${Math.round(totalCost).toLocaleString()} credits`,
+        menuItemType: 'text',
+        formAddress: 'receipt',
+        menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
+    });
+}
+
 if (notStarted) {
     menuOptions.menuItems.push({
         label: 'assign agents',

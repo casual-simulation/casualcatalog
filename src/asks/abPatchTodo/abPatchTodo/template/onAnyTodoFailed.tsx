@@ -1,5 +1,5 @@
 if (!masks.menuOpen) return;
 
-if (that?.planId === tags.todoPlanId) {
+if (that?.todoId === thisBot.id) {
     whisper(thisBot, 'abPatchTodoMenuOpen');
 }

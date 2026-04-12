@@ -69,12 +69,11 @@ menuOptions.menuItems.push({
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetStudioClick'); }),
 });
 
-// Always: cost (shows as todos complete, even mid-plan)
-const todosWithSnapshots = planTodos.filter(b => b.tags.creditSnapshotStart != null && b.tags.creditSnapshotEnd != null);
-if (todosWithSnapshots.length > 0) {
-    const totalCost = todosWithSnapshots.reduce((sum, b) => sum + (b.tags.creditSnapshotStart - b.tags.creditSnapshotEnd), 0);
+// Always: cost for this todo (if completed)
+if (tags.creditSnapshotStart != null && tags.creditSnapshotEnd != null) {
+    const cost = tags.creditSnapshotStart - tags.creditSnapshotEnd;
     menuOptions.menuItems.push({
-        label: `total cost: ${Math.round(totalCost).toLocaleString()} credits`,
+        label: `cost: ${Math.round(cost).toLocaleString()} credits`,
         menuItemType: 'text',
         formAddress: 'receipt',
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },

@@ -74,7 +74,7 @@ const todosWithSnapshots = planTodos.filter(b => b.tags.creditSnapshotStart != n
 if (todosWithSnapshots.length > 0) {
     const totalCost = todosWithSnapshots.reduce((sum, b) => sum + (b.tags.creditSnapshotStart - b.tags.creditSnapshotEnd), 0);
     menuOptions.menuItems.push({
-        label: `cost: ${Math.round(totalCost).toLocaleString()} credits`,
+        label: `total cost: ${Math.round(totalCost).toLocaleString()} credits`,
         menuItemType: 'text',
         formAddress: 'receipt',
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },

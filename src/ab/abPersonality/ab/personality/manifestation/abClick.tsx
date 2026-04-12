@@ -10,7 +10,7 @@ const reset = that ? that.reset : false;
 const menu = that ? that.menu : "core";
 const state = os.getInputState("keyboard", "Shift");
 
-if (!reset && (links.abBot.tags.interval || state)) {
+if (!reset && (links.abBot.tags.interval || configBot.masks.menuPortal || state)) {
     const abMenuBots = getBots("abMenu", true);
 
     whisper(abMenuBots, "abMenuRefresh");

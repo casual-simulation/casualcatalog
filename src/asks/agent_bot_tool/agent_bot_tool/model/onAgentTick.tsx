@@ -1,6 +1,8 @@
 const { tickIntervalMS } = that ?? {};
 
-if (!links.todoBot || tags.todoInProgress) {
+console.log(`[${tags.system}.${tagName}] that:`, that);
+
+if (!links.todoBot || tags.todoInProgress || masks.moving) {
     return;
 }
 
@@ -24,7 +26,11 @@ if (dist > targetDist) {
     const stepsPerTick = Math.max(1, Math.round((tags.moveSpeed ?? 2) * tickIntervalMS / 1000));
     const stepIntervalMS = tickIntervalMS / stepsPerTick;
 
-    tags[dim] = true;
+    masks.moving = true;
+
+    console.log(`[${tags.system}.${tagName}] stepsPerTick:`, stepsPerTick);
+    console.log(`[${tags.system}.${tagName}] stepIntervalMS:`, stepIntervalMS);
+
     for (let i = 0; i < stepsPerTick; i++) {
         // Sleep before steps 2..N so steps are evenly spaced across the tick.
         // Skipping the sleep on step 1 means the listener finishes stepIntervalMS
@@ -51,6 +57,9 @@ if (dist > targetDist) {
             tags[dim + 'Y'] = curY + Math.sign(targetY - curY);
         }
     }
+
+    masks.moving = false;
+    
     return;
 }
 

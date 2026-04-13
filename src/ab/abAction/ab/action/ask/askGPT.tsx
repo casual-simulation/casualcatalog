@@ -96,7 +96,7 @@ function buildFocusContext() {
     } else if (that.prompt === 'grid' && that.data?.dimension) {
         return { type: 'grid', dimension: that.data.dimension, x: that.data.dimensionX ?? 0, y: that.data.dimensionY ?? 0 };
     } else if (that.prompt === 'multipleBot' && that.data?.bots?.length) {
-        return { type: 'multipleBots', ids: that.data.bots.filter(Boolean), dimension: abDimension };
+        return { type: 'multipleBot', ids: that.data.bots.filter(Boolean), dimension: abDimension };
     } else {
         return { type: 'dimension', dimension: abDimension };
     }
@@ -206,8 +206,26 @@ async function sendCodeToTodoBot(code) {
 async function executeMakeTodos(todos) {
     const todoPlanId = uuid();
 
+    // Direction todos are laid out in.
+    const todoDir = { x: 0, y: 1, z: 0 };
+    const todoSpacing = 2;
+
+    // Figure out where to place the todo bots.
+    // Grid: first todo lands directly on the clicked cell (startOffset = 0).
+    // AB: first todo is one step away so it doesn't overlap ab (startOffset = 1).
+    let todoDimension = abDimension ?? 'home';
+    let todoBasePosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 0 };
+    let todoStartOffset = 1;
+
+    if (that.data?.menu === 'grid') {
+        todoDimension = that.data.dimension;
+        todoBasePosition = { x: that.data.dimensionX, y: that.data.dimensionY, z: 0 };
+        todoStartOffset = 0;
+    }
+
     for (let i = 0; i < todos.length; i++) {
         const todo = todos[i];
+        const step = todoStartOffset + i;
         const abArtifactShard: ABArtifactShard = {
             data: {
                 prompt: todo.prompt,
@@ -219,11 +237,11 @@ async function executeMakeTodos(todos) {
                 todoOrder: i,
                 eggParameters: {
                     gridInformation: {
-                        dimension: abDimension ?? 'home',
+                        dimension: todoDimension,
                         position: {
-                            x: (abPosition?.x ?? 0) + ((i+1) * 2),
-                            y: abPosition?.y ?? 0,
-                            z: 0,
+                            x: todoBasePosition.x + step * todoDir.x * todoSpacing,
+                            y: todoBasePosition.y + step * todoDir.y * todoSpacing,
+                            z: todoBasePosition.z + step * todoDir.z * todoSpacing,
                         }
                     }
                 }

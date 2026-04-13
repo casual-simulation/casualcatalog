@@ -77,16 +77,24 @@ const App = () => {
         // even if both user and studio credits decreased simultaneously.
         let purchaseSoundPlayed = false;
         const playPurchaseSoundOnce = () => {
-            if (!purchaseSoundPlayed) {
+            if (!purchaseSoundPlayed && ab.links.utils.in3dPortal()) {
                 purchaseSoundPlayed = true;
                 ab.links.sound.abPlaySound({ value: 'ab/audio/purchase.mp3' });
             }
         };
 
-        if (data.userCreditsPrev !== null && data.userCredits < data.userCreditsPrev) {
+        if (data.userCreditsPrev !== null && 
+            data.userCredits < data.userCreditsPrev &&
+            (data.userCreditsPrev - data.userCredit) >= tags.purchaseSoundMinSpend
+        ) {
             playPurchaseSoundOnce();
         }
-        if (data.studioCreditsPrev !== null && data.studioCredits !== null && data.studioCredits < data.studioCreditsPrev) {
+        
+        if (data.studioCreditsPrev !== null &&
+            data.studioCredits !== null && 
+            data.studioCredits < data.studioCreditsPrev &&
+            (data.studioCreditsPrev - data.studioCredits) >= tags.purchaseSoundMinSpend
+        ) {
             playPurchaseSoundOnce();
         }
 

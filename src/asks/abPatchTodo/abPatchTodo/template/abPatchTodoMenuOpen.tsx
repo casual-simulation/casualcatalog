@@ -36,10 +36,11 @@ const menuOptions = {
 // Always: prompt label
 menuOptions.menuItems.push({
     label: tags.todoLabel ?? tags.prompt ?? '',
-    menuItemType: 'text',
+    menuItemType: 'button',
     formAddress: 'notes',
     menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     menuItemLabelStyle: { 'font-style': 'italic' },
+    onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchPromptClick'); }),
 });
 
 // Always: ai model (always clickable)

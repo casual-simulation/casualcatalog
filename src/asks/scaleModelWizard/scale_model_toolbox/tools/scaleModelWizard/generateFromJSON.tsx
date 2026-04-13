@@ -22,9 +22,9 @@ for (const item of parsedJsonData) {
                     config: {
                         label: item.name,
                         modelName: item.name,
-                        modelAttributes: item.attributes,
+                        modelAttributes: item.stats,
                         modelStates: item.states,
-                        modelListeners: items.listeners,
+                        modelListeners: item.listeners,
                         modelLocked: true,
                         dimensionData: {
                             dimension: dimensionName,

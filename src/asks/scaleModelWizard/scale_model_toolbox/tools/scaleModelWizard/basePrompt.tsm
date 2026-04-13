@@ -133,6 +133,7 @@ Listener Guidelines:
 
 Listeners define dynamic behavior reacting to stats and states.
 The listener name is dictated by the type, "stat" type should be "on<statName>Changed", "state" type should be "<state><value>OnEnter", and "custom" type can be anything.
+The code field for each listener MUST start with '@'.
 
 Each listener must include:
 - "type": "stat" | "state" | "custom"
@@ -151,7 +152,7 @@ Example:
   "onmonthly_revenueChanged": {
     "type": "stat",
     "stat": "monthly_revenue",
-    "code": "if (tags.monthly_revenue > 10000) { changeState(thisBot, 'small_business', 'growth_phase'); }"
+    "code": "@if (tags.monthly_revenue > 10000) { changeState(thisBot, 'small_business', 'growth_phase'); }"
   }
 }
 
@@ -168,7 +169,7 @@ Example:
     "type": "state",
     "state": "growth_phase",
     "value": "small_business",
-    "code": "tags.employees += 5;"
+    "code": "@tags.employees += 5;"
   }
 }
 
@@ -179,7 +180,7 @@ Example:
 "listeners": {
   "high_traffic_boost": {
     "type": "custom",
-    "code": "if (tags.daily_customers > 100 && tags.growth_phase === 'startup') { tags.monthly_revenue += 2000; }"
+    "code": "@if (tags.daily_customers > 100 && tags.growth_phase === 'startup') { tags.monthly_revenue += 2000; }"
   }
 }
 

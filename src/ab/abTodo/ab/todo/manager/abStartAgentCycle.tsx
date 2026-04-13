@@ -54,7 +54,7 @@ async function tick() {
         return;
     }
 
-    shout("onAgentTick", { intervalMS });
+    shout("onAgentTick", { tickIntervalMS: intervalMS });
 
     thisBot.vars.cycleTimeoutId = setTimeout(tick, intervalMS);
 }

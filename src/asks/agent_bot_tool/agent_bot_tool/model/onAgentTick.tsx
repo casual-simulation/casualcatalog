@@ -1,4 +1,4 @@
-const { intervalMS } = that ?? {};
+const { tickIntervalMS } = that ?? {};
 
 if (!links.todoBot || tags.todoInProgress) {
     return;
@@ -19,11 +19,18 @@ const dist = Math.sqrt(dx * dx + dy * dy);
 const targetDist = tags.targetDistance ?? 2;
 
 if (dist > targetDist) {
-    // Move multiple tiles per tick based on moveSpeed (tiles/sec) and tick interval.
-    const tilesPerTick = Math.max(1, Math.round((tags.moveSpeed ?? 2) * intervalMS / 1000));
+    // stepsPerTick = how many tiles to walk this tick at moveSpeed tiles/sec.
+    // stepIntervalMS = time to wait between steps so they spread evenly across the tick.
+    const stepsPerTick = Math.max(1, Math.round((tags.moveSpeed ?? 2) * tickIntervalMS / 1000));
+    const stepIntervalMS = tickIntervalMS / stepsPerTick;
 
     tags[dim] = true;
-    for (let i = 0; i < tilesPerTick; i++) {
+    for (let i = 0; i < stepsPerTick; i++) {
+        // Sleep before steps 2..N so steps are evenly spaced across the tick.
+        // Skipping the sleep on step 1 means the listener finishes stepIntervalMS
+        // before the next tick fires, preventing overlap between ticks.
+        if (i > 0) await os.sleep(stepIntervalMS);
+
         const curX = tags[dim + 'X'] ?? 0;
         const curY = tags[dim + 'Y'] ?? 0;
         const curDx = curX - todoX;

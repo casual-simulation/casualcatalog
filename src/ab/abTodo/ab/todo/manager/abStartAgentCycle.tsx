@@ -41,11 +41,15 @@ async function tick() {
     // Renew the lock.
     setTagMask(manager, 'executorHeartbeat', now, 'shared');
 
+    const deltaTime = thisBot.vars.lastTickTime != null ? now - thisBot.vars.lastTickTime : null;
+    thisBot.vars.lastTickTime = now;
+
     if (manager.tags.debug) {
-        console.log(`[${manager.tags.system}.tick] agent tick`);
+        const deltaStr = deltaTime != null ? `${deltaTime}ms (expected ${intervalMS}ms)` : 'first tick';
+        console.log(`[${manager.tags.system}.tick] agent tick | deltaTime: ${deltaStr}`);
     }
 
-    await whisper(manager, 'onTodoManagerTick', { cycleId })[0];
+    await whisper(manager, 'onTodoManagerTick', { cycleId, tickIntervalMS: intervalMS, deltaTime })[0];
 
     if (thisBot.vars.currentCycleId !== cycleId) {
         if (manager.tags.debug) {
@@ -54,7 +58,7 @@ async function tick() {
         return;
     }
 
-    shout("onAgentTick", { tickIntervalMS: intervalMS });
+    shout("onAgentTick", { tickIntervalMS: intervalMS, deltaTime });
 
     thisBot.vars.cycleTimeoutId = setTimeout(tick, intervalMS);
 }

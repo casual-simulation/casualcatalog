@@ -1,4 +1,4 @@
-const { tickIntervalMS } = that ?? {};
+const { tickIntervalMS, deltaTime } = that ?? {};
 
 console.log(`[${tags.system}.${tagName}] that:`, that);
 

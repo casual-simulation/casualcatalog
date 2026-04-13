@@ -1,4 +1,4 @@
-if (!links.todoBot || tags.todoInProgress) {
+if (!links.todoBot || tags.todoInProgress || masks.moving) {
     return;
 }
 
@@ -17,15 +17,22 @@ const dist = Math.sqrt(dx * dx + dy * dy);
 const targetDist = tags.targetDistance ?? 2;
 
 if (dist > targetDist) {
-    // Target is targetDist tiles from the todo along the current approach vector.
+    // Step one tile toward the stop point (targetDist tiles from the todo).
     // If the agent is right on top of the todo, default to +x side.
     const nx = dist > 0 ? dx / dist : 1;
     const ny = dist > 0 ? dy / dist : 0;
+    const targetX = todoX + nx * targetDist;
+    const targetY = todoY + ny * targetDist;
 
-    await thisBot.moveBot({
-        dimension: dim,
-        position: { x: todoX + nx * targetDist, y: todoY + ny * targetDist }
-    });
+    const stepDx = targetX - agentX;
+    const stepDy = targetY - agentY;
+    const stepDist = Math.sqrt(stepDx * stepDx + stepDy * stepDy);
+    const step = Math.min(1, stepDist);
+    const uX = (stepDx / stepDist) * step;
+    const uY = (stepDy / stepDist) * step;
+
+    tags[dim] = true;
+    tags.targetPosition = { dimension: dim, x: agentX + uX, y: agentY + uY };
     return;
 }
 

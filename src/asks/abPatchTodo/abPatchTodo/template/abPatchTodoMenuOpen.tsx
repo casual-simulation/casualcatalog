@@ -49,25 +49,28 @@ menuOptions.menuItems.push({
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchAIModelClick'); }),
 });
 
-// Always: budget (always clickable)
-menuOptions.menuItems.push({
-    label: `budget: ${tags.budgetCredits != null ? Number(tags.budgetCredits).toLocaleString() + ' credits' : 'not set'}`,
-    formAddress: 'savings',
-    onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetClick'); }),
-});
+if (globalThis.abXPE) {
+    // Always: budget (always clickable)
+    menuOptions.menuItems.push({
+        label: `budget: ${tags.budgetCredits != null ? Number(tags.budgetCredits).toLocaleString() + ' credits' : 'not set'}`,
+        formAddress: 'savings',
+        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetClick'); }),
+    });
+    
+    // Always: budget studio (always clickable)
+    const budgetStudioLabel = (() => {
+        if (!tags.budgetRecordName || tags.budgetRecordName === authBot.id) return 'your account';
+        const studios = configBot.tags.user_studios?.studios;
+        const studio = studios?.find(s => s.studioId === tags.budgetRecordName);
+        return studio?.displayName ?? tags.budgetRecordName;
+    })();
+    menuOptions.menuItems.push({
+        label: `budget studio: ${budgetStudioLabel}`,
+        formAddress: 'payment',
+        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetStudioClick'); }),
+    });
+}
 
-// Always: budget studio (always clickable)
-const budgetStudioLabel = (() => {
-    if (!tags.budgetRecordName || tags.budgetRecordName === authBot.id) return 'your account';
-    const studios = configBot.tags.user_studios?.studios;
-    const studio = studios?.find(s => s.studioId === tags.budgetRecordName);
-    return studio?.displayName ?? tags.budgetRecordName;
-})();
-menuOptions.menuItems.push({
-    label: `budget studio: ${budgetStudioLabel}`,
-    formAddress: 'payment',
-    onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetStudioClick'); }),
-});
 
 // Always: cost for this todo (if completed)
 if (tags.creditSnapshotStart != null && tags.creditSnapshotEnd != null) {

@@ -1,3 +1,5 @@
+const { intervalMS } = that ?? {};
+
 if (!links.todoBot || tags.todoInProgress) {
     return;
 }
@@ -17,18 +19,30 @@ const dist = Math.sqrt(dx * dx + dy * dy);
 const targetDist = tags.targetDistance ?? 2;
 
 if (dist > targetDist) {
-    // Move one tile orthogonally toward the stop point (targetDist tiles from the todo).
-    // If the agent is right on top of the todo, default to +x side.
-    const nx = dist > 0 ? dx / dist : 1;
-    const ny = dist > 0 ? dy / dist : 0;
-    const targetX = todoX + nx * targetDist;
-    const targetY = todoY + ny * targetDist;
+    // Move multiple tiles per tick based on moveSpeed (tiles/sec) and tick interval.
+    const tilesPerTick = Math.max(1, Math.round((tags.moveSpeed ?? 2) * intervalMS / 1000));
 
     tags[dim] = true;
-    if (Math.abs(targetX - agentX) >= Math.abs(targetY - agentY)) {
-        tags[dim + 'X'] = agentX + Math.sign(targetX - agentX);
-    } else {
-        tags[dim + 'Y'] = agentY + Math.sign(targetY - agentY);
+    for (let i = 0; i < tilesPerTick; i++) {
+        const curX = tags[dim + 'X'] ?? 0;
+        const curY = tags[dim + 'Y'] ?? 0;
+        const curDx = curX - todoX;
+        const curDy = curY - todoY;
+        const curDist = Math.sqrt(curDx * curDx + curDy * curDy);
+
+        if (curDist <= targetDist) break;
+
+        // If right on top of the todo, default to +x side.
+        const nx = curDist > 0 ? curDx / curDist : 1;
+        const ny = curDist > 0 ? curDy / curDist : 0;
+        const targetX = todoX + nx * targetDist;
+        const targetY = todoY + ny * targetDist;
+
+        if (Math.abs(targetX - curX) >= Math.abs(targetY - curY)) {
+            tags[dim + 'X'] = curX + Math.sign(targetX - curX);
+        } else {
+            tags[dim + 'Y'] = curY + Math.sign(targetY - curY);
+        }
     }
     return;
 }

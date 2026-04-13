@@ -158,8 +158,8 @@ const addButton = {
         let listenerName;
         if (links.model.masks.tempListenerType == 'state' && links.model.masks.tempListenerGroupName && links.model.masks.tempListenerStateName) {
             listenerName = links.model.masks.tempListenerGroupName + links.model.masks.tempListenerStateName + 'OnEnter';
-            listener.group = links.model.masks.tempListenerGroupName;
-            listener.state = links.model.masks.tempListenerStateName;
+            listener.state = links.model.masks.tempListenerGroupName;
+            listener.value = links.model.masks.tempListenerStateName;
         } else if (links.model.masks.tempListenerType == 'stat' && links.model.masks.tempListenerStatName) {
             listenerName = 'on' + links.model.masks.tempListenerStatName + 'Changed';
             listener.stat = links.model.masks.tempListenerStateName;

@@ -31,6 +31,18 @@ for (const item in tags.modelAttributes) {
     seeAttributesButton.dropdownOptions.push(tempDropdownItem);
 }
 
+for (const item in tags.modelStates) {
+    let val = tags.modelStates[item].start;
+    if (tags[item]) {
+        val = tags[item];
+    }
+    const tempDropdownItem = {
+        ...menuOptions,
+        label: `${item}: ${val}`
+    }
+    seeAttributesButton.dropdownOptions.push(tempDropdownItem);
+}
+
 if (tags.statsButton) {
     destroy(links?.statsButton);
 }

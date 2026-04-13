@@ -62,34 +62,160 @@ Schema:
   "location": { "x": number, "y": number, "z": number },
   "scale": { "x": number, "y": number, "z": number },
   "color": string,
-  "attributes": {
-    "<attributeName>": {
+  "stats": {
+    "<statName>": {
       "start": number,
       "delta": string,
       "deltaModifier": "+" | "-" | "/" | "*",
       "timeUnit": "minute" | "hour" | "day" | "week" | "month" | "quarter" | "year"
     }
+  },
+  "states": {
+    "<stateName>": {
+      "start": string
+    }
+  },
+  "listeners": {
+    "<listenerName>": {
+      "type": "stat" | "state" | "custom",
+
+      // stat listener only
+      "stat"?: string,
+
+      // state listener only
+      "state"?: string,
+      "value"?: string,
+
+      "code": string
+    }
   }
 }
 
 Key Principle:
-
 The "name" should describe the actual thing (e.g., "Coffee Shop", not "Growth Phase")
 
-Attribute Guidelines:
+Stat Guidelines:
+Stats should describe properties of the entity itself, such as:
+- physical scale (size, locations, capacity)
+- operational aspects (employees, inventory, resources)
+- business performance (customers, revenue)
 
-Attributes should describe properties of the entity itself, such as:
-physical scale (size, locations, capacity)
-operational aspects (employees, inventory, resources)
-business performance (customers, revenue)
 Avoid abstract phase labels — keep it grounded in the real system
+
+State Guidelines:
+States represent qualitative modes or phases of the entity over time. Unlike stats (numeric), states are categorical and discrete.
+
+Use states for:
+- lifecycle stages (e.g., "startup", "small_business", "enterprise")
+- operational modes (e.g., "open", "closed", "under_renovation")
+- strategic phases (e.g., "growth", "plateau", "decline")
+
+Rules:
+- Each state must define a "start" value (string)
+- The "start" value represents the initial state
+- State names describe the dimension (e.g., "growth_phase")
+- State values are simple strings
+- Do not duplicate stats in states
+
+Example:
+"states": {
+  "growth_phase": {
+    "start": "startup"
+  },
+  "operating_status": {
+    "start": "open"
+  }
+}
+
+States can change dynamically via listeners.
+
+Listener Guidelines:
+
+Listeners define dynamic behavior reacting to stats and states.
+The listener name is dictated by the type, "stat" type should be "on<statName>Changed", "state" type should be "<state><value>OnEnter", and "custom" type can be anything.
+
+Each listener must include:
+- "type": "stat" | "state" | "custom"
+- "code": string (JavaScript executed in CasualOS)
+
+Listener Types:
+
+1. "stat"
+Triggered when a specific stat changes.
+
+Required:
+- "stat": string
+
+Example:
+"listeners": {
+  "onmonthly_revenueChanged": {
+    "type": "stat",
+    "stat": "monthly_revenue",
+    "code": "if (tags.monthly_revenue > 10000) { changeState(thisBot, 'small_business', 'growth_phase'); }"
+  }
+}
+
+2. "state"
+Triggered when a state enters a specific value.
+
+Required:
+- "state": string
+- "value": string
+
+Example:
+"listeners": {
+  "growth_phasesmall_businessOnEnter": {
+    "type": "state",
+    "state": "growth_phase",
+    "value": "small_business",
+    "code": "tags.employees += 5;"
+  }
+}
+
+3. "custom"
+Triggered by arbitrary logic.
+
+Example:
+"listeners": {
+  "high_traffic_boost": {
+    "type": "custom",
+    "code": "if (tags.daily_customers > 100 && tags.growth_phase === 'startup') { tags.monthly_revenue += 2000; }"
+  }
+}
+
+Code Execution Rules:
+- Must be valid JavaScript
+- Runs inside CasualOS bot runtime
+- No external libraries or async operations
+- Stats and states are directly accessible with tags.<name>
+- To change state use:
+  changeState(thisBot, <value>, <state>)
+
+Example:
+changeState(thisBot, 'enterprise', 'growth_phase');
+
+Key Principle:
+Listeners connect stat changes → state transitions → dynamic system evolution.
+
+Environment Context
+
+This system is embedded in CasualOS (https://github.com/casual-simulation/casualos), a web-based platform for creating interactive bot-based experiences.
+
+Models represent bots or entities within a 3D shared environment, and listeners execute as part of the bot’s runtime behavior.
+
+Assumptions:
+- Each MODEL corresponds to a bot ("thisBot") in CasualOS
+- Listener code runs within the bot’s scripting environment
+- Stats and states are accessible within this environment
+- changeState(thisBot, <value>, <state>) is available globally
+- Code should be compatible with CasualOS scripting conventions
+- Avoid browser-specific or Node-specific APIs unless explicitly required
 
 TIMELINE_MARKER
 
 Represents a discrete step in time.
 
 Schema:
-
 {
   "type": "TIMELINE_MARKER",
   "step": number,
@@ -97,69 +223,10 @@ Schema:
   "location": { "x": number, "y": number, "z": number }
 }
 
-Guidelines
-Model entities, not multiple phases of an entity.
-Use timeline markers to represent progression over time.
-Use attributes + deltas to express how the entity changes.
-Keep everything grounded in the real-world object being described.
-Choose reasonable time units based on context.
-Ensure spatial placement reflects a coherent, real-world layout and scale.
-
-Example Input
-
-"A coffee shop that grows steadily for a year."
-
-Example Output
-[
-  {
-    "type": "TIMELINE_MARKER",
-    "step": 1,
-    "timeUnit": "month",
-    "location": { "x": 0, "y": 0, "z": 0 }
-  },
-  {
-    "type": "TIMELINE_MARKER",
-    "step": 6,
-    "timeUnit": "month",
-    "location": { "x": 10, "y": 0, "z": 0 }
-  },
-  {
-    "type": "TIMELINE_MARKER",
-    "step": 12,
-    "timeUnit": "month",
-    "location": { "x": 20, "y": 0, "z": 0 }
-  },
-  {
-    "type": "MODEL",
-    "name": "Coffee Shop",
-    "location": { "x": 20, "y": 8, "z": 0 },
-    "scale": { "x": 10, "y": 8, "z": 4 },
-    "color": "brown",
-    "attributes": {
-      "locations": {
-        "start": 1,
-        "delta": "0.2",
-        "deltaModifier": "+",
-        "timeUnit": "month"
-      },
-      "employees": {
-        "start": 3,
-        "delta": "1",
-        "deltaModifier": "+",
-        "timeUnit": "month"
-      },
-      "daily_customers": {
-        "start": 30,
-        "delta": "5",
-        "deltaModifier": "+",
-        "timeUnit": "month"
-      },
-      "monthly_revenue": {
-        "start": 3000,
-        "delta": "800",
-        "deltaModifier": "+",
-        "timeUnit": "month"
-      }
-    }
-  }
-]`
+Guidelines:
+- Model entities, not phases
+- Use timeline markers for progression
+- Use stats + deltas for numeric change
+- Use states for qualitative change
+- Keep everything grounded in real-world structure
+- Ensure spatial layout is coherent and scaled`

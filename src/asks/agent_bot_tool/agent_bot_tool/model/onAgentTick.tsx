@@ -3,26 +3,29 @@ if (!links.todoBot || tags.todoInProgress) {
 }
 
 const todoBot = links.todoBot;
+const dim = todoBot.tags.dimension;
 
-//check for closeness
-const xPos = todoBot.tags[todoBot.tags.dimension + 'X'];
-const yPos = todoBot.tags[todoBot.tags.dimension + 'Y'];
+const todoX = todoBot.tags[dim + 'X'] ?? 0;
+const todoY = todoBot.tags[dim + 'Y'] ?? 0;
 
-const agentXPos = (tags[todoBot.tags.dimension + 'X'] && tags[todoBot.tags.dimension + 'X'] > todoBot.tags[todoBot.tags.dimension + 'X']) ? todoBot.tags[todoBot.tags.dimension + 'X'] + 3 : todoBot.tags[todoBot.tags.dimension + 'X'] - 3;
-const agentYPos = (tags[todoBot.tags.dimension + 'Y'] && tags[todoBot.tags.dimension + 'Y'] > todoBot.tags[todoBot.tags.dimension + 'Y']) ? todoBot.tags[todoBot.tags.dimension + 'Y'] + 3 : todoBot.tags[todoBot.tags.dimension + 'Y'] - 3;
+const agentX = tags[dim + 'X'] ?? 0;
+const agentY = tags[dim + 'Y'] ?? 0;
 
-const inMap = configBot.tags.mapPortal ? true : false;
-if ((inMap && (agentXPos - xPos > .001 || agentYPos - yPos > .001)) || 
-    (!inMap && (agentXPos - xPos > 3.5 || agentYPos - yPos > 3.5))
-) {
+const dx = agentX - todoX;
+const dy = agentY - todoY;
+const dist = Math.sqrt(dx * dx + dy * dy);
+const targetDist = tags.targetDistance ?? 2;
+
+if (dist > targetDist) {
+    // Target is targetDist tiles from the todo along the current approach vector.
+    // If the agent is right on top of the todo, default to +x side.
+    const nx = dist > 0 ? dx / dist : 1;
+    const ny = dist > 0 ? dy / dist : 0;
+
     await thisBot.moveBot({
-        bot: thisBot,
-        dimension: configBot.tags.gridPortal ?? 'home',
-        position: {
-            x: agentXPos,
-            y: agentYPos
-        }
-    })
+        dimension: dim,
+        position: { x: todoX + nx * targetDist, y: todoY + ny * targetDist }
+    });
     return;
 }
 
@@ -30,14 +33,14 @@ if ((inMap && (agentXPos - xPos > .001 || agentYPos - yPos > .001)) ||
 if (!links.armBot) {
     links.arm_tool.abCreateArm({
         originBot: thisBot,
-        dimension: todoBot.tags.dimension,
+        dimension: dim,
         position: {
-            x: xPos,
-            y: yPos,
+            x: todoX,
+            y: todoY,
             z: 0
         }
     })
-    tags.agentArm = `🧬${JSON.stringify({ dimension: todoBot.tags.dimension, position: { x: xPos, y: yPos } })}`;
+    tags.agentArm = `🧬${JSON.stringify({ dimension: dim, position: { x: todoX, y: todoY } })}`;
     return;
 }
 

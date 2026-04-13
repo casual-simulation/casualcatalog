@@ -6,20 +6,24 @@ const prevY = tags[that.dimension + 'Y'] ?? 0;
 const dx = that.position.x - prevX;
 const dy = that.position.y - prevY;
 
-const distance = Math.sqrt(Math.pow((dx), 2) + Math.pow((dy), 2));
+const distance = Math.sqrt(dx * dx + dy * dy);
 
-let uX = dx / distance;
-let uY = dy / distance;
+if (distance === 0) return;
 
-clearAnimations(that.bot);
-await animateTag(that.bot, {
+// Step at most 1 tile per call; don't overshoot if target is closer than 1 tile.
+const step = Math.min(1, distance);
+const uX = (dx / distance) * step;
+const uY = (dy / distance) * step;
+
+clearAnimations(thisBot);
+await animateTag(thisBot, {
     fromValue: {
-        [that.dimension + 'X']: tags[that.dimension + 'X'] ?? 0,
-        [that.dimension + 'Y']: tags[that.dimension + 'Y'] ?? 0,
+        [that.dimension + 'X']: prevX,
+        [that.dimension + 'Y']: prevY,
     },
     toValue: {
-        [that.dimension + 'X']: (tags[that.dimension + 'X'] ?? 0) + uX,
-        [that.dimension + 'Y']: (tags[that.dimension + 'Y'] ?? 0) + uY,
+        [that.dimension + 'X']: prevX + uX,
+        [that.dimension + 'Y']: prevY + uY,
     },
     duration: 1,
     tagMaskSpace: 'shared'

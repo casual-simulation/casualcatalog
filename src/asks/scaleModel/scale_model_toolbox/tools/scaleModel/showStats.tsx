@@ -21,7 +21,7 @@ const seeAttributesButton = {
 seeAttributesButton.dropdownOptions = [];
 for (const item in tags.modelAttributes) {
     let val = tags.modelAttributes[item].start;
-    if (tags[item]) {
+    if (tags[item] || tags[item] == 0) {
         val = tags[item];
     }
     const tempDropdownItem = {

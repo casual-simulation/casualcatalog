@@ -2,6 +2,7 @@ const {
     dimension,
     center,
     radius = 5,
+    innerRadius = 0,
     direction = 'outward',
     spacing = 1,
 } = that;
@@ -9,6 +10,8 @@ const {
 assert(center, `[${tags.system}.${tagName}] center is a required parameter.`);
 assert(dimension, `[${tags.system}.${tagName}] dimension is a required parameter.`);
 assert(radius > 0, `[${tags.system}.${tagName}] radius must be greater than zero.`);
+assert(innerRadius >= 0, `[${tags.system}.${tagName}] innerRadius must be greater than or equal to zero.`);
+assert(innerRadius < radius, `[${tags.system}.${tagName}] innerRadius must be less than radius.`);
 assert(spacing > 0, `[${tags.system}.${tagName}] spacing must be greater than zero.`);
 assert(direction === 'inward' || direction === 'outward', `[${tags.system}.${tagName}] direction must be 'inward' or 'outward'.`);
 
@@ -19,7 +22,7 @@ function roundTo(value: number, spacing: number): number {
   return Math.round(value / spacing) * spacing;
 }
 
-function findOpenPosition(position: Vector2, radius: number, dimension: string, spacing: number = 1, direction: 'inward' | 'outward' = 'outward'): Vector2 | null {
+function findOpenPosition(position: Vector2, radius: number, innerRadius: number, dimension: string, spacing: number = 1, direction: 'inward' | 'outward' = 'outward'): Vector2 | null {
     // Create a set of all occupied positions in the dimension.
     const occupied = new Set();
 
@@ -40,13 +43,14 @@ function findOpenPosition(position: Vector2, radius: number, dimension: string, 
 
     // Calculate number of steps based on radius and spacing
     const steps = Math.round(radius / spacing);
+    const innerSteps = Math.round(innerRadius / spacing);
 
-    // Collect all grid positions within the circular radius (excluding the origin itself)
+    // Collect all grid positions within the annular search area
     const candidates: Array<{xi: number, yi: number, dist: number}> = [];
     for (let xi = -steps; xi <= steps; xi++) {
         for (let yi = -steps; yi <= steps; yi++) {
             const dist = Math.sqrt(xi * xi + yi * yi);
-            if (dist > 0 && dist <= steps) {
+            if (dist > innerSteps && dist <= steps) {
                 candidates.push({ xi, yi, dist });
             }
         }
@@ -79,7 +83,7 @@ function findOpenPosition(position: Vector2, radius: number, dimension: string, 
     return null;
 }
 
-const openPosition = findOpenPosition(center, radius, dimension, spacing, direction);
+const openPosition = findOpenPosition(center, radius, innerRadius, dimension, spacing, direction);
 
 if (DEBUG) {
     console.log(`[${tags.system}.${tagName}] openPosition:`, openPosition);

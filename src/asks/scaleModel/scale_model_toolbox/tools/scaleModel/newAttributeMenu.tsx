@@ -189,6 +189,7 @@ const addButton = {
         links.model.masks.tempAttributeTimeUnit = null;
 
         links.model.tags.modelAttributes = tempAttributes;
+        links.model.tags[links.model.masks.tempAttributeName] = attr.start;
         links.model.onClick();
     `
 }

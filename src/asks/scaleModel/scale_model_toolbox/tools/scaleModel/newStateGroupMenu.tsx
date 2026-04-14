@@ -67,6 +67,7 @@ const addButton = {
         links.model.masks.tempStateStart = null;
 
         links.model.tags.modelStates = tempStates;
+        links.model.tags[links.model.masks.tempStateName] = stateGroup.start;
         links.model.onClick();
     `
 }

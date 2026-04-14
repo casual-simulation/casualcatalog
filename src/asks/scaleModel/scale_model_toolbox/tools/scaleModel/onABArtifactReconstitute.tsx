@@ -23,15 +23,25 @@ for (const listener in listeners) {
     tags[listener] = listeners[listener].code;
 }
 
-if (!tags.modelAttributes) {
+const stats = {...data.modelAttributes};
+for (const stat in stats) {
+    tags[stat] = stats[stat].start;
+}
+
+const states = {...data.modelStates};
+for (const state in states) {
+    tags[state] = states[state].start;
+}
+
+if (!data.modelAttributes) {
     tags.modelAttributes = {};
 }
 
-if (!tags.modelStates) {
+if (!data.modelStates) {
     tags.modelStates = {};
 }
 
-if (!tags.modelListeners) {
+if (!data.modelListeners) {
     tags.modelListeners = {};
 }
 

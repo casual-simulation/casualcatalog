@@ -156,7 +156,7 @@ if (!agentBot) {
         y: abBot?.tags[dimension + 'Y'] ?? 0
     }
 
-    const openPosition = await ab.links.utils.findOpenPositionAround({ originPosition: agentPosition, dimension });
+    const openPosition = await ab.links.utils.findOpenPositionAround({ center: agentPosition, dimension, direction: 'inward' });
 
     if (isStaleCycle()) {
         if (tags.debug) {

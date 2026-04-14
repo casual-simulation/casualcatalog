@@ -1,28 +1,30 @@
-const { 
-    originPosition, 
+const {
     dimension,
-    distance = 5, 
-    interval = 1,
+    center,
+    radius = 5,
+    direction = 'outward',
+    spacing = 1,
 } = that;
 
-assert(originPosition, `[${tags.system}.${tagName}] originPosition is a required parameter.`);
+assert(center, `[${tags.system}.${tagName}] center is a required parameter.`);
 assert(dimension, `[${tags.system}.${tagName}] dimension is a required parameter.`);
-assert(distance > 0, `[${tags.system}.${tagName}] distance must be greater than zero.`);
-assert(interval > 0, `[${tags.system}.${tagName}] interval must be greater than zero.`);
+assert(radius > 0, `[${tags.system}.${tagName}] radius must be greater than zero.`);
+assert(spacing > 0, `[${tags.system}.${tagName}] spacing must be greater than zero.`);
+assert(direction === 'inward' || direction === 'outward', `[${tags.system}.${tagName}] direction must be 'inward' or 'outward'.`);
 
 const DEBUG = true;
 
-// Helper to round to nearest interval (avoids floating point drift)
-function roundTo(value: number, interval: number): number {
-  return Math.round(value / interval) * interval;
+// Helper to round to nearest spacing (avoids floating point drift)
+function roundTo(value: number, spacing: number): number {
+  return Math.round(value / spacing) * spacing;
 }
 
-function findOpenPosition(position: Vector2, distance: number, dimension: string, interval: number = 1): Vector2 | null {
+function findOpenPosition(position: Vector2, radius: number, dimension: string, spacing: number = 1, direction: 'inward' | 'outward' = 'outward'): Vector2 | null {
     // Create a set of all occupied positions in the dimension.
     const occupied = new Set();
 
     // Round to avoid floating point mismatches when building the set
-    const toKey = (x: number, y: number) => `${roundTo(x, interval)},${roundTo(y, interval)}`;
+    const toKey = (x: number, y: number) => `${roundTo(x, spacing)},${roundTo(y, spacing)}`;
 
     // Create a set of all occupied positions in the dimensions.
     getBots((b) => {
@@ -36,33 +38,40 @@ function findOpenPosition(position: Vector2, distance: number, dimension: string
         console.log(`[${tags.system}.${tagName}] occupied:`, occupied);
     }
 
-    // Calculate number of steps based on distance and interval
-    const steps = Math.round(distance / interval);
+    // Calculate number of steps based on radius and spacing
+    const steps = Math.round(radius / spacing);
 
-    // Start from outer shell, work inward
-    for (let d = steps; d >= 1; d--) {
-        for (let xi = -d; xi <= d; xi++) {
-            for (let yi = -d; yi <= d; yi++) {
-                if (Math.abs(xi) === d || Math.abs(yi) === d) {
-                    const x = roundTo(position.x + xi * interval, interval);
-                    const y = roundTo(position.y + yi * interval, interval);
-                    const key = toKey(x, y);
-                    
-                    if (DEBUG) {
-                        console.log(`[${tags.system}.${tagName}] key:`, key);
-                    }
+    // Collect all grid positions within the circular radius (excluding the origin itself)
+    const candidates: Array<{xi: number, yi: number, dist: number}> = [];
+    for (let xi = -steps; xi <= steps; xi++) {
+        for (let yi = -steps; yi <= steps; yi++) {
+            const dist = Math.sqrt(xi * xi + yi * yi);
+            if (dist > 0 && dist <= steps) {
+                candidates.push({ xi, yi, dist });
+            }
+        }
+    }
 
-                    if (!occupied.has(key)) {
-                        if (DEBUG) {
-                            console.log(`[${tags.system}.${tagName}] occupied does not have:`, key);
-                        }
-                        return new Vector2(x, y);
-                    } else {
-                        if (DEBUG) {
-                            console.log(`[${tags.system}.${tagName}] occupied has:`, key);
-                        }
-                    }
-                }
+    // Sort by Euclidean distance: outward = nearest first, inward = farthest first
+    candidates.sort((a, b) => direction === 'outward' ? a.dist - b.dist : b.dist - a.dist);
+
+    for (const { xi, yi } of candidates) {
+        const x = roundTo(position.x + xi * spacing, spacing);
+        const y = roundTo(position.y + yi * spacing, spacing);
+        const key = toKey(x, y);
+
+        if (DEBUG) {
+            console.log(`[${tags.system}.${tagName}] key:`, key);
+        }
+
+        if (!occupied.has(key)) {
+            if (DEBUG) {
+                console.log(`[${tags.system}.${tagName}] occupied does not have:`, key);
+            }
+            return new Vector2(x, y);
+        } else {
+            if (DEBUG) {
+                console.log(`[${tags.system}.${tagName}] occupied has:`, key);
             }
         }
     }
@@ -70,7 +79,7 @@ function findOpenPosition(position: Vector2, distance: number, dimension: string
     return null;
 }
 
-const openPosition = findOpenPosition(originPosition, distance, tags.dimension, 1);
+const openPosition = findOpenPosition(center, radius, tags.dimension, spacing, direction);
 
 if (DEBUG) {
     console.log(`[${tags.system}.${tagName}] openPosition:`, openPosition);

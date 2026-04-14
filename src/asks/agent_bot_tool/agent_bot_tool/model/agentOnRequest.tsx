@@ -26,10 +26,11 @@ let patchBotPosition = getBotPosition(thisBot, tags.dimension);
 
 if (!inMapPortal && inGridPortal) {
     const openPosition = ab.links.utils.findOpenPositionAround({
-        originPosition: getBotPosition(thisBot, tags.dimension),
-        distance: 3,
+        center: getBotPosition(thisBot, tags.dimension),
+        radius: 3,
         dimension: tags.dimension,
-        interval: 1,
+        spacing: 1,
+        direction: 'outward',
     })
 
     if (openPosition) {

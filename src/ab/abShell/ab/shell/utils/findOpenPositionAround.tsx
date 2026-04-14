@@ -5,6 +5,7 @@ const {
     innerRadius = 0,
     direction = 'outward',
     spacing = 1,
+    randomizeAngle = false,
 } = that;
 
 assert(center, `[${tags.system}.${tagName}] center is a required parameter.`);
@@ -15,14 +16,14 @@ assert(innerRadius < radius, `[${tags.system}.${tagName}] innerRadius must be le
 assert(spacing > 0, `[${tags.system}.${tagName}] spacing must be greater than zero.`);
 assert(direction === 'inward' || direction === 'outward', `[${tags.system}.${tagName}] direction must be 'inward' or 'outward'.`);
 
-const DEBUG = true;
+const DEBUG = false;
 
 // Helper to round to nearest spacing (avoids floating point drift)
 function roundTo(value: number, spacing: number): number {
   return Math.round(value / spacing) * spacing;
 }
 
-function findOpenPosition(position: Vector2, radius: number, innerRadius: number, dimension: string, spacing: number = 1, direction: 'inward' | 'outward' = 'outward'): Vector2 | null {
+function findOpenPosition(position: Vector2, radius: number, innerRadius: number, dimension: string, spacing: number = 1, direction: 'inward' | 'outward' = 'outward', randomizeAngle: boolean = false): Vector2 | null {
     // Create a set of all occupied positions in the dimension.
     const occupied = new Set();
 
@@ -56,8 +57,17 @@ function findOpenPosition(position: Vector2, radius: number, innerRadius: number
         }
     }
 
-    // Sort by Euclidean distance: outward = nearest first, inward = farthest first
-    candidates.sort((a, b) => direction === 'outward' ? a.dist - b.dist : b.dist - a.dist);
+    // Pick a random angle offset once before sorting (avoid calling Math.random inside comparator)
+    const angleOffset = randomizeAngle ? Math.random() * Math.PI * 2 : 0;
+
+    // Sort by distance (respecting direction), then by angle within each ring
+    candidates.sort((a, b) => {
+        const distDiff = direction === 'outward' ? a.dist - b.dist : b.dist - a.dist;
+        if (distDiff !== 0) return distDiff;
+        const angleA = (Math.atan2(a.yi, a.xi) + angleOffset + Math.PI * 2) % (Math.PI * 2);
+        const angleB = (Math.atan2(b.yi, b.xi) + angleOffset + Math.PI * 2) % (Math.PI * 2);
+        return angleA - angleB;
+    });
 
     for (const { xi, yi } of candidates) {
         const x = roundTo(position.x + xi * spacing, spacing);
@@ -83,7 +93,7 @@ function findOpenPosition(position: Vector2, radius: number, innerRadius: number
     return null;
 }
 
-const openPosition = findOpenPosition(center, radius, innerRadius, dimension, spacing, direction);
+const openPosition = findOpenPosition(center, radius, innerRadius, dimension, spacing, direction, randomizeAngle);
 
 if (DEBUG) {
     console.log(`[${tags.system}.${tagName}] openPosition:`, openPosition);

@@ -79,7 +79,7 @@ function findOpenPosition(position: Vector2, radius: number, dimension: string, 
     return null;
 }
 
-const openPosition = findOpenPosition(center, radius, tags.dimension, spacing, direction);
+const openPosition = findOpenPosition(center, radius, dimension, spacing, direction);
 
 if (DEBUG) {
     console.log(`[${tags.system}.${tagName}] openPosition:`, openPosition);

@@ -6,3 +6,19 @@ for (const listener in tags.modelListeners) {
         }
     }
 }
+
+for (const state in tags.modelStates) {
+    if (that.tags.includes(state)) {
+        if (tags.statsButton) {
+            thisBot.onClick();
+        }
+    }
+}
+
+for (const stat in tags.modelAttributes) {
+    if (that.tags.includes(stat)) {
+        if (tags.statsButton) {
+            thisBot.onClick();
+        }
+    }
+}

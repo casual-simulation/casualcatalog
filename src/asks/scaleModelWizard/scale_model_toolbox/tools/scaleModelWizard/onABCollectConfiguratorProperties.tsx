@@ -6,13 +6,6 @@ const properties: ABConfiguratorProperty[] = [
         default: "",
         value: tags.userPrompt,
     },
-    {
-        key: 'destroyAfterUse',
-        type: 'boolean',
-        description: 'whether or not the wizard should destroy itself after it finishes',
-        default: false,
-        value: tags.destroyAfterUse,
-    },
 ]
 
 return properties;

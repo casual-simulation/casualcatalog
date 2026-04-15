@@ -14,7 +14,7 @@ if (tags.debug) {
 }
 
 if (authBot.tags.privacyFeatures.allowAI == false) {
-    links.utils.abLogAndToast({ message: "AI not authorized on this account", logType: 'log' });
+    ab.links.utils.abLogAndToast({ message: "AI not authorized on this account", logType: 'log' });
     return null;
 }
 
@@ -37,10 +37,10 @@ const activeRequestSignal = create({
     })
 })
 
-const busyIndicator = await links.menu.abCreateMenuBusyIndicator({abMenu: true, label: `asking ${links.personality.tags.abBuilderIdentity}` });
+const busyIndicator = await ab.links.menu.abCreateMenuBusyIndicator({abMenu: true, label: `asking ${ab.links.personality.tags.abBuilderIdentity}` });
 
 const aiChatOptions: AIChatOptions = { 
-    preferredModel: model ?? links.personality.tags.abPreferredAIModel,
+    preferredModel: model ?? ab.links.personality.tags.abPreferredAIModel,
     recordName,
 }
 
@@ -56,7 +56,7 @@ if (messages && messages.length > 0) {
     aiChatMessages.push({
         role: 'system',
         content: [
-            { text: prompt ? prompt : tags.prompt_core }
+            { text: prompt }
         ]
     })
 
@@ -77,8 +77,8 @@ if (messages && messages.length > 0) {
     })
 }
 
-if (!links.menu) {
-    await links.learn.abAdapt('abInterface');
+if (!ab.links.menu) {
+    await ab.abAdapt('abInterface');
 }
 
 if (tags.debug) {
@@ -112,13 +112,13 @@ try {
 } catch(e) {
     aiResponse = null;
 
-    const errorMessage = links.utils.getErrorMessage(e);
+    const errorMessage = ab.links.utils.getErrorMessage(e);
 
     activeRequestSignal.tags.success = false;
     activeRequestSignal.tags.errorMessage = errorMessage;
 
     // Show toast with error.
-    links.utils.abLogAndToast({ message: `AI request failed - ${errorMessage}`, logType: 'error' });
+    ab.links.utils.abLogAndToast({ message: `AI request failed - ${errorMessage}`, logType: 'error' });
 
     // Rethrow so callers can catch.
     throw e;

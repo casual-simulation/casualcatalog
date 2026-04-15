@@ -1,4 +1,4 @@
-const targetBot = links.remember.links.abBotFocus;
+const targetBot = ab.links.remember.links.abBotFocus;
 
 const selectedColor = await os.showInput(targetBot.tags.color, {
     type: 'color',

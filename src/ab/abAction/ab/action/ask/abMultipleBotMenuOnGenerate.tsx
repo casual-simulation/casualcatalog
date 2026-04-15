@@ -1,4 +1,4 @@
-const allTargetBots = links.remember.links.abMultipleBotFocus;
+const allTargetBots = ab.links.remember.links.abMultipleBotFocus;
 const targetArray = [];
 
 for (let i = 0; i < allTargetBots.length; i++)
@@ -24,15 +24,15 @@ tags.form = "input";
 
 if (!authBot)
 {
-    tags.label = "ask " + links.personality.tags.abBuilderIdentity + " (limited)";
+    tags.label = "ask " + ab.links.personality.tags.abBuilderIdentity + " (limited)";
 }
 else if (authBot.tags.subscriptionTier == "FreePlay")
 {
-    tags.label = "ask " + links.personality.tags.abBuilderIdentity + " (limited)";
+    tags.label = "ask " + ab.links.personality.tags.abBuilderIdentity + " (limited)";
 }
 else
 {
-    tags.label = "ask " + links.personality.tags.abBuilderIdentity;
+    tags.label = "ask " + ab.links.personality.tags.abBuilderIdentity;
 }
 
 if (!links.baseSkill.tags.hasUserTypedMultipleBotText && !links.baseSkill.tags.hasUserSubmittedMultipleBotText) {
@@ -40,7 +40,8 @@ if (!links.baseSkill.tags.hasUserTypedMultipleBotText && !links.baseSkill.tags.h
 
     if (!links.baseSkill.tags.hasUserTypedMultipleBotText) {
         // Choose a random from built-in suggestions.
-        let text = links.baseSkill.tags.suggestionsMultipleBots[math.randomInt(0, links.baseSkill.tags.suggestionsMultipleBots.length - 1)];
+        const suggestions = links.baseSkill.tags.suggestions["multipleBot"];
+        const text = suggestions[math.randomInt(0, suggestions.length - 1)];
 
         links.baseSkill.inputSuggestion({ inputBot: thisBot, text });
     }

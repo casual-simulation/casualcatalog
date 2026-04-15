@@ -1,4 +1,4 @@
-const backgroundColor = links.remember?.tags.abBlueprintColor ?? "#1785B5";
+const backgroundColor = ab.links.remember?.tags.abBlueprintColor ?? "#1785B5";
 
 if (backgroundColor == gridPortalBot.masks.portalColor)
 {
@@ -8,8 +8,8 @@ if (backgroundColor == gridPortalBot.masks.portalColor)
 gridPortalBot.masks.portalColor = backgroundColor;
 
 masks.onPortalChanged = `@ if (that.portal == "gridPortal" && that.dimension != "blueprint"){
-    // links.remember.masks.abBaseColor = null;
-    // links.remember.masks.abBaseStrokeColor = null;
+    // ab.links.remember.masks.abBaseColor = null;
+    // ab.links.remember.masks.abBaseStrokeColor = null;
 
     gridPortalBot.masks.portalColor = null;
 

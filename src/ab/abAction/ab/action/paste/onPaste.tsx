@@ -17,7 +17,7 @@ const MACROS = [
 let formattedCopy = replaceMacros(that.text);
 let copyBot = JSON.parse(formattedCopy);
 let pastedData = !copyBot.state ? {[copyBot.id]: copyBot} : copyBot.state;
-let dimMod = links.remember.tags.abFocusData;
+let dimMod = ab.links.remember.tags.abFocusData;
 
 if (Object.keys(pastedData).length == 1 && dimMod)
 {
@@ -32,9 +32,9 @@ else
     os.toast("bots added to inst");
 }
 
-ab.log(links.personality.tags.abBuilderIdentity + ": pasted data");
+ab.log(ab.links.personality.tags.abBuilderIdentity + ": pasted data");
 
-links.create.abCreateBots({bots: pastedData, sourceEvent: 'paste'});
+ab.links.create.abCreateBots({bots: pastedData, sourceEvent: 'paste'});
 
 function replaceMacros(text) {
     if (!text) {

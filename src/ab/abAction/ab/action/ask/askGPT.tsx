@@ -1,17 +1,17 @@
 import { AIChatMessage } from 'casualos';
 
 if (authBot.tags.privacyFeatures.allowAI == false) {
-    const aiMessage = links.remember.tags.ai_rejection_message ?? "AI not authorized for this account";
-    links.utils.abLogAndToast({ message: aiMessage });
+    const aiMessage = ab.links.remember.tags.ai_rejection_message ?? "AI not authorized for this account";
+    ab.links.utils.abLogAndToast({ message: aiMessage });
     os.openQRCodeScanner();
     configBot.tags.abScan = true;
     configBot.tags.requestingAI = true;
     return;
 }
 
-if (!links.todoManager) {
+if (!ab.links.todoManager) {
     // Load abTodo skill. This manages agent's working on todo bots.
-    await links.learn.abAdapt('abTodo');
+    await ab.abAdapt('abTodo');
 }
 
 /**
@@ -57,8 +57,7 @@ if (tags.debug) {
 }
 
 const originalUserInquiry = that.inquiry ?? that;
-const prompt = tags.prompt_system ?? tags.prompt_core;
-const abBot = that.abBot ? getBot('id', that.abBot) : links.manifestation.links.abBot;
+const abBot = that.abBot ? getBot('id', that.abBot) : ab.links.manifestation.links.abBot;
 const sourceId = that.sourceId ?? uuid();
 const abDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
 const abPosition = that.abPosition ?? ab.links.remember.tags[abDimension + 'ABLastPosition'];
@@ -76,13 +75,13 @@ const recordName: string | undefined = that.recordName ?? todoBot?.tags.budgetRe
 const MAX_CALL_DEPTH = 5;
 
 if (callDepth >= MAX_CALL_DEPTH) {
-    links.utils.abLog({ message: 'AI call depth limit reached' });
+    ab.links.utils.abLog({ message: 'AI call depth limit reached' });
     return;
 }
 
 if (callDepth === 0) {
-    links.utils.abLog({ message: `thinking...` });
-    links.manifestation.abBotChat({ bot: abBot, message: `thinking...` });
+    ab.links.utils.abLog({ message: `thinking...` });
+    ab.links.manifestation.abBotChat({ bot: abBot, message: `thinking...` });
 }
 
 // ── Inner helpers ───────────────────────────────────────────────────────
@@ -103,16 +102,13 @@ function buildFocusContext() {
 }
 
 /**
- * Returns bots in the inst that are:
- * 1. are in the shared space
- * 2. NOT ab bots
- * 3. NOT ignored by ab.
+ * Returns bots in the inst.
  */
 function getInstBots() {
     const bots = getBots((b) => {
-        return b.space === 'shared' &&
-               !b.tags.abBot &&
-               !b.tags.abIgnore
+        return b.space === 'shared' && // Bot must be in shared space.
+               !b.tags.abIgnore && // Don't include ignored bots.
+               !b.tags.abBot // Don't include an bots marked as belonging to ab.
     });
 
     return bots;
@@ -156,7 +152,7 @@ function extractCode(response) {
  * Spawns a patch bot with the given code.
  */
 async function spawnPatchBot(code) {
-    links.utils.abLog({ message: `[generated code]:\n${code}` });
+    ab.links.utils.abLog({ message: `[generated code]:\n${code}` });
 
     const eggParameters = {
         patchCode: code,
@@ -277,7 +273,7 @@ if (!hasInquiry && storedHistory.length > 0) {
 } else {
     // Fresh start — build full initial message structure
     aiChatMessages = [
-        { role: 'system', content: [{ text: prompt }] },
+        { role: 'system', content: [{ text: tags.prompt_system }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
         { role: 'user', content: [{ text: `${contextBlock}\n<message>${originalUserInquiry}</message>` }] },
     ];
@@ -385,7 +381,7 @@ for (const fc of functionCalls) {
     const { name, args } = fc.function;
 
     if (name === 'chat') {
-        links.utils.abLog({ message: args.message });
+        ab.links.utils.abLog({ message: args.message });
 
     } else if (name === 'makePatch') {
         if (todoBot) {

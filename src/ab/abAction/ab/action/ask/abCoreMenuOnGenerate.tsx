@@ -15,15 +15,15 @@ tags.form = "input";
 
 if (!authBot)
 {
-    tags.label = "ask " + links.personality.tags.abBuilderIdentity + " (limited)";
+    tags.label = "ask " + ab.links.personality.tags.abBuilderIdentity + " (limited)";
 }
 else if (authBot.tags.subscriptionTier == "FreePlay")
 {
-    tags.label = "ask " + links.personality.tags.abBuilderIdentity + " (limited)";
+    tags.label = "ask " + ab.links.personality.tags.abBuilderIdentity + " (limited)";
 }
 else
 {
-    tags.label = "ask " + links.personality.tags.abBuilderIdentity;
+    tags.label = "ask " + ab.links.personality.tags.abBuilderIdentity;
 }
 
 if (!links.baseSkill.tags.hasUserTypedCoreText && !links.baseSkill.tags.hasUserSubmittedCoreText) {
@@ -31,7 +31,8 @@ if (!links.baseSkill.tags.hasUserTypedCoreText && !links.baseSkill.tags.hasUserS
 
     if (!links.baseSkill.tags.hasUserTypedCoreText) {
         // Choose a random from built-in suggestions.
-        let text = links.baseSkill.tags.suggestionsCore[math.randomInt(0, links.baseSkill.tags.suggestionsCore.length - 1)];
+        const suggestions = links.baseSkill.tags.suggestions["core"];
+        const text = suggestions[math.randomInt(0, suggestions.length - 1)];
 
         links.baseSkill.inputSuggestion({ inputBot: thisBot, text });
     }

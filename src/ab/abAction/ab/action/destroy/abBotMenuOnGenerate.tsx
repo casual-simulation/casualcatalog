@@ -1,9 +1,9 @@
-const targetBot = links.remember.links.abBotFocus;
+const targetBot = ab.links.remember.links.abBotFocus;
 
 if (targetBot) {
     tags.label = 'destroy';
     tags.targetBot = getLink(targetBot);
-    tags.onKeyDown = `@
+    tags.onKeyDown = ListenerString(() => {
         if (that.keys.includes("Shift")) {
             if (links.targetBot && links.targetBot.tags.abIDOrigin) {
                 // Change button to destroy all bots with same abIDOrigin.
@@ -15,13 +15,13 @@ if (targetBot) {
                 tags.targetOriginBots = getLink(targetOriginBots);
             }
         }
-    `;
-    tags.onKeyUp = `@
+    });
+    tags.onKeyUp = ListenerString(() => {
         if (that.keys.includes("Shift")) {
             masks.label = null;
             tags.targetOriginBots = null;
         }
-    `;
+    })
 } else {
     // No bot to destroy.
     destroy(thisBot);

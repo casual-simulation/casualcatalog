@@ -1,4 +1,4 @@
-let selectedBot = links.remember.links.abBotFocus;
+let selectedBot = ab.links.remember.links.abBotFocus;
 
 tags.label = `open sheet`;
 

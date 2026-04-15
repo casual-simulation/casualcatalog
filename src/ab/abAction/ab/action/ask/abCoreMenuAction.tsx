@@ -19,7 +19,7 @@ if (authBot && authBot.tags.name) {
 
 ab.log({ message: inquiry, name: username });
 
-if (!configBot.tags.tagPortal && links.manifestation.tags.abAwake && inquiry != ".log") {
+if (!configBot.tags.tagPortal && ab.links.manifestation.tags.abAwake && inquiry != ".log") {
     shout("showConsole");
 }
 
@@ -40,10 +40,10 @@ else if (!inquiryHasSpace) {
         }
     }
 
-    const ask: ABLookupAskIDResult | false = !isDirectSearch ? await links.search.onLookupAskID({ askID: inquiry, autoHatch: true, eggParameters, sourceEvent: 'ask' }) : false;
+    const ask: ABLookupAskIDResult | false = !isDirectSearch ? await ab.links.search.onLookupAskID({ askID: inquiry, autoHatch: true, eggParameters, sourceEvent: 'ask' }) : false;
 
     if (ask?.success && ask?.data?.url != undefined && !isDirectSearch && !isChannel) {
-        links.learn.abJoinHost({ data: ask.data });
+        ab.abJoinHost({ data: ask.data });
     } else if (!ask?.success) {
         let egg: ABLookupEggResult;
         const periodIndex = inquiry.indexOf(".");
@@ -54,18 +54,18 @@ else if (!inquiryHasSpace) {
         }
 
         if (periodIndex == -1 || isDirectSearch) {
-            egg = await links.search.onLookupABEggs({ abID: abID, initialBoot, autoHatch, eggParameters, sourceEvent: 'ask' });
+            egg = await ab.links.search.onLookupABEggs({ abID: abID, initialBoot, autoHatch, eggParameters, sourceEvent: 'ask' });
         } else if (periodIndex > 0) {
             const recordKey = inquiry.substring(0, periodIndex);
 
             abID = inquiry.substring(periodIndex + 1);
 
-            egg = await links.search.onLookupABEggs({ recordKey: recordKey, abID: abID, initialBoot, autoHatch, eggParameters, sourceEvent: 'ask', });
+            egg = await ab.links.search.onLookupABEggs({ recordKey: recordKey, abID: abID, initialBoot, autoHatch, eggParameters, sourceEvent: 'ask', });
         } else {
-            links.input.onChat({ message: inquiry });
+            ab.links.input.onChat({ message: inquiry });
         }
 
-        if (!egg?.success && links.menu) {
+        if (!egg?.success && ab.links.menu) {
             configBot.masks.menuPortal = "abMenu";
 
             const studioButton = {};
@@ -77,7 +77,9 @@ else if (!inquiryHasSpace) {
             studioButton.formAddress = tags.abCoreMenuIcon;
             studioButton.manager = getLink(thisBot);
             studioButton.abMenuRefresh = "@ destroy(thisBot);";
-            studioButton.onSubmit = `@ links.manager.abCoreMenuAction(that.text + "." + tags.abID);`;
+            studioButton.onSubmit = ListenerString(() => {
+                links.manager.abCoreMenuAction(that.text + "." + tags.abID);
+            });
 
             const createButton = {};
 
@@ -86,12 +88,16 @@ else if (!inquiryHasSpace) {
             createButton.manager = getLink(thisBot);
             createButton.abMenuRefresh = "@ destroy(thisBot);";
             createButton.abID = abID;
-            createButton.onClick = `@ links.manager.prototype(tags.abID);`;
+            createButton.onClick = ListenerString(() => {
+                links.manager.abCoreMenuAction("Make me: " + tags.abID);
+            });
 
-            links.menu.abCreateMenuButton(createButton);
-            links.menu.abCreateMenuButton(studioButton);
+            ab.links.menu.abCreateMenuButton(createButton);
+            ab.links.menu.abCreateMenuButton(studioButton);
 
-            thisBot.masks.onGridClick = "@ shout('abMenuRefresh');";
+            thisBot.masks.onGridClick = ListenerString(() => {
+                shout('abMenuRefresh');
+            });
         }
     }
 } else {
@@ -100,7 +106,7 @@ else if (!inquiryHasSpace) {
     if (!authBot) {
         os.toast("please sign in to access advanced AI features");
 
-        links.manifestation.abClick();
+        ab.links.manifestation.abClick();
     } else {
         // Need to decide where the cost of the ai calls is going to come from.
         let costRecordName;

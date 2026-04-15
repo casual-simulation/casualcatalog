@@ -12,4 +12,4 @@ ab.links.sound.abPlaySound({ value: ab.links.sound.tags.defaultDestroySound });
 
 shout("abMenuRefresh");
 
-links.manifestation.abClick({ reset: true });
+ab.links.manifestation.abClick({ reset: true });

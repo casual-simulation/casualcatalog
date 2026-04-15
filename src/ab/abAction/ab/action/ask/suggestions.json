@@ -1,0 +1,24 @@
+{
+    "bot": [
+        "change the color of this bot to purple",
+        "turn this bot into a sphere",
+        "double the scale of this bot"
+    ],
+    "core": [
+        "make me a red bot that when clicked turns blue",
+        "make me a bot that when clicked makes fireworks",
+        "make me a bot that toasts 'hello, world!' when clicked",
+        "make me 3 bots, a red one, blue one, and green one"
+    ],
+    "grid": [
+        "make me a red bot that when clicked turns blue",
+        "make me a bot that when clicked makes fireworks",
+        "make me a bot that toasts 'hello, world!' when clicked",
+        "make me 3 bots, a red one, blue one, and green one"
+    ],
+    "multipleBot": [
+        "change all of these bots color to purple",
+        "turn all of these bots into spheres",
+        "double the scale of all of these bots"
+    ]
+}

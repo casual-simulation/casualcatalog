@@ -1,4 +1,4 @@
-if (!builderVersion || (!links.remember.links.abBotFocus && !links.remember.links.abMultipleBotFocus)) {
+if (!builderVersion || (!ab.links.remember.links.abBotFocus && !ab.links.remember.links.abMultipleBotFocus)) {
     return;
 }
 
@@ -15,12 +15,12 @@ if (that.keys == "c") {
 
     let selectedBots = [];
 
-    if (links.remember.links.abBotFocus) {
-        selectedBots.push(links.remember.links.abBotFocus);
+    if (ab.links.remember.links.abBotFocus) {
+        selectedBots.push(ab.links.remember.links.abBotFocus);
     }
-    else if (links.remember.links.abMultipleBotFocus) {
-        for (let i = 0; i < links.remember.links    .abMultipleBotFocus.length; i++) {
-            selectedBots.push(links.remember.links.abMultipleBotFocus[i]);
+    else if (ab.links.remember.links.abMultipleBotFocus) {
+        for (let i = 0; i < ab.links.remember.links    .abMultipleBotFocus.length; i++) {
+            selectedBots.push(ab.links.remember.links.abMultipleBotFocus[i]);
        }
     }
  

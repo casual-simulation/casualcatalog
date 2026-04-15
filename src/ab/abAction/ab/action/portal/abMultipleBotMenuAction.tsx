@@ -3,9 +3,9 @@ const multipleSelectDim = "abMultipleSelect";
 
 configBot.tags.sheetPortal = multipleSelectDim;
 
-setTagMask(links.remember.links.abMultipleBotFocus, multipleSelectDim, true, "tempLocal");
+setTagMask(ab.links.remember.links.abMultipleBotFocus, multipleSelectDim, true, "tempLocal");
 
-masks.currentSheetBots = links.remember.tags.abMultipleBotFocus;
+masks.currentSheetBots = ab.links.remember.tags.abMultipleBotFocus;
 masks.onPortalChanged = ListenerString(() => {
     if (that.dimension != "abMultipleSelect" && that.portal == "sheetPortal") {
         clearTagMasks(links.currentSheetBots);
@@ -13,4 +13,4 @@ masks.onPortalChanged = ListenerString(() => {
     }
 });
 
-ab.log(links.personality.tags.abBuilderIdentity + ": opened multiple select sheet");
+ab.log(ab.links.personality.tags.abBuilderIdentity + ": opened multiple select sheet");

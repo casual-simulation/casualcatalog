@@ -1,5 +1,5 @@
 
-const selectedBot = links.remember.links.abBotFocus;
+const selectedBot = ab.links.remember.links.abBotFocus;
 
 if (selectedBot) {
     const state = os.getInputState("keyboard", "Shift");
@@ -11,5 +11,5 @@ if (selectedBot) {
         configBot.tags.sheetPortal = selectedBot.id;
     }
 
-    ab.log(links.personality.tags.abBuilderIdentity + ": opened bot sheet");
+    ab.log(ab.links.personality.tags.abBuilderIdentity + ": opened bot sheet");
 }

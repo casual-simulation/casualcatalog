@@ -1,6 +1,5 @@
 const { data } = that;
 
-delete data.tags.label;
 delete data.tags.labelColor;
 delete data.tags.labelFloatingBackgroundColor;
 delete data.tags.color;

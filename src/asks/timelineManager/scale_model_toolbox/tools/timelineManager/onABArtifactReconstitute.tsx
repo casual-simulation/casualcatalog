@@ -2,8 +2,9 @@ let data = that.data;
 if (data.config) {
     data = data.config;
 }
-tags.label = data.label ?? '0';
+
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
+tags.prevColor = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? 'white';
 tags.timelinePaused = true;

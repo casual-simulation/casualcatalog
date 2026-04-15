@@ -81,7 +81,8 @@ if (dataFound) {
         formAddress: 'restart_alt',
         label: 'defaults',
         onClick: ListenerString(() => {
-            for (const menuItemBot of links.menuItemBots) {
+            const menuItemBots = Array.isArray(links.menuItemBots) ? links.menuItemBot : [links.menuItemBots];
+            for (const menuItemBot of menuItemBots) {
                 const property = menuItemBot.tags.property as ABConfiguratorProperty;
                 if (property) {
                     property.value = undefined;
@@ -112,8 +113,9 @@ if (dataFound) {
         onClick: ListenerString(() => {
             // Create a configurator data object and collect all the menu item property tags.
             const properties: ABConfiguratorProperty[] = [];
+            const menuItemBots = Array.isArray(links.menuItemBots) ? links.menuItemBot : [links.menuItemBots];
 
-            for (const menuItemBot of links.menuItemBots) {
+            for (const menuItemBot of menuItemBots) {
                 const property = menuItemBot.tags.property as ABConfiguratorProperty;
 
                 if (property && property.type !== 'group') {

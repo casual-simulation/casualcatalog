@@ -26,10 +26,10 @@ const isBusy     = anyReady && !allApplied && !anyFailed;
 
 const menuOptions = {
     abPatchTodoMenu: true,
+    abPatchTodoMenuSortOrder: 0,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
     patchBot: getLink(thisBot),
     groupSortOrder: 100,
-    color: tags.abPatchColor,
     menuItems: [],
 };
 
@@ -99,7 +99,7 @@ if (notStarted) {
     ab.links.menu.abCreateMenuBusyIndicator({
         abPatchTodoMenu: true,
         abPatchTodoMenuReset: `@destroy(thisBot)`,
-        abPatchTodoMenuSortOrder: 100.02,
+        abPatchTodoMenuSortOrder: 999,
         label: 'being worked on',
     });
     menuOptions.menuItems.push({

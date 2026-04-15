@@ -13,7 +13,6 @@ let menuText = {
     onPointerUp: null,
     onPointerDown: null,
     pointable: false,
-    color: "white",
     menuItemStyle: {
         "padding-top": "6px",
         "padding-bottom": "6px",

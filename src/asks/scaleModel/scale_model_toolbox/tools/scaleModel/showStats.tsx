@@ -26,7 +26,8 @@ for (const item in tags.modelAttributes) {
     }
     const tempDropdownItem = {
         ...menuOptions,
-        label: `${item}: ${val}`
+        label: `${item}: ${val}`,
+        stat: item
     }
     seeAttributesButton.dropdownOptions.push(tempDropdownItem);
 }
@@ -38,6 +39,7 @@ for (const item in tags.modelStates) {
     }
     const tempDropdownItem = {
         ...menuOptions,
+        state: item,
         label: `${item}: ${val}`
     }
     seeAttributesButton.dropdownOptions.push(tempDropdownItem);

@@ -10,7 +10,11 @@ for (const listener in tags.modelListeners) {
 for (const state in tags.modelStates) {
     if (that.tags.includes(state)) {
         if (tags.statsButton) {
-            thisBot.onClick();
+            //thisBot.onClick();
+            const menuBot = getBot(byTag(configBot.tags.menuPortal, true), byTag("label", label => label.includes(state)));
+            if (menuBot) {
+                menuBot.tags.label = state + ": " + tags[state];
+            }
         }
     }
 }
@@ -18,7 +22,11 @@ for (const state in tags.modelStates) {
 for (const stat in tags.modelAttributes) {
     if (that.tags.includes(stat)) {
         if (tags.statsButton) {
-            thisBot.onClick();
+            //thisBot.onClick();
+            const menuBot = getBot(byTag(configBot.tags.menuPortal, true), byTag("label", label => label.includes(stat)));
+            if (menuBot) {
+                menuBot.tags.label = stat + ": " + tags[stat];
+            }
         }
     }
 }

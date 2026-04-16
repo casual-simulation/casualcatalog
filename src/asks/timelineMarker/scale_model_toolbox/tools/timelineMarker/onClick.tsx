@@ -1,4 +1,3 @@
-shout('abMenuRefresh');
 shout("clearTimelineMarkerMenu");
 
 if (that) {
@@ -6,8 +5,6 @@ if (that) {
         return;
     }
 }
-
-configBot.tags.menuPortal = 'timelineMarker_menu';
 
 const menuOptions = {
     timelineMarker_menu: true,
@@ -116,6 +113,7 @@ const setButton = {
 
 
 if (!tags.markerLocked) {
+    configBot.tags.menuPortal = 'timelineMarker_menu';
     ab.links.menu.abCreateMenuInput(valueButton);  
     ab.links.menu.abCreateMenuDropdown(unitButton);  
     ab.links.menu.abCreateMenuButton(setButton);

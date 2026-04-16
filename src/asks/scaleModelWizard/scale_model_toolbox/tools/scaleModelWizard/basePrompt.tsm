@@ -92,7 +92,7 @@ All values are in **meters**.
 |---|---|
 | Ground-level objects | z = 0 |
 | Stacked / multi-floor | z reflects vertical placement |
-| Timeline markers | Spaced along the x-axis; tens or hundreds of meters apart depending on context |
+| Timeline markers | Spaced along the x-axis; 7 meters apart | placed below the models on the y-axis | centered on the x-axis compared to the models above |
 | Separate entities | Spaced at least several times the object's width apart — no overlapping |
 
 **Scale** (x = width, y = depth, z = height) must reflect realistic physical dimensions and remain consistent with placement. Larger or expanded entities should occupy more space.

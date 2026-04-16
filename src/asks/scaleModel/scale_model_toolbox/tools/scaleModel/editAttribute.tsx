@@ -13,8 +13,8 @@ if (!newValue && newValue != 0) {
 
 tags[attributeName] = newValue;
 
-shout("clearScaleModelMenu");
+//shout("clearScaleModelMenu");
 
-if (links.statsButton) {
-    thisBot.showStats();
-}
+// if (links.statsButton) {
+//     thisBot.showStats();
+// }

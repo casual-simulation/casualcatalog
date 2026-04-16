@@ -15,12 +15,12 @@ thisBot.vars.inputBot = ab.links.menu.abCreateMenuInput({
     label: `ask ${tags.agentName ?? tags.aiModel}`,
     color: tags.menuColor,
     labelColor: tags.labelColor,
-    promptType: that.prompt,
+    menuType: that.menuType,
     agentBotId: thisBot.id,
     agentBot: getLink(thisBot),
     onABAIAgentReset: `@destroy(thisBot)`,
     onSubmit: `@
-        links.agentBot.masks.promptType = tags.promptType;
+        links.agentBot.masks.menuType = tags.menuType;
         links.agentBot.onSubmit(that);
     `,
     onAnyBotsRemoved: `@

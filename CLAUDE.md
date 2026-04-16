@@ -210,7 +210,7 @@ This is a condensed reference of commonly used APIs. For the full API, consult `
 
 ## TypeScript
 
-- **Ignore TypeScript errors.** The TypeScript configuration is not fully aligned with the CasualOS runtime. There will be type errors and IDE diagnostics, but the code runs correctly at runtime in CasualOS. Do not attempt to "fix" type errors unless explicitly asked.
+- **Ignore TypeScript errors.** The TypeScript configuration is not fully aligned with the CasualOS runtime. There will be type errors and IDE diagnostics, but the code runs correctly at runtime in CasualOS. Do not attempt to "fix" type errors unless explicitly asked. Do not mention TypeScript errors or diagnostics to the user — they are already aware and expected.
 - Path aliases: `@src/ab/*`, `@src/asks/*`
 - CasualOS API types in `typings/AuxLibraryDefinitions.d.ts` (615KB, auto-generated)
 

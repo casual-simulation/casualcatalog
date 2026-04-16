@@ -123,12 +123,12 @@ else if (!inquiryHasSpace) {
             costRecordName = authBot.id;
         }
 
-        const askGPTParams = { 
+        const askGPTParams = {
             inquiry: inquiry,
-            prompt: menu, 
-            agentMode, 
+            menuType: menu,
+            agentMode,
             recordName: costRecordName,
-            data: that,
+            menuActionData: that,
             sourceId: 'abBot', 
             historyStorageBot: ab.links.remember
         };

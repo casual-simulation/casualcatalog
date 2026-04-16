@@ -1,7 +1,7 @@
 import { AIChatOptions, AIChatMessage } from 'casualos';
 
 const {
-    prompt,
+    systemPrompt,
     inquiry,
     model,
     recordName,
@@ -56,7 +56,7 @@ if (messages && messages.length > 0) {
     aiChatMessages.push({
         role: 'system',
         content: [
-            { text: prompt }
+            { text: systemPrompt }
         ]
     })
 

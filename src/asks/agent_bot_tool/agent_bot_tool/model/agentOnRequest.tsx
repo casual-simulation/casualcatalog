@@ -40,13 +40,13 @@ if (!inMapPortal && inGridPortal) {
 
 abAskBot.askGPT({
     inquiry,
-    prompt: tags.promptType,
+    menuType: tags.menuType,
     model: tags.aiModel,
     abBot: thisBot,
     sourceId: thisBot.id,
     abDimension: tags.dimension,
     abPosition: patchBotPosition,
-    data,
+    menuActionData: data,
     todoBot: todoBotId,
     historyStorageBot: thisBot.id,
 })

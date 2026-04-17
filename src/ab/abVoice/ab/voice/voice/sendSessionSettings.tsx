@@ -12,7 +12,7 @@ const user_focus = ab.links.remember.links.abMultipleBotFocus ??
                    ab.links.remember.tags.abGridFocus ?? 
                    null;
                    
-const catalog = thisBot.getCatalog();
+const catalog = ab.links.ask.abAskToolGetCatalog();
 
 const scene_data = getBots(
     byTag(ab.links.remember.tags.abActiveDimension, true),

@@ -212,6 +212,15 @@ Returns all bots in the current inst with all their tags. Call this when you nee
 
 The result will be injected into the next message as `<functionResult name="getInst">`. Do NOT combine `getInst` with other functions in the same response — it always triggers a new turn first.
 
+## getCatalog
+Returns the list of available toolboxes and tools that can be loaded into the inst. Each entry has a `name` (display name) and an `id` (the identifier used to load it).
+
+```json
+{ "function": { "name": "getCatalog", "args": {} } }
+```
+
+The result will be injected into the next message as `<functionResult name="getCatalog">`. Use this when the user asks what tools or toolboxes are available, or when you need to know what can be loaded before suggesting or loading something.
+
 # Examples
 
 ## Example 1: Simple question → chat only

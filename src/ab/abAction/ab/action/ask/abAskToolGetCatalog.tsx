@@ -1,5 +1,5 @@
 const catalogArr = [];
-const possibleToolboxes = ab.links.remember.tags.toolbox_array;
+const possibleToolboxes = ab.links.remember.tags.toolbox_array ?? [];
 
 for (let i = 0; i < possibleToolboxes.length; i++)
 {

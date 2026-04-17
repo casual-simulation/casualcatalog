@@ -8,9 +8,12 @@ for (let i = 0; i < possibleToolboxes.length; i++)
 
     if (!extantBot)
     {
+        const displayName = activeToolbox.title ?? activeToolbox.name;
         const obj = {
-            "name": activeToolbox.title,
-            "id": activeToolbox.name
+            "type": "kit",
+            "name": displayName,
+            "id": activeToolbox.name,
+            "description": activeToolbox.description ?? displayName
         }
         catalogArr.push(obj);
     }
@@ -20,9 +23,13 @@ const loadedToolboxes = getBots("tool_array");
 for (let j = 0; j < loadedToolboxes.length; ++j) {
     const arr = loadedToolboxes[j].tags.tool_array ?? [];
     for (let k = 0; k < arr.length; ++k) {
+        const toolName = arr[k].name ?? arr[k].targetAB;
         const obj = {
-            "name": arr[k].name ?? arr[k].targetAB,
-            "id": arr[k].targetAB
+            "type": "tool",
+            "name": toolName,
+            "id": arr[k].targetAB,
+            "description": arr[k].description ?? toolName,
+            "agentReady": arr[k].agentReady ?? false
         }
         catalogArr.push(obj);
     }

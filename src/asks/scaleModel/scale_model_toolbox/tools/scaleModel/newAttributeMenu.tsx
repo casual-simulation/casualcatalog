@@ -98,71 +98,6 @@ const attrDeltaModButton = {
     ]
 }
 
-const attrUnitButton = {
-    ...menuOptions,
-    label: 'set time unit: ' + (thisBot.masks.tempAttributeTimeUnit ?? ''),
-    scaleModelAttribute_menuSortOrder: 5,
-    dropdownSortOrder: 5,
-    dropdownOptions: [
-         {
-            ...menuOptions,
-            label: 'minute',
-            onClick: `@
-                links.model.masks.tempAttributeTimeUnit = tags.label;
-                links.model.newAttributeMenu();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'hour',
-            onClick: `@
-                links.model.masks.tempAttributeTimeUnit = tags.label;
-                links.model.newAttributeMenu();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'day',
-            onClick: `@
-                links.model.masks.tempAttributeTimeUnit = tags.label;
-                links.model.newAttributeMenu();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'week',
-            onClick: `@
-                links.model.masks.tempAttributeTimeUnit = tags.label;
-                links.model.newAttributeMenu();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'month',
-            onClick: `@
-                links.model.masks.tempAttributeTimeUnit = tags.label;
-                links.model.newAttributeMenu();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'quarter',
-            onClick: `@
-                links.model.masks.tempAttributeTimeUnit = tags.label;
-                links.model.newAttributeMenu();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'year',
-            onClick: `@
-                links.model.masks.tempAttributeTimeUnit = tags.label;
-                links.model.newAttributeMenu();
-            `
-        }
-    ]
-}
-
 const addButton = {
     ...menuOptions,
     label: 'add',
@@ -173,7 +108,6 @@ const addButton = {
         attr.start = links.model.masks.tempAttributeStart;
         attr.delta = links.model.masks.tempAttributeDelta;
         attr.deltaModifier = links.model.masks.tempAttributeDeltaMod;
-        attr.unit = links.model.masks.tempAttributeTimeUnit;
 
         if (!links.model.tags.modelAttributes) {
             links.model.tags.modelAttributes = {};
@@ -186,7 +120,6 @@ const addButton = {
         links.model.masks.tempAttributeStart = null;
         links.model.masks.tempAttributeDelta = null;
         links.model.masks.tempAttributeDeltaMod = null;
-        links.model.masks.tempAttributeTimeUnit = null;
 
         links.model.tags.modelAttributes = tempAttributes;
         links.model.tags[links.model.masks.tempAttributeName] = attr.start;
@@ -197,6 +130,5 @@ const addButton = {
 ab.links.menu.abCreateMenuInput(attrNameButton);
 ab.links.menu.abCreateMenuInput(attrStartButton);
 ab.links.menu.abCreateMenuInput(attrDeltaButton);
-ab.links.menu.abCreateMenuDropdown(attrUnitButton);
 ab.links.menu.abCreateMenuDropdown(attrDeltaModButton);
 ab.links.menu.abCreateMenuButton(addButton);

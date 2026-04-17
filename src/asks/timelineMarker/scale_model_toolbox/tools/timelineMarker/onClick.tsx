@@ -118,5 +118,5 @@ if (!tags.markerLocked) {
     ab.links.menu.abCreateMenuDropdown(unitButton);  
     ab.links.menu.abCreateMenuButton(setButton);
 } else {
-    shout("setDelta", {value: tags.timeValue, unit: tags.timeUnit});
+    shout("setDelta", tags.timeValue);
 }

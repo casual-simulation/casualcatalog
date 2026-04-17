@@ -1,5 +1,4 @@
-const prompt = that;
-tags.userPrompt = that;
+const prompt = that.name;
 
 if (!prompt) {
     return;
@@ -7,17 +6,17 @@ if (!prompt) {
 
 configBot.tags.menuPortal = "scaleModelWizardLoading";
 const loadingBar = ab.links.menu.abCreateMenuBusyIndicator({
-    label: "thinking",
+    label: "generating model: " + prompt,
     scaleModelWizardLoading: true
 });
 
-const basePrompt = tags.basePrompt;
+const basePrompt = tags.builderPrompt;
 const aiChatMessages: AIChatMessage[] = [];
 
 aiChatMessages.push({
     role: 'system',
     content: [
-        { text: basePrompt }
+        { text: basePrompt}
     ]
 })
 
@@ -31,7 +30,7 @@ aiChatMessages.push({
 aiChatMessages.push({
     role: 'user',
     content: [
-        { text: 'prompt: ' + prompt}
+        { text: 'target: ' + prompt + "\n manifest: " + JSON.stringify(tags.parsedOriginalResponse)}
     ]
 })
 
@@ -43,11 +42,12 @@ try {
     const response = await ai.chat(aiChatMessages, aiChatOptions);
     console.log(response);
     if (response) {
-        thisBot.generateFromJSON(response.content);
+        await os.sleep(500);
+        thisBot.generateFromBuilder(response.content);
     }  
 } catch (e) {
-    os.toast("Error generating scale model. Please try again", 8);
-    console.log("Error generating scale model. Please try again", e);
+    os.toast("Error generating prompt. Please try again", 8);
+    console.log("Error generating prompt. Please try again", e);
     destroy(loadingBar);
 }
 

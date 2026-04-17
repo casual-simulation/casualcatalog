@@ -1,6 +1,8 @@
 tags.timelinePaused = true;
 tags.currentStep = 0;
 
+shout("setDelta", {value: 0, unit: 'minute'});
+
 const models = getBots("scaleModel", true);
 for (let i = 0; i < models.length; ++i) {
     const states = {...models[i].tags.modelStates};

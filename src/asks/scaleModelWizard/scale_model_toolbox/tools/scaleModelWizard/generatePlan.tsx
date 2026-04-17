@@ -7,11 +7,11 @@ if (!prompt) {
 
 configBot.tags.menuPortal = "scaleModelWizardLoading";
 const loadingBar = ab.links.menu.abCreateMenuBusyIndicator({
-    label: "generating detailed prompt",
+    label: "generating plan",
     scaleModelWizardLoading: true
 });
 
-const basePrompt = tags.genPrompt;
+const basePrompt = tags.plannerPrompt;
 const aiChatMessages: AIChatMessage[] = [];
 
 aiChatMessages.push({
@@ -44,11 +44,11 @@ try {
     console.log(response);
     if (response) {
         await os.sleep(500);
-        thisBot.generateFromPrompt(response.content);
+        thisBot.generateFromPlanner(response.content);
     }  
 } catch (e) {
-    os.toast("Error generating prompt. Please try again", 8);
-    console.log("Error generating prompt. Please try again", e);
+    os.toast("Error generating plan. Please try again", 8);
+    console.log("Error generating plan. Please try again", e);
     destroy(loadingBar);
 }
 

@@ -219,11 +219,32 @@ const currentZ = tags[dimension + 'Z'];
 
 Use `animateTag` to move a model smoothly to a new position. Always provide `fromValue` explicitly. Set `duration` to 1 (matching one tick). Always set `tagMaskSpace: false`.
 
+You may optionally include an `easing` field after `duration` for more natural movement. Choose an easing type and mode appropriate for the entity — for example, `elastic` out feels natural for bouncy animals, `sinusoidal` inout feels natural for people walking, `linear` suits machines or vehicles.
+
 ```javascript
 await animateTag(thisBot, {
   fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
   toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
   duration: 1,
+  easing: { type: "sinusoidal", mode: "inout" },
+  tagMaskSpace: false
+});
+```
+
+**Easing types**: `"linear"`, `"quadratic"`, `"cubic"`, `"quartic"`, `"quintic"`, `"sinusoidal"`, `"exponential"`, `"circular"`, `"elastic"`
+
+**Easing modes**: `"in"`, `"out"`, `"inout"`
+
+You may also add a `startTime` field to offset when the animation begins, which helps prevent multiple entities of the same type from moving in perfect synchrony. Use `os.localTime` plus a random millisecond offset.
+
+```javascript
+const offset = Math.random() * 500; // up to 500ms random delay
+await animateTag(thisBot, {
+  fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
+  toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
+  startTime: os.localTime + offset,
+  duration: 1 - (offset / 1000),
+  easing: { type: "sinusoidal", mode: "inout" },
   tagMaskSpace: false
 });
 ```
@@ -256,6 +277,7 @@ await animateTag(thisBot, {
   fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
   toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
   duration: 1,
+  easing: { type: "sinusoidal", mode: "inout" },
   tagMaskSpace: false
 });
 ```
@@ -290,6 +312,7 @@ await animateTag(thisBot, {
   fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
   toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
   duration: 1,
+  easing: { type: "linear", mode: "inout" },
   tagMaskSpace: false
 });
 ```
@@ -312,6 +335,7 @@ if (dist > speed) {
     fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
     toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
     duration: 1,
+    easing: { type: "quadratic", mode: "inout" },
     tagMaskSpace: false
   });
 }
@@ -327,6 +351,6 @@ Every model with current_tick must include this listener as the sole entry point
 "oncurrent_tickChanged": {
   "type": "stat",
   "stat": "current_tick",
-  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\nconst emp1 = getBot('modelName', 'Employee 1');\nconst emp2 = getBot('modelName', 'Employee 2');\nconst rent = getBot('modelName', 'Rent Expense');\ntags.total_expenses = emp1.tags.monthly_salary + emp2.tags.monthly_salary + rent.tags.monthly_cost;\ntags.cash_balance = tags.starting_cash + (tags.monthly_revenue * tags.current_tick) - (tags.total_expenses * tags.current_tick);\nif (tags.cash_balance <= 0) { changeState(thisBot, 'insolvent', 'financial_status'); }\nif (tags.behavior === 'foraging') {\n  const speed = 0.6;\n  const bounds = { x: 3, y: 3 };\n  const startX = 0;\n  const startY = 0;\n  const dx = (Math.random() - 0.5) * 2 * speed;\n  const dy = (Math.random() - 0.5) * 2 * speed;\n  const newX = Math.max(startX - bounds.x, Math.min(startX + bounds.x, tags[dimension + 'X'] + dx));\n  const newY = Math.max(startY - bounds.y, Math.min(startY + bounds.y, tags[dimension + 'Y'] + dy));\n  await animateTag(thisBot, { fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] }, toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY }, duration: 1, tagMaskSpace: false });\n}"
+  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\nconst emp1 = getBot('modelName', 'Employee 1');\nconst emp2 = getBot('modelName', 'Employee 2');\nconst rent = getBot('modelName', 'Rent Expense');\ntags.total_expenses = emp1.tags.monthly_salary + emp2.tags.monthly_salary + rent.tags.monthly_cost;\ntags.cash_balance = tags.starting_cash + (tags.monthly_revenue * tags.current_tick) - (tags.total_expenses * tags.current_tick);\nif (tags.cash_balance <= 0) { changeState(thisBot, 'insolvent', 'financial_status'); }\nif (tags.behavior === 'foraging') {\n  const speed = 0.6;\n  const bounds = { x: 3, y: 3 };\n  const startX = 0;\n  const startY = 0;\n  const dx = (Math.random() - 0.5) * 2 * speed;\n  const dy = (Math.random() - 0.5) * 2 * speed;\n  const newX = Math.max(startX - bounds.x, Math.min(startX + bounds.x, tags[dimension + 'X'] + dx));\n  const newY = Math.max(startY - bounds.y, Math.min(startY + bounds.y, tags[dimension + 'Y'] + dy));\n  await animateTag(thisBot, { fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] }, toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY }, duration: 1, easing: { type: 'sinusoidal', mode: 'inout' }, tagMaskSpace: false });\n}"
 }
 ```

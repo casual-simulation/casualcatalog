@@ -20,6 +20,12 @@ interface ABConfiguratorSelectOption {
   label?: string;
 }
 
+interface ABConfiguratorSelectOptionGroup {
+  group: string;
+  label?: string;
+  options: ABConfiguratorSelectOption[];
+}
+
 // ============================================
 // Type-specific properties
 // ============================================
@@ -59,7 +65,7 @@ interface ABConfiguratorPropertySelect extends ABConfiguratorPropertyBase {
   type: 'select';
   value?: string | number | ABConfiguratorSelectOption;
   default?: string | number | ABConfiguratorSelectOption;
-  options: ABConfiguratorSelectOption[];
+  options: (ABConfiguratorSelectOption | ABConfiguratorSelectOptionGroup)[];
 }
 
 interface ABConfiguratorPropertyMultiSelect extends ABConfiguratorPropertyBase {

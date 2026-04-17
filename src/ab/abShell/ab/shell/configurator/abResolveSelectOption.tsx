@@ -38,4 +38,11 @@ if (typeof value === 'number' && Number.isInteger(value) && value >= 0 && value 
     return options[value];
 }
 
+for (const item of options) {
+    if ('options' in item) {
+        const found = thisBot.abResolveSelectOption({ options: (item as ABConfiguratorSelectOptionGroup).options, value });
+        if (found) return found;
+    }
+}
+
 return null;

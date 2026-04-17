@@ -3,9 +3,8 @@ if (data.config) {
     data = data.config;
 }
 
-tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
-tags.prevColor = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
-tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
+tags.color = data.color ?? '#031f40';
+tags.prevColor = data.color ?? '#031f40';
 tags.labelColor = data.labelColor ?? 'white';
 tags.timelinePaused = true;
 tags.timeUnit = data.timeUnit ?? 'month';

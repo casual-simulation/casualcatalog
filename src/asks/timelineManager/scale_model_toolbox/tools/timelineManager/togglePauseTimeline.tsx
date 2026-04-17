@@ -8,8 +8,7 @@ if (tags.timelinePaused) {
     }, 1000);
 
     tags.timelinePaused = false;
-    tags.prevColor = tags.color;
-    tags.color = '#519e2e';
+    tags.color = '#084a96';
 } else {
     tags.timelinePaused = true;
     tags.color = tags.prevColor;

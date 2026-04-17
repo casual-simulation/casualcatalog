@@ -3,8 +3,7 @@ if (data.config) {
     data = data.config;
 }
 tags.label = data.label ?? '0';
-tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
-tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
+tags.color = data.color ?? '#031f40';
 tags.labelColor = data.labelColor ?? 'white';
 tags.timeUnit = data.timeUnit;
 tags.timeValue = data.timeValue;

@@ -110,7 +110,6 @@ const stepIncreaseButton = {
     timelineManager_menuSortOrder: 4,
     onClick: `@
         links.manager.increaseStep();
-        shout("clearTimelineManagerMenu");
     `
 }
 
@@ -121,7 +120,6 @@ const stepDecreaseButton = {
     timelineManager_menuSortOrder: 4,
     onClick: `@
         links.manager.decreaseStep();
-        shout("clearTimelineManagerMenu");
     `
 }
 

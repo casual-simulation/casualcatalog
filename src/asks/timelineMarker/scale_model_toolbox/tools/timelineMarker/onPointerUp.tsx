@@ -1,1 +1,1 @@
-tags.scaleZ = null;
+tags.scaleZ = 0.5;

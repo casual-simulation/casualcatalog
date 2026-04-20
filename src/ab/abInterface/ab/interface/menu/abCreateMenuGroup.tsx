@@ -125,7 +125,7 @@ for (let i = 0; i < menuItems.length; ++i) {
             await thisBot.abCreateMenuDropdown(
                 {
                     ...newMenuButton,
-                    "dropdownSortOrder": Number(that.groupSortOrder) + ((i + 1) / 10)
+                    "dropdownSortOrder": Number(that.groupSortOrder) + ((i + 1) / 100)
                 });
             break;
         case "input": 

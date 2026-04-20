@@ -368,46 +368,90 @@ if (property.type === 'boolean') {
             const current = property.value ?? property.default;
             tags.label = (property.label ?? property.key) + ': ' + (current != null ? String(current) : 'unset');
         }),
-        onClick: ListenerString(async () => {
+        onClick: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyNumber;
-            const current = property.value ?? property.default ?? 0;
-            const input = await os.showInput(current, {
-                type: 'number',
-                title: property.label ?? property.key,
+            const numberPortal = `abConfiguratorNumberMenu_${property.key}`;
+            const clearEvent = `clearAbConfiguratorNumberMenu_${property.key}`;
+
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = numberPortal;
+
+            const propertyLink = getLink(thisBot);
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                [numberPortal]: true,
+                [`${numberPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: { 'font-weight': 'bold' },
             });
-            if (input != null) {
-                let parsed = Number(input);
-                if (!isNaN(parsed)) {
+
+            ab.links.menu.abCreateMenuInput({
+                space: 'tempLocal',
+                [numberPortal]: true,
+                [`${numberPortal}SortOrder`]: 1,
+                clearEvent,
+                propertyMenuBot: propertyLink,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                formAddress: 'numbers',
+                onCreate: ListenerString(() => {
+                    const property = links.propertyMenuBot.tags.property;
+                    const current = property.value ?? property.default;
+                    masks.menuItemText = current != null ? String(current) : '';
+                }),
+                onSubmit: ListenerString(() => {
+                    const property = links.propertyMenuBot.tags.property;
+                    let parsed = Number(that.text);
+                    if (isNaN(parsed)) return;
                     if (property.step != null) {
                         const decimals = (String(property.step).split('.')[1] ?? '').length;
                         const snap = parsed >= 0 ? Math.ceil : Math.floor;
                         parsed = parseFloat((snap(parsed / property.step) * property.step).toFixed(decimals));
-
                         if (property.max != null && parsed > property.max) {
                             parsed = parseFloat((Math.floor(property.max / property.step) * property.step).toFixed(decimals));
                         }
-
                         if (property.min != null && parsed < property.min) {
                             parsed = parseFloat((Math.ceil(property.min / property.step) * property.step).toFixed(decimals));
                         }
                     }
-
                     if (property.integer) {
                         parsed = Math.round(parsed);
                     }
-
                     if (property.max != null && parsed > property.max) {
                         parsed = property.max;
                     }
-
                     if (property.min != null && parsed < property.min) {
                         parsed = property.min;
                     }
+                    links.propertyMenuBot.updatePropertyField({ name: 'value', value: parsed });
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                }),
+            });
 
-                    thisBot.updatePropertyField({ name: 'value', value: parsed });
-                }
-            }
-        })
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [numberPortal]: true,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                [`${numberPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                onClick: ListenerString(() => {
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
+        }),
     })
 } else if (property.type === 'text') {
     menuItem = ab.links.menu.abCreateMenuInput({

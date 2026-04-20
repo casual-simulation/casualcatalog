@@ -107,14 +107,111 @@ if (property.type === 'boolean') {
         formAddress: 'palette',
         onClick: ListenerString(async () => {
             const property = tags.property as ABConfiguratorPropertyColor;
-            const current = property.value ?? property.default;
-            const picked = await os.showInput(current, {
-                type: 'color',
-                title: property.label ?? property.key,
+            const colorPortal = `abConfiguratorColorMenu_${property.key}`;
+            const clearEvent = `clearAbConfiguratorColorMenu_${property.key}`;
+
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = colorPortal;
+
+            const propertyLink = getLink(thisBot);
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                formAddress: 'palette',
+                [colorPortal]: true,
+                [`${colorPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: { 'font-weight': 'bold' },
             });
-            if (picked != null) {
-                thisBot.updatePropertyField({ name: 'value', value: picked });
-            }
+
+            const allSwatches = ab.links.utils.tags.abDefaultColorSwatches as string[];
+
+            const menuItems = [
+                {
+                    menuItemType: 'input',
+                    label: 'custom color',
+                    formAddress: 'palette',
+                    clearEvent,
+                    onCreate: ListenerString(async () => {
+                        const property = links.propertyMenuBot.tags.property;
+                        const current = property.value ?? property.default ?? '';
+                        masks.menuItemText = current;
+                        if (current) {
+                            tags.color = current;
+                            tags.labelColor = await ab.links.utils.getContrastColor(current);
+                        }
+                    }),
+                    onInputTyping: ListenerString(async () => {
+                        const text = that.text?.trim();
+                        tags.color = text || null;
+                        tags.labelColor = text ? await ab.links.utils.getContrastColor(text) : null;
+                    }),
+                    onSubmit: ListenerString(() => {
+                        const value = that.text?.trim();
+                        if (value) {
+                            links.propertyMenuBot.updatePropertyField({ name: 'value', value });
+                        }
+                        shout(tags.clearEvent);
+                        configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                    }),
+                },
+                {
+                    menuItemType: 'dropdown',
+                    label: 'swatches',
+                    dropdownOptions: allSwatches.map(hex => ({
+                        label: hex,
+                        color: hex,
+                        propertyMenuBot: propertyLink,
+                        clearEvent,
+                        [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                        abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                        onBotAdded: ListenerString(async () => {
+                            const property = links.propertyMenuBot.tags.property;
+                            const current = property.value ?? property.default;
+                            tags.labelColor = await ab.links.utils.getContrastColor(tags.color);
+                            if (current && tags.color.toLowerCase() === String(current).toLowerCase()) {
+                                tags.label = '✓ ' + tags.color;
+                            }
+                        }),
+                        onClick: ListenerString(() => {
+                            links.propertyMenuBot.updatePropertyField({ name: 'value', value: tags.color });
+                            shout(tags.clearEvent);
+                            configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                        }),
+                    })),
+                },
+            ];
+
+            await ab.links.menu.abCreateMenuGroup({
+                space: 'tempLocal',
+                groupSortOrder: 1,
+                [colorPortal]: true,
+                propertyMenuBot: propertyLink,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                menuItems,
+            });
+
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [colorPortal]: true,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                [`${colorPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                onClick: ListenerString(() => {
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
         }),
         onRefreshDisplay: ListenerString(async () => {
             const property = tags.property as ABConfiguratorPropertyColor;

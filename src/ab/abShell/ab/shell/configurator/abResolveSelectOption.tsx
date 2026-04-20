@@ -26,12 +26,14 @@ interface ABResolveSelectOptionArg {
 
 const { options, value } = that as ABResolveSelectOptionArg ?? {};
 
-// Already a full option object — validate it exists in options
+// Already a full option object — delegate to scalar path so groups are traversed
 if (typeof value === 'object' && value != null && 'value' in value) {
-    return options.find((o) => o.value === value.value) ?? null;
+    return thisBot.abResolveSelectOption({ options, value: (value as ABConfiguratorSelectOption).value });
 }
 
-const byValue = options.find((o) => o.value === value);
+if (value == null) return null;
+
+const byValue = options.find((o) => !('options' in o) && o.value === value);
 if (byValue) return byValue;
 
 if (typeof value === 'number' && Number.isInteger(value) && value >= 0 && value < options.length) {

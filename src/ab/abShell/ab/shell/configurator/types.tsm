@@ -72,7 +72,7 @@ interface ABConfiguratorPropertyMultiSelect extends ABConfiguratorPropertyBase {
   type: 'multiselect';
   value?: (string | number | ABConfiguratorSelectOption)[];
   default?: (string | number | ABConfiguratorSelectOption)[];
-  options: ABConfiguratorSelectOption[];
+  options: (ABConfiguratorSelectOption | ABConfiguratorSelectOptionGroup)[];
 }
 
 interface ABConfiguratorPropertyGroup extends ABConfiguratorPropertyBase {

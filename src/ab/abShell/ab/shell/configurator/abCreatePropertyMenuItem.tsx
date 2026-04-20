@@ -551,18 +551,74 @@ if (property.type === 'boolean') {
         }),
     })
 } else if (property.type === 'text') {
-    menuItem = ab.links.menu.abCreateMenuInput({
+    menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
+        formAddress: 'edit_note',
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyText;
-            tags.label = property.placeholder ?? property.label ?? property.key;
-            tags.menuItemText = property.value ?? property.default;
+            tags.label = property.label ?? property.key;
         }),
-        onInputTyping: ListenerString(() => {
-            const { text } = that;
+        onClick: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyText;
+            const textPortal = `abConfiguratorTextMenu_${property.key}`;
+            const clearEvent = `clearAbConfiguratorTextMenu_${property.key}`;
 
-            thisBot.updatePropertyField({ name: 'value', value: text, suppressRefresh: true });
-        })
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = textPortal;
+
+            const propertyLink = getLink(thisBot);
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                [textPortal]: true,
+                [`${textPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: { 'font-weight': 'bold' },
+            });
+
+            ab.links.menu.abCreateMenuInput({
+                space: 'tempLocal',
+                [textPortal]: true,
+                [`${textPortal}SortOrder`]: 1,
+                clearEvent,
+                propertyMenuBot: propertyLink,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                menuItemShowSubmitWhenEmpty: true,
+                label: property.placeholder ?? '',
+                onCreate: ListenerString(() => {
+                    const property = links.propertyMenuBot.tags.property;
+                    masks.menuItemText = property.value ?? property.default ?? '';
+                }),
+                onSubmit: ListenerString(() => {
+                    const value = that.text ?? '';
+                    links.propertyMenuBot.updatePropertyField({ name: 'value', value });
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                }),
+            });
+
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [textPortal]: true,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                [`${textPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                onClick: ListenerString(() => {
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
+        }),
     })
 } else if (property.type === 'group') {
     menuItem = ab.links.menu.abCreateMenuButton({

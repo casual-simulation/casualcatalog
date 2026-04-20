@@ -36,8 +36,9 @@ if (value == null) return null;
 const byValue = options.find((o) => !('options' in o) && o.value === value);
 if (byValue) return byValue;
 
-if (typeof value === 'number' && Number.isInteger(value) && value >= 0 && value < options.length) {
-    return options[value];
+const flatOptions = options.filter(o => !('options' in o)) as ABConfiguratorSelectOption[];
+if (typeof value === 'number' && Number.isInteger(value) && value >= 0 && value < flatOptions.length) {
+    return flatOptions[value];
 }
 
 for (const item of options) {

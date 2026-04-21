@@ -109,6 +109,42 @@ The description field is the primary signal the builder uses to construct stats,
 - **Movement** — if the entity moves, describe how (wander within an area, patrol between locations, follow another entity) and under what conditions. Name the behavior state if relevant (e.g. "wanders when in the 'foraging' state, stays still when in the 'nesting' state")
 - **Spatial relationships** — if the entity sits on or inside another entity, name it
 - **Dependencies** — if this entity's stats feed into another model's calculations, say so
+- **Lifecycle** — if the entity has a lifecycle, follow the Lifecycle Pattern rules below
+
+---
+
+## Lifecycle Pattern
+
+Any entity can have a lifecycle — not just living things. Use this pattern for any entity that ages, degrades, or expires over time, should be destroyed or frozen after a certain number of ticks, or has meaningfully different behavior at different life stages.
+
+Do not assign a lifecycle to pure value-holder models (fixed salaries, static costs).
+
+### Lifecycle vocabulary
+
+Choose state names that fit the entity's domain:
+
+| Domain | Phase 0 | Phase 1 | Phase 2 | Terminal |
+|---|---|---|---|---|
+| Living thing | `alive` | `aging` | `elderly` | `dead` |
+| Machine / device | `active` | `degraded` | `critical` | `decommissioned` |
+| Business / asset | `operating` | `declining` | `expiring` | `closed` |
+| Software / subscription | `active` | `expiring` | `critical` | `expired` |
+| Event / campaign | `active` | `winding_down` | `concluding` | `concluded` |
+
+### Lifecycle fields in the description
+
+When an entity has a lifecycle, its description must include all of the following:
+
+- **State names in order**: *"has a lifecycle: active → degraded → critical → decommissioned"*
+- **max_age** in ticks: *"max_age: 12 ticks"*
+- **phase_thresholds** as two decimals between 0 and 1: *"phase thresholds: 0.5, 0.8"*
+- **spawn_tick**: use `0` for entities starting fresh; use a **negative value** for seed entities that begin the simulation already partway through their life — e.g. `spawn_tick: -4` means the entity is 4 ticks old at simulation start. Vary spawn_ticks across entities of the same type to stagger their deaths naturally across the timeline.
+- **Terminal behavior**: *"terminal: destroyBot"* or *"terminal: freeze"* — freeze means the bot stays visible as a historical marker but stops all movement and stat updates
+- **Speed scaling**: note whether movement speed should scale across phases (yes for most moving entities)
+
+### Example description excerpt
+
+> "A delivery van. Has a lifecycle: active → degraded → critical → decommissioned. max_age: 24 ticks. phase_thresholds: 0.5, 0.8. spawn_tick: -6 (already 6 ticks into service at simulation start). Terminal: destroyBot. Speed scales with lifecycle phase. Patrols between Warehouse and Store."
 
 ---
 
@@ -146,27 +182,27 @@ Given: "A food truck business with one employee and 6 monthly timeline markers"
 ]
 ```
 
-### Example 2 — Movement and stacking
-Given: "A duck pond with 2 ducks. Ducks reproduce if they get close enough."
+### Example 2 — Movement, stacking, and lifecycle
+Given: "A duck pond with 2 ducks of different ages."
 
 ```json
 [
   {
     "type": "MODEL",
     "name": "Pond",
-    "description": "A decorative duck pond, 6m wide and 6m deep. Holds a duck_count stat that increments when ducks reproduce. Stationary.",
+    "description": "A decorative duck pond, 6m wide and 6m deep. Holds a duck_count stat. Stationary. No lifecycle.",
     "location": { "x": 0, "y": 0, "z": 0 }
   },
   {
     "type": "MODEL",
     "name": "Duck 1",
-    "description": "A duck that lives on the Pond. Sits on top of the Pond at z = 0.5. Has a 'behavior' state starting as 'foraging'. Each tick wanders randomly within 3m of its starting position in x and y. If it comes within 0.5m of Duck 2, both ducks trigger a reproduction event and the Pond's duck_count increments.",
+    "description": "A duck that lives on the Pond. Sits on top of the Pond at z = 0.5. Has a lifecycle: alive → aging → elderly → dead. max_age: 10 ticks. phase_thresholds: 0.6, 0.8. spawn_tick: 0 (born at simulation start). Terminal: destroyBot. Speed scales with lifecycle phase. Wanders randomly within 3m of starting position when lifecycle is not dead.",
     "location": { "x": -1, "y": -1, "z": 0.5 }
   },
   {
     "type": "MODEL",
     "name": "Duck 2",
-    "description": "A duck that lives on the Pond. Sits on top of the Pond at z = 0.5. Has a 'behavior' state starting as 'foraging'. Each tick wanders randomly within 3m of its starting position in x and y. If it comes within 0.5m of Duck 1, both ducks trigger a reproduction event and the Pond's duck_count increments.",
+    "description": "A duck that lives on the Pond. Sits on top of the Pond at z = 0.5. Has a lifecycle: alive → aging → elderly → dead. max_age: 10 ticks. phase_thresholds: 0.6, 0.8. spawn_tick: -4 (already 4 ticks old at simulation start, will die earlier than Duck 1). Terminal: destroyBot. Speed scales with lifecycle phase. Wanders randomly within 3m of starting position when lifecycle is not dead.",
     "location": { "x": 1, "y": 1, "z": 0.5 }
   },
   {

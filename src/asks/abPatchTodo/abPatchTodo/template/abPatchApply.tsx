@@ -26,7 +26,6 @@ if (typeof thisBot.abPatchCode === 'function') {
 
         tags.abPatchApplied = true;
         tags.abPatchAppliedTimestamp = os.isCollaborative() ? os.agreedUponTime : os.localTime;
-        tags.abTodoComplete = true;
 
         tags.animationState = 'complete';
 

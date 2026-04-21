@@ -82,6 +82,7 @@ const focusJson = JSON.stringify(thisBot.abAskHelperBuildFocusContext({ askConte
 function buildContextBlock(...extras: string[]): string {
     const sections = [
         agentMode ? `  <mode>${agentMode}</mode>` : null,
+        todoBot ? `  <todoId>${todoBot.id}</todoId>` : null,
         `  <focus>${focusJson}</focus>`,
         ...extras,
     ].filter(Boolean);
@@ -163,8 +164,6 @@ if (tags.debug) {
 // into the next AI turn. Tools that return undefined are action functions.
 
 const queryResults: { name: string; functionResult: string }[] = [];
-let makePatchCalled = false;
-let chatAwaitsResponse = false;
 
 for (const fc of functionCalls) {
     const { name, args } = fc.function;
@@ -173,13 +172,6 @@ for (const fc of functionCalls) {
     if (typeof thisBot[toolTagName] !== 'function') {
         ab.links.utils.abLog({ message: `Unknown function call from AI: ${name}`, logType: 'error' });
         continue;
-    }
-
-    if (name === 'makePatch') {
-        makePatchCalled = true;
-    }
-    if (name === 'chat' && args?.awaitsResponse === true) {
-        chatAwaitsResponse = true;
     }
 
     const result = await thisBot[toolTagName]({ args, askContext });
@@ -219,20 +211,5 @@ if (queryResults.length > 0) {
                 { role: 'assistant', content: [{ text: response }] }
             ]
         });
-    }
-
-    // Tool-only todo completion: if the agent finished its work this turn without
-    // issuing a makePatch, no patch pipeline will set abTodoComplete/animationState.
-    // Mark the todo complete here so the manager advances past it.
-    if (todoBot
-        && !makePatchCalled
-        && !chatAwaitsResponse
-        && !todoBot.tags.abPatchCode
-        && !todoBot.tags.abPatchApplying
-        && !todoBot.tags.abPatchApplied
-        && !todoBot.tags.abPatchError
-    ) {
-        todoBot.tags.abTodoComplete = true;
-        todoBot.tags.animationState = 'complete';
     }
 }

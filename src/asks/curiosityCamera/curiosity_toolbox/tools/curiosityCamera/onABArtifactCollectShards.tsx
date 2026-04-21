@@ -1,5 +1,6 @@
 const shard: ABArtifactShard = {
     data: {
+        processingMode: tags.processingMode,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

@@ -3,12 +3,6 @@ let img = await os.capturePhoto({
     cameraType: "rear"
 })
 
-tags.takenPhoto=true;
-
-//add loading bar??
-//thisBot.openApp();
-
-//os.toast(discoverablesArr);
 configBot.tags.menuPortal = "curiosityCameraLoading";
 let loadingBar = ab.links.menu.abCreateMenuBusyIndicator({
     label: "analyzing",
@@ -22,17 +16,10 @@ if (!aiModels.find(model => model.name == 'claude-sonnet-4-0')) {
 }
 
 try {
-    // let output = bytes.toBase64Url(await img.data.arrayBuffer())
-    // const blob = bytes.fromBase64Url(output);
-    // const result = await os.recordFile("vRK2.bXlQdWJsaWNSZWNvcmQ=.N3NodjlpMzBURHJ2MU1GZ0hwNkw4Zz09.subjectfull", blob);
-
-    // let x="45N"
-    // let y="82E"
     let arrayString= ""
     for (var i = 0; i < discoverablesArr.length; i++) {
         arrayString+=("{ Name: "+ discoverablesArr[i].Name + ", Description: " + discoverablesArr[i].Description + ", Link: '" + discoverablesArr[i].GRPMUrl +"'} ")
     }
-    //text: `Look at the descriptions and names of these objects "${arrayString}", which are listed in order of closest to furthest from my current location, and tell me the name of which object is likely in this image and include the link associated with it in the format of "This appears to be an " + objectName + ". You can find more info about it at " + link". If there are no likely matches, say "There are no matching objects"`
     const response = await ai.chat({
             role: 'user',
             content: [
@@ -49,9 +36,6 @@ try {
             preferredModel: chosenAIModel
     });
 
-    tags.takenPhoto=false
-
-    //thisBot.closeApp();
     tags.discoverableURL = response.content;
 
     destroy(loadingBar);

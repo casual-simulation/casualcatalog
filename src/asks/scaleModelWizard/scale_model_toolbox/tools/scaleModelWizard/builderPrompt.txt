@@ -173,7 +173,7 @@ All code values must start with @. Code is valid JavaScript in the CasualOS bot 
 }
 ```
 
-**state** — triggered when a state enters a specific value:
+**state** — triggered when a state enters a specific value. Listener name format is `<state><value>OnEnter`:
 
 ```json
 "growth_phasesmall_businessOnEnter": {
@@ -259,20 +259,28 @@ Movement code lives inside `oncurrent_tickChanged`. Check the model's behavior s
 
 Starting position values should be baked in from the manifest's location field.
 
+When a lifecycle is present, always use `tags.base_speed` scaled by lifecycle phase rather than a hardcoded speed value. See the Lifecycle Pattern section.
+
 ### Wander
 
-Moves randomly within a bounding box centered on the model's starting position. Bounds are half-extents in meters.
+Moves randomly within a world-space bounding box derived from the containing environment named in the manifest description (e.g. "wanders within the bounds of Pond"). Do **not** use the entity's own starting position as the center of bounds — use the environment model's location and scale from the manifest.
+
+Derive bounds by taking the environment's `location` ± half its `scale`, then inset by `0.5m` on each side to keep entities away from the hard edge:
 
 ```javascript
 const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
 const speed = 0.6;
-const bounds = { x: 3, y: 3 };
-const startX = -1; // baked in from manifest location.x
-const startY = -1; // baked in from manifest location.y
+// Bounds derived from environment model's location and scale in the manifest, inset by 0.5m
+const bounds = {
+  minX: -2.5, // environment.location.x - (environment.scale.x / 2) + 0.5
+  maxX:  2.5, // environment.location.x + (environment.scale.x / 2) - 0.5
+  minY: -2.5, // environment.location.y - (environment.scale.y / 2) + 0.5
+  maxY:  2.5  // environment.location.y + (environment.scale.y / 2) - 0.5
+};
 const dx = (Math.random() - 0.5) * 2 * speed;
 const dy = (Math.random() - 0.5) * 2 * speed;
-const newX = Math.max(startX - bounds.x, Math.min(startX + bounds.x, tags[dimension + 'X'] + dx));
-const newY = Math.max(startY - bounds.y, Math.min(startY + bounds.y, tags[dimension + 'Y'] + dy));
+const newX = Math.max(bounds.minX, Math.min(bounds.maxX, tags[dimension + 'X'] + dx));
+const newY = Math.max(bounds.minY, Math.min(bounds.maxY, tags[dimension + 'Y'] + dy));
 await animateTag(thisBot, {
   fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
   toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
@@ -281,6 +289,8 @@ await animateTag(thisBot, {
   tagMaskSpace: false
 });
 ```
+
+Always bake the computed `minX/maxX/minY/maxY` values directly into the code as numeric literals — do not read them from tags at runtime.
 
 ### Patrol
 
@@ -343,14 +353,158 @@ if (dist > speed) {
 
 ---
 
+## Lifecycle Pattern
+
+Any entity can have a lifecycle — living things, machines, businesses, or assets. The pattern is always the same: threshold-based state transitions driven by age, with a terminal state that destroys or freezes the bot.
+
+### Lifecycle Stats
+
+Define these on any entity with a lifecycle, alongside any other stats:
+
+```json
+"spawn_tick":  { "start": <number, can be negative>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+"base_speed":  { "start": <number>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+"max_age":     { "start": <number>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+"phase_1_age": { "start": <max_age * phase_thresholds[0]>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+"phase_2_age": { "start": <max_age * phase_thresholds[1]>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
+```
+
+`spawn_tick` can be negative for seed entities that begin the simulation already partway through their life. Age is always derived inline — never stored as a stat:
+
+```javascript
+const age = tags.current_tick - tags.spawn_tick;
+```
+
+`base_speed` replaces any hardcoded speed value in movement code. It is scaled by lifecycle phase each tick.
+
+### Lifecycle States
+
+The manifest description declares the lifecycle vocabulary. Map it onto this four-phase pattern:
+
+| Position | Role | Example values |
+|---|---|---|
+| Phase 0 | Fully operational | `alive`, `active`, `operating` |
+| Phase 1 | Reduced capacity | `aging`, `degraded`, `declining` |
+| Phase 2 | Near end of life | `elderly`, `critical`, `expiring` |
+| Terminal | End state | `dead`, `decommissioned`, `closed`, `expired` |
+
+Define the lifecycle state in the states block using the vocabulary from the description:
+
+```json
+"states": {
+  "lifecycle": { "start": "<phase 0 value>" }
+}
+```
+
+### Lifecycle Transitions in oncurrent_tickChanged
+
+Place this block at the **top** of `oncurrent_tickChanged`, before any movement or other logic. Use the exact state name strings from the manifest description:
+
+```javascript
+const age = tags.current_tick - tags.spawn_tick;
+if (age >= tags.max_age) {
+  changeState(thisBot, '<terminal>', 'lifecycle');
+} else if (age >= tags.phase_2_age) {
+  changeState(thisBot, '<phase 2>', 'lifecycle');
+} else if (age >= tags.phase_1_age) {
+  changeState(thisBot, '<phase 1>', 'lifecycle');
+}
+```
+
+### Speed Scaling
+
+Apply speed scaling immediately after the transition block, before movement code:
+
+```javascript
+const speedScale = tags.lifecycle === '<phase 2>' ? 0.4
+  : tags.lifecycle === '<phase 1>' ? 0.75
+  : 1.0;
+const speed = tags.base_speed * speedScale;
+```
+
+Use `speed` in all movement code. Never hardcode a speed value when a lifecycle is present.
+
+### Movement Guard
+
+Wrap all movement code in a terminal guard so the entity stops moving once it reaches its end state:
+
+```javascript
+if (tags.lifecycle !== '<terminal>') {
+  // movement code here
+}
+```
+
+### Lifecycle State Listeners
+
+Add one state listener per lifecycle transition. Color choices should fit the entity — grey suits aging animals, brown suits a wilting plant, amber suits a degrading machine. The terminal listener either hides or freezes the bot depending on what the manifest description specifies.
+
+Hiding is the default terminal behavior. It removes the entity from the scene visually while keeping the bot intact for easy simulation reset. Never use `destroyBot`.
+
+**hide** (entity is removed from view but preserved for reset):
+```json
+"lifecycle<terminal>OnEnter": {
+  "type": "state",
+  "state": "lifecycle",
+  "value": "<terminal>",
+  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\ntags[dimension] = false;"
+}
+```
+
+**freeze** (entity stays visible as a historical marker, all updates stop):
+```json
+"lifecycle<terminal>OnEnter": {
+  "type": "state",
+  "state": "lifecycle",
+  "value": "<terminal>",
+  "code": "@tags.color = '<appropriate end color>'; tags.current_tick_delta = '0';"
+}
+```
+
+Every lifecycle entity **must** include a listener for the phase 0 (starting) state. This ensures that when the simulation resets to tick 0, color and any other state-driven properties are correctly restored. Without it, an entity that aged to grey would stay grey after reset even though its lifecycle state has returned to `alive`.
+
+For the hide terminal state, also restore visibility in the phase 0 listener so hidden entities reappear on reset.
+
+Full example listener set for a living entity with the `alive → aging → elderly → dead` vocabulary:
+
+```json
+"lifecyclealiveOnEnter": {
+  "type": "state",
+  "state": "lifecycle",
+  "value": "alive",
+  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\ntags[dimension] = true;\ntags.color = '#ffffff';"
+},
+"lifecycleagingOnEnter": {
+  "type": "state",
+  "state": "lifecycle",
+  "value": "aging",
+  "code": "@tags.color = '#c8a882';"
+},
+"lifecycleelderlyOnEnter": {
+  "type": "state",
+  "state": "lifecycle",
+  "value": "elderly",
+  "code": "@tags.color = '#a0a0a0';"
+},
+"lifecycledeadOnEnter": {
+  "type": "state",
+  "state": "lifecycle",
+  "value": "dead",
+  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\ntags[dimension] = false;"
+}
+```
+
+The phase 0 color should match the model's base `color` field. Always restore `tags[dimension] = true` in the phase 0 listener — even if the entity was never hidden — so reset is always safe to call.
+
+---
+
 ## oncurrent_tickChanged — canonical example
 
-Every model with current_tick must include this listener as the sole entry point for all per-tick logic — stats, state changes, movement, and proximity checks all live here.
+Every model with current_tick must include this listener as the sole entry point for all per-tick logic. For entities with a lifecycle, the canonical order is: **(1) lifecycle transitions, (2) speed scaling, (3) stat updates, (4) guarded movement**.
 
 ```json
 "oncurrent_tickChanged": {
   "type": "stat",
   "stat": "current_tick",
-  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\nconst emp1 = getBot('modelName', 'Employee 1');\nconst emp2 = getBot('modelName', 'Employee 2');\nconst rent = getBot('modelName', 'Rent Expense');\ntags.total_expenses = emp1.tags.monthly_salary + emp2.tags.monthly_salary + rent.tags.monthly_cost;\ntags.cash_balance = tags.starting_cash + (tags.monthly_revenue * tags.current_tick) - (tags.total_expenses * tags.current_tick);\nif (tags.cash_balance <= 0) { changeState(thisBot, 'insolvent', 'financial_status'); }\nif (tags.behavior === 'foraging') {\n  const speed = 0.6;\n  const bounds = { x: 3, y: 3 };\n  const startX = 0;\n  const startY = 0;\n  const dx = (Math.random() - 0.5) * 2 * speed;\n  const dy = (Math.random() - 0.5) * 2 * speed;\n  const newX = Math.max(startX - bounds.x, Math.min(startX + bounds.x, tags[dimension + 'X'] + dx));\n  const newY = Math.max(startY - bounds.y, Math.min(startY + bounds.y, tags[dimension + 'Y'] + dy));\n  await animateTag(thisBot, { fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] }, toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY }, duration: 1, easing: { type: 'sinusoidal', mode: 'inout' }, tagMaskSpace: false });\n}"
+  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\n\n// 1. Lifecycle transitions\nconst age = tags.current_tick - tags.spawn_tick;\nif (age >= tags.max_age) {\n  changeState(thisBot, 'dead', 'lifecycle');\n} else if (age >= tags.phase_2_age) {\n  changeState(thisBot, 'elderly', 'lifecycle');\n} else if (age >= tags.phase_1_age) {\n  changeState(thisBot, 'aging', 'lifecycle');\n}\n\n// 2. Speed scaling\nconst speedScale = tags.lifecycle === 'elderly' ? 0.4 : tags.lifecycle === 'aging' ? 0.75 : 1.0;\nconst speed = tags.base_speed * speedScale;\n\n// 3. Stat updates (example)\nconst rent = getBot('modelName', 'Rent Expense');\ntags.total_expenses = rent.tags.monthly_cost;\ntags.cash_balance = tags.starting_cash + (tags.monthly_revenue * tags.current_tick) - (tags.total_expenses * tags.current_tick);\n\n// 4. Guarded movement\nif (tags.lifecycle !== 'dead') {\n  if (tags.behavior === 'foraging') {\n    // Bounds derived from Pond: location {x:0,y:0}, scale {x:6,y:6}, inset 0.5m\n    const bounds = { minX: -2.5, maxX: 2.5, minY: -2.5, maxY: 2.5 };\n    const dx = (Math.random() - 0.5) * 2 * speed;\n    const dy = (Math.random() - 0.5) * 2 * speed;\n    const newX = Math.max(bounds.minX, Math.min(bounds.maxX, tags[dimension + 'X'] + dx));\n    const newY = Math.max(bounds.minY, Math.min(bounds.maxY, tags[dimension + 'Y'] + dy));\n    await animateTag(thisBot, { fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] }, toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY }, duration: 1, easing: { type: 'sinusoidal', mode: 'inout' }, tagMaskSpace: false });\n  }\n}"
 }
 ```

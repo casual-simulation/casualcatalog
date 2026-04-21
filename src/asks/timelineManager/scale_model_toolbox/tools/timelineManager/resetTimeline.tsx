@@ -1,7 +1,7 @@
 tags.timelinePaused = true;
 tags.currentStep = 0;
 
-shout("setDelta", {value: 0, unit: 'minute'});
+shout("setDelta", 0);
 
 const models = getBots("scaleModel", true);
 for (let i = 0; i < models.length; ++i) {

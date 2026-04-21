@@ -7,7 +7,7 @@ for (const tag of that.tags) {
         whisper(thisBot, 'refreshAnimation');
     }
 
-    if (tag === 'todoReady') {
+    if (tag === 'todoReadyForAgent') {
         if (masks.menuOpen) {
             whisper(thisBot, 'abPatchTodoMenuOpen');
         }

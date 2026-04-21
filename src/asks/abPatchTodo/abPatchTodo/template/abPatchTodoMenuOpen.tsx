@@ -20,7 +20,7 @@ masks.menuOpen = true;
 const planTodos  = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
 const allApplied = planTodos.every(b => b.tags.abPatchApplied);
 const anyFailed  = planTodos.some(b => b.tags.abPatchError);
-const anyReady   = planTodos.some(b => b.tags.todoReady);
+const anyReady   = planTodos.some(b => b.tags.todoReadyForAgent);
 const notStarted = !anyReady && !allApplied && !anyFailed;
 const isBusy     = anyReady && !allApplied && !anyFailed;
 

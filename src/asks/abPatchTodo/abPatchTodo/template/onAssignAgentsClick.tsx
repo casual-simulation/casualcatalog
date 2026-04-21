@@ -3,5 +3,5 @@ const planTodos = getBots(b =>
 );
 
 for (const todo of planTodos) {
-    setTag(todo, 'todoReady', true);
+    setTag(todo, 'todoReadyForAgent', true);
 }

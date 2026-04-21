@@ -77,10 +77,16 @@ if (callDepth === 0) {
 // ── Build messages for this turn ────────────────────────────────────────
 
 let aiChatMessages: AIChatMessage[];
-// Focus is injected with every user message (fresh each turn)
 const focusJson = JSON.stringify(thisBot.abAskHelperBuildFocusContext({ askContext }));
-const modeXml = agentMode ? `\n  <mode>${agentMode}</mode>` : '';
-const contextBlock = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n</context>`;
+
+function buildContextBlock(...extras: string[]): string {
+    const sections = [
+        agentMode ? `  <mode>${agentMode}</mode>` : null,
+        `  <focus>${focusJson}</focus>`,
+        ...extras,
+    ].filter(Boolean);
+    return `<context>\n${sections.join('\n')}\n</context>`;
+}
 
 if (!hasInquiry && storedHistory.length > 0) {
     // query function continuation — history already ends with the query result user message
@@ -89,14 +95,15 @@ if (!hasInquiry && storedHistory.length > 0) {
     // New user message continuing an existing session
     aiChatMessages = [
         ...storedHistory,
-        { role: 'user', content: [{ text: `${contextBlock}\n<message>${originalUserInquiry}</message>` }] }
+        { role: 'user', content: [{ text: `${buildContextBlock()}\n<message>${originalUserInquiry}</message>` }] }
     ];
 } else {
-    // Fresh start — build full initial message structure
+    // Fresh start — include catalog so agents can reason about available tools immediately
+    const catalog = thisBot.abAskToolGetCatalog();
     aiChatMessages = [
         { role: 'system', content: [{ text: tags.prompt_system }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
-        { role: 'user', content: [{ text: `${contextBlock}\n<message>${originalUserInquiry}</message>` }] },
+        { role: 'user', content: [{ text: `${buildContextBlock(`  <catalog>${JSON.stringify(catalog)}</catalog>`)}\n<message>${originalUserInquiry}</message>` }] },
     ];
 }
 
@@ -156,6 +163,8 @@ if (tags.debug) {
 // into the next AI turn. Tools that return undefined are action functions.
 
 const queryResults: { name: string; functionResult: string }[] = [];
+let makePatchCalled = false;
+let chatAwaitsResponse = false;
 
 for (const fc of functionCalls) {
     const { name, args } = fc.function;
@@ -164,6 +173,13 @@ for (const fc of functionCalls) {
     if (typeof thisBot[toolTagName] !== 'function') {
         ab.links.utils.abLog({ message: `Unknown function call from AI: ${name}`, logType: 'error' });
         continue;
+    }
+
+    if (name === 'makePatch') {
+        makePatchCalled = true;
+    }
+    if (name === 'chat' && args?.awaitsResponse === true) {
+        chatAwaitsResponse = true;
     }
 
     const result = await thisBot[toolTagName]({ args, askContext });
@@ -175,7 +191,7 @@ for (const fc of functionCalls) {
 
 if (queryResults.length > 0) {
     const functionResults = queryResults.map(r => `  <functionResult name="${r.name}">${r.functionResult}</functionResult>`);
-    const resultUserMessage = `<context>${modeXml}\n  <focus>${focusJson}</focus>\n${functionResults.join('\n')}\n</context>`;
+    const resultUserMessage = buildContextBlock(...functionResults);
 
     if (historyStorageBot) {
         thisBot.abConversationHistorySave({
@@ -203,5 +219,20 @@ if (queryResults.length > 0) {
                 { role: 'assistant', content: [{ text: response }] }
             ]
         });
+    }
+
+    // Tool-only todo completion: if the agent finished its work this turn without
+    // issuing a makePatch, no patch pipeline will set abTodoComplete/animationState.
+    // Mark the todo complete here so the manager advances past it.
+    if (todoBot
+        && !makePatchCalled
+        && !chatAwaitsResponse
+        && !todoBot.tags.abPatchCode
+        && !todoBot.tags.abPatchApplying
+        && !todoBot.tags.abPatchApplied
+        && !todoBot.tags.abPatchError
+    ) {
+        todoBot.tags.abTodoComplete = true;
+        todoBot.tags.animationState = 'complete';
     }
 }

@@ -28,9 +28,9 @@ if (tags.activeTodoId) {
         }
         // Patch failed — stop this plan
         thisBot.onTodoFailed({ todoId: todoBot.id, planId: todoBot.tags.todoPlanId });
-    } else if (todoBot.tags.abPatchApplied) {
+    } else if (todoBot.tags.abTodoComplete) {
         if (tags.debug) {
-            console.log(`[${tags.system}.${tagName}] Active todo applied: ${todoBot.id}`);
+            console.log(`[${tags.system}.${tagName}] Active todo complete: ${todoBot.id}`);
         }
         // Force a fresh snapshot to compute cost before moving on
         if (globalThis.abXPE && todoBot.tags.creditSnapshotStart != null) {
@@ -80,11 +80,11 @@ if (!todoBots || todoBots.length === 0) {
 // Filter to pending todos (no patch yet, not from a failed plan, and user has readied them)
 const pendingTodos = todoBots.filter(b =>
     !b.tags.abPatchCode &&
-    !b.tags.abPatchApplied &&
+    !b.tags.abTodoComplete &&
     !b.tags.abPatchError &&
     !b.tags.abPatchApplying &&
     b.tags.todoPlanId !== tags.failedPlanId &&
-    b.tags.todoReady
+    b.tags.todoReadyForAgent
 );
 
 if (tags.debug) {

@@ -13,13 +13,14 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.abPatchResults;
     delete thisBotData.tags.abPatchApplied;
     delete thisBotData.tags.abPatchAppliedTimestamp;
+    delete thisBotData.tags.abTodoComplete;
     delete thisBotData.tags.abPatchError;
     delete thisBotData.tags.alwaysApprove;
     delete thisBotData.tags.currAnimation;
     delete thisBotData.tags.prompt;
     delete thisBotData.tags.lineTo;
     delete thisBotData.tags.todoLabel;
-    delete thisBotData.tags.todoReady;
+    delete thisBotData.tags.todoReadyForAgent;
     delete thisBotData.tags.budgetCredits;
     delete thisBotData.tags.budgetRecordName;
     delete thisBotData.tags.todoPlanId;

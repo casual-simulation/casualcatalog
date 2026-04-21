@@ -232,6 +232,8 @@ The result will be injected into the next message as `<functionResult name="getC
 ## loadFromCatalog
 Load a kit or tool from the catalog into the current inst.
 
+**Only call this function when the user explicitly asks you to load or install a specific kit or tool by name.** Do not call it speculatively, as a convenience, or because you think it might be useful — wait for a clear direct instruction from the user.
+
 ```json
 { "function": { "name": "loadFromCatalog", "args": { "type": "kit" | "tool", "id": "<string>", "gridDimension": "<string>", "gridPositionX": <number>, "gridPositionY": <number> } } }
 ```

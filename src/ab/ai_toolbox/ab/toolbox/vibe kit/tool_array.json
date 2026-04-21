@@ -1,6 +1,7 @@
 [
     {
         "name": "create an agent bot",
-        "targetAB": "agent_bot_tool"
+        "targetAB": "agent_bot_tool",
+        "agentReady": true
     }
 ]

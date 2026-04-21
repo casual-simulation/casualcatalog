@@ -18,6 +18,20 @@ const gridData = {
     },
 };
 
+async function collectConfiguratorProperties(bots: Bot[]): Promise<ABConfiguratorData[]> {
+    const groups: Record<string, Bot[]> = ab.links.configurator.abGetConfiguratorGroupsFromBots({ bots });
+    const configuratorProperties: ABConfiguratorData[] = [];
+    for (const group of Object.keys(groups)) {
+        try {
+            const data: ABConfiguratorData = await ab.links.configurator.abCollectConfiguratorData({ abConfiguratorGroup: group, bots: groups[group] });
+            if (data) configuratorProperties.push(data);
+        } catch (e) {
+            // best-effort; non-fatal
+        }
+    }
+    return configuratorProperties;
+}
+
 if (type === 'kit') {
     const toolboxData = ab.links.remember.tags.toolbox_array?.find(toolBox => toolBox.name == id);
 
@@ -74,7 +88,8 @@ if (type === 'kit') {
 
             shout("abMenuRefresh");
 
-            return { success: true, type, id, bots: shardBots };
+            const configuratorProperties = await collectConfiguratorProperties(shardBots);
+            return { success: true, type, id, bots: shardBots, configuratorProperties };
         } catch (e) {
             const errorMessage = ab.links.utils.getErrorMessage(e);
             console.error(`[${tags.system}.${tagName}] failed to load tool ${id} as artifact. Error: ${errorMessage}`);
@@ -94,7 +109,8 @@ if (type === 'kit') {
             shout("abMenuRefresh");
 
             if (lookupResult.success) {
-                return { success: true, type, id, bots: lookupResult.hatchedBots };
+                const configuratorProperties = await collectConfiguratorProperties(lookupResult.hatchedBots);
+                return { success: true, type, id, bots: lookupResult.hatchedBots, configuratorProperties };
             } else {
                 const errorMessage = lookupResult.errorMessage ?? 'lookup failed';
                 console.error(`[${tags.system}.${tagName}] failed to load tool ${id}. Error: ${errorMessage}`);

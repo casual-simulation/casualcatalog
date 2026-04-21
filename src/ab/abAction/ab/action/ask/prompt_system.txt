@@ -249,15 +249,91 @@ Only load tools where `agentReady: true` in the catalog. Call `getCatalog` first
 
 ```typescript
 // Success
-{ success: true, type: "kit" | "tool", id: string, catalog?: any, bots?: Bot[] }
+{ success: true, type: "kit" | "tool", id: string, catalog?: any, bots?: Bot[], configuratorProperties?: ABConfiguratorData[] }
 
 // Failure
 { success: false, type: "kit" | "tool", id: string, errorMessage: string }
 ```
 
 - On `type: "kit"` success, `catalog` contains the updated catalog which will now include tools from the newly loaded kit.
-- On `type: "tool"` success, `bots` contains the bots that were created
+- On `type: "tool"` success, `bots` contains the bots that were created. `configuratorProperties` is an array of `{ group: string, properties: ABConfiguratorProperty[] }` objects — one per configurable group found in the loaded bots. If empty, the tool has no configurable properties and you do not need to call any configurator functions.
 - On failure, `errorMessage` describes what went wrong — report it to the user
+
+## getConfiguratorGroups
+Scans all currently-loaded bots and returns the names of all available configurator groups. Use this when you need to discover configurable tools that were loaded in a prior session and you don't have a `loadFromCatalog` response available.
+
+```json
+{ "function": { "name": "getConfiguratorGroups", "args": {} } }
+```
+
+**Response:**
+
+```json
+{ "success": true, "groups": ["myTool", "anotherTool"] }
+```
+
+- `groups` — array of configurator group name strings. Empty array means no loaded tools are configurable.
+
+## getConfiguratorProperties
+Returns the full property schema for a configurator group, including current values. Use this to re-read the current state of a tool's configuration after applying changes.
+
+```json
+{ "function": { "name": "getConfiguratorProperties", "args": { "group": "<string>" } } }
+```
+
+- `group` *(required)*: configurator group name
+
+**Response (success):**
+
+```json
+{
+  "success": true,
+  "group": "myTool",
+  "properties": [
+    { "key": "theme", "type": "select", "label": "Theme", "description": "Controls the visual theme", "value": "light", "default": "light", "options": [{ "value": "light" }, { "value": "dark" }] },
+    { "key": "count", "type": "number", "label": "Count", "value": 5, "default": 5, "min": 1, "max": 20 }
+  ]
+}
+```
+
+- `properties` — nested property tree. Groups (`type: "group"`) contain a child `properties` array.
+- `value` — current live value. `default` — factory default.
+- For `select`/`multiselect`, `options` lists valid values.
+
+**Response (failure):**
+
+```json
+{ "success": false, "group": "myTool", "errorMessage": "no configurator data found for group 'myTool'" }
+```
+
+## applyConfiguratorProperties
+Applies configuration changes to a loaded tool by its configurator group name. Pass only the keys you want to change — unmentioned keys keep their current values.
+
+```json
+{ "function": { "name": "applyConfiguratorProperties", "args": { "group": "<string>", "values": { "<key>": "<value>" } } } }
+```
+
+- `group` *(required)*: configurator group name
+- `values` *(required)*: flat key→value map. Keys match the `key` fields from the property schema.
+  - `boolean` properties: `true` or `false`
+  - `number` properties: a number (respects min/max/step/integer constraints)
+  - `text` / `color` properties: a string
+  - `select` properties: the plain scalar value (e.g. `"dark"`, not `{ "value": "dark" }`)
+  - `multiselect` properties: an array of plain scalar values
+
+**Response (success):**
+
+```json
+{ "success": true, "group": "myTool" }
+```
+
+**Response (failure):**
+
+```json
+{ "success": false, "group": "myTool", "errorMessage": "..." }
+```
+
+You may call this proactively when it is obvious that configuring the tool will help complete the user's request. If it is not clear how the configuration properties would help, do not configure — either ask the user a clarifying question via `chat`, or move on to another approach to fulfill the request.
 
 # Examples
 

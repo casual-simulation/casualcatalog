@@ -9,7 +9,8 @@
         "name": "scale model wizard",
         "studio": "AB",
         "targetAB": "scaleModelWizard",
-        "artifact": true
+        "artifact": true,
+        "agentReady": true
     },
     {
         "name": "timeline marker",

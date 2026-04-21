@@ -12,9 +12,13 @@ if (!property) {
     return null;
 }
 
+const dimension = menuGroup ? `abConfiguratorMenu_${menuGroup}` : 'abConfiguratorMenu'
+
 const BASE_TAGS = {
     space: 'tempLocal',
-    [menuGroup ? `abConfiguratorMenu_${menuGroup}` : 'abConfiguratorMenu']: true,
+    [dimension]: true,
+    [`${dimension}SortOrder`]: index,
+    dimension,
     menuGroup,
     abConfiguratorGroup,
     manager: getLink(thisBot),
@@ -34,10 +38,6 @@ const BASE_TAGS = {
         tags.property = '🧬' + JSON.stringify(property);
     }),
     onBotAdded: ListenerString(() => {
-        if (links.manager.tags.debug) {
-            console.log(`[${tags.name}] invoke`);
-        }
-
         os.addBotListener(thisBot, 'onClick', () => {
             thisBot.hideTooltip();
         })
@@ -48,14 +48,10 @@ const BASE_TAGS = {
         if (that.tags.includes('property')) {
             if (thisBot.vars.suppressRefresh) {
                 thisBot.vars.suppressRefresh = false;
-                return;
-            }
-
-            if (links.manager.tags.debug) {
-                console.log(`[${tags.name}] onRefreshDisplay`);
             }
 
             whisper(thisBot, 'onRefreshDisplay');
+            whisper(links.menuItemBots, 'onABConfiguratorPropertyChanged', { property: tags.property });
         }
     }),
     onPointerEnter: ListenerString(() => {
@@ -81,9 +77,79 @@ const BASE_TAGS = {
             thisBot.vars.tooltipId = null;
         }
     }),
+    updateVisibility: ListenerString(() => {
+        const property = tags.property as ABConfiguratorPropertyBase;
+        const vw = property.visibleWhen;
+
+        if (!vw) {
+            return;
+                }
+
+        let siblingBot = links.siblingBot;
+
+        if (!siblingBot) {
+            // Cache reference to sibling bot.
+            siblingBot = links.menuItemBots.find((b: Bot) => {
+                return b.tags.name === `abConfiguratorMenuItem.${vw.key}` &&
+                       b.tags.abConfiguratorGroup === tags.abConfiguratorGroup
+            });
+            
+            if (siblingBot) {
+                links.siblingBot = getLink(siblingBot);
+            }
+        }
+
+        if (!siblingBot) {
+            return;
+        }
+
+        const siblingProp = siblingBot.tags.property;
+        const siblingValue = siblingProp?.value ?? siblingProp?.default;
+        let visible = false;
+
+        switch (vw.operator) {
+            case 'equal': visible = siblingValue == vw.value; break;
+            case 'not equal': visible = siblingValue != vw.value; break;
+            case 'greater than': visible = siblingValue > vw.value; break;
+            case 'less than': visible = siblingValue < vw.value; break;
+            case 'contains': visible = Array.isArray(siblingValue) ? siblingValue.includes(vw.value) : String(siblingValue).includes(vw.value); break;
+            default: {
+                console.warn(`[${tags.name}.${tagName}] operator ${vw.operator} is not implemented in ${tagName}.`);
+                visible = true;
+            }
+        }
+
+        if (tags[tags.dimension] != visible) {
+            tags[tags.dimension] = visible;
+        }
+    }),
     abConfiguratorMenuReset: ListenerString(() => {
         destroy(thisBot);
     }),
+    onABConfiguratorMenuOpened: ListenerString(() => {
+        const { abConfiguratorGroup, menuItemBots } = that;
+
+        if (abConfiguratorGroup === tags.abConfiguratorGroup) {
+            links.menuItemBots = getLink(menuItemBots);
+
+            if (abConfiguratorGroup === tags.abConfiguratorGroup){
+                thisBot.updateVisibility();
+            }
+        }
+
+    }),
+    onABConfiguratorPropertyChanged: ListenerString(() => {
+        const myProperty = tags.property as ABConfiguratorProperty;
+        const changedProperty = that.property as ABConfiguratorProperty;
+
+        if (myProperty.key === changedProperty.key) {
+            return;
+        }
+
+        if (myProperty.visibleWhen?.key === changedProperty.key) {
+            thisBot.updateVisibility();
+        }
+    })
 }
 
 let menuItem = null;
@@ -107,14 +173,111 @@ if (property.type === 'boolean') {
         formAddress: 'palette',
         onClick: ListenerString(async () => {
             const property = tags.property as ABConfiguratorPropertyColor;
-            const current = property.value ?? property.default;
-            const picked = await os.showInput(current, {
-                type: 'color',
-                title: property.label ?? property.key,
+            const colorPortal = `abConfiguratorColorMenu_${property.key}`;
+            const clearEvent = `clearAbConfiguratorColorMenu_${property.key}`;
+
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = colorPortal;
+
+            const propertyLink = getLink(thisBot);
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                formAddress: 'palette',
+                [colorPortal]: true,
+                [`${colorPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: { 'font-weight': 'bold' },
             });
-            if (picked != null) {
-                thisBot.updatePropertyField({ name: 'value', value: picked });
-            }
+
+            const allSwatches = ab.links.utils.tags.abDefaultColorSwatches as string[];
+
+            const menuItems = [
+                {
+                    menuItemType: 'input',
+                    label: 'custom color',
+                    formAddress: 'palette',
+                    clearEvent,
+                    onCreate: ListenerString(async () => {
+                        const property = links.propertyMenuBot.tags.property;
+                        const current = property.value ?? property.default ?? '';
+                        masks.menuItemText = current;
+                        if (current) {
+                            tags.color = current;
+                            tags.labelColor = await ab.links.utils.getContrastColor(current);
+                        }
+                    }),
+                    onInputTyping: ListenerString(async () => {
+                        const text = that.text?.trim();
+                        tags.color = text || null;
+                        tags.labelColor = text ? await ab.links.utils.getContrastColor(text) : null;
+                    }),
+                    onSubmit: ListenerString(() => {
+                        const value = that.text?.trim();
+                        if (value) {
+                            links.propertyMenuBot.updatePropertyField({ name: 'value', value });
+                        }
+                        shout(tags.clearEvent);
+                        configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                    }),
+                },
+                {
+                    menuItemType: 'dropdown',
+                    label: 'swatches',
+                    dropdownOptions: allSwatches.map(hex => ({
+                        label: hex,
+                        color: hex,
+                        propertyMenuBot: propertyLink,
+                        clearEvent,
+                        [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                        abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                        onBotAdded: ListenerString(async () => {
+                            const property = links.propertyMenuBot.tags.property;
+                            const current = property.value ?? property.default;
+                            tags.labelColor = await ab.links.utils.getContrastColor(tags.color);
+                            if (current && tags.color.toLowerCase() === String(current).toLowerCase()) {
+                                tags.label = '✓ ' + tags.color;
+                            }
+                        }),
+                        onClick: ListenerString(() => {
+                            links.propertyMenuBot.updatePropertyField({ name: 'value', value: tags.color });
+                            shout(tags.clearEvent);
+                            configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                        }),
+                    })),
+                },
+            ];
+
+            await ab.links.menu.abCreateMenuGroup({
+                space: 'tempLocal',
+                groupSortOrder: 1,
+                [colorPortal]: true,
+                propertyMenuBot: propertyLink,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                menuItems,
+            });
+
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [colorPortal]: true,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                [`${colorPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                onClick: ListenerString(() => {
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
         }),
         onRefreshDisplay: ListenerString(async () => {
             const property = tags.property as ABConfiguratorPropertyColor;
@@ -129,20 +292,101 @@ if (property.type === 'boolean') {
         formAddress: 'list',
         onClick: ListenerString(async () => {
             const property = tags.property as ABConfiguratorPropertySelect;
-            const options = property.options.map((o, i) => ({ label: o.label ?? String(o.value), value: i }));
-            const currentIndex = property.options.findIndex(o => o.value === (property.value ?? property.default));
-            const selected = await os.showInput(currentIndex >= 0 ? currentIndex : 0, {
-                type: 'list',
-                subtype: 'radio',
-                title: property.label ?? property.key,
-                items: options,
+            const selectPortal = `abConfiguratorSelectMenu_${property.key}`;
+            const clearEvent = `clearAbConfiguratorSelectMenu_${property.key}`;
+
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = selectPortal;
+
+            const propertyLink = getLink(thisBot);
+            const rawCurrentValue = property.value ?? property.default;
+            const currentValue = (typeof rawCurrentValue === 'object' && rawCurrentValue != null && 'value' in rawCurrentValue)
+                ? (rawCurrentValue as any).value
+                : rawCurrentValue;
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                formAddress: 'list',
+                [selectPortal]: true,
+                [`${selectPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: {
+                    'font-weight': 'bold',
+                },
             });
-            if (selected != null) {
-                const resolved = links.manager.abResolveSelectOption({ options: property.options, value: selected.value });
-                if (resolved) {
-                    thisBot.updatePropertyField({ name: 'value', value: resolved.value });
+
+            const menuItems = [];
+            for (const item of property.options) {
+                if ('options' in item) {
+                    const group = item as ABConfiguratorSelectOptionGroup;
+                    menuItems.push({
+                        menuItemType: 'dropdown',
+                        label: group.label ?? group.group,
+                        dropdownOptions: group.options.map(o => ({
+                            label: `${o.value === currentValue ? '✓ ' : ''}${o.label ?? String(o.value)}`,
+                            value: o.value,
+                            optionLabel: o.label ?? String(o.value),
+                            propertyMenuBot: propertyLink,
+                            clearEvent,
+                            [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                            onBotAdded: ListenerString(() => {
+                                const property = links.propertyMenuBot.tags.property;
+                                const raw = property.value ?? property.default;
+                                const cur = (typeof raw === 'object' && raw != null && 'value' in raw) ? raw.value : raw;
+                                tags.label = (tags.value === cur ? '✓ ' : '') + tags.optionLabel;
+                            }),
+                            onClick: ListenerString(() => {
+                                links.propertyMenuBot.updatePropertyField({ name: 'value', value: tags.value });
+                                shout(tags.clearEvent);
+                                configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                            }),
+                        })),
+                    });
+                } else {
+                    const option = item as ABConfiguratorSelectOption;
+                    menuItems.push({
+                        label: `${option.value === currentValue ? '✓ ' : ''}${option.label ?? String(option.value)}`,
+                        value: option.value,
+                        clearEvent,
+                        onClick: ListenerString(() => {
+                            links.propertyMenuBot.updatePropertyField({ name: 'value', value: tags.value });
+                            shout(tags.clearEvent);
+                            configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                        })
+                    });
                 }
             }
+
+            await ab.links.menu.abCreateMenuGroup({
+                space: 'tempLocal',
+                groupSortOrder: 1,
+                [selectPortal]: true,
+                propertyMenuBot: propertyLink,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                menuItems,
+            });
+
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [selectPortal]: true,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                [`${selectPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                onClick: ListenerString(() => {
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
         }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertySelect;
@@ -159,40 +403,114 @@ if (property.type === 'boolean') {
         formAddress: 'checklist',
         onClick: ListenerString(async () => {
             const property = tags.property as ABConfiguratorPropertyMultiSelect;
-            const current: any[] = Array.isArray(property.value) ? property.value : (property.default ?? []);
-            const options = property.options.map((o, i) => ({ label: o.label ?? String(o.value), value: o.value }));
-            const currentIndices = current
-                .map(v => {
-                    const normalized = (typeof v === 'object' && v != null) ? v.value : v;
+            const selectPortal = `abConfiguratorSelectMenu_${property.key}`;
+            const clearEvent = `clearAbConfiguratorSelectMenu_${property.key}`;
 
-                    // Try matching by value first
-                    const byValue = property.options.findIndex(o => o.value === normalized);
-                    if (byValue >= 0) return byValue;
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = selectPortal;
 
-                    // Fall back to index if normalized is an integer within range
-                    if (typeof normalized === 'number' && Number.isInteger(normalized) && normalized >= 0 && normalized < property.options.length) {
-                        return normalized;
-                    }
+            const propertyLink = getLink(thisBot);
 
-                    return -1;
-                })
-                .filter(i => i >= 0);
+            const currentValues = (Array.isArray(property.value) ? property.value : (property.default ?? []))
+                .map(v => (typeof v === 'object' && v != null && 'value' in v) ? (v as any).value : v);
 
-            const selected = await os.showInput(currentIndices, {
-                type: 'list',
-                subtype: 'checkbox',
-                title: property.label ?? property.key,
-                items: options,
+            thisBot.vars.multiSelectValues = [...currentValues];
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                formAddress: 'checklist',
+                [selectPortal]: true,
+                [`${selectPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: { 'font-weight': 'bold' },
             });
 
-            if (selected != null) {
-                const resolved = (Array.isArray(selected) ? selected : [selected])
-                    .map(s => links.manager.abResolveSelectOption({ options: property.options, value: s.value }))
-                    .filter(o => o != null)
-                    .map(o => o.value);
+            const toggleOnClick = ListenerString(() => {
+                tags.selected = !tags.selected;
+                tags.label = (tags.selected ? '✓ ' : '') + tags.optionLabel;
+                const vals = links.propertyMenuBot.vars.multiSelectValues ?? [];
+                const idx = vals.indexOf(tags.value);
+                if (tags.selected && idx === -1) vals.push(tags.value);
+                else if (!tags.selected && idx !== -1) vals.splice(idx, 1);
+                links.propertyMenuBot.vars.multiSelectValues = vals;
+                links.propertyMenuBot.updatePropertyField({ name: 'value', value: [...vals] });
+            })
 
-                thisBot.updatePropertyField({ name: 'value', value: resolved });
+            const menuItems = [];
+            for (const item of property.options) {
+                if ('options' in item) {
+                    const group = item as ABConfiguratorSelectOptionGroup;
+                    menuItems.push({
+                        menuItemType: 'dropdown',
+                        label: group.label ?? group.group,
+                        dropdownOptions: group.options.map(o => {
+                            const isSelected = currentValues.includes(o.value);
+                            return {
+                                label: `${isSelected ? '✓ ' : ''}${o.label ?? String(o.value)}`,
+                                value: o.value,
+                                optionLabel: o.label ?? String(o.value),
+                                selected: isSelected,
+                                selectPortal,
+                                abSelectOption: true,
+                                propertyMenuBot: propertyLink,
+                                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                                onBotAdded: ListenerString(() => {
+                                    const vals = links.propertyMenuBot.vars.multiSelectValues ?? [];
+                                    tags.selected = vals.includes(tags.value);
+                                    tags.label = (tags.selected ? '✓ ' : '') + tags.optionLabel;
+                                }),
+                                onClick: toggleOnClick,
+                            };
+                        }),
+                    });
+                } else {
+                    const option = item as ABConfiguratorSelectOption;
+                    const isSelected = currentValues.includes(option.value);
+                    menuItems.push({
+                        label: `${isSelected ? '✓ ' : ''}${option.label ?? String(option.value)}`,
+                        value: option.value,
+                        optionLabel: option.label ?? String(option.value),
+                        selected: isSelected,
+                        selectPortal,
+                        abSelectOption: true,
+                        propertyMenuBot: propertyLink,
+                        [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                        abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                        onClick: toggleOnClick,
+                    });
+                }
             }
+
+            await ab.links.menu.abCreateMenuGroup({
+                space: 'tempLocal',
+                groupSortOrder: 1,
+                [selectPortal]: true,
+                propertyMenuBot: propertyLink,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                menuItems,
+            });
+
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [selectPortal]: true,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                [`${selectPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                onClick: ListenerString(() => {
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
         }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyMultiSelect;
@@ -213,60 +531,160 @@ if (property.type === 'boolean') {
             const current = property.value ?? property.default;
             tags.label = (property.label ?? property.key) + ': ' + (current != null ? String(current) : 'unset');
         }),
-        onClick: ListenerString(async () => {
+        onClick: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyNumber;
-            const current = property.value ?? property.default ?? 0;
-            const input = await os.showInput(current, {
-                type: 'number',
-                title: property.label ?? property.key,
+            const numberPortal = `abConfiguratorNumberMenu_${property.key}`;
+            const clearEvent = `clearAbConfiguratorNumberMenu_${property.key}`;
+
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = numberPortal;
+
+            const propertyLink = getLink(thisBot);
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                [numberPortal]: true,
+                [`${numberPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: { 'font-weight': 'bold' },
             });
-            if (input != null) {
-                let parsed = Number(input);
-                if (!isNaN(parsed)) {
+
+            ab.links.menu.abCreateMenuInput({
+                space: 'tempLocal',
+                [numberPortal]: true,
+                [`${numberPortal}SortOrder`]: 1,
+                clearEvent,
+                propertyMenuBot: propertyLink,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                formAddress: 'numbers',
+                onCreate: ListenerString(() => {
+                    const property = links.propertyMenuBot.tags.property;
+                    const current = property.value ?? property.default;
+                    masks.menuItemText = current != null ? String(current) : '';
+                }),
+                onSubmit: ListenerString(() => {
+                    const property = links.propertyMenuBot.tags.property;
+                    let parsed = Number(that.text);
+                    if (isNaN(parsed)) return;
                     if (property.step != null) {
                         const decimals = (String(property.step).split('.')[1] ?? '').length;
                         const snap = parsed >= 0 ? Math.ceil : Math.floor;
                         parsed = parseFloat((snap(parsed / property.step) * property.step).toFixed(decimals));
-
                         if (property.max != null && parsed > property.max) {
                             parsed = parseFloat((Math.floor(property.max / property.step) * property.step).toFixed(decimals));
                         }
-
                         if (property.min != null && parsed < property.min) {
                             parsed = parseFloat((Math.ceil(property.min / property.step) * property.step).toFixed(decimals));
                         }
                     }
-
                     if (property.integer) {
                         parsed = Math.round(parsed);
                     }
-
                     if (property.max != null && parsed > property.max) {
                         parsed = property.max;
                     }
-
                     if (property.min != null && parsed < property.min) {
                         parsed = property.min;
                     }
+                    links.propertyMenuBot.updatePropertyField({ name: 'value', value: parsed });
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                }),
+            });
 
-                    thisBot.updatePropertyField({ name: 'value', value: parsed });
-                }
-            }
-        })
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [numberPortal]: true,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                [`${numberPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                onClick: ListenerString(() => {
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
+        }),
     })
 } else if (property.type === 'text') {
-    menuItem = ab.links.menu.abCreateMenuInput({
+    menuItem = ab.links.menu.abCreateMenuButton({
         ...BASE_TAGS,
+        formAddress: 'edit_note',
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyText;
-            tags.label = property.placeholder ?? property.label ?? property.key;
-            tags.menuItemText = property.value ?? property.default;
+            tags.label = property.label ?? property.key;
         }),
-        onInputTyping: ListenerString(() => {
-            const { text } = that;
+        onClick: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyText;
+            const textPortal = `abConfiguratorTextMenu_${property.key}`;
+            const clearEvent = `clearAbConfiguratorTextMenu_${property.key}`;
 
-            thisBot.updatePropertyField({ name: 'value', value: text, suppressRefresh: true });
-        })
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = textPortal;
+
+            const propertyLink = getLink(thisBot);
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                [textPortal]: true,
+                [`${textPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: { 'font-weight': 'bold' },
+            });
+
+            ab.links.menu.abCreateMenuInput({
+                space: 'tempLocal',
+                [textPortal]: true,
+                [`${textPortal}SortOrder`]: 1,
+                clearEvent,
+                propertyMenuBot: propertyLink,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                menuItemShowSubmitWhenEmpty: true,
+                label: property.placeholder ?? '',
+                onCreate: ListenerString(() => {
+                    const property = links.propertyMenuBot.tags.property;
+                    masks.menuItemText = property.value ?? property.default ?? '';
+                }),
+                onSubmit: ListenerString(() => {
+                    const value = that.text ?? '';
+                    links.propertyMenuBot.updatePropertyField({ name: 'value', value });
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.propertyMenuBot.links.manager.vars.selectReturnPortal;
+                }),
+            });
+
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [textPortal]: true,
+                clearEvent,
+                [clearEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                [`${textPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                onClick: ListenerString(() => {
+                    shout(tags.clearEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
+        }),
     })
 } else if (property.type === 'group') {
     menuItem = ab.links.menu.abCreateMenuButton({

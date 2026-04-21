@@ -229,6 +229,36 @@ Each entry has the following shape:
 
 The result will be injected into the next message as `<functionResult name="getCatalog">`. Use this when the user asks what tools or kits are available, or before suggesting or loading something.
 
+## loadFromCatalog
+Load a kit or tool from the catalog into the current inst.
+
+**Only call this function when the user explicitly asks you to load or install a specific kit or tool by name.** Do not call it speculatively, as a convenience, or because you think it might be useful — wait for a clear direct instruction from the user.
+
+```json
+{ "function": { "name": "loadFromCatalog", "args": { "type": "kit" | "tool", "id": "<string>", "gridDimension": "<string>", "gridPositionX": <number>, "gridPositionY": <number> } } }
+```
+
+- `type` *(required)*: `"kit"` to load a kit (toolbox container); `"tool"` to load an individual tool
+- `id` *(required)*: the `id` value from the `getCatalog` result
+- `gridDimension` *(optional)*: dimension to place the loaded content in — defaults to the user's active dimension
+- `gridPositionX` / `gridPositionY` *(optional)*: grid coordinates — default to `0, 0`
+
+Only load tools where `agentReady: true` in the catalog. Call `getCatalog` first if you don't already have the catalog.
+
+**Response shape:**
+
+```typescript
+// Success
+{ success: true, type: "kit" | "tool", id: string, catalog?: any, bots?: Bot[] }
+
+// Failure
+{ success: false, type: "kit" | "tool", id: string, errorMessage: string }
+```
+
+- On `type: "kit"` success, `catalog` contains the updated catalog which will now include tools from the newly loaded kit.
+- On `type: "tool"` success, `bots` contains the bots that were created
+- On failure, `errorMessage` describes what went wrong — report it to the user
+
 # Examples
 
 ## Example 1: Simple question → chat only

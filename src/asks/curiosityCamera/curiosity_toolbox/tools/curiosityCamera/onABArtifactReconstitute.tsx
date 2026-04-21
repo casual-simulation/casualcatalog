@@ -1,5 +1,5 @@
 const data = that.data;
-tags.processingMode = data.processingMode ?? 'teachableMachine';
+tags.processingMode = data.processingMode ?? 'ai';
 
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {

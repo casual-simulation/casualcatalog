@@ -1,23 +1,41 @@
-const type: 'kit' | 'tool' = that.args.type;
-const id: string = that.args.id;
-const gridDimension: string = that.args.gridDimension ?? ab.links.remember.tags.abActiveDimension ?? 'home';;
-const gridPositionX: number = that.args.gridPositionX ?? 0;
-const gridPositionY: number = that.args.gridPositionY ?? 0;
+const type: 'kit' | 'tool' = that?.args?.type;
+const id: string = that?.args?.id;
+const gridDimension: string = that?.args?.gridDimension ?? ab.links.remember.tags.abActiveDimension ?? 'home';
+const gridPositionX: number = that?.args?.gridPositionX ?? 0;
+const gridPositionY: number = that?.args?.gridPositionY ?? 0;
+
+if (!type || !id) {
+    const errorMessage = `missing required args: type='${type}', id='${id}'`;
+    console.error(`[${tags.system}.${tagName}] ${errorMessage}`);
+    return { success: false, type, id, errorMessage };
+}
 
 const gridData = {
     dimension: gridDimension,
     position: {
         x: gridPositionX,
-        y: gridPositionY
-    }
-}
+        y: gridPositionY,
+    },
+};
 
 if (type === 'kit') {
-    const toolboxData = ab.links.remember.tags.toolbox_array.find(toolBox => toolBox.name == id);
-    await links.toolbox.toolbox_add({ toolboxData, gridData });
-    const catalog = thisBot.abAskToolGetCatalog();
+    const toolboxData = ab.links.remember.tags.toolbox_array?.find(toolBox => toolBox.name == id);
 
-    return { success: true, type, id, catalog }
+    if (!toolboxData) {
+        const errorMessage = `kit '${id}' not found in catalog`;
+        console.error(`[${tags.system}.${tagName}] ${errorMessage}`);
+        return { success: false, type, id, errorMessage };
+    }
+
+    try {
+        await links.toolbox.toolbox_add({ toolboxData, gridData });
+        const catalog = thisBot.abAskToolGetCatalog();
+        return { success: true, type, id, catalog };
+    } catch (e) {
+        const errorMessage = ab.links.utils.getErrorMessage(e);
+        console.error(`[${tags.system}.${tagName}] failed to load kit ${id}. Error: ${errorMessage}`);
+        return { success: false, type, id, errorMessage };
+    }
 } else if (type === 'tool') {
     let isArtifact = false;
 
@@ -43,7 +61,7 @@ if (type === 'kit') {
             dependencies: [{ askID: id }]
         };
 
-        try { 
+        try {
             const shardBots = await ab.links.artifact.abCreateArtifactPromiseBot({
                 abArtifactName: id,
                 abArtifactInstanceID: uuid(),
@@ -56,16 +74,14 @@ if (type === 'kit') {
 
             shout("abMenuRefresh");
 
-            return { success: true, type, id, bots: shardBots }
+            return { success: true, type, id, bots: shardBots };
         } catch (e) {
-            const errorMessage =  ab.links.utils.getErrorMessage(e);
+            const errorMessage = ab.links.utils.getErrorMessage(e);
             console.error(`[${tags.system}.${tagName}] failed to load tool ${id} as artifact. Error: ${errorMessage}`);
-
-            return { success: false, type, id, errorMessage }
+            return { success: false, type, id, errorMessage };
         }
-
     } else {
-        try { 
+        try {
             const lookupResult: ABLookupAskIDResult = await ab.links.search.onLookupAskID({
                 askID: id,
                 sourceEvent: 'tool',
@@ -78,21 +94,20 @@ if (type === 'kit') {
             shout("abMenuRefresh");
 
             if (lookupResult.success) {
-                return { success: true, type, id, bots: lookupResult.hatchedBots }
+                return { success: true, type, id, bots: lookupResult.hatchedBots };
             } else {
-                const errorMessage = 'failed';
-                return { success: false, type, id, errorMessage }
+                const errorMessage = lookupResult.errorMessage ?? 'lookup failed';
+                console.error(`[${tags.system}.${tagName}] failed to load tool ${id}. Error: ${errorMessage}`);
+                return { success: false, type, id, errorMessage };
             }
-        } catch (e) { 
+        } catch (e) {
             const errorMessage = ab.links.utils.getErrorMessage(e);
             console.error(`[${tags.system}.${tagName}] failed to load tool ${id}. Error: ${errorMessage}`);
-
-            return { success: false, type, id, errorMessage }
+            return { success: false, type, id, errorMessage };
         }
     }
 } else {
     const errorMessage = `type '${type}' is not implemented`;
     console.error(`[${tags.system}.${tagName}] ${errorMessage}`);
-
-    return { success: false, type, id, errorMessage }
+    return { success: false, type, id, errorMessage };
 }

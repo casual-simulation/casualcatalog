@@ -1,7 +1,5 @@
 const { tickIntervalMS, deltaTime } = that ?? {};
 
-console.log(`[${tags.system}.${tagName}] that:`, that);
-
 if (!links.todoBot || tags.todoInProgress || masks.moving) {
     return;
 }
@@ -27,9 +25,6 @@ if (dist > targetDist) {
     const stepIntervalMS = tickIntervalMS / stepsPerTick;
 
     masks.moving = true;
-
-    console.log(`[${tags.system}.${tagName}] stepsPerTick:`, stepsPerTick);
-    console.log(`[${tags.system}.${tagName}] stepIntervalMS:`, stepIntervalMS);
 
     for (let i = 0; i < stepsPerTick; i++) {
         // Sleep before steps 2..N so steps are evenly spaced across the tick.

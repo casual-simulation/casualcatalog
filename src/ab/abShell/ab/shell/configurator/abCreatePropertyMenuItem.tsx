@@ -34,10 +34,6 @@ const BASE_TAGS = {
         tags.property = '🧬' + JSON.stringify(property);
     }),
     onBotAdded: ListenerString(() => {
-        if (links.manager.tags.debug) {
-            console.log(`[${tags.name}] invoke`);
-        }
-
         os.addBotListener(thisBot, 'onClick', () => {
             thisBot.hideTooltip();
         })
@@ -48,14 +44,10 @@ const BASE_TAGS = {
         if (that.tags.includes('property')) {
             if (thisBot.vars.suppressRefresh) {
                 thisBot.vars.suppressRefresh = false;
-                return;
-            }
-
-            if (links.manager.tags.debug) {
-                console.log(`[${tags.name}] onRefreshDisplay`);
             }
 
             whisper(thisBot, 'onRefreshDisplay');
+            whisper(links.menuItemBots, 'onABConfiguratorPropertyChanged', { property: tags.property });
         }
     }),
     onPointerEnter: ListenerString(() => {
@@ -81,9 +73,81 @@ const BASE_TAGS = {
             thisBot.vars.tooltipId = null;
         }
     }),
+    updateVisibility: ListenerString(() => {
+        const property = tags.property as ABConfiguratorPropertyBase;
+        const vw = property.visibleWhen;
+
+        if (!vw) {
+            return;
+                }
+
+        let siblingBot = links.siblingBot;
+
+        if (!siblingBot) {
+            // Cache reference to sibling bot.
+            siblingBot = links.menuItemBots.find((b: Bot) => {
+                return b.tags.name === `abConfiguratorMenuItem.${vw.key}` &&
+                       b.tags.abConfiguratorGroup === tags.abConfiguratorGroup
+            });
+            
+            if (siblingBot) {
+                links.siblingBot = getLink(siblingBot);
+            }
+        }
+
+        if (!siblingBot) {
+            return;
+        }
+
+        const siblingProp = siblingBot.tags.property;
+        const siblingValue = siblingProp?.value ?? siblingProp?.default;
+        let visible = false;
+
+        switch (vw.operator) {
+            case 'equal': visible = siblingValue == vw.value; break;
+            case 'not equal': visible = siblingValue != vw.value; break;
+            case 'greater than': visible = siblingValue > vw.value; break;
+            case 'less than': visible = siblingValue < vw.value; break;
+            case 'contains': visible = Array.isArray(siblingValue) ? siblingValue.includes(vw.value) : String(siblingValue).includes(vw.value); break;
+            default: {
+                console.warn(`[${tags.name}.${tagName}] operator ${vw.operator} is not implemented in ${tagName}.`);
+                visible = true;
+            }
+        }
+
+        const menuPortalKey = tags.menuGroup ? `abConfiguratorMenu_${tags.menuGroup}` : 'abConfiguratorMenu';
+
+        if (tags[menuPortalKey] != visible) {
+            tags[menuPortalKey] = visible;
+        }
+    }),
     abConfiguratorMenuReset: ListenerString(() => {
         destroy(thisBot);
     }),
+    onABConfiguratorMenuOpened: ListenerString(() => {
+        const { abConfiguratorGroup, menuItemBots } = that;
+
+        if (abConfiguratorGroup === tags.abConfiguratorGroup) {
+            links.menuItemBots = getLink(menuItemBots);
+
+            if (abConfiguratorGroup === tags.abConfiguratorGroup){
+                thisBot.updateVisibility();
+            }
+        }
+
+    }),
+    onABConfiguratorPropertyChanged: ListenerString(() => {
+        const myProperty = tags.property as ABConfiguratorProperty;
+        const changedProperty = that.property as ABConfiguratorProperty;
+
+        if (myProperty.key === changedProperty.key) {
+            return;
+        }
+
+        if (myProperty.visibleWhen?.key === changedProperty.key) {
+            thisBot.updateVisibility();
+        }
+    })
 }
 
 let menuItem = null;

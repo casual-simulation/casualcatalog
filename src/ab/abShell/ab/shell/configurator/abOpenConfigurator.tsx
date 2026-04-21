@@ -55,7 +55,7 @@ if (dataFound) {
     function createPropertyMenuItems(properties: ABConfiguratorProperty[], menuGroup: string) {
         for (let i = 0; i < properties.length; i++) {
             const property = properties[i];
-            const menuItemBot = thisBot.abCreatePropertyMenuItem({ property, menuGroup, index: i });
+            const menuItemBot = thisBot.abCreatePropertyMenuItem({ abConfiguratorGroup, property, menuGroup, index: i });
 
             menuItemBots.push(menuItemBot);
 
@@ -190,6 +190,8 @@ if (dataFound) {
         groupBackButton.tags[`abConfiguratorMenu_${menuGroup.key}`] = true;
         groupBackButton.tags[`abConfiguratorMenu_${menuGroup.key}SortOrder`] = Number.MAX_SAFE_INTEGER;
     }
+
+    shout('onABConfiguratorMenuOpened', { abConfiguratorGroup, menuItemBots });
 } else {
     ab.links.utils.abLog({ message: `Can't open ab configurator for '${abConfiguratorGroup}' — no data was found.`})
 }

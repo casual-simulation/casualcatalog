@@ -12,9 +12,13 @@ if (!property) {
     return null;
 }
 
+const dimension = menuGroup ? `abConfiguratorMenu_${menuGroup}` : 'abConfiguratorMenu'
+
 const BASE_TAGS = {
     space: 'tempLocal',
-    [menuGroup ? `abConfiguratorMenu_${menuGroup}` : 'abConfiguratorMenu']: true,
+    [dimension]: true,
+    [`${dimension}SortOrder`]: index,
+    dimension,
     menuGroup,
     abConfiguratorGroup,
     manager: getLink(thisBot),
@@ -115,10 +119,8 @@ const BASE_TAGS = {
             }
         }
 
-        const menuPortalKey = tags.menuGroup ? `abConfiguratorMenu_${tags.menuGroup}` : 'abConfiguratorMenu';
-
-        if (tags[menuPortalKey] != visible) {
-            tags[menuPortalKey] = visible;
+        if (tags[tags.dimension] != visible) {
+            tags[tags.dimension] = visible;
         }
     }),
     abConfiguratorMenuReset: ListenerString(() => {

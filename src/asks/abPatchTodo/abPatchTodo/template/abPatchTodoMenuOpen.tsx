@@ -18,11 +18,11 @@ create({
 masks.menuOpen = true;
 
 const planTodos  = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
-const allApplied = planTodos.every(b => b.tags.abPatchApplied);
+const allCompleted = planTodos.every(b => b.tags.abTodoComplete);
 const anyFailed  = planTodos.some(b => b.tags.abPatchError);
 const anyReady   = planTodos.some(b => b.tags.todoReadyForAgent);
-const notStarted = !anyReady && !allApplied && !anyFailed;
-const isBusy     = anyReady && !allApplied && !anyFailed;
+const notStarted = !anyReady && !allCompleted && !anyFailed;
+const isBusy     = anyReady && !allCompleted && !anyFailed;
 
 const menuOptions = {
     abPatchTodoMenu: true,
@@ -107,7 +107,7 @@ if (notStarted) {
         formAddress: 'undo',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
-} else if (allApplied) {
+} else if (allCompleted) {
     menuOptions.menuItems.push({
         label: 'approve ask',
         formAddress: 'done',

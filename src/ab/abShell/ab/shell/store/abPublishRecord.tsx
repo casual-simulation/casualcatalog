@@ -21,20 +21,39 @@ if (publicFacing) {
     markerSet.add('publicRead');
 }
 
-recordData = await os.recordData(userRecord, recordName, recordData, { endpoint: endpoint, markers: markerSet.size > 0 ? Array.from(markerSet) : undefined });
-
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] recordData result:`, recordData);
+function doRecord() {
+    return os.recordData(userRecord, recordName, recordData, { endpoint: endpoint, markers: markerSet.size > 0 ? Array.from(markerSet) : undefined });
 }
 
-if (recordData.success) {
-    ab.links.utils.abLogAndToast({ message: `data published to record ${userRecord} at address ${recordName}`, logType: 'log', toast: toast });
-} else {
-    ab.links.utils.abLog({ message: `data failed to publish to record ${userRecord} at address ${recordName}\n${JSON.stringify(recordData, undefined, 2)}`, logType: 'error' });
+let recordResponse = await doRecord();
 
-    if (toast) {
-        ab.links.utils.abToast({ message: `data failed to publish to record ${userRecord} at address ${recordName}. ${recordData.errorMessage}`, logType: 'error' });
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] recordResponse:`, recordResponse);
+}
+
+if (!recordResponse.success) {
+    if (recordResponse.errorCode === 'not_authorized') {
+        // Ask user to grant permission.
+        const permission = await os.grantInstAdminPermission(userRecord);
+
+        if (permission.success) {
+            recordResponse = await doRecord();
+
+            if (tags.debug) {
+                console.log(`[${tags.system}.${tagName}] try again recordResponse:`, recordResponse);
+            }
+        }
     }
 }
 
-return recordData;
+if (recordResponse.success) {
+    ab.links.utils.abLogAndToast({ message: `data published to record ${userRecord} at address ${recordName}`, logType: 'log', toast: toast });
+} else {
+    ab.links.utils.abLog({ message: `data failed to publish to record ${userRecord} at address ${recordName}\n${JSON.stringify(recordResponse, undefined, 2)}`, logType: 'error' });
+
+    if (toast) {
+        ab.links.utils.abToast({ message: `data failed to publish to record ${userRecord} at address ${recordName}. ${recordResponse.errorMessage}`, logType: 'error' });
+    }
+}
+
+return recordResponse;

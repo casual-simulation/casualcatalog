@@ -128,7 +128,7 @@ else if (channel && links.remember.tags.allowChannels) {
 
     // load studio bootstrap egg (if it has one defined).
     const instStudioConfig = await links.search.abInstStudioConfig();
-    if (initalBoot && instStudioConfig && instStudioConfig['studio_bootstrap_egg_name']) {
+    if (initialBoot && instStudioConfig && instStudioConfig['studio_bootstrap_egg_name']) {
         await links.search.onLookupABEggs({ abID: instStudioConfig['studio_bootstrap_egg_name'], recordKey: instStudioConfig.studioId, initialBoot: true, autoHatch: true, sourceEvent: 'boot' });
     }
 }

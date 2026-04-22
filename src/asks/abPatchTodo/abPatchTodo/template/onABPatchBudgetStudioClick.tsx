@@ -1,13 +1,7 @@
 configBot.masks.menuPortal = 'abPatchTodoBudgetStudioMenu';
 
-// Determine if the inst is owned by a studio.
-const isStudioOwned = configBot.tags.owner &&
-    configBot.tags.owner !== 'public' &&
-    configBot.tags.owner !== 'player' &&
-    configBot.tags.owner !== authBot.id;
-
 let ownerStudio = null;
-if (isStudioOwned) {
+if (ab.links.utils.isInstOwnedByStudio()) {
     if (!configBot.tags.user_studios) {
         await ab.abRefreshStudios();
     }

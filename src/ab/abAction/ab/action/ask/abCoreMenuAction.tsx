@@ -110,12 +110,8 @@ else if (!inquiryHasSpace) {
     } else {
         // Need to decide where the cost of the ai calls is going to come from.
         let costRecordName;
-
-         if (configBot.tags.owner &&
-            configBot.tags.owner !== 'public' &&
-            configBot.tags.owner !== 'player' &&
-            configBot.tags.owner !== authBot.id
-        ) { 
+        
+        if (ab.links.utils.isInstOwnedByStudio()) { 
             // Inst owner is likely a studio, the cost of the ai call will come from it.
             costRecordName = configBot.tags.owner;
         } else {

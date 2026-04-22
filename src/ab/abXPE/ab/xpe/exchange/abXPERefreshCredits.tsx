@@ -12,14 +12,10 @@ if (thisBot.vars.currentCycleId !== cycleId) {
 
 const userCredits = await thisBot.getAvailableCredits({ userId: authBot.id });
 
-const isStudioOwned = configBot.tags.owner &&
-    configBot.tags.owner !== 'public' &&
-    configBot.tags.owner !== 'player' &&
-    configBot.tags.owner !== authBot.id;
-
 let studioCredits = null;
 let studioId = null;
-if (isStudioOwned) {
+
+if (ab.links.utils.isInstOwnedByStudio()) {
     studioId = configBot.tags.owner;
     studioCredits = await thisBot.getAvailableCredits({ studioId });
 

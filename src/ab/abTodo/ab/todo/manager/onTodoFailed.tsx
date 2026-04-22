@@ -15,4 +15,4 @@ if (agentBot) {
     agentBot.tags.todoInProgress = false;
 }
 
-shout('onAnyTodoFailed', that);
+ab.links.utils.remoteShout({ name: 'onAnyTodoFailed', arg: that});

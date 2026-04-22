@@ -15,30 +15,10 @@ const userCredits = await thisBot.getAvailableCredits({ userId: authBot.id });
 let studioCredits = null;
 let studioId = null;
 
-if (ab.links.utils.isInstOwnedByStudio()) {
-    studioId = configBot.tags.owner;
+const instStudioConfig = await ab.links.utils.abInstStudioConfig();
+if (instStudioConfig) {
+    studioId = instStudioConfig.studioId;
     studioCredits = await thisBot.getAvailableCredits({ studioId });
-
-    // Load studio display metadata once and store as a mask tag.
-    if (!masks.studioConfig) {
-        if (!configBot.tags.user_studios) {
-            await ab.abRefreshStudios();
-        }
-        if (configBot.tags.user_studios?.success) {
-            const ownerStudio = configBot.tags.user_studios.studios
-                .find(s => s.studioId === studioId);
-            if (ownerStudio) {
-                const res = await os.getData(studioId, 'abStudioConfig');
-                const data = res.success ? res.data : {};
-                const studioConfig = {
-                    displayName: ownerStudio.displayName,
-                    creditIconUrl: data['studio_credit_icon_url'] ?? null,
-                    creditBackgroundColor: data['studio_credit_background_color'] ?? null,
-                };
-                setTagMask(thisBot, 'studioConfig', '🧬' + JSON.stringify(studioConfig), 'shared');
-            }
-        }
-    }
 }
 
 if (thisBot.vars.currentCycleId !== cycleId) {

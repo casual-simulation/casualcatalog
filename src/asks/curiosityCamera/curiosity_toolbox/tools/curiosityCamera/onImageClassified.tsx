@@ -1,7 +1,7 @@
 const top = that.prediction.reduce((a, b) => 
     a.probability > b.probability ? a : b
 );
-if ((top.probability * 100).toFixed(0) > 95) {
+if ((top.probability * 100).toFixed(0) > tags.confidence_percentage) {
 
     if (tags.confidenceName != top.className) {
         tags.confidenceName = top.className;
@@ -10,7 +10,7 @@ if ((top.probability * 100).toFixed(0) > 95) {
         tags.confidenceCount += 1;
     }
 
-    if (tags.confidenceCount > 10) {
+    if (tags.confidenceName && tags.confidenceName != 'None' && tags.confidenceCount > tags.confidence_sequential) {
          await os.closeImageClassifier();
 
         const discData = tags.discoverableData.find(item => item.attributes.Name == top.className);

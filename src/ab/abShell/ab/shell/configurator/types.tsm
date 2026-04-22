@@ -80,9 +80,29 @@ interface ABConfiguratorPropertyGroup extends ABConfiguratorPropertyBase {
   properties: ABConfiguratorProperty[];
 }
 
+interface ABConfiguratorPropertyList extends ABConfiguratorPropertyBase {
+  type: 'list';
+  // Single property def = scalar mode; value is primitive[].
+  // Array of property defs = compound mode; value is Record<string,any>[],
+  //   each def's `key` becomes the field name in the output object per entry.
+  itemSchema: ABConfiguratorScalarProperty | ABConfiguratorScalarProperty[];
+  maxItems?: number;
+  minItems?: number;
+  addLabel?: string;
+  value?: any[];
+  default?: any[];
+}
+
 // ============================================
 // Union + Data
 // ============================================
+type ABConfiguratorScalarProperty =
+  | ABConfiguratorPropertyColor
+  | ABConfiguratorPropertyNumber
+  | ABConfiguratorPropertyText
+  | ABConfiguratorPropertyBoolean
+  | ABConfiguratorPropertySelect;
+
 type ABConfiguratorProperty =
   | ABConfiguratorPropertyColor
   | ABConfiguratorPropertyNumber
@@ -90,7 +110,8 @@ type ABConfiguratorProperty =
   | ABConfiguratorPropertyBoolean
   | ABConfiguratorPropertySelect
   | ABConfiguratorPropertyMultiSelect
-  | ABConfiguratorPropertyGroup;
+  | ABConfiguratorPropertyGroup
+  | ABConfiguratorPropertyList;
 
 interface ABConfiguratorData {
   group: string;

@@ -3,9 +3,11 @@ interface ABCreatePropertyMenuItemArg {
     menuGroup: string;
     property: ABConfiguratorProperty;
     index: number;
+    recordFieldKey?: string;
+    recordBot?: Bot;
 }
 
-const { abConfiguratorGroup, menuGroup, property, index } = that as ABCreatePropertyMenuItemArg ?? {};
+const { abConfiguratorGroup, menuGroup, property, index, recordFieldKey, recordBot } = that as ABCreatePropertyMenuItemArg ?? {};
 
 if (!property) {
     console.warn(`[${tags.system}.${tagName}] given null for a property.`);
@@ -25,6 +27,8 @@ const BASE_TAGS = {
     name: `abConfiguratorMenuItem.${property.key}`,
     property: '🧬' + JSON.stringify(property),
     tooltip: property.description ?? property.label,
+    recordFieldKey: recordFieldKey ?? null,
+    recordBot: recordBot ? getLink(recordBot) : null,
     updatePropertyField: ListenerString(() => {
         /** This is a utility function for easily settings/changing values in the property tag object that is CasualOS tag friendly. */
         const { name, value, suppressRefresh = false } = that;
@@ -36,6 +40,10 @@ const BASE_TAGS = {
         const property = tags.property;
         property[name] = value;
         tags.property = '🧬' + JSON.stringify(property);
+
+        if (name === 'value' && tags.recordFieldKey && links.recordBot) {
+            links.recordBot.onRecordFieldChanged({ key: tags.recordFieldKey, value });
+        }
     }),
     onBotAdded: ListenerString(() => {
         os.addBotListener(thisBot, 'onClick', () => {
@@ -697,6 +705,477 @@ if (property.type === 'boolean') {
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyGroup;
             tags.label = property.label ?? property.key;
+        }),
+    })
+} else if (property.type === 'list') {
+    menuItem = ab.links.menu.abCreateMenuButton({
+        ...BASE_TAGS,
+        formAddress: 'format_list_bulleted',
+        onRefreshDisplay: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyList;
+            const items = property.value ?? property.default ?? [];
+            const count = items.length;
+            tags.label = (property.label ?? property.key) + ': ' + (count > 0 ? `${count} item${count === 1 ? '' : 's'}` : 'empty');
+        }),
+        onBotChanged: ListenerString(() => {
+            if (that.tags.includes('property')) {
+                if (thisBot.vars.suppressRefresh) {
+                    thisBot.vars.suppressRefresh = false;
+                }
+                whisper(thisBot, 'onRefreshDisplay');
+                whisper(thisBot, 'refreshListItems');
+                whisper(links.menuItemBots, 'onABConfiguratorPropertyChanged', { property: tags.property });
+            }
+        }),
+        onRecordFieldChanged: ListenerString(() => {
+            const { key, value } = that;
+            if (key === '__scalar__') {
+                const index = thisBot.vars.editingItemIndex;
+                if (index !== undefined && index !== null) {
+                    thisBot.setListItemValue({ index, value });
+                }
+            } else {
+                thisBot.vars.recordEdits = thisBot.vars.recordEdits ?? {};
+                thisBot.vars.recordEdits[key] = value;
+            }
+        }),
+        setListItemValue: ListenerString(() => {
+            const { index, value } = that;
+            const property = tags.property as ABConfiguratorPropertyList;
+            const items = [...(property.value ?? property.default ?? [])];
+            items[index] = value;
+            thisBot.updatePropertyField({ name: 'value', value: items });
+        }),
+        removeListItem: ListenerString(() => {
+            const { index } = that;
+            const property = tags.property as ABConfiguratorPropertyList;
+            const items = [...(property.value ?? property.default ?? [])];
+            items.splice(index, 1);
+            thisBot.updatePropertyField({ name: 'value', value: items });
+        }),
+        refreshListItems: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyList;
+            const listPortal = `abConfiguratorListMenu_${property.key}`;
+
+            if (configBot.tags.menuPortal !== listPortal) {
+                return;
+            }
+
+            const items = property.value ?? property.default ?? [];
+            const isCompound = Array.isArray(property.itemSchema);
+            const clearListEvent = `clearAbConfiguratorListMenu_${property.key}`;
+            const propertyLink = getLink(thisBot);
+
+            for (const b of getBots('listItemForProperty', property.key)) {
+                destroy(b);
+            }
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                let preview = '';
+                if (isCompound) {
+                    preview = Object.values(item as object).map(v => String(v)).join(', ');
+                    if (preview.length > 25) preview = preview.slice(0, 25) + '...';
+                } else {
+                    preview = String(item ?? '');
+                    if (preview.length > 25) preview = preview.slice(0, 25) + '...';
+                }
+
+                ab.links.menu.abCreateMenuButton({
+                    space: 'tempLocal',
+                    [listPortal]: true,
+                    [`${listPortal}SortOrder`]: i,
+                    listItemForProperty: property.key,
+                    itemIndex: i,
+                    listPropertyBot: propertyLink,
+                    listPortal,
+                    label: `${i + 1}: ${preview || '(empty)'}`,
+                    formAddress: 'edit',
+                    [clearListEvent]: ListenerString(() => { destroy(thisBot) }),
+                    abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                    onClick: ListenerString(async () => {
+                        const index = tags.itemIndex;
+                        const listPortal = tags.listPortal;
+                        const property = links.listPropertyBot.tags.property as ABConfiguratorPropertyList;
+                        const items = property.value ?? property.default ?? [];
+                        const item = items[index];
+                        const isCompound = Array.isArray(property.itemSchema);
+                        const actionPortal = `abConfiguratorListAction_${property.key}_${index}`;
+                        const clearActionEvent = `clearAbConfiguratorListAction_${property.key}_${index}`;
+
+                        configBot.masks.menuPortal = actionPortal;
+
+                        ab.links.menu.abCreateMenuText({
+                            space: 'tempLocal',
+                            [actionPortal]: true,
+                            [`${actionPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                            label: `Item ${index + 1}`,
+                            labelAlignment: 'center',
+                            menuItemStyle: {},
+                            menuItemLabelStyle: { 'font-weight': 'bold' },
+                            [clearActionEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                        });
+
+                        ab.links.menu.abCreateMenuButton({
+                            space: 'tempLocal',
+                            [actionPortal]: true,
+                            [`${actionPortal}SortOrder`]: 1,
+                            label: 'Edit',
+                            formAddress: 'edit',
+                            itemIndex: index,
+                            listPortal,
+                            listPropertyBot: links.listPropertyBot,
+                            clearActionEvent,
+                            [clearActionEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                            onClick: ListenerString(async () => {
+                                const index = tags.itemIndex;
+                                const listPortal = tags.listPortal;
+                                const property = links.listPropertyBot.tags.property as ABConfiguratorPropertyList;
+                                const items = property.value ?? property.default ?? [];
+                                const item = items[index];
+                                const isCompound = Array.isArray(property.itemSchema);
+                                const editPortal = `abConfiguratorMenu_${property.key}_edit_${index}`;
+                                const clearEditEvent = `clearAbConfiguratorListEdit_${property.key}_${index}`;
+
+                                shout(tags.clearActionEvent);
+                                configBot.masks.menuPortal = editPortal;
+
+                                if (isCompound) {
+                                    links.listPropertyBot.vars.recordEdits = item ? { ...item } : {};
+                                    const schema = property.itemSchema as ABConfiguratorScalarProperty[];
+
+                                    ab.links.menu.abCreateMenuText({
+                                        space: 'tempLocal',
+                                        [editPortal]: true,
+                                        [`${editPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                                        label: `Edit Item ${index + 1}`,
+                                        labelAlignment: 'center',
+                                        menuItemStyle: {},
+                                        menuItemLabelStyle: { 'font-weight': 'bold' },
+                                        [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                                        abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                                    });
+
+                                    for (let fi = 0; fi < schema.length; fi++) {
+                                        const fieldSchema = schema[fi];
+                                        await ab.links.configurator.abCreatePropertyMenuItem({
+                                            abConfiguratorGroup: `${property.key}_listEdit`,
+                                            menuGroup: `${property.key}_edit_${index}`,
+                                            property: { ...fieldSchema, value: item ? item[fieldSchema.key] : undefined },
+                                            index: fi,
+                                            recordFieldKey: fieldSchema.key,
+                                            recordBot: links.listPropertyBot,
+                                        });
+                                    }
+
+                                    ab.links.menu.abCreateMenuButton({
+                                        space: 'tempLocal',
+                                        [editPortal]: true,
+                                        [`${editPortal}SortOrder`]: schema.length + 1,
+                                        label: 'Save',
+                                        formAddress: 'save',
+                                        itemIndex: index,
+                                        listPortal,
+                                        listPropertyBot: links.listPropertyBot,
+                                        clearEditEvent,
+                                        [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                                        abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                                        onClick: ListenerString(() => {
+                                            const recordEdits = links.listPropertyBot.vars.recordEdits ?? {};
+                                            links.listPropertyBot.setListItemValue({ index: tags.itemIndex, value: recordEdits });
+                                            shout(tags.clearEditEvent);
+                                            configBot.masks.menuPortal = tags.listPortal;
+                                        }),
+                                    });
+
+                                    ab.links.menu.abCreateMenuButton({
+                                        space: 'tempLocal',
+                                        [editPortal]: true,
+                                        [`${editPortal}SortOrder`]: schema.length + 2,
+                                        label: 'back',
+                                        formAddress: 'arrow_back',
+                                        listPortal,
+                                        clearEditEvent,
+                                        [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                                        abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                                        onClick: ListenerString(() => {
+                                            shout(tags.clearEditEvent);
+                                            configBot.masks.menuPortal = tags.listPortal;
+                                        }),
+                                    });
+                                } else {
+                                    const itemSchema = property.itemSchema as ABConfiguratorScalarProperty;
+
+                                    ab.links.menu.abCreateMenuText({
+                                        space: 'tempLocal',
+                                        [editPortal]: true,
+                                        [`${editPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                                        label: `Edit Item ${index + 1}`,
+                                        labelAlignment: 'center',
+                                        menuItemStyle: {},
+                                        menuItemLabelStyle: { 'font-weight': 'bold' },
+                                        [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                                        abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                                    });
+
+                                    if (itemSchema.type === 'boolean') {
+                                        links.listPropertyBot.setListItemValue({ index, value: !item });
+                                        shout(clearEditEvent);
+                                        configBot.masks.menuPortal = listPortal;
+                                    } else {
+                                        links.listPropertyBot.vars.editingItemIndex = index;
+                                        await ab.links.configurator.abCreatePropertyMenuItem({
+                                            abConfiguratorGroup: `${property.key}_listEdit`,
+                                            menuGroup: `${property.key}_edit_${index}`,
+                                            property: { ...itemSchema, value: item },
+                                            index: 0,
+                                            recordFieldKey: '__scalar__',
+                                            recordBot: links.listPropertyBot,
+                                        });
+
+                                        ab.links.menu.abCreateMenuButton({
+                                            space: 'tempLocal',
+                                            [editPortal]: true,
+                                            [`${editPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                                            label: 'back',
+                                            formAddress: 'arrow_back',
+                                            listPortal,
+                                            clearEditEvent,
+                                            [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                                            onClick: ListenerString(() => {
+                                                shout(tags.clearEditEvent);
+                                                configBot.masks.menuPortal = tags.listPortal;
+                                            }),
+                                        });
+                                    }
+                                }
+                            }),
+                        });
+
+                        ab.links.menu.abCreateMenuButton({
+                            space: 'tempLocal',
+                            [actionPortal]: true,
+                            [`${actionPortal}SortOrder`]: 2,
+                            label: 'Remove',
+                            formAddress: 'delete',
+                            itemIndex: index,
+                            listPortal,
+                            listPropertyBot: links.listPropertyBot,
+                            clearActionEvent,
+                            [clearActionEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                            onClick: ListenerString(() => {
+                                links.listPropertyBot.removeListItem({ index: tags.itemIndex });
+                                shout(tags.clearActionEvent);
+                                configBot.masks.menuPortal = tags.listPortal;
+                            }),
+                        });
+
+                        ab.links.menu.abCreateMenuButton({
+                            space: 'tempLocal',
+                            [actionPortal]: true,
+                            [`${actionPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                            label: 'back',
+                            formAddress: 'arrow_back',
+                            listPortal,
+                            clearActionEvent,
+                            [clearActionEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                            onClick: ListenerString(() => {
+                                shout(tags.clearActionEvent);
+                                configBot.masks.menuPortal = tags.listPortal;
+                            }),
+                        });
+                    }),
+                });
+            }
+        }),
+        onClick: ListenerString(async () => {
+            const property = tags.property as ABConfiguratorPropertyList;
+            const listPortal = `abConfiguratorListMenu_${property.key}`;
+            const clearListEvent = `clearAbConfiguratorListMenu_${property.key}`;
+
+            links.manager.vars.selectReturnPortal = configBot.tags.menuPortal;
+            configBot.masks.menuPortal = listPortal;
+
+            const propertyLink = getLink(thisBot);
+
+            ab.links.menu.abCreateMenuText({
+                space: 'tempLocal',
+                [listPortal]: true,
+                [`${listPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                label: property.label ?? property.key,
+                labelAlignment: 'center',
+                menuItemStyle: {},
+                menuItemLabelStyle: { 'font-weight': 'bold' },
+                [clearListEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+            });
+
+            whisper(thisBot, 'refreshListItems');
+
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                [listPortal]: true,
+                [`${listPortal}SortOrder`]: Number.MAX_SAFE_INTEGER - 1,
+                label: property.addLabel ?? 'Add item',
+                formAddress: 'add',
+                listPortal,
+                listPropertyBot: propertyLink,
+                [clearListEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                onClick: ListenerString(async () => {
+                    const property = links.listPropertyBot.tags.property as ABConfiguratorPropertyList;
+                    const isCompound = Array.isArray(property.itemSchema);
+                    const items = property.value ?? property.default ?? [];
+                    const newIndex = items.length;
+
+                    let newItem: any;
+                    if (isCompound) {
+                        const schema = property.itemSchema as ABConfiguratorScalarProperty[];
+                        newItem = {};
+                        for (const field of schema) {
+                            if (field.default !== undefined) newItem[field.key] = field.default;
+                        }
+                    } else {
+                        const itemSchema = property.itemSchema as ABConfiguratorScalarProperty;
+                        newItem = itemSchema.default ?? null;
+                    }
+
+                    links.listPropertyBot.vars.suppressRefresh = true;
+                    links.listPropertyBot.updatePropertyField({ name: 'value', value: [...items, newItem] });
+
+                    const newItemsArr = [...items, newItem];
+                    const editPortal = `abConfiguratorMenu_${property.key}_edit_${newIndex}`;
+                    const clearEditEvent = `clearAbConfiguratorListEdit_${property.key}_${newIndex}`;
+                    const listPortal = tags.listPortal;
+
+                    configBot.masks.menuPortal = editPortal;
+
+                    if (isCompound) {
+                        links.listPropertyBot.vars.recordEdits = newItem ? { ...newItem } : {};
+                        const schema = property.itemSchema as ABConfiguratorScalarProperty[];
+
+                        ab.links.menu.abCreateMenuText({
+                            space: 'tempLocal',
+                            [editPortal]: true,
+                            [`${editPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                            label: `New Item ${newIndex + 1}`,
+                            labelAlignment: 'center',
+                            menuItemStyle: {},
+                            menuItemLabelStyle: { 'font-weight': 'bold' },
+                            [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                        });
+
+                        for (let fi = 0; fi < schema.length; fi++) {
+                            const fieldSchema = schema[fi];
+                            await ab.links.configurator.abCreatePropertyMenuItem({
+                                abConfiguratorGroup: `${property.key}_listEdit`,
+                                menuGroup: `${property.key}_edit_${newIndex}`,
+                                property: { ...fieldSchema, value: newItem ? newItem[fieldSchema.key] : undefined },
+                                index: fi,
+                                recordFieldKey: fieldSchema.key,
+                                recordBot: links.listPropertyBot,
+                            });
+                        }
+
+                        ab.links.menu.abCreateMenuButton({
+                            space: 'tempLocal',
+                            [editPortal]: true,
+                            [`${editPortal}SortOrder`]: schema.length + 1,
+                            label: 'Save',
+                            formAddress: 'save',
+                            itemIndex: newIndex,
+                            listPortal,
+                            listPropertyBot: links.listPropertyBot,
+                            clearEditEvent,
+                            [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                            onClick: ListenerString(() => {
+                                const recordEdits = links.listPropertyBot.vars.recordEdits ?? {};
+                                links.listPropertyBot.setListItemValue({ index: tags.itemIndex, value: recordEdits });
+                                shout(tags.clearEditEvent);
+                                configBot.masks.menuPortal = tags.listPortal;
+                            }),
+                        });
+
+                        ab.links.menu.abCreateMenuButton({
+                            space: 'tempLocal',
+                            [editPortal]: true,
+                            [`${editPortal}SortOrder`]: schema.length + 2,
+                            label: 'back',
+                            formAddress: 'arrow_back',
+                            listPortal,
+                            clearEditEvent,
+                            [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                            onClick: ListenerString(() => {
+                                shout(tags.clearEditEvent);
+                                configBot.masks.menuPortal = tags.listPortal;
+                            }),
+                        });
+                    } else {
+                        const itemSchema = property.itemSchema as ABConfiguratorScalarProperty;
+
+                        ab.links.menu.abCreateMenuText({
+                            space: 'tempLocal',
+                            [editPortal]: true,
+                            [`${editPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+                            label: `New Item ${newIndex + 1}`,
+                            labelAlignment: 'center',
+                            menuItemStyle: {},
+                            menuItemLabelStyle: { 'font-weight': 'bold' },
+                            [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                        });
+
+                        links.listPropertyBot.vars.editingItemIndex = newIndex;
+                        await ab.links.configurator.abCreatePropertyMenuItem({
+                            abConfiguratorGroup: `${property.key}_listEdit`,
+                            menuGroup: `${property.key}_edit_${newIndex}`,
+                            property: { ...itemSchema, value: newItem },
+                            index: 0,
+                            recordFieldKey: '__scalar__',
+                            recordBot: links.listPropertyBot,
+                        });
+
+                        ab.links.menu.abCreateMenuButton({
+                            space: 'tempLocal',
+                            [editPortal]: true,
+                            [`${editPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                            label: 'back',
+                            formAddress: 'arrow_back',
+                            listPortal,
+                            clearEditEvent,
+                            [clearEditEvent]: ListenerString(() => { destroy(thisBot) }),
+                            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                            onClick: ListenerString(() => {
+                                shout(tags.clearEditEvent);
+                                configBot.masks.menuPortal = tags.listPortal;
+                            }),
+                        });
+                    }
+                }),
+            });
+
+            ab.links.menu.abCreateMenuButton({
+                space: 'tempLocal',
+                [listPortal]: true,
+                [`${listPortal}SortOrder`]: Number.MAX_SAFE_INTEGER,
+                label: 'back',
+                formAddress: 'arrow_back',
+                manager: getLink(links.manager),
+                [clearListEvent]: ListenerString(() => { destroy(thisBot) }),
+                abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot) }),
+                onClick: ListenerString(() => {
+                    shout(tags.clearListEvent);
+                    configBot.masks.menuPortal = links.manager.vars.selectReturnPortal;
+                }),
+            });
         }),
     })
 } else {

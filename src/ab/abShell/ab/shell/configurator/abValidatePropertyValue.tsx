@@ -72,6 +72,41 @@ switch (property.type) {
     case 'group':
         return { valid: true, value };
 
+    case 'list': {
+        if (!Array.isArray(value)) {
+            return { valid: false, reason: `Expected array, got ${typeof value}` };
+        }
+        if (property.minItems !== undefined && value.length < property.minItems) {
+            return { valid: false, reason: `List has ${value.length} items, minimum is ${property.minItems}` };
+        }
+        if (property.maxItems !== undefined && value.length > property.maxItems) {
+            return { valid: false, reason: `List has ${value.length} items, maximum is ${property.maxItems}` };
+        }
+        const isCompound = Array.isArray(property.itemSchema);
+        for (let i = 0; i < value.length; i++) {
+            const item = value[i];
+            if (isCompound) {
+                if (typeof item !== 'object' || item == null) {
+                    return { valid: false, reason: `Item ${i} expected object, got ${typeof item}` };
+                }
+                for (const fieldSchema of property.itemSchema as ABConfiguratorScalarProperty[]) {
+                    const fieldValue = item[fieldSchema.key];
+                    if (fieldValue == null) continue;
+                    const result = thisBot.abValidatePropertyValue({ property: fieldSchema, value: fieldValue });
+                    if (!result.valid) {
+                        return { valid: false, reason: `Item ${i} field "${fieldSchema.key}": ${result.reason}` };
+                    }
+                }
+            } else {
+                const result = thisBot.abValidatePropertyValue({ property: property.itemSchema as ABConfiguratorScalarProperty, value: item });
+                if (!result.valid) {
+                    return { valid: false, reason: `Item ${i}: ${result.reason}` };
+                }
+            }
+        }
+        return { valid: true, value };
+    }
+
     default:
         return { valid: false, reason: `Unknown property type: ${property.type}` };
 }

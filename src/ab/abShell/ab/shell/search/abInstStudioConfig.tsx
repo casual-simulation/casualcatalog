@@ -1,5 +1,5 @@
 if (ab.links.utils.isInstOwnedByStudio()) {
-    studioId = configBot.tags.owner;
+    const studioId = configBot.tags.owner;
 
     if (!masks.studioConfig) {
         // Load studio config once and store as a shared mask tag.

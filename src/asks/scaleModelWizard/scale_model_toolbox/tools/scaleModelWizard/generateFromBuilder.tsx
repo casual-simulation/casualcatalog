@@ -10,6 +10,11 @@ if (!tags.generatedModelData) {
     tags.generatedModelData = [];
 }
 
+const description = tags.parsedOriginalResponse.find(item => item.name == parsedJsonData.name)?.description;
+if (description){
+    parsedJsonData.description = description;
+}
+
 tags.generatedModelData.push(parsedJsonData);
 
 //thisBot.provideReceipt({raw: jsonData, parsed: parsedJsonData});
@@ -22,6 +27,14 @@ if (parsedJsonData["type"]) {
 
     //SCALE MODEL
     if (parsedJsonData["type"] == 'MODEL') {
+        if (parsedJsonData.isSpawned) {
+            if (parsedJsonData.stats.spawn_tick) {
+                const manager = getBot("timelineManager", true);
+                if (manager) {
+                    parsedJsonData.stats.spawn_tick.start = manager.tags.currentStep;
+                }
+            }
+        }
         const abArtifactShard = {
             data: {
                 config: {
@@ -40,7 +53,8 @@ if (parsedJsonData["type"]) {
                         [dimensionName + 'Z']: parsedJsonData.location?.z ?? zVal,
                         [dimensionName + 'RotationX']: parsedJsonData.rotation?.x,
                         [dimensionName + 'RotationY']: parsedJsonData.rotation?.y,
-                        [dimensionName + 'RotationZ']: parsedJsonData.rotation?.z
+                        [dimensionName + 'RotationZ']: parsedJsonData.rotation?.z,
+                        isSpawned: parsedJsonData.isSpawned
                     },
                     scaleX: parsedJsonData.scale.x,
                     scaleY: parsedJsonData.scale.y,

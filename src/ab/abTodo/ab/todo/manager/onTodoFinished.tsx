@@ -11,4 +11,4 @@ if (agentBot) {
     agentBot.tags.todoInProgress = false;
 }
 
-shout('onAnyTodoFinished', that);
+ab.links.utils.remoteShout({ name: 'onAnyTodoFinished', arg: that});

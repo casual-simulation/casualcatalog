@@ -98,6 +98,7 @@ humeSocket.addEventListener('message', async (event) => {
             await ab.links.ask.askGPT({
                 inquiry: parameters.ask,
                 menuType: "core",
+                agentMode: 'plan',
                 menuActionData: null,
                 sourceId: "abBot",
                 historyStorageBot: ab.links.remember,

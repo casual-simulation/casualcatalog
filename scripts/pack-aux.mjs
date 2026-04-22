@@ -18,7 +18,7 @@
  * Run via:  pnpm run pack:dev   or   pnpm run pack:prod
  */
 
-import { execFileSync } from "node:child_process";
+import { execFileSync, execFile } from "node:child_process";
 import {
   readdirSync,
   statSync,
@@ -29,6 +29,7 @@ import {
   cpSync,
 } from "node:fs";
 import { join, basename, relative } from "node:path";
+import { availableParallelism } from "node:os";
 
 const isProd = process.argv.includes("--prod");
 
@@ -46,6 +47,33 @@ function run(cmd, args) {
     stdio: "inherit",
     shell: process.platform === "win32",
   });
+}
+
+/** Async version of run — captures stdout/stderr so parallel output stays grouped. */
+function runAsync(cmd, args) {
+  return new Promise((resolve, reject) => {
+    execFile(cmd, args, {
+      encoding: "utf-8",
+      shell: process.platform === "win32",
+    }, (err, stdout, stderr) => {
+      if (err) reject({ err, stdout, stderr });
+      else resolve({ stdout, stderr });
+    });
+  });
+}
+
+/** Run async task thunks with at most `limit` running at once. */
+async function runWithConcurrency(thunks, limit) {
+  const results = [];
+  const executing = new Set();
+  for (const thunk of thunks) {
+    const p = Promise.resolve(thunk());
+    results.push(p);
+    const e = p.finally(() => executing.delete(e));
+    executing.add(e);
+    if (executing.size >= limit) await Promise.race(executing).catch(() => {});
+  }
+  return Promise.allSettled(results);
 }
 
 /**
@@ -149,35 +177,48 @@ console.log(`📦 Packing .aux files (${isProd ? "prod" : "dev"})...\n`);
 let failed = false;
 let totalPacked = 0;
 
+// Build all packing tasks across every config upfront so they can run in parallel.
+const packThunks = [];
+
 for (const { srcDir, outputDir, auxVersion } of PACK_CONFIGS) {
   mkdirSync(outputDir, { recursive: true });
 
-  const subdirs = getSubdirs(srcDir);
-
-  for (const subdir of subdirs) {
-    const name = basename(subdir);
-
-    // Only pack directories that contain an extra.aux file —
-    // its presence signals this is a valid unpacked aux package.
+  for (const subdir of getSubdirs(srcDir)) {
     if (!existsSync(join(subdir, "extra.aux"))) {
       console.log(`  ⏭️  Skipping ${relative(".", subdir)}/ — no extra.aux found`);
       continue;
     }
 
+    const name = basename(subdir);
     const outputFile = join(outputDir, `${name}.aux`);
-    console.log(`  📦 ${relative(".", subdir)}/ → ${relative(".", outputFile)} (v${auxVersion})`);
+    const label = `${relative(".", subdir)}/ → ${relative(".", outputFile)} (v${auxVersion})`;
 
-    try {
-      run("npx", [
+    packThunks.push(async () => {
+      console.log(`  📦 ${label}`);
+      const { stdout, stderr } = await runAsync("npx", [
         "casualos", "pack-aux",
         "--overwrite", "--aux-version", String(auxVersion),
         subdir, outputFile,
       ]);
-      totalPacked++;
-    } catch {
-      console.error(`  ❌ Failed to pack ${relative(".", subdir)}`);
-      failed = true;
-    }
+      if (stdout) process.stdout.write(stdout);
+      if (stderr) process.stderr.write(stderr);
+    });
+  }
+}
+
+const concurrency = availableParallelism();
+console.log(`  (running up to ${concurrency} in parallel)\n`);
+const settled = await runWithConcurrency(packThunks, concurrency);
+
+for (const result of settled) {
+  if (result.status === "fulfilled") {
+    totalPacked++;
+  } else {
+    const { err, stdout, stderr } = result.reason;
+    if (stdout) process.stdout.write(stdout);
+    if (stderr) process.stderr.write(stderr);
+    console.error(`  ❌ ${err.message}`);
+    failed = true;
   }
 }
 

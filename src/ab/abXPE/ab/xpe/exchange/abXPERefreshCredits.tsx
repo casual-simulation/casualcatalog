@@ -15,7 +15,7 @@ const userCredits = await thisBot.getAvailableCredits({ userId: authBot.id });
 let studioCredits = null;
 let studioId = null;
 
-const instStudioConfig = await ab.links.utils.abInstStudioConfig();
+const instStudioConfig = await ab.links.search.abInstStudioConfig();
 if (instStudioConfig) {
     studioId = instStudioConfig.studioId;
     studioCredits = await thisBot.getAvailableCredits({ studioId });

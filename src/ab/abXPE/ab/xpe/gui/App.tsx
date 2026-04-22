@@ -101,7 +101,7 @@ const App = () => {
         setUserCredits(data.userCredits);
         setStudioCredits(data.studioCredits ?? null);
 
-        const instStudioConfig = await ab.links.utils.abInstStudioConfig();
+        const instStudioConfig = await ab.links.search.abInstStudioConfig();
         if (instStudioConfig) {
             setStudioName(instStudioConfig.studioDisplayName);
             setStudioCreditsIcon(instStudioConfig['studio_credit_icon_url'] ?? null);

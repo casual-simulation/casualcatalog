@@ -12,7 +12,7 @@ if (that.tags.includes('availableCredits')) {
         if (data.studioId && data.studioCreditsPrev != null && data.studioCredits !== data.studioCreditsPrev) {
             const delta = data.studioCredits - data.studioCreditsPrev;
             const sign = delta >= 0 ? '+' : '';
-            const instStudioConfig = await ab.links.utils.abInstStudioConfig();
+            const instStudioConfig = await ab.links.search.abInstStudioConfig();
             const studioName = instStudioConfig?.studioDisplayName ?? data.studioId;
             ab.links.utils.abLog({
                 name: `${studioName} Credits`,

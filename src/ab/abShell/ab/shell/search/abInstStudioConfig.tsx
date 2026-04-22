@@ -1,7 +1,7 @@
 if (ab.links.utils.isInstOwnedByStudio()) {
     const studioId = configBot.tags.owner;
 
-    if (!masks.studioConfig) {
+    if (!masks.instStudioConfig) {
         // Load studio config once and store as a shared mask tag.
         if (!configBot.tags.user_studios) {
             await ab.abRefreshStudios();
@@ -13,18 +13,18 @@ if (ab.links.utils.isInstOwnedByStudio()) {
             if (ownerStudio) {
                 const res = await os.getData(studioId, 'abStudioConfig');
                 const data = res.success ? res.data : {};
-                const studioConfig = {
+                const instStudioConfig = {
                     studioId: ownerStudio.studioId,
                     studioDisplayName: ownerStudio.displayName,
                     ...data,
                 };
-                setTagMask(thisBot, 'instStudioConfig', '🧬' + JSON.stringify(studioConfig), 'shared');
+                setTagMask(thisBot, 'instStudioConfig', '🧬' + JSON.stringify(instStudioConfig), 'shared');
 
-                return studioConfig;
+                return instStudioConfig;
             }
         }
     } else {
-        return masks.studioConfig;
+        return masks.instStudioConfig;
     }
 }
 

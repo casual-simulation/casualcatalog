@@ -43,9 +43,9 @@ menuOptions.menuItems.push({
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchPromptClick'); }),
 });
 
-// Always: ai model (always clickable)
+// Always: ai agent (always clickable)
 menuOptions.menuItems.push({
-    label: `ai model: ${tags.aiModel ?? 'default'}`,
+    label: `ai agent: ${tags.agentName ?? tags.aiModel ?? 'default'}`,
     formAddress: 'lightbulb',
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchAIModelClick'); }),
 });

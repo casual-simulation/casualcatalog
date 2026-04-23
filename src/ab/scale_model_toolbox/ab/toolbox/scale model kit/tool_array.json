@@ -3,6 +3,7 @@
         "name": "scale model",
         "studio": "AB",
         "targetAB": "scaleModel",
+        "description": "A single interactive entity bot in a scale model simulation. Holds numeric stats (with start values, deltas, and time units), qualitative state groups, and event listeners. Click to open a menu for setting the model's name, adding or viewing stats/states/listeners, and locking the model. Use this to manually define or inspect individual models within a simulation scene.",
         "artifact": true
     },
     {
@@ -17,12 +18,14 @@
         "name": "timeline marker",
         "studio": "AB",
         "targetAB": "timelineMarker",
+        "description": "A labeled scrub point in a scale model simulation. Each marker holds a tick value and time unit (minute, hour, day, week, month, quarter, or year). Click to set the value and unit, then lock it — once locked it broadcasts to all models to advance the simulation to that tick. Color indicates whether the current simulation time has reached the marker. Place multiple markers in a scene to define the timeline's key checkpoints.",
         "artifact": true
     },
     {
         "name": "timeline manager",
         "studio": "AB",
         "targetAB": "timelineManager",
+        "description": "The simulation controller for a scale model scene. Tracks the current tick and broadcasts setDelta each step to drive all models and timeline markers. Click to set the time unit, play/pause auto-playback (one tick per second), step forward or backward manually, or reset the simulation back to tick 0 — restoring all model stats and states to their starting values and destroying any spawned bots. One timeline manager is needed per scene.",
         "artifact": true
     }
     

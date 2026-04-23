@@ -2,7 +2,7 @@
     {
         "name": "create an agent bot",
         "targetAB": "agent_bot_tool",
-        "description": "Create an agent bot using the agent bot tool. Can create built-in agents or custom agents.",
+        "description": "Spawn an interactive AI agent bot into the scene. The agent has a provider-specific 3D mesh (OpenAI/ChatGPT, Google/Gemini, or Anthropic/Claude), a chat input bar for sending prompts, and an arm tool for selecting and acting on other bots in the scene. Supports built-in provider agents or fully custom agent configurations. Use this when the user wants a conversational AI presence that can perceive and interact with the CasualOS environment.",
         "agentReady": true
     }
 ]

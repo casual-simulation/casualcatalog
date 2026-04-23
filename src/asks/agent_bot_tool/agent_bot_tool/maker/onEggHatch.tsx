@@ -10,7 +10,7 @@ if (that.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 
     if (that.eggParameters.customAgentConfig) {
-        tags.customAgentConfig = that.eggParameters.customAgentConfig;
+        tags.eggAgentConfig = that.eggParameters.customAgentConfig;
     }
 
     if (that.eggParameters.aiModel) {

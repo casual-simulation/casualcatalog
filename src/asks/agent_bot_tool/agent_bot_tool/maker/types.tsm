@@ -1,0 +1,21 @@
+interface ABAgentConfig {
+    meshPath: string | null;
+    armMeshPath: string | null;
+    armColor: string;
+    chatBarColor: string;
+    namePlateColor: string;
+    labelColor: string;
+    scale: number;
+    formOpacity: number | null;
+    showName: boolean;
+    agentName: string | null;
+}
+
+type ABCustomAgentConfig = Partial<ABAgentConfig>;
+
+interface ABDynamicAgent extends Partial<ABAgentConfig> {
+    aiModel: string;
+    aiProvider: string;
+    agentName: string;
+    group: string;
+}

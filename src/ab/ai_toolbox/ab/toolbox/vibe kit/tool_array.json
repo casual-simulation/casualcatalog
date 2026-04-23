@@ -2,6 +2,7 @@
     {
         "name": "create an agent bot",
         "targetAB": "agent_bot_tool",
+        "description": "Create an agent bot using the agent bot tool. Can create built-in agents or custom agents.",
         "agentReady": true
     }
 ]

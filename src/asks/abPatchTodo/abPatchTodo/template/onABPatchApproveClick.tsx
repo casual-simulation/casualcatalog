@@ -11,6 +11,9 @@ for (const todo of planTodos) {
 
     if (prevDim) {
         todo.tags[prevDim] = false;
+        todo.tags[prevDim + 'X'] = null;
+        todo.tags[prevDim + 'Y'] = null;
+        todo.tags[prevDim + 'Z'] = null;
     }
 
     // Place in 'log' dimension.

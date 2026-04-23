@@ -15,15 +15,7 @@ if (aiChatModels && aiChatModels.length > 0) {
 }
 
 // Collect custom agent configs from bots.
-const collectResults = await Promise.allSettled(shout('onABCollectCustomAgentConfigs'));
-
-const customAgents: ABDynamicAgent[] = [];
-for (const result of collectResults) {
-    if (result.status === 'fulfilled' && result.value) {
-        const agents = Array.isArray(result.value) ? result.value : [result.value];
-        customAgents.push(...agents);
-    }
-}
+const customAgents: ABDynamicAgent[] = await ab.links.utils.abCollectCustomAgentConfigs();
 
 for (const agent of customAgents) {
     if (!groupMap[agent.group]) {

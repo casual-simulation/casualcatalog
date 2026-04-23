@@ -5,6 +5,7 @@ const shard: ABArtifactShard = {
         budgetCredits: tags.budgetCredits,
         budgetRecordName: tags.budgetRecordName,
         aiModel: tags.aiModel,
+        agentName: tags.agentName,
         todoReadyForAgent: tags.todoReadyForAgent,
         alwaysApprove: tags.alwaysApprove,
         debug: tags.debug,

@@ -133,10 +133,6 @@ else if (!inquiryHasSpace) {
         let consumedInput = false;
         const receiverBots = getBots(byTag('onABUserInputAskGPT'));
 
-        if (ab.links.remember.tags.abThinkingSound) {
-            ab.links.sound.abPlaySound({ value: ab.links.remember.tags.abThinkingSound});
-        }
-
         if (receiverBots && receiverBots.length > 0) {
             for (let receiverBot of receiverBots) {
                 const result = await whisper(receiverBot, 'onABUserInputAskGPT', askGPTParams)[0];

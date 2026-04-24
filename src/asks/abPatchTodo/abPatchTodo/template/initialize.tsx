@@ -16,4 +16,8 @@ if (!masks.initialized && tags.abArtifactShardReconstituted && masks.abInitializ
     }
     whisper(thisBot, 'refreshAnimation');
     whisper(thisBot, 'refreshConnections');
+
+    if (tags.todoPlanId && tags.todoOrder === 0) {
+        ab.links.sound.abPlaySound({ value: [ 'ab/audio/writing-short-1.mp3', 'ab/audio/writing-short-2.mp3', 'ab/audio/writing-short-3.mp3', ] });
+    }
 }

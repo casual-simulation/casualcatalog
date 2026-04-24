@@ -17,6 +17,7 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.abTodoComplete;
     delete thisBotData.tags.abPatchError;
     delete thisBotData.tags.alwaysApprove;
+    delete thisBotData.tags.agentMode;
     delete thisBotData.tags.currAnimation;
     delete thisBotData.tags.prompt;
     delete thisBotData.tags.lineTo;

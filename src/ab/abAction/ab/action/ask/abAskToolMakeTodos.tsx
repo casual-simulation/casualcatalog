@@ -1,12 +1,20 @@
-const { abDimension, abPosition, recordName, model, menuActionData } = that.askContext;
-const todos = that.args.todos ?? [];
+const {
+    recordName = authBot?.id, // record name that the budget of credits will come from
+    model = ab.links.personality.tags.abPreferredAIModel, // desired ai model to set on the todo (can be changed later on the todo).
+
+    abDimension = ab.links.remember.tags.abActiveDimension ?? 'home', // Optional: dimensio nto place the todos, defaults to ab active dimension or home;
+    abPosition = { x: 0, y: 0}, // Optional: position to place the first todo, subsequent todos in this plan will be placed alongside.
+    menuActionData // Optional: extra data that is often included with calls to abCoreMenuAction
+} = that.askContext;
+
+const todos: ABTodoParameters[] = that.args.todos ?? []; // List of todos to make.
 
 const todoPlanId = uuid();
 const todoDir = { x: 0, y: 1, z: 0 };
 const todoSpacing = 2;
 
-let todoDimension = abDimension ?? 'home';
-let todoBasePosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 0 };
+let todoDimension = abDimension;
+let todoBasePosition = { x: abPosition.x ?? 0, y: abPosition.y ?? 0, z: 0 };
 let todoStartOffset = 1;
 
 if (menuActionData?.menu === 'grid') {

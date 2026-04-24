@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Read(**/*.bot.aux)"
+      "Read(**/*.bot.aux)",
+      "Bash(grep -E \"\\\\.tsx$|\\\\.ts$\")"
     ]
   }
 }

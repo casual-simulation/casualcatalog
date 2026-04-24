@@ -12,3 +12,14 @@ interface ABPatchResult {
     */
     rollbackDiff: PartialBotState | null;
 }
+
+interface ABTodoParameters {
+    /** Prompt used by agents to perform todo */
+    prompt: string;
+
+    /** Label for todo, keep it concise. */
+    label: string;
+
+    /** Number of credits to budget for performing this todo. */
+    budget_credits: number;
+}

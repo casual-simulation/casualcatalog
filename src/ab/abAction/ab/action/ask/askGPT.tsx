@@ -30,10 +30,10 @@ const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
 const hasInquiry = that.inquiry != null;
 const model = that.model;
 const callDepth: number = that.callDepth ?? 0;
-const agentMode: string | undefined = that.agentMode ?? 'build';
+const todoBot = that.todoBot ? getBot('id', that.todoBot) : undefined;
+const agentMode: string = todoBot?.tags.agentMode ?? that.agentMode ?? 'build';
 const historyStorageBot = that.historyStorageBot ? getBot('id', that.historyStorageBot) : undefined;
 const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversationHistoryGet({ historyStorageBot }) : [];
-const todoBot = that.todoBot ? getBot('id', that.todoBot) : undefined;
 const recordName: string | undefined = that.recordName ?? todoBot?.tags.budgetRecordName ?? authBot.id;
 const menuType = that.menuType;
 const menuActionData = that.menuActionData;
@@ -61,6 +61,11 @@ const askContext = {
     todoBot,
     recordName,
 };
+
+if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
+    await thisBot.abAskHelperCreateUserRequestTodo({ askContext });
+    return;
+}
 
 const MAX_CALL_DEPTH = 5;
 

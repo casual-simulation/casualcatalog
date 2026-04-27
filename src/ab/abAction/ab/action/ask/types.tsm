@@ -193,6 +193,25 @@ interface ABAskContext {
     toolSourceBots: string[] | undefined;
 }
 
+/**
+ * The `that` argument received by every `abAskTool*` tag.
+ *
+ * When the AI calls a function, `askGPT` dispatches to the matching `abAskTool*` tag
+ * with this object. Narrow `TArgs` to the specific argument shape expected by each tool.
+ *
+ * @example
+ * ```typescript
+ * interface MyToolArgs { label: string; count?: number; }
+ * const { args, askContext } = that as ABAskToolCall<MyToolArgs>;
+ * ```
+ */
+interface ABAskToolCall<TArgs extends Record<string, any> = Record<string, any>> {
+    /** Arguments passed by the AI when invoking this function. */
+    args: TArgs;
+    /** The unified execution context for this askGPT turn. */
+    askContext: ABAskContext;
+}
+
 interface ABTodoParameters {
     /** Prompt used by agents to perform todo */
     prompt: string;

@@ -34,6 +34,8 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.creditSnapshotStart;
     delete thisBotData.tags.creditSnapshotEnd;
     delete thisBotData.tags.playedCreateSound;
+    delete thisBotData.tags.promptInjection;
+    delete thisBotData.tags.toolSourceBots;
 
     thisBotData.tags.form = 'nothing';
     thisBotData.tags.system = 'abPatchTodo.template';

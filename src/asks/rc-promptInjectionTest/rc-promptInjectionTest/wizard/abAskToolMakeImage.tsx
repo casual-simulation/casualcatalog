@@ -7,6 +7,7 @@ const { args, askContext } = that as ABAskToolCall<MakeImageArgs>;
 const { abDimension, abPosition } = askContext;
 const pixels = args.pixels ?? [];
 const title = args.title;
+const imageId = uuid();
 
 for (const pixel of pixels) {
     create({
@@ -16,9 +17,30 @@ for (const pixel of pixels) {
         [abDimension + 'Y']: abPosition.y + pixel.y,
         color: pixel.color,
         scale: 0.9,
-        system: 'rc-makeImageWizard.pixel',
+        imageId,
+        onClearImage: ListenerString(() => {
+            const { imageId } = that;
+
+            if (tags.imageId === imageId) {
+                destroy(thisBot);
+            }
+        })
     });
 }
+
+create({
+    space: 'tempLocal',
+    color: '#F44E3B',
+    [abDimension]: true,
+    [abDimension + 'X']: abPosition.x - 1,
+    [abDimension + 'Y']: abPosition.y,
+    imageId,
+    label: 'destroy image',
+    cursor: 'pointer',
+    onClick: ListenerString(() => {
+        shout('onClearImage', { imageId });
+    })
+})
 
 if (title) {
     os.toast(title);

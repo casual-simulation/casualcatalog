@@ -10,4 +10,7 @@ Commit all staged changes.
    - Prefix: `[packageName]` — comma-separated if multiple packages, e.g. `[abTodo, abPatchTodo]`
    - Followed by a colon and a concise description of what changed and why
    - Example: `[agentBotTool]: simplify movement to orthogonal tile steps on shared position`
-5. Commit using that message (do not amend — always create a new commit).
+5. Show the user the full commit message and then ask if:
+   - Accept and commit
+   - Make changes to the commit message (user provides notes)
+   - Cancel commit

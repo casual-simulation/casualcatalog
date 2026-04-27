@@ -94,7 +94,7 @@ if (isApproved) {
         onClick: ListenerString(() => { whisper(links.patchBot, 'onAssignAgentsClick'); }),
     });
     menuOptions.menuItems.push({
-        label: 'undo ask',
+        label: 'undo plan',
         formAddress: 'undo',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
@@ -103,26 +103,26 @@ if (isApproved) {
         abPatchTodoMenu: true,
         abPatchTodoMenuReset: `@destroy(thisBot)`,
         abPatchTodoMenuSortOrder: 999,
-        label: 'being worked on',
+        label: 'agents working',
     });
     menuOptions.menuItems.push({
-        label: 'undo ask',
+        label: 'undo plan',
         formAddress: 'undo',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
 } else if (allCompleted) {
     menuOptions.menuItems.push({
-        label: 'approve ask',
+        label: 'approve plan',
         formAddress: 'done',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchApproveClick'); }),
     });
     menuOptions.menuItems.push({
-        label: 'undo ask',
+        label: 'undo plan',
         formAddress: 'undo',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
     menuOptions.menuItems.push({
-        label: 'restart ask',
+        label: 'restart plan',
         formAddress: 'replay',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchRestartClick'); }),
     });
@@ -137,7 +137,7 @@ if (isApproved) {
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     });
     menuOptions.menuItems.push({
-        label: 'undo ask',
+        label: 'undo plan',
         formAddress: 'undo',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });

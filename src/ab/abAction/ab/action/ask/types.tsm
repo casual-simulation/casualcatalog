@@ -13,6 +13,186 @@ interface ABPatchResult {
     rollbackDiff: PartialBotState | null;
 }
 
+interface ABAskGPTParameters {
+    /**
+     * The user's message or request. When omitted on a continuation turn (callDepth > 0),
+     * the AI re-enters using stored conversation history alone.
+     */
+    inquiry?: string;
+
+    /**
+     * The bot that visually represents the AI agent (avatar, speech bubbles, etc.).
+     * Defaults to `ab.links.manifestation.links.abBot`. Accepts a bot object or bot ID string —
+     * bot objects are automatically sanitized to IDs before the AI call.
+     */
+    abBot?: Bot | string;
+
+    /**
+     * Stable identifier for this request, used for tracing and deduplication.
+     * Defaults to a new UUID if omitted.
+     */
+    sourceId?: string;
+
+    /**
+     * The dimension the AI is operating in. Defaults to the currently active AB dimension.
+     */
+    abDimension?: string;
+
+    /**
+     * The grid position the AI is operating from. Used to place patch bots and todos.
+     * Defaults to the last recorded AB position in the active dimension.
+     */
+    abPosition?: { x: number; y: number };
+
+    /**
+     * The AI model to use for this request (e.g. `'claude-sonnet-4-5'`).
+     * Defaults to `ab.links.personality.tags.abPreferredAIModel`.
+     */
+    model?: string;
+
+    /**
+     * The todo bot driving this request, when the call originates from an agent executing a task.
+     * Accepts a bot object or bot ID string. When present, `agentMode` and `recordName` are
+     * read from the todo bot's tags if not explicitly provided.
+     */
+    todoBot?: Bot | string;
+
+    /**
+     * Controls how the AI responds:
+     * - `'build'` — executes work directly (runs patches, creates bots).
+     * - `'plan'` — decomposes the request into a list of todos for agents to execute.
+     * Defaults to `'build'`, or to the executing todo bot's `agentMode` tag if present.
+     */
+    agentMode?: 'build' | 'plan';
+
+    /**
+     * Bot used to persist conversation history across turns.
+     * When provided, the AI continues the stored conversation rather than starting fresh.
+     * Accepts a bot object or bot ID string.
+     */
+    historyStorageBot?: Bot | string;
+
+    /**
+     * Record name (budget owner) for AI credit billing.
+     * Defaults to the todo bot's `budgetRecordName` tag, or `authBot.id`.
+     */
+    recordName?: string;
+
+    /**
+     * The type of UI context that triggered this request. Passed through to
+     * `abAskHelperBuildFocusContext` to determine the AI's spatial focus.
+     */
+    menuType?: 'bot' | 'grid' | 'multipleBot';
+
+    /**
+     * Extra data associated with the triggering menu interaction (selected bot IDs,
+     * dimension, grid position, etc.). Shape varies by `menuType`.
+     */
+    menuActionData?: Record<string, any>;
+
+    /**
+     * Additional instructions appended to the base system prompt after a `---` separator.
+     * Use this to give the AI domain-specific context, custom function signatures, or
+     * behavioral constraints for a specialized tool session.
+     * Only applied on fresh conversation starts — continuation turns reuse stored history.
+     */
+    promptInjection?: string;
+
+    /**
+     * Ordered list of bot IDs that provide additional `abAskTool*` tag implementations.
+     * When the AI calls a function, built-in tools on the action bot are checked first;
+     * these bots are checked in order as fallbacks. Accepts bot objects or bot ID strings —
+     * bot objects are automatically sanitized to IDs before the AI call.
+     */
+    toolSourceBots?: (Bot | string)[];
+
+    /**
+     * Internal recursion depth. Incremented automatically on each continuation turn.
+     * Do not set this manually — it is managed by `askGPT` itself.
+     * @internal
+     */
+    callDepth?: number;
+}
+
+/**
+ * Unified execution context for a single askGPT turn. Built from `ABAskGPTParameters` at the
+ * start of each call and passed to every `abAskHelper*` and `abAskTool*` tag so each can
+ * self-serve without needing a bespoke parameter list.
+ *
+ * Unlike `ABAskGPTParameters`, all bot references here are fully resolved `Bot` objects
+ * (never raw IDs), and derived fields like `patchBotPosition` and `storedHistory` are
+ * already computed.
+ */
+interface ABAskContext {
+    /** The raw user message or object passed as `inquiry`. */
+    originalUserInquiry: any;
+
+    /** Whether `inquiry` was explicitly provided (vs. a continuation turn with no new message). */
+    hasInquiry: boolean;
+
+    /** Resolved AI agent bot (avatar, speech bubbles, etc.). */
+    abBot: Bot;
+
+    /** Stable identifier for this request, used for tracing and deduplication. */
+    sourceId: string;
+
+    /** The dimension the AI is operating in. */
+    abDimension: string;
+
+    /** The grid position the AI is operating from. */
+    abPosition: { x: number; y: number };
+
+    /** Dimension where patch bots will be spawned (same as `abDimension`). */
+    patchBotDimension: string;
+
+    /** Position where patch bots will be spawned (same x/y as `abPosition`, z=2). */
+    patchBotPosition: { x: number; y: number; z: number };
+
+    /** AI model for this request. */
+    model: string | undefined;
+
+    /** Current recursion depth. 0 on the first call; incremented on each continuation turn. */
+    callDepth: number;
+
+    /**
+     * Controls how the AI responds:
+     * - `'build'` — executes work directly (runs patches, creates bots).
+     * - `'plan'` — decomposes the request into a list of todos for agents to execute.
+     */
+    agentMode: 'build' | 'plan';
+
+    /** Resolved todo bot driving this request, if the call originates from an agent task. */
+    todoBot: Bot | undefined;
+
+    /** Resolved bot used to persist and load conversation history across turns. */
+    historyStorageBot: Bot | undefined;
+
+    /** Conversation history loaded from `historyStorageBot`. Empty array on fresh starts. */
+    storedHistory: AIChatMessage[];
+
+    /** Record name (budget owner) for AI credit billing. */
+    recordName: string | undefined;
+
+    /** The type of UI context that triggered this request. */
+    menuType: 'bot' | 'grid' | 'multipleBot' | undefined;
+
+    /** Extra data associated with the triggering menu interaction. Shape varies by `menuType`. */
+    menuActionData: Record<string, any> | undefined;
+
+    /**
+     * Additional instructions appended to the base system prompt after a `---` separator.
+     * Only present on calls that originated from a specialized tool session.
+     */
+    promptInjection: string | undefined;
+
+    /**
+     * Ordered list of bot IDs providing additional `abAskTool*` tag implementations.
+     * Already sanitized to ID strings (bot objects are resolved before `askContext` is built).
+     * Built-in tools on the action bot take priority over these.
+     */
+    toolSourceBots: string[] | undefined;
+}
+
 interface ABTodoParameters {
     /** Prompt used by agents to perform todo */
     prompt: string;

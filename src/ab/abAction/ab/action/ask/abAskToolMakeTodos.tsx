@@ -4,7 +4,9 @@ const {
     
     abDimension = ab.links.remember.tags.abActiveDimension ?? 'home', // Optional: dimensio nto place the todos, defaults to ab active dimension or home;
     abPosition = { x: 0, y: 0}, // Optional: position to place the first todo, subsequent todos in this plan will be placed alongside.
-    menuActionData // Optional: extra data that is often included with calls to abCoreMenuAction
+    menuActionData, // Optional: extra data that is often included with calls to abCoreMenuAction
+    promptInjection, // Optional: extra instructions appended to the base system prompt for domain-specific tools.
+    toolSourceBots, // Optional: bot IDs that provide additional abAskTool* tags for AI dispatch.
 } = that.askContext;
 
 const todos: ABTodoParameters[] = that.args.todos ?? []; // List of todos to make.
@@ -38,6 +40,8 @@ for (let i = 0; i < todos.length; i++) {
             aiModel: model,
             todoPlanId,
             todoOrder: i,
+            promptInjection: promptInjection ?? null,
+            toolSourceBots: toolSourceBots ?? null,
             eggParameters: {
                 gridInformation: {
                     dimension: todoDimension,

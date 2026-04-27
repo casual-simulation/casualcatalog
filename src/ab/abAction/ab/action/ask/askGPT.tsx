@@ -82,16 +82,20 @@ if (callDepth === 0) {
 // ── Build messages for this turn ────────────────────────────────────────
 
 let aiChatMessages: AIChatMessage[];
-const focusJson = JSON.stringify(thisBot.abAskHelperBuildFocusContext({ askContext }));
+const focus = thisBot.abAskHelperBuildFocusContext({ askContext });
 
-function buildContextBlock(...extras: string[]): string {
-    const sections = [
-        agentMode ? `  <mode>${agentMode}</mode>` : null,
-        todoBot ? `  <todoId>${todoBot.id}</todoId>` : null,
-        `  <focus>${focusJson}</focus>`,
-        ...extras,
-    ].filter(Boolean);
-    return `<context>\n${sections.join('\n')}\n</context>`;
+function buildContextObj(extra: Record<string, any> = {}): Record<string, any> {
+    const ctx: Record<string, any> = {};
+    if (agentMode) ctx.mode = agentMode;
+    if (todoBot) ctx.todoId = todoBot.id;
+    ctx.focus = focus;
+    return { ...ctx, ...extra };
+}
+
+function buildUserMessage(message?: string, extra: Record<string, any> = {}): string {
+    const obj: Record<string, any> = { context: buildContextObj(extra) };
+    if (message != null) obj.message = message;
+    return JSON.stringify(obj);
 }
 
 if (!hasInquiry && storedHistory.length > 0) {
@@ -101,7 +105,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     // New user message continuing an existing session
     aiChatMessages = [
         ...storedHistory,
-        { role: 'user', content: [{ text: `${buildContextBlock()}\n<message>${originalUserInquiry}</message>` }] }
+        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry) }] }
     ];
 } else {
     // Fresh start — include catalog so agents can reason about available tools immediately
@@ -109,7 +113,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     aiChatMessages = [
         { role: 'system', content: [{ text: tags.prompt_system }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
-        { role: 'user', content: [{ text: `${buildContextBlock(`  <catalog>${JSON.stringify(catalog)}</catalog>`)}\n<message>${originalUserInquiry}</message>` }] },
+        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry, { catalog }) }] },
     ];
 }
 
@@ -168,7 +172,7 @@ if (tags.debug) {
 // Tools that return a value are query functions — their results are injected
 // into the next AI turn. Tools that return undefined are action functions.
 
-const queryResults: { name: string; functionResult: string }[] = [];
+const queryResults: { name: string; result: any }[] = [];
 
 for (const fc of functionCalls) {
     const { name, args } = fc.function;
@@ -182,13 +186,12 @@ for (const fc of functionCalls) {
     const result = await thisBot[toolTagName]({ args, askContext });
 
     if (result !== undefined) {
-        queryResults.push({ name, functionResult: JSON.stringify(result) });
+        queryResults.push({ name, result });
     }
 }
 
 if (queryResults.length > 0) {
-    const functionResults = queryResults.map(r => `  <functionResult name="${r.name}">${r.functionResult}</functionResult>`);
-    const resultUserMessage = buildContextBlock(...functionResults);
+    const resultUserMessage = buildUserMessage(undefined, { functionResults: queryResults });
 
     if (historyStorageBot) {
         thisBot.abConversationHistorySave({

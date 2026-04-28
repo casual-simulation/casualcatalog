@@ -1,8 +1,11 @@
 let data = that.data;
 
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
+tags.label = data.label ?? 'kit';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'white';
+tags.studioID = data.studioID;
+tags.tool_array = data.tool_array;
 
 tags.formAddress = await ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_holographic.glb");
 

@@ -1,5 +1,6 @@
 const { data } = that;
 
+delete data.tags.label;
 delete data.tags.labelColor;
 delete data.tags.labelFloatingBackgroundColor;
 delete data.tags.color;
@@ -11,3 +12,5 @@ delete data.tags[data.tags.dimension + "RotationY"];
 delete data.tags[data.tags.dimension + "RotationZ"];
 delete data.tags[data.tags.dimension];
 delete data.tags.dimension;
+delete data.tags.tool_array;
+delete data.tags.studioID;

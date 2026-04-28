@@ -24,7 +24,7 @@ if (that.eggParameters) {
             }
         ]
     };
-    links.artifact.abCreateArtifactPromiseBot({
+    ab.links.artifact.abCreateArtifactPromiseBot({
         abArtifactName: 'kit',
         abArtifactInstanceID: uuid(),
         abArtifactShard,

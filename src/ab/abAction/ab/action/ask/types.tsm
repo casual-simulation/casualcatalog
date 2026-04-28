@@ -21,6 +21,11 @@ interface ABAskGPTParameters {
     inquiry?: string;
 
     /**
+     * The label to show for the user's inquiry. Really just used for display systems that make the inquiry visible in interfaces.
+     */
+    inquiryLabel?: string;
+
+    /**
      * The bot that visually represents the AI agent (avatar, speech bubbles, etc.).
      * Defaults to `ab.links.manifestation.links.abBot`. Accepts a bot object or bot ID string —
      * bot objects are automatically sanitized to IDs before the AI call.
@@ -126,6 +131,9 @@ interface ABAskGPTParameters {
 interface ABAskContext {
     /** The raw user message or object passed as `inquiry`. */
     originalUserInquiry: any;
+
+    /** The raw user message label */
+    originalUserInquiryLabel: string;
 
     /** Whether `inquiry` was explicitly provided (vs. a continuation turn with no new message). */
     hasInquiry: boolean;

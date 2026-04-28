@@ -22,6 +22,7 @@ if (tags.debug) {
 }
 
 const originalUserInquiry = askThat.inquiry ?? askThat;
+const originalUserInquiryLabel = askThat.inquiryLabel ?? originalUserInquiry.slice(0, 40);
 const abBot = askThat.abBot ? getBot('id', askThat.abBot) : ab.links.manifestation.links.abBot;
 const sourceId = askThat.sourceId ?? uuid();
 const abDimension = askThat.abDimension ?? ab.links.remember.tags.abActiveDimension;
@@ -49,6 +50,7 @@ const askContext: ABAskContext = {
     menuType,
     menuActionData,
     originalUserInquiry,
+    originalUserInquiryLabel,
     abBot,
     sourceId,
     abDimension,

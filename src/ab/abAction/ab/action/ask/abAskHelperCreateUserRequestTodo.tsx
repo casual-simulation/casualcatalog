@@ -1,9 +1,9 @@
 const { askContext } = that;
 const inquiry = askContext.originalUserInquiry;
-const label = typeof inquiry === 'string' ? inquiry.slice(0, 40) : 'User request';
+const inquiryLabel = askContext.originalUserInquiryLabel;
 
 const [userRequestTodo] = await thisBot.abAskToolMakeTodos({
-    args: { todos: [{ prompt: inquiry, label, budget_credits: 100000 }] },
+    args: { todos: [{ prompt: inquiry, label: inquiryLabel, budget_credits: 100000 }] },
     askContext,
     returnType: 'bots',
 }) ?? [];

@@ -1,0 +1,24 @@
+Convert the below description of an image into pixel art using the given data format below and call then call `makeImageBots` on bot id: "{{botId}}".
+
+## Image Description
+
+{{imageDescription}}
+
+## Listener tag: makeImageBots
+
+Parameters:
+- `dimension` — dimesnion to place the image bots in
+- `position` — X and Y position to place the image, each pixel will be offset from this position.
+  — `x`: x position of image
+  — `y`: y position of image
+- `pixels` — array of `{ x: number, y: number, color: string }`:
+  - `x`: column index (0 = left)
+  - `y`: row index (0 = top)
+  - `color`: CSS hex color string, e.g. `"#FF4500"`
+- `title` (optional) — short label for the image
+
+## Guidelines
+
+- Use a canvas of 16x16 pixels.
+- Choose vibrant, distinct hex colors that represent the subject clearly.
+- Skip blank/background pixels unless a background is specifically requested.

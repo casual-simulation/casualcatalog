@@ -96,22 +96,6 @@ interface ABAskGPTParameters {
     menuActionData?: Record<string, any>;
 
     /**
-     * Additional instructions appended to the base system prompt after a `---` separator.
-     * Use this to give the AI domain-specific context, custom function signatures, or
-     * behavioral constraints for a specialized tool session.
-     * Only applied on fresh conversation starts — continuation turns reuse stored history.
-     */
-    promptInjection?: string;
-
-    /**
-     * Ordered list of bot IDs that provide additional `abAskTool*` tag implementations.
-     * When the AI calls a function, built-in tools on the action bot are checked first;
-     * these bots are checked in order as fallbacks. Accepts bot objects or bot ID strings —
-     * bot objects are automatically sanitized to IDs before the AI call.
-     */
-    toolSourceBots?: (Bot | string)[];
-
-    /**
      * Internal recursion depth. Incremented automatically on each continuation turn.
      * Do not set this manually — it is managed by `askGPT` itself.
      * @internal
@@ -186,19 +170,6 @@ interface ABAskContext {
 
     /** Extra data associated with the triggering menu interaction. Shape varies by `menuType`. */
     menuActionData: Record<string, any> | undefined;
-
-    /**
-     * Additional instructions appended to the base system prompt after a `---` separator.
-     * Only present on calls that originated from a specialized tool session.
-     */
-    promptInjection: string | undefined;
-
-    /**
-     * Ordered list of bot IDs providing additional `abAskTool*` tag implementations.
-     * Already sanitized to ID strings (bot objects are resolved before `askContext` is built).
-     * Built-in tools on the action bot take priority over these.
-     */
-    toolSourceBots: string[] | undefined;
 }
 
 /**

@@ -39,8 +39,6 @@ const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversatio
 const recordName: string | undefined = askThat.recordName ?? todoBot?.tags.budgetRecordName ?? authBot.id;
 const menuType = askThat.menuType;
 const menuActionData = askThat.menuActionData;
-const promptInjection: string | undefined = askThat.promptInjection ?? todoBot?.tags.promptInjection;
-const toolSourceBots: string[] | undefined = askThat.toolSourceBots ?? todoBot?.tags.toolSourceBots;
 
 /**
  * askContext bundles all derived parameters for this turn into a single object.
@@ -65,8 +63,6 @@ const askContext: ABAskContext = {
     storedHistory,
     todoBot,
     recordName,
-    promptInjection,
-    toolSourceBots,
 };
 
 if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
@@ -118,7 +114,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     // Fresh start — include catalog so agents can reason about available tools immediately
     const catalog = thisBot.abAskToolGetCatalog();
     aiChatMessages = [
-        { role: 'system', content: [{ text: tags.prompt_system + (promptInjection ? '\n\n---\n\n# Domain Extension\n\n' + promptInjection : '') }] },
+        { role: 'system', content: [{ text: tags.prompt_system }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
         { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry, { catalog }) }] },
     ];
@@ -186,16 +182,6 @@ for (const fc of functionCalls) {
     const toolTagName = 'abAskTool' + name.charAt(0).toUpperCase() + name.slice(1);
 
     let toolHost: any = typeof thisBot[toolTagName] === 'function' ? thisBot : null;
-
-    if (!toolHost && toolSourceBots) {
-        for (const botId of toolSourceBots) {
-            const candidate = getBot('id', botId);
-            if (candidate && typeof candidate[toolTagName] === 'function') {
-                toolHost = candidate;
-                break;
-            }
-        }
-    }
 
     if (!toolHost) {
         ab.links.utils.abLog({ message: `Unknown function call from AI: ${name}`, logType: 'error' });

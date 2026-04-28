@@ -28,6 +28,7 @@ const toolboxesGroup = {
 for (let toolbox of toolboxes) {
     const toolboxButton = {
         ...menuOptions,
+        label: toolbox.title,
         toolboxTitle: toolbox.title,
         studioStationID: tags.studioId,
         formAddress: 'home_repair_service',
@@ -39,11 +40,7 @@ for (let toolbox of toolboxes) {
                 gridInformation: {
                     toolbox_name: tags.toolboxTitle,
                     studioID: tags.studioStationID,
-                    dimension: dimension,
-                    position: {
-                        x: dimensionX,
-                        y: dimensionY
-                    }
+                    ...tags.gridInformation
                 }
             }
         })

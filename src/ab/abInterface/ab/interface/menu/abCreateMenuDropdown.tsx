@@ -86,7 +86,7 @@ async function generateMenuOptions (options, sortOrder) {
             `
         };
 
-        newMenuButton[configBot.tags.menuPortal + "SortOrder"] = Number(sortOrder) + ((i + 1) / 1000);
+        newMenuButton[configBot.tags.menuPortal + "SortOrder"] = Number(sortOrder) + ((i + 1) / 100000);
         newMenuButton[configBot.tags.menuPortal] = true;
 
         if (i == options.length - 1) {

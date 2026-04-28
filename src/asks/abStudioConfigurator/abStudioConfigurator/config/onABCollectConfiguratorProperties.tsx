@@ -16,6 +16,13 @@ const properties: ABConfiguratorProperty[] = [
         label: 'studio credit background color',
         description: 'Color to use the for the background of the studio\'s credits display.',
         value: studioConfig['studio_credit_background_color'],
+    },
+    {
+        key: 'studio_bootstrap_egg_name',
+        type: 'text',
+        label: 'studio bootstrap egg name',
+        description: 'Egg to load into every new inst that is owned by the studio.',
+        value: studioConfig['studio_bootstrap_egg_name']
     }
 ]
 

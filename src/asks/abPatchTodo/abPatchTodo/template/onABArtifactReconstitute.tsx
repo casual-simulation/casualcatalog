@@ -4,17 +4,20 @@ if (tags.debug) {
 
 const data = that.data;
 
-tags.alwaysApprove = data.alwaysApprove;
 tags.prompt = data.prompt;
 tags.todoLabel = data.todoLabel;
+tags.todoApproved = data.todoApproved;
 tags.budgetCredits = data.budgetCredits;
 tags.budgetRecordName = data.budgetRecordName;
 tags.aiModel = data.aiModel ?? ab.links.personality.tags.abPreferredAIModel;
+tags.agentName = data.agentName ?? null;
 tags.todoReadyForAgent = data.todoReadyForAgent ?? false;
 tags.debug = data.debug;
+tags.agentMode = data.agentMode ?? 'build';
 tags.todoPlanId = data.todoPlanId;
 tags.todoOrder = data.todoOrder ?? 0;
 tags.system = `abPatchTodo.${(tags.todoPlanId ?? thisBot.id).substring(0, 5)}_${String(tags.todoOrder).padStart(3, '0')}`;
+tags.playedCreateSound = data.playedCreateSound;
 
 if (data.eggParameters) {
     if (data.eggParameters.gridInformation) {

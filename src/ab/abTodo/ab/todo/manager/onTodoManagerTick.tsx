@@ -135,9 +135,14 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Agent state: activeAgentId=${tags.activeAgentId}, agentBot=${!!agentBot}`);
 }
 
-if (agentBot && nextTodo.tags.aiModel && agentBot.tags.aiModel !== nextTodo.tags.aiModel) {
+const todoAgentName = nextTodo.tags.agentName;
+const mismatch = todoAgentName
+    ? agentBot?.tags.agentName !== todoAgentName
+    : (nextTodo.tags.aiModel && agentBot?.tags.aiModel !== nextTodo.tags.aiModel);
+
+if (agentBot && mismatch) {
     if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] Agent model mismatch (agent: ${agentBot.tags.aiModel}, todo: ${nextTodo.tags.aiModel}), destroying old agent`);
+        console.log(`[${tags.system}.${tagName}] Agent mismatch (agent: ${agentBot.tags.agentName ?? agentBot.tags.aiModel}, todo: ${todoAgentName ?? nextTodo.tags.aiModel}), destroying old agent`);
     }
     destroy(agentBot);
     setTagMask(thisBot, 'activeAgentId', null, 'shared');
@@ -156,7 +161,7 @@ if (!agentBot) {
         y: abBot?.tags[dimension + 'Y'] ?? 0
     }
 
-    const openPosition = await ab.links.utils.findOpenPositionAround({ center: agentPosition, dimension, direction: 'inward' });
+    const openPosition = await ab.links.utils.findOpenPositionAround({ center: agentPosition, dimension, randomizeAngle: true, direction: 'inward' });
 
     if (isStaleCycle()) {
         if (tags.debug) {
@@ -190,22 +195,36 @@ if (!agentBot) {
     const agentMakerBot = lookupResult?.hatchedBots?.find(b => b.tags.createAIAgent != null);
 
     if (agentMakerBot) {
-        const aiChatModels = configBot.tags.aiChatModels ?? (await ai.listChatModels());
+        if (nextTodo.tags.agentName) {
+            const customAgents = await ab.links.utils.abCollectCustomAgentConfigs();
 
-        if (isStaleCycle()) {
-            if (tags.debug) {
-                console.log(`[${tags.system}.${tagName}] Stale cycle detected after listChatModels, aborting`);
+            if (isStaleCycle()) {
+                if (tags.debug) {
+                    console.log(`[${tags.system}.${tagName}] Stale cycle detected after abCollectCustomAgentConfigs, aborting`);
+                }
+                return;
             }
-            return;
+
+            const customAgent = customAgents.find(a => a.agentName === nextTodo.tags.agentName);
+            if (customAgent) {
+                const { aiModel, aiProvider, group, ...customAgentConfig } = customAgent;
+                agentBot = agentMakerBot.createAIAgent({ dimension, aiModel, aiProvider, customAgentConfig });
+            }
+        } else {
+            const aiChatModels = configBot.tags.aiChatModels ?? (await ai.listChatModels());
+
+            if (isStaleCycle()) {
+                if (tags.debug) {
+                    console.log(`[${tags.system}.${tagName}] Stale cycle detected after listChatModels, aborting`);
+                }
+                return;
+            }
+
+            const match = aiChatModels?.find(e => e.name === nextTodo.tags.aiModel);
+            if (match) {
+                agentBot = agentMakerBot.createAIAgent({ dimension, aiModel: match.name, aiProvider: match.provider });
+            }
         }
-
-        const match = aiChatModels.find(e => e.name === nextTodo.tags.aiModel);
-
-        agentBot = agentMakerBot.createAIAgent({
-            dimension,
-            aiModel: match.name,
-            aiProvider: match.provider
-        })
     } else {
         console.error(`[${tags.system}.${tagName}] could not find agent bot maker in agent_bot_tool ask.`)
     }

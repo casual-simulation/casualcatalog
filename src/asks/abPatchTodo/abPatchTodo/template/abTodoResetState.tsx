@@ -10,5 +10,6 @@ setTag(thisBot, 'abPatchError', null);
 setTag(thisBot, 'abTodoComplete', null);
 setTag(thisBot, 'creditSnapshotStart', null);
 setTag(thisBot, 'creditSnapshotEnd', null);
+setTag(thisBot, 'todoApproved', null);
 
 tags.animationState = 'incomplete';

@@ -1,4 +1,5 @@
 import { AIChatMessage } from 'casualos';
+const askThat = that as ABAskGPTParameters;
 
 if (authBot.tags.privacyFeatures.allowAI == false) {
     const aiMessage = ab.links.remember.tags.ai_rejection_message ?? "AI not authorized for this account";
@@ -14,38 +15,40 @@ if (!ab.links.todoManager) {
     await ab.abAdapt('abTodo');
 }
 
-thisBot.abAskHelperSanitizeBotReferences({ obj: that });
+thisBot.abAskHelperSanitizeBotReferences({ obj: askThat });
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] that:`, that);
+    console.log(`[${tags.system}.${tagName}] that:`, askThat);
 }
 
-const originalUserInquiry = that.inquiry ?? that;
-const abBot = that.abBot ? getBot('id', that.abBot) : ab.links.manifestation.links.abBot;
-const sourceId = that.sourceId ?? uuid();
-const abDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
-const abPosition = that.abPosition ?? ab.links.remember.tags[abDimension + 'ABLastPosition'];
-const patchBotDimension = that.abDimension ?? ab.links.remember.tags.abActiveDimension;
+const originalUserInquiry = askThat.inquiry ?? askThat;
+const originalUserInquiryLabel = askThat.inquiryLabel ?? originalUserInquiry.slice(0, 40);
+const abBot = askThat.abBot ? getBot('id', askThat.abBot) : ab.links.manifestation.links.abBot;
+const sourceId = askThat.sourceId ?? uuid();
+const abDimension = askThat.abDimension ?? ab.links.remember.tags.abActiveDimension;
+const abPosition = askThat.abPosition ?? ab.links.remember.tags[abDimension + 'ABLastPosition'];
+const patchBotDimension = askThat.abDimension ?? ab.links.remember.tags.abActiveDimension;
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
-const hasInquiry = that.inquiry != null;
-const model = that.model;
-const callDepth: number = that.callDepth ?? 0;
-const agentMode: string | undefined = that.agentMode ?? 'build';
-const historyStorageBot = that.historyStorageBot ? getBot('id', that.historyStorageBot) : undefined;
+const hasInquiry = askThat.inquiry != null;
+const model = askThat.model;
+const callDepth: number = askThat.callDepth ?? 0;
+const todoBot = askThat.todoBot ? getBot('id', askThat.todoBot) : undefined;
+const agentMode: string = todoBot?.tags.agentMode ?? askThat.agentMode ?? 'build';
+const historyStorageBot = askThat.historyStorageBot ? getBot('id', askThat.historyStorageBot) : undefined;
 const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversationHistoryGet({ historyStorageBot }) : [];
-const todoBot = that.todoBot ? getBot('id', that.todoBot) : undefined;
-const recordName: string | undefined = that.recordName ?? todoBot?.tags.budgetRecordName ?? authBot.id;
-const menuType = that.menuType;
-const menuActionData = that.menuActionData;
+const recordName: string | undefined = askThat.recordName ?? todoBot?.tags.budgetRecordName ?? authBot.id;
+const menuType = askThat.menuType;
+const menuActionData = askThat.menuActionData;
 
 /**
  * askContext bundles all derived parameters for this turn into a single object.
  * It is passed to every abAskHelper* and abAskTool* tag so each can self-serve without needing a bespoke parameter list.
  */
-const askContext = {
+const askContext: ABAskContext = {
     menuType,
     menuActionData,
     originalUserInquiry,
+    originalUserInquiryLabel,
     abBot,
     sourceId,
     abDimension,
@@ -62,6 +65,11 @@ const askContext = {
     recordName,
 };
 
+if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
+    await thisBot.abAskHelperCreateUserRequestTodo({ askContext });
+    return;
+}
+
 const MAX_CALL_DEPTH = 5;
 
 if (callDepth >= MAX_CALL_DEPTH) {
@@ -77,16 +85,20 @@ if (callDepth === 0) {
 // ── Build messages for this turn ────────────────────────────────────────
 
 let aiChatMessages: AIChatMessage[];
-const focusJson = JSON.stringify(thisBot.abAskHelperBuildFocusContext({ askContext }));
+const focus = thisBot.abAskHelperBuildFocusContext({ askContext });
 
-function buildContextBlock(...extras: string[]): string {
-    const sections = [
-        agentMode ? `  <mode>${agentMode}</mode>` : null,
-        todoBot ? `  <todoId>${todoBot.id}</todoId>` : null,
-        `  <focus>${focusJson}</focus>`,
-        ...extras,
-    ].filter(Boolean);
-    return `<context>\n${sections.join('\n')}\n</context>`;
+function buildContextObj(extra: Record<string, any> = {}): Record<string, any> {
+    const ctx: Record<string, any> = {};
+    if (agentMode) ctx.mode = agentMode;
+    if (todoBot) ctx.todoId = todoBot.id;
+    ctx.focus = focus;
+    return { ...ctx, ...extra };
+}
+
+function buildUserMessage(message?: string, extra: Record<string, any> = {}): string {
+    const obj: Record<string, any> = { context: buildContextObj(extra) };
+    if (message != null) obj.message = message;
+    return JSON.stringify(obj);
 }
 
 if (!hasInquiry && storedHistory.length > 0) {
@@ -96,7 +108,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     // New user message continuing an existing session
     aiChatMessages = [
         ...storedHistory,
-        { role: 'user', content: [{ text: `${buildContextBlock()}\n<message>${originalUserInquiry}</message>` }] }
+        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry) }] }
     ];
 } else {
     // Fresh start — include catalog so agents can reason about available tools immediately
@@ -104,7 +116,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     aiChatMessages = [
         { role: 'system', content: [{ text: tags.prompt_system }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
-        { role: 'user', content: [{ text: `${buildContextBlock(`  <catalog>${JSON.stringify(catalog)}</catalog>`)}\n<message>${originalUserInquiry}</message>` }] },
+        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry, { catalog }) }] },
     ];
 }
 
@@ -163,27 +175,28 @@ if (tags.debug) {
 // Tools that return a value are query functions — their results are injected
 // into the next AI turn. Tools that return undefined are action functions.
 
-const queryResults: { name: string; functionResult: string }[] = [];
+const queryResults: { name: string; result: any }[] = [];
 
 for (const fc of functionCalls) {
     const { name, args } = fc.function;
     const toolTagName = 'abAskTool' + name.charAt(0).toUpperCase() + name.slice(1);
 
-    if (typeof thisBot[toolTagName] !== 'function') {
+    let toolHost: any = typeof thisBot[toolTagName] === 'function' ? thisBot : null;
+
+    if (!toolHost) {
         ab.links.utils.abLog({ message: `Unknown function call from AI: ${name}`, logType: 'error' });
         continue;
     }
 
-    const result = await thisBot[toolTagName]({ args, askContext });
+    const result = await toolHost[toolTagName]({ args, askContext });
 
     if (result !== undefined) {
-        queryResults.push({ name, functionResult: JSON.stringify(result) });
+        queryResults.push({ name, result });
     }
 }
 
 if (queryResults.length > 0) {
-    const functionResults = queryResults.map(r => `  <functionResult name="${r.name}">${r.functionResult}</functionResult>`);
-    const resultUserMessage = buildContextBlock(...functionResults);
+    const resultUserMessage = buildUserMessage(undefined, { functionResults: queryResults });
 
     if (historyStorageBot) {
         thisBot.abConversationHistorySave({
@@ -197,7 +210,7 @@ if (queryResults.length > 0) {
     }
 
     await thisBot.askGPT({
-        ...that,
+        ...askThat,
         inquiry: undefined,
         historyStorageBot,
         callDepth: callDepth + 1,

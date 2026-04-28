@@ -12,7 +12,8 @@ if (that.tags.includes('availableCredits')) {
         if (data.studioId && data.studioCreditsPrev != null && data.studioCredits !== data.studioCreditsPrev) {
             const delta = data.studioCredits - data.studioCreditsPrev;
             const sign = delta >= 0 ? '+' : '';
-            const studioName = masks.studioConfig?.displayName ?? data.studioId;
+            const instStudioConfig = await ab.links.search.abInstStudioConfig();
+            const studioName = instStudioConfig?.studioDisplayName ?? data.studioId;
             ab.links.utils.abLog({
                 name: `${studioName} Credits`,
                 message: `${data.studioCreditsPrev.toLocaleString()} → ${data.studioCredits.toLocaleString()} (${sign}${delta.toLocaleString()})`,

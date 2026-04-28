@@ -12,3 +12,5 @@ delete data.tags.homeRotationZ;
 delete data.tags.discoverableURL;
 delete data.tags.discoverableData;
 delete data.tags.processingMode;
+delete data.tags.confidenceCount;
+delete data.tags.confidenceName;

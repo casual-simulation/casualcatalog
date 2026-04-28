@@ -20,7 +20,7 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, {...that});
 }
 
-links.utils.abLog(links.personality.tags.abBuilderIdentity + ": loading " + abID);
+links.utils.abLog("loading " + abID);
 
 //clear ab-1
 if (links.manifestation && configBot.tags.menuPortal == "abMenu") {
@@ -240,7 +240,7 @@ if (busyIndicator) {
     destroy(busyIndicator);
 }
 
-links.utils.abLog(abPersonality.tags.abBuilderIdentity + ": " + abID + " loaded, version " + getRecord.data.targetVersion + " of " + getRecord.data.maxVersion);
+links.utils.abLog(abID + " loaded, version " + getRecord.data.targetVersion + " of " + getRecord.data.maxVersion);
 
 return {
     success: true,

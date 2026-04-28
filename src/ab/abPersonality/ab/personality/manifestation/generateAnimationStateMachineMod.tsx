@@ -25,6 +25,7 @@ return {
         'SelectSingleEnd:select_single_out': 'Idle',
         'SelectMultiBegin:select_multi': 'SelectMultiLoop',
         'SelectMultiEnd:select_single_out': 'Idle',
+        'Acknowledge:select_single_out': 'Idle',
     },
     onBotAdded: ListenerString(async () => {
         // MUST run this before triggering animations. Without it, animations may try to trigger before the animation system is ready.
@@ -58,12 +59,10 @@ return {
             thisBot.changeAnimState(nextState);
         }
     }),
-    onABUserInputAskGPT: ListenerString(() => {
-        const { sourceId } = that;
+    onABUserRequestTodoCreated: ListenerString(() => {
+        const { todoBot } = that;
 
-        if (sourceId === (tags.gptSourceId ?? thisBot.id)) {
-            thisBot.changeAnimState('ThinkingBegin');
-        }
+        thisBot.changeAnimState('Acknowledge');
     }),
     onABRequestGPTStarted: ListenerString(() => {
         const { input } = that;
@@ -160,6 +159,9 @@ return {
         os.startFormAnimation(thisBot, 'select_single_loop', { crossFadeWarp: true, fadeDuration: 200, crossFadeDuration: 300, loop: { mode: 'repeat' } });
     }),
     animStateSelectMultiEndOnEnter: ListenerString(() => {
+        os.startFormAnimation(thisBot, 'select_single_out', { crossFadeWarp: true, crossFadeDuration: 300 });
+    }),
+    animStateAcknowledgeOnEnter: ListenerString(() => {
         os.startFormAnimation(thisBot, 'select_single_out', { crossFadeWarp: true, crossFadeDuration: 300 });
     }),
 }

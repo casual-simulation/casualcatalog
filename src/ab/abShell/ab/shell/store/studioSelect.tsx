@@ -14,7 +14,6 @@ menuButton.abMenuRefresh = "@ destroy(thisBot);";
 menuButton.abStudioMenuRefresh = "@ destroy(thisBot);";
 menuButton.label = "player studio";
 menuButton.formAddress = targetStudio == authBot.id ? "radio_button_checked" : "radio_button_unchecked";
-menuButton.color = links.remember.tags.abBaseColor;
 menuButton.manager = "🔗" + thisBot.id;
 menuButton.studioID = authBot.id;
 menuButton.onClick = `@ configBot.tags.selected_studioID = tags.studioID;

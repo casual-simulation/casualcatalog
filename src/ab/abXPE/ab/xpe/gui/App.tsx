@@ -101,11 +101,11 @@ const App = () => {
         setUserCredits(data.userCredits);
         setStudioCredits(data.studioCredits ?? null);
 
-        const studioConfig = abXPE.masks.studioConfig;
-        if (studioConfig) {
-            setStudioName(studioConfig.displayName);
-            setStudioCreditsIcon(studioConfig.creditIconUrl ?? null);
-            setStudioCreditsBackgroundColor(studioConfig.creditBackgroundColor ?? null);
+        const instStudioConfig = await ab.links.search.abInstStudioConfig();
+        if (instStudioConfig) {
+            setStudioName(instStudioConfig.studioDisplayName);
+            setStudioCreditsIcon(instStudioConfig['studio_credit_icon_url'] ?? null);
+            setStudioCreditsBackgroundColor(instStudioConfig['studio_credit_background_color'] ?? null);
         }
     }, []);
 

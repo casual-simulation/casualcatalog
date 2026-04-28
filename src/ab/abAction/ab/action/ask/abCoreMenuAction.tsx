@@ -110,12 +110,8 @@ else if (!inquiryHasSpace) {
     } else {
         // Need to decide where the cost of the ai calls is going to come from.
         let costRecordName;
-
-         if (configBot.tags.owner &&
-            configBot.tags.owner !== 'public' &&
-            configBot.tags.owner !== 'player' &&
-            configBot.tags.owner !== authBot.id
-        ) { 
+        
+        if (ab.links.utils.isInstOwnedByStudio()) { 
             // Inst owner is likely a studio, the cost of the ai call will come from it.
             costRecordName = configBot.tags.owner;
         } else {
@@ -136,10 +132,6 @@ else if (!inquiryHasSpace) {
         // Give an external bot a chance to eat the user input. If nothing takes it, then we call askGPT directly.
         let consumedInput = false;
         const receiverBots = getBots(byTag('onABUserInputAskGPT'));
-
-        if (ab.links.remember.tags.abThinkingSound) {
-            ab.links.sound.abPlaySound({ value: ab.links.remember.tags.abThinkingSound});
-        }
 
         if (receiverBots && receiverBots.length > 0) {
             for (let receiverBot of receiverBots) {

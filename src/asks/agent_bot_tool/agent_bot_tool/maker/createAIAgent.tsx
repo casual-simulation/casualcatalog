@@ -1,4 +1,4 @@
-const { dimension, aiModel, aiProvider } = that;
+const { dimension, aiModel, aiProvider, customAgentConfig } = that;
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, that);
@@ -6,11 +6,11 @@ if (tags.debug) {
 
 shout("clearAiKitAgentBotMenu");
 
-const defaultConfig = tags.agentConfigs['default'];
-const providerConfig = tags.customAgentConfig ?? tags.agentConfigs[aiProvider] ?? {};
+const defaultConfig: ABAgentConfig = tags.agentConfigs['default'];
+const providerConfig: ABCustomAgentConfig = customAgentConfig ?? tags.eggAgentConfig ?? tags.agentConfigs[aiProvider] ?? {};
 
 // Final agent config is default config + overrides from provider config.
-const agentConfig = {
+const agentConfig: ABAgentConfig = {
     ...defaultConfig,
     ...providerConfig
 }
@@ -60,7 +60,7 @@ if (agentConfig.meshPath) {
 }
 
 if (agentConfig.showName) {
-    botTags.label = aiModel;
+    botTags.label = agentConfig.agentName ?? aiModel;
     botTags.labelPosition = 'floatingBillboard';
     botTags.labelFloatingBackgroundColor = agentConfig.namePlateColor;
     botTags.labelWordWrapMode = 'none';

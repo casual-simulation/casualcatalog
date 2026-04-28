@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Read(**/*.bot.aux)"
+      "Read(**/*.bot.aux)",
+      "Bash(grep -E \"\\\\.tsx$|\\\\.ts$\")",
+      "Bash(ffmpeg -i /Users/ryancook/Git/casualcatalog/assets/ab/audio/writing-short-1.wav -codec:a libmp3lame -b:a 64k -ac 1 /Users/ryancook/Git/casualcatalog/assets/ab/audio/writing-short-1.mp3 -y)",
+      "Bash(ffmpeg -i /Users/ryancook/Git/casualcatalog/assets/ab/audio/writing-short-2.wav -codec:a libmp3lame -b:a 64k -ac 1 /Users/ryancook/Git/casualcatalog/assets/ab/audio/writing-short-2.mp3 -y)",
+      "Bash(ffmpeg -i /Users/ryancook/Git/casualcatalog/assets/ab/audio/writing-short-3.wav -codec:a libmp3lame -b:a 64k -ac 1 /Users/ryancook/Git/casualcatalog/assets/ab/audio/writing-short-3.mp3 -y)",
+      "Bash(brew list *)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(grep -E \"\\\\.\\(ts|js\\)$\")",
+      "Bash(grep -E \"\\\\.tsx$\")",
+      "Bash(git mv *)"
     ]
   }
 }

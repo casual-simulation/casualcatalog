@@ -13,9 +13,11 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.abPatchResults;
     delete thisBotData.tags.abPatchApplied;
     delete thisBotData.tags.abPatchAppliedTimestamp;
+    delete thisBotData.tags.abPatchApplying;
     delete thisBotData.tags.abTodoComplete;
     delete thisBotData.tags.abPatchError;
     delete thisBotData.tags.alwaysApprove;
+    delete thisBotData.tags.agentMode;
     delete thisBotData.tags.currAnimation;
     delete thisBotData.tags.prompt;
     delete thisBotData.tags.lineTo;
@@ -25,10 +27,13 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.budgetRecordName;
     delete thisBotData.tags.todoPlanId;
     delete thisBotData.tags.todoOrder;
+    delete thisBotData.tags.todoApproved;
     delete thisBotData.tags.aiModel;
+    delete thisBotData.tags.agentName;
     delete thisBotData.tags.animationState;
     delete thisBotData.tags.creditSnapshotStart;
     delete thisBotData.tags.creditSnapshotEnd;
+    delete thisBotData.tags.playedCreateSound;
 
     thisBotData.tags.form = 'nothing';
     thisBotData.tags.system = 'abPatchTodo.template';

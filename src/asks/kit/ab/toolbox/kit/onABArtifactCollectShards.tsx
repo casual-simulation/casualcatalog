@@ -10,9 +10,12 @@ const shard: ABArtifactShard = {
             [ab.links.remember.tags.abActiveDimension + 'RotationY']: tags[ab.links.remember.tags.abActiveDimension + 'RotationY'],
             [ab.links.remember.tags.abActiveDimension + 'RotationZ']: tags[ab.links.remember.tags.abActiveDimension + 'RotationZ'],
         },
+        label: tags.label,
         color: tags.color,
         labelFloatingBackgroundColor: tags.labelFloatingBackgroundColor,
         labelColor: tags.labelColor,
+        studioID: tags.studioID,
+        tool_array: tags.tool_array
     },
     dependencies: [
         {

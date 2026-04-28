@@ -217,7 +217,7 @@ const currentZ = tags[dimension + 'Z'];
 
 ### Animating movement
 
-Use `animateTag` to move a model smoothly to a new position. Always provide `fromValue` explicitly. Set `duration` to 1 (matching one tick). Always set `tagMaskSpace: false`.
+Use `animateTag` to move a model smoothly to a new position. Always provide `fromValue` explicitly. Set `duration` to 1 (matching one tick).
 
 You may optionally include an `easing` field after `duration` for more natural movement. Choose an easing type and mode appropriate for the entity — for example, `elastic` out feels natural for bouncy animals, `sinusoidal` inout feels natural for people walking, `linear` suits machines or vehicles.
 
@@ -226,8 +226,7 @@ await animateTag(thisBot, {
   fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
   toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
   duration: 1,
-  easing: { type: "sinusoidal", mode: "inout" },
-  tagMaskSpace: false
+  easing: { type: "sinusoidal", mode: "inout" }
 });
 ```
 
@@ -244,8 +243,7 @@ await animateTag(thisBot, {
   toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
   startTime: os.localTime + offset,
   duration: 1 - (offset / 1000),
-  easing: { type: "sinusoidal", mode: "inout" },
-  tagMaskSpace: false
+  easing: { type: "sinusoidal", mode: "inout" }
 });
 ```
 
@@ -285,8 +283,7 @@ await animateTag(thisBot, {
   fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
   toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
   duration: 1,
-  easing: { type: "sinusoidal", mode: "inout" },
-  tagMaskSpace: false
+  easing: { type: "sinusoidal", mode: "inout" }
 });
 ```
 
@@ -322,8 +319,7 @@ await animateTag(thisBot, {
   fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
   toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
   duration: 1,
-  easing: { type: "linear", mode: "inout" },
-  tagMaskSpace: false
+  easing: { type: "linear", mode: "inout" }
 });
 ```
 
@@ -345,8 +341,7 @@ if (dist > speed) {
     fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] },
     toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY },
     duration: 1,
-    easing: { type: "quadratic", mode: "inout" },
-    tagMaskSpace: false
+    easing: { type: "quadratic", mode: "inout" }
   });
 }
 ```
@@ -497,14 +492,77 @@ The phase 0 color should match the model's base `color` field. Always restore `t
 
 ---
 
+## Spawning Pattern
+
+Any entity that can mate and produce offspring uses this pattern. Spawning is triggered inside `oncurrent_tickChanged` after movement. The actual child creation is handled externally by a `mergeModels` function — the parent's only job is to detect the condition, set its cooldown, and shout.
+
+### Spawning Stats
+
+Define these on any mating-capable entity alongside lifecycle stats:
+
+```json
+"mating_cooldown":  { "start": <per model, in ticks>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+"mating_proximity": { "start": <per model, in meters>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+"maturity_age":     { "start": <max_age * maturity_threshold>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
+```
+
+`maturity_age` is derived from `max_age` multiplied by the maturity threshold declared in the manifest description — same pattern as `phase_1_age` and `phase_2_age`.
+
+Also define `last_mated_tick` as a plain tag (not a stat) initialised to `-mating_cooldown` so the entity can mate immediately at tick 0 if conditions are met:
+
+```json
+"last_mated_tick": { "start": <-mating_cooldown>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
+```
+
+### Heritable Stats
+
+The manifest description declares which stats are heritable. These are the stats the `mergeModels` function will blend between parents to produce the child. The builder does not need to implement blending — just ensure all heritable stats are present and correctly valued on the parent.
+
+### Mating Block in oncurrent_tickChanged
+
+Place the mating block **after movement**, as the final section of `oncurrent_tickChanged`. The initiating parent is determined by alphabetical comparison of `modelName` tags — the lower-sorting entity initiates, preventing both entities from firing the same tick.
+
+```javascript
+// 5. Mating
+const partner = getBot('modelName', '<Partner Name>');
+if (partner) {
+  const iInitiate = tags.modelName < partner.tags.modelName;
+  if (iInitiate) {
+    const age = tags.current_tick - tags.spawn_tick;
+    const partnerAge = tags.current_tick - partner.tags.spawn_tick;
+
+    const canMate = tags.lifecycle !== '<terminal>'
+      && partner.tags.lifecycle !== '<terminal>'
+      && (tags.current_tick - tags.last_mated_tick) >= tags.mating_cooldown
+      && age >= tags.maturity_age
+      && partnerAge >= partner.tags.maturity_age;
+
+    const pdx = partner.tags[dimension + 'X'] - tags[dimension + 'X'];
+    const pdy = partner.tags[dimension + 'Y'] - tags[dimension + 'Y'];
+    const pdist = Math.sqrt(pdx * pdx + pdy * pdy);
+
+    if (pdist < tags.mating_proximity && canMate) {
+      tags.last_mated_tick = tags.current_tick;
+      shout('mergeModels', { model1: thisBot, model2: partner });
+    }
+  }
+}
+```
+
+The `partner` null check (`if (partner)`) guards against the case where the partner has been hidden and is no longer retrievable.
+
+Always use `pdx/pdy/pdist` variable names for the proximity check to avoid colliding with any `dx/dy/dist` variables used in the movement block above.
+
+---
+
 ## oncurrent_tickChanged — canonical example
 
-Every model with current_tick must include this listener as the sole entry point for all per-tick logic. For entities with a lifecycle, the canonical order is: **(1) lifecycle transitions, (2) speed scaling, (3) stat updates, (4) guarded movement**.
+Every model with current_tick must include this listener as the sole entry point for all per-tick logic. For entities with a lifecycle, the canonical order is: **(1) lifecycle transitions, (2) speed scaling, (3) stat updates, (4) guarded movement, (5) mating**.
 
 ```json
 "oncurrent_tickChanged": {
   "type": "stat",
   "stat": "current_tick",
-  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\n\n// 1. Lifecycle transitions\nconst age = tags.current_tick - tags.spawn_tick;\nif (age >= tags.max_age) {\n  changeState(thisBot, 'dead', 'lifecycle');\n} else if (age >= tags.phase_2_age) {\n  changeState(thisBot, 'elderly', 'lifecycle');\n} else if (age >= tags.phase_1_age) {\n  changeState(thisBot, 'aging', 'lifecycle');\n}\n\n// 2. Speed scaling\nconst speedScale = tags.lifecycle === 'elderly' ? 0.4 : tags.lifecycle === 'aging' ? 0.75 : 1.0;\nconst speed = tags.base_speed * speedScale;\n\n// 3. Stat updates (example)\nconst rent = getBot('modelName', 'Rent Expense');\ntags.total_expenses = rent.tags.monthly_cost;\ntags.cash_balance = tags.starting_cash + (tags.monthly_revenue * tags.current_tick) - (tags.total_expenses * tags.current_tick);\n\n// 4. Guarded movement\nif (tags.lifecycle !== 'dead') {\n  if (tags.behavior === 'foraging') {\n    // Bounds derived from Pond: location {x:0,y:0}, scale {x:6,y:6}, inset 0.5m\n    const bounds = { minX: -2.5, maxX: 2.5, minY: -2.5, maxY: 2.5 };\n    const dx = (Math.random() - 0.5) * 2 * speed;\n    const dy = (Math.random() - 0.5) * 2 * speed;\n    const newX = Math.max(bounds.minX, Math.min(bounds.maxX, tags[dimension + 'X'] + dx));\n    const newY = Math.max(bounds.minY, Math.min(bounds.maxY, tags[dimension + 'Y'] + dy));\n    await animateTag(thisBot, { fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] }, toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY }, duration: 1, easing: { type: 'sinusoidal', mode: 'inout' }, tagMaskSpace: false });\n  }\n}"
+  "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\n\n// 1. Lifecycle transitions\nconst age = tags.current_tick - tags.spawn_tick;\nif (age >= tags.max_age) {\n  changeState(thisBot, 'dead', 'lifecycle');\n} else if (age >= tags.phase_2_age) {\n  changeState(thisBot, 'elderly', 'lifecycle');\n} else if (age >= tags.phase_1_age) {\n  changeState(thisBot, 'aging', 'lifecycle');\n}\n\n// 2. Speed scaling\nconst speedScale = tags.lifecycle === 'elderly' ? 0.4 : tags.lifecycle === 'aging' ? 0.75 : 1.0;\nconst speed = tags.base_speed * speedScale;\n\n// 3. Stat updates (example)\nconst rent = getBot('modelName', 'Rent Expense');\ntags.total_expenses = rent.tags.monthly_cost;\ntags.cash_balance = tags.starting_cash + (tags.monthly_revenue * tags.current_tick) - (tags.total_expenses * tags.current_tick);\n\n// 4. Guarded movement\nif (tags.lifecycle !== 'dead') {\n  if (tags.behavior === 'foraging') {\n    // Bounds derived from Pond: location {x:0,y:0}, scale {x:6,y:6}, inset 0.5m\n    const bounds = { minX: -2.5, maxX: 2.5, minY: -2.5, maxY: 2.5 };\n    const dx = (Math.random() - 0.5) * 2 * speed;\n    const dy = (Math.random() - 0.5) * 2 * speed;\n    const newX = Math.max(bounds.minX, Math.min(bounds.maxX, tags[dimension + 'X'] + dx));\n    const newY = Math.max(bounds.minY, Math.min(bounds.maxY, tags[dimension + 'Y'] + dy));\n    await animateTag(thisBot, { fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] }, toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY }, duration: 1, easing: { type: 'sinusoidal', mode: 'inout' } });\n  }\n}\n\n// 5. Mating\nconst partner = getBot('modelName', 'Duck 2');\nif (partner) {\n  const iInitiate = tags.modelName < partner.tags.modelName;\n  if (iInitiate) {\n    const partnerAge = tags.current_tick - partner.tags.spawn_tick;\n    const canMate = tags.lifecycle !== 'dead' && partner.tags.lifecycle !== 'dead' && (tags.current_tick - tags.last_mated_tick) >= tags.mating_cooldown && age >= tags.maturity_age && partnerAge >= partner.tags.maturity_age;\n    const pdx = partner.tags[dimension + 'X'] - tags[dimension + 'X'];\n    const pdy = partner.tags[dimension + 'Y'] - tags[dimension + 'Y'];\n    const pdist = Math.sqrt(pdx * pdx + pdy * pdy);\n    if (pdist < tags.mating_proximity && canMate) {\n      tags.last_mated_tick = tags.current_tick;\n      shout('mergeModels', { model1: thisBot, model2: partner });\n    }\n  }\n}"
 }
 ```

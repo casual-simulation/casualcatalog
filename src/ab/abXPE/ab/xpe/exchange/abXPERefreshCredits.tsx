@@ -12,37 +12,13 @@ if (thisBot.vars.currentCycleId !== cycleId) {
 
 const userCredits = await thisBot.getAvailableCredits({ userId: authBot.id });
 
-const isStudioOwned = configBot.tags.owner &&
-    configBot.tags.owner !== 'public' &&
-    configBot.tags.owner !== 'player' &&
-    configBot.tags.owner !== authBot.id;
-
 let studioCredits = null;
 let studioId = null;
-if (isStudioOwned) {
-    studioId = configBot.tags.owner;
-    studioCredits = await thisBot.getAvailableCredits({ studioId });
 
-    // Load studio display metadata once and store as a mask tag.
-    if (!masks.studioConfig) {
-        if (!configBot.tags.user_studios) {
-            await ab.abRefreshStudios();
-        }
-        if (configBot.tags.user_studios?.success) {
-            const ownerStudio = configBot.tags.user_studios.studios
-                .find(s => s.studioId === studioId);
-            if (ownerStudio) {
-                const res = await os.getData(studioId, 'abStudioConfig');
-                const data = res.success ? res.data : {};
-                const studioConfig = {
-                    displayName: ownerStudio.displayName,
-                    creditIconUrl: data['studio_credit_icon_url'] ?? null,
-                    creditBackgroundColor: data['studio_credit_background_color'] ?? null,
-                };
-                setTagMask(thisBot, 'studioConfig', '🧬' + JSON.stringify(studioConfig), 'shared');
-            }
-        }
-    }
+const instStudioConfig = await ab.links.search.abInstStudioConfig();
+if (instStudioConfig) {
+    studioId = instStudioConfig.studioId;
+    studioCredits = await thisBot.getAvailableCredits({ studioId });
 }
 
 if (thisBot.vars.currentCycleId !== cycleId) {

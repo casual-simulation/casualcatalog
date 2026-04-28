@@ -43,13 +43,14 @@ Each object must be one of two types: "MODEL" or "TIMELINE_MARKER".
 ```
 
 - "startLocation" — the position of the first marker. Subsequent markers will be placed by the builder from this origin.
-- "steps" — an ordered list of all timeline ticks. Each entry has a "step" number (1, 2, 3…) and its "timeUnit". The timeUnit is a display label only — all steps in a manifest must use the same timeUnit.
+- "steps" — an ordered list of timeline markers. Each entry has a "step" number and its "timeUnit". **Steps do not need to be sequential** — use non-uniform spacing to place markers at meaningful moments in the simulation (e.g. `0, 8, 20, 40` rather than `1, 2, 3, 4`). The simulation runs tick by tick between markers; markers are just labeled scrub points for the user.
+- All steps in a manifest must use the same timeUnit.
 
 Only one TIMELINE_MARKER object should appear in the manifest.
 
 ---
 
-## Choosing a Time Unit
+## Choosing a Time Unit and Marker Positions
 
 Pick a single time unit for the entire simulation based on what makes sense for the scenario. Every model in the manifest will use this unit as its tick granularity. Choose the finest unit that keeps the simulation meaningful:
 
@@ -61,6 +62,41 @@ Pick a single time unit for the entire simulation based on what makes sense for 
 | Fast-moving simulations (traffic, machinery) | second |
 
 All models in the manifest inherit this unit. Do not mix units.
+
+### Marker positioning
+
+Markers are not evenly spaced — they are placed at ticks where something interesting happens. Work out the full tick range first by considering the lifecycle values of the entities in the scene, then place markers to frame the most meaningful moments.
+
+**Do not include a marker at step 0.** The simulation always starts at tick 0 automatically via the reset button — a step 0 marker is redundant.
+
+**Do not be conservative with tick values.** Large step numbers are fine and often necessary. A simulation with `max_age: 200` should have markers in the hundreds — markers like `25, 80, 150, 200` are entirely appropriate. Anchoring markers to small numbers (under 20) when lifecycles are long produces a timeline where nothing meaningful happens between scrub points.
+
+**Process:**
+1. Decide the total simulation length in ticks based on the longest-lived entity's `max_age`
+2. Identify the key events: first mating window, first death, first child reaching maturity, population peak, financial inflection points, etc.
+3. Place 3–5 markers at or just before those events — each one should land the user at a visibly different chapter of the story
+
+**Lifecycle and spawning calibration** — these values must be set relative to each other and to the total tick range. Use this as a rough guide:
+
+| Value | Suggested range relative to max_age |
+|---|---|
+| `max_age` | 1.5–3× the final marker tick (entities outlive the observable window slightly) |
+| `phase_1_age` | 50–65% of max_age |
+| `phase_2_age` | 75–85% of max_age |
+| `maturity_age` | 10–20% of max_age |
+| `mating_cooldown` | 15–25% of max_age (long enough that mating feels like an event, not a constant) |
+| `spawn_tick` (seed entities) | Stagger across 0 to −30% of max_age so deaths are spread across the timeline |
+
+**Example — duck pond with max_age 200, final marker at tick 150:**
+
+| Tick | Event | Marker? |
+|---|---|---|
+| 30 | Ducks reach maturity, first mating window opens | ✓ |
+| 80 | First child born, Duck 2 enters aging phase | ✓ |
+| 130 | Duck 2 dies, first child reaches maturity | ✓ |
+| 150 | Second generation mating, Duck 1 entering aging | ✓ |
+
+This gives 4 markers at steps `30, 80, 130, 150` — well-spaced, each marking a meaningful generational event.
 
 ---
 
@@ -106,7 +142,7 @@ The description field is the primary signal the builder uses to construct stats,
 
 - **What the entity is** and what numeric properties (stats) it holds
 - **Behavioral rules** — conditions that change stats or trigger state changes
-- **Movement** — if the entity moves, describe how (wander within an area, patrol between locations, follow another entity) and under what conditions. Name the behavior state if relevant (e.g. "wanders when in the 'foraging' state, stays still when in the 'nesting' state")
+- **Movement** — if the entity moves, describe how (wander within an area, patrol between locations, follow another entity) and under what conditions. For wander, always name the bounding environment explicitly: *"wanders within the bounds of Pond"* — the builder will derive world-space min/max coordinates from that environment's location and scale. Name the behavior state if relevant (e.g. "wanders within the bounds of Pond when in the 'foraging' state, stays still when in the 'nesting' state")
 - **Spatial relationships** — if the entity sits on or inside another entity, name it
 - **Dependencies** — if this entity's stats feed into another model's calculations, say so
 - **Lifecycle** — if the entity has a lifecycle, follow the Lifecycle Pattern rules below
@@ -139,16 +175,43 @@ When an entity has a lifecycle, its description must include all of the followin
 - **max_age** in ticks: *"max_age: 12 ticks"*
 - **phase_thresholds** as two decimals between 0 and 1: *"phase thresholds: 0.5, 0.8"*
 - **spawn_tick**: use `0` for entities starting fresh; use a **negative value** for seed entities that begin the simulation already partway through their life — e.g. `spawn_tick: -4` means the entity is 4 ticks old at simulation start. Vary spawn_ticks across entities of the same type to stagger their deaths naturally across the timeline.
-- **Terminal behavior**: *"terminal: destroyBot"* or *"terminal: freeze"* — freeze means the bot stays visible as a historical marker but stops all movement and stat updates
+- **Terminal behavior**: *"terminal: hide"* or *"terminal: freeze"* — hide removes the entity from view while preserving the bot for easy simulation reset; freeze keeps the entity visible as a historical marker but stops all movement and stat updates. Default to hide unless the scenario calls for a visible end state.
 - **Speed scaling**: note whether movement speed should scale across phases (yes for most moving entities)
 
 ### Example description excerpt
 
-> "A delivery van. Has a lifecycle: active → degraded → critical → decommissioned. max_age: 24 ticks. phase_thresholds: 0.5, 0.8. spawn_tick: -6 (already 6 ticks into service at simulation start). Terminal: destroyBot. Speed scales with lifecycle phase. Patrols between Warehouse and Store."
+> "A delivery van. Has a lifecycle: active → degraded → critical → decommissioned. max_age: 24 ticks. phase_thresholds: 0.5, 0.8. spawn_tick: -6 (already 6 ticks into service at simulation start). Terminal: hide. Speed scales with lifecycle phase. Patrols between Warehouse and Store."
 
 ---
 
-## Examples
+## Spawning Pattern
+
+Use this pattern for any entity that can mate and produce offspring. Spawning is self-managed — each entity monitors proximity to its partner and shouts to an external `mergeModels` function when conditions are met.
+
+### When to assign spawning
+
+Assign spawning to any entity that:
+- Can reproduce with another named entity
+- Has a meaningful lifecycle (spawning requires lifecycle to be present)
+
+Do not assign spawning to entities without a lifecycle, or to stationary/value-holder models.
+
+### Spawning fields in the description
+
+When an entity can spawn, its description must include all of the following:
+
+- **Partner name**: *"mates with Duck 2 on proximity"*
+- **mating_cooldown** in ticks: *"mating_cooldown: 40 ticks"* — how long after mating before the entity can mate again
+- **mating_proximity** in meters: *"mating_proximity: 1.5m"* — how close the two entities must be to trigger mating
+- **maturity_threshold** as a decimal between 0 and 1: *"maturity_threshold: 0.15"* — fraction of max_age the entity must reach before it can mate. The builder derives `maturity_age = max_age * maturity_threshold`
+
+### Example description excerpt
+
+> "A duck that lives on the Pond. Has a lifecycle: alive → aging → elderly → dead. max_age: 200 ticks. phase_thresholds: 0.6, 0.8. spawn_tick: 0. Terminal: hide. base_speed: 1.2. Speed scales with lifecycle phase. Wanders within the bounds of Pond when lifecycle is not dead. Mates with Duck 2 on proximity. mating_cooldown: 40 ticks. mating_proximity: 1.5m. maturity_threshold: 0.15."
+
+### Pairing rule
+
+Spawning descriptions are always declared on **both** entities in a mating pair. Each must name the other as its partner. The builder uses alphabetical comparison of model names at runtime to determine which entity initiates — the planner does not need to designate an initiator.
 
 ### Example 1 — Financial model
 Given: "A food truck business with one employee and 6 monthly timeline markers"
@@ -182,8 +245,10 @@ Given: "A food truck business with one employee and 6 monthly timeline markers"
 ]
 ```
 
-### Example 2 — Movement, stacking, and lifecycle
+### Example 2 — Movement, stacking, lifecycle, and non-sequential markers
 Given: "A duck pond with 2 ducks of different ages."
+
+max_age is 200 ticks. Duck 2 starts 30 ticks old (spawn_tick: -30). maturity_age = 200 * 0.15 = 30 ticks. mating_cooldown = 200 * 0.2 = 40 ticks. Key events: Duck 1 reaches maturity at tick 30, Duck 2 already mature at start, first child likely around tick 30–50, Duck 2 enters aging at tick 90 (spawn_tick -30 + phase_1_age 120 = tick 90), Duck 2 dies around tick 140. Final marker at 150.
 
 ```json
 [
@@ -196,25 +261,23 @@ Given: "A duck pond with 2 ducks of different ages."
   {
     "type": "MODEL",
     "name": "Duck 1",
-    "description": "A duck that lives on the Pond. Sits on top of the Pond at z = 0.5. Has a lifecycle: alive → aging → elderly → dead. max_age: 10 ticks. phase_thresholds: 0.6, 0.8. spawn_tick: 0 (born at simulation start). Terminal: destroyBot. Speed scales with lifecycle phase. Wanders randomly within 3m of starting position when lifecycle is not dead.",
+    "description": "A duck that lives on the Pond. Sits on top of the Pond at z = 0.5. Has a lifecycle: alive → aging → elderly → dead. max_age: 200 ticks. phase_thresholds: 0.6, 0.8. spawn_tick: 0 (born at simulation start). Terminal: hide. base_speed: 1.2. Speed scales with lifecycle phase. Wanders within the bounds of Pond when lifecycle is not dead. Mates with Duck 2 on proximity. mating_cooldown: 40 ticks. mating_proximity: 1.5m. maturity_threshold: 0.15.",
     "location": { "x": -1, "y": -1, "z": 0.5 }
   },
   {
     "type": "MODEL",
     "name": "Duck 2",
-    "description": "A duck that lives on the Pond. Sits on top of the Pond at z = 0.5. Has a lifecycle: alive → aging → elderly → dead. max_age: 10 ticks. phase_thresholds: 0.6, 0.8. spawn_tick: -4 (already 4 ticks old at simulation start, will die earlier than Duck 1). Terminal: destroyBot. Speed scales with lifecycle phase. Wanders randomly within 3m of starting position when lifecycle is not dead.",
+    "description": "A duck that lives on the Pond. Sits on top of the Pond at z = 0.5. Has a lifecycle: alive → aging → elderly → dead. max_age: 200 ticks. phase_thresholds: 0.6, 0.8. spawn_tick: -30 (already 30 ticks old at simulation start, already mature, will enter aging and die before Duck 1). Terminal: hide. base_speed: 1.2. Speed scales with lifecycle phase. Wanders within the bounds of Pond when lifecycle is not dead. Mates with Duck 1 on proximity. mating_cooldown: 40 ticks. mating_proximity: 1.5m. maturity_threshold: 0.15.",
     "location": { "x": 1, "y": 1, "z": 0.5 }
   },
   {
     "type": "TIMELINE_MARKER",
     "startLocation": { "x": -7, "y": -20, "z": 0 },
     "steps": [
-      { "step": 1, "timeUnit": "minute" },
-      { "step": 2, "timeUnit": "minute" },
-      { "step": 3, "timeUnit": "minute" },
-      { "step": 4, "timeUnit": "minute" },
-      { "step": 5, "timeUnit": "minute" },
-      { "step": 6, "timeUnit": "minute" }
+      { "step": 30, "timeUnit": "minute" },
+      { "step": 80, "timeUnit": "minute" },
+      { "step": 130, "timeUnit": "minute" },
+      { "step": 150, "timeUnit": "minute" }
     ]
   }
 ]

@@ -68,8 +68,10 @@ if (authBot && !configBot.tags.studio) {
     configBot.tags.studio = authBot.id;
 }
 
-thisBot.abRefreshStudios();
-thisBot.abRefreshAIModels();
+await Promise.allSettled([
+    thisBot.abRefreshStudios(),
+    thisBot.abRefreshAIModels()
+]);
 
 if (!links.personality) { 
     await thisBot.abAdapt("abPersonality");
@@ -109,7 +111,7 @@ else if (channel && links.remember.tags.allowChannels) {
 } else {
     //populate bootflag ab
     if (initialBoot && bootFlag) {
-        await links.search.onLookupABEggs({ abID: bootFlag, initialBoot: true, autoHatch: true, sourceEvent: 'boot', abVersion: version});
+        await links.search.onLookupABEggs({ abID: bootFlag, initialBoot: true, autoHatch: true, sourceEvent: 'boot', abVersion: version });
     }
 
     //lookup askID if available
@@ -122,6 +124,12 @@ else if (channel && links.remember.tags.allowChannels) {
 
             links.ask.abCoreMenuAction(ask);
         }
+    } 
+
+    // load studio bootstrap egg (if it has one defined).
+    const instStudioConfig = await links.search.abInstStudioConfig();
+    if (initialBoot && instStudioConfig && instStudioConfig['studio_bootstrap_egg_name']) {
+        await links.search.onLookupABEggs({ abID: instStudioConfig['studio_bootstrap_egg_name'], recordKey: instStudioConfig.studioId, initialBoot: true, autoHatch: true, sourceEvent: 'boot' });
     }
 }
 

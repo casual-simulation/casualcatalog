@@ -41,7 +41,6 @@ menuButton.abPatternMenu = true;
 menuButton.abPatternMenuSortOrder = 0;
 menuButton.abMenuRefresh = "@ destroy(thisBot);";
 menuButton.abPatternMenuRefresh = "@ destroy(thisBot);";
-menuButton.color = links.remember.tags.abBaseColor;
 menuButton.manager = "🔗" + thisBot.id;
 menuButton.remember = tags.remember;
 menuButton.onClick = `@const totalPatternBots = getBots(b => b.tags.abIDOrigin === tags.label && b.space === 'shared' && !b.tags.abIgnore);

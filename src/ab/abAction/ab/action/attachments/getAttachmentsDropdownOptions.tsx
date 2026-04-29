@@ -61,6 +61,17 @@ options.push({
     })
 });
 
+options.push({
+    label: "take a photo",
+    formAddress: "photo_camera",
+    onClick: ListenerString(() => {
+        const skillBot = getBot('system', 'ab.action.attachments');
+        if (skillBot) {
+            whisper(skillBot, 'onAttachmentsCaptureClick');
+        }
+    })
+});
+
 const label = list.length > 0 ? "attachments (" + list.length + ")" : "attachments";
 
 return { options, label };

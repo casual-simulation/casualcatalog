@@ -11,7 +11,8 @@
       "Bash(grep -E \"\\\\.\\(ts|js\\)$\")",
       "Bash(grep -E \"\\\\.tsx$\")",
       "Bash(git mv *)",
-      "Bash(pnpm pack:dev)"
+      "Bash(pnpm pack:dev)",
+      "Bash(curl -s https://docs.casualos.com/actions/ai/)"
     ]
   }
 }

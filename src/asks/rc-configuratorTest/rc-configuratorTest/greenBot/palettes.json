@@ -1,0 +1,8 @@
+[
+  {
+    "name": "sunset",
+    "primaryColor": "#ff7e5f",
+    "accent": "warm",
+    "moods": ["cozy", "romantic"]
+  }
+]

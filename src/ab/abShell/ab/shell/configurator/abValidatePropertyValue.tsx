@@ -78,7 +78,7 @@ switch (property.type) {
             return { valid: false, reason: 'list itemSchema is required and must be a property schema' };
         }
 
-        const allowedSimple = ['boolean', 'number', 'text'];
+        const allowedSimple = ['boolean', 'number', 'text', 'color', 'select', 'multiselect'];
         if (itemSchema.type !== 'group' && !allowedSimple.includes(itemSchema.type)) {
             return { valid: false, reason: `list itemSchema.type "${itemSchema.type}" is not supported (allowed: ${allowedSimple.join(', ')}, group)` };
         }

@@ -161,17 +161,18 @@ if (isComplex) {
     entryBot.tags.onPropertyValueBubbleUp = bubbleUpListenerStr;
     if (inheritedMenuItemBots) entryBot.tags.menuItemBots = inheritedMenuItemBots;
 
-    entryBot.tags.onRefreshDisplay = ListenerString(() => {
-        const property = tags.property;
-        const v = property.value ?? property.default;
-        if (property.type === 'boolean') {
-            tags.formAddress = v === true ? 'check_box' : 'check_box_outline_blank';
-            tags.label = `Entry #${tags.listEntryIndex}`;
-        } else {
-            const valueStr = v == null ? 'unset' : String(v);
+    // Most types' default onRefreshDisplay already produces "<label>: <value>"
+    // (the synthesized label is "Entry #N"). Only text needs an override since
+    // its default doesn't include the value, and only color/select/multiselect
+    // would lose their tinting/option-resolution if we replaced theirs.
+    if (itemSchema.type === 'text') {
+        entryBot.tags.onRefreshDisplay = ListenerString(() => {
+            const property = tags.property;
+            const v = property.value ?? property.default;
+            const valueStr = v == null || v === '' ? 'unset' : String(v);
             tags.label = `Entry #${tags.listEntryIndex}: ${valueStr}`;
-        }
-    });
+        });
+    }
 
     whisper(entryBot, 'onRefreshDisplay');
 

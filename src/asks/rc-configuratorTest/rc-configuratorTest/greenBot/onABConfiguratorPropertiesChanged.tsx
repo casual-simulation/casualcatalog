@@ -23,3 +23,19 @@ if ('greenBotTodos' in propertyValues) {
 if ('greenBotContacts' in propertyValues) {
     tags.contacts = propertyValues.greenBotContacts;
 }
+
+if ('greenBotFavoriteColors' in propertyValues) {
+    tags.favoriteColors = propertyValues.greenBotFavoriteColors;
+}
+
+if ('greenBotFavoriteFruits' in propertyValues) {
+    tags.favoriteFruits = propertyValues.greenBotFavoriteFruits;
+}
+
+if ('greenBotInterestSets' in propertyValues) {
+    tags.interestSets = propertyValues.greenBotInterestSets;
+}
+
+if ('greenBotPalettes' in propertyValues) {
+    tags.palettes = propertyValues.greenBotPalettes;
+}

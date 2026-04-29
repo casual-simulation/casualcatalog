@@ -39,6 +39,7 @@ const storedHistory: AIChatMessage[] = historyStorageBot ? thisBot.abConversatio
 const recordName: string | undefined = askThat.recordName ?? todoBot?.tags.budgetRecordName ?? authBot.id;
 const menuType = askThat.menuType;
 const menuActionData = askThat.menuActionData;
+const attachments: ABAttachment[] = askThat.attachments ?? [];
 
 /**
  * askContext bundles all derived parameters for this turn into a single object.
@@ -49,6 +50,7 @@ const askContext: ABAskContext = {
     menuActionData,
     originalUserInquiry,
     originalUserInquiryLabel,
+    attachments,
     abBot,
     sourceId,
     abDimension,
@@ -101,6 +103,10 @@ function buildUserMessage(message?: string, extra: Record<string, any> = {}): st
     return JSON.stringify(obj);
 }
 
+// Attachments are appended to the new user message as AIDataContent blocks.
+// They never mutate storedHistory — past attachments live inside the persisted history already.
+const attachmentBlocks = attachments.map(a => ({ base64: a.base64, mimeType: a.mimeType }));
+
 if (!hasInquiry && storedHistory.length > 0) {
     // query function continuation — history already ends with the query result user message
     aiChatMessages = storedHistory;
@@ -108,7 +114,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     // New user message continuing an existing session
     aiChatMessages = [
         ...storedHistory,
-        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry) }] }
+        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry) }, ...attachmentBlocks] }
     ];
 } else {
     // Fresh start — include catalog so agents can reason about available tools immediately
@@ -116,7 +122,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     aiChatMessages = [
         { role: 'system', content: [{ text: tags.prompt_system }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
-        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry, { catalog }) }] },
+        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry, { catalog }) }, ...attachmentBlocks] },
     ];
 }
 

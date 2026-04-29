@@ -33,6 +33,7 @@ for (let i = 0; i < todos.length; i++) {
         data: {
             prompt: todo.prompt,
             todoLabel: todo.label,
+            attachments: todo.attachments,
             budgetCredits: todo.budget_credits,
             budgetRecordName: recordName,
             aiModel: model,

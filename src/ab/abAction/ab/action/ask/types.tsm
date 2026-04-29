@@ -13,12 +13,33 @@ interface ABPatchResult {
     rollbackDiff: PartialBotState | null;
 }
 
+/**
+ * A file the user has attached to an AI request. Surfaces in the AI message as an
+ * `AIDataContent` block alongside the text content.
+ */
+interface ABAttachment {
+    /** Original filename from the upload picker — used as the dropdown label. */
+    name: string;
+
+    /** MIME type of the file, used directly as the `mimeType` of the AIDataContent block. */
+    mimeType: string;
+
+    /** Base64-encoded file contents, used directly as the `base64` of the AIDataContent block. */
+    base64: string;
+}
+
 interface ABAskGPTParameters {
     /**
      * The user's message or request. When omitted on a continuation turn (callDepth > 0),
      * the AI re-enters using stored conversation history alone.
      */
     inquiry?: string;
+
+    /**
+     * Files attached to this request. Forwarded to `ai.chat` as `AIDataContent` blocks
+     * appended after the text block in the user message.
+     */
+    attachments?: ABAttachment[];
 
     /**
      * The label to show for the user's inquiry. Really just used for display systems that make the inquiry visible in interfaces.
@@ -119,6 +140,9 @@ interface ABAskContext {
     /** The raw user message label */
     originalUserInquiryLabel: string;
 
+    /** Files attached to this request. Empty array when no attachments. */
+    attachments: ABAttachment[];
+
     /** Whether `inquiry` was explicitly provided (vs. a continuation turn with no new message). */
     hasInquiry: boolean;
 
@@ -200,4 +224,7 @@ interface ABTodoParameters {
 
     /** Number of credits to budget for performing this todo. */
     budget_credits: number;
+
+    /** Files attached to this todo. Forwarded to the agent's askGPT call so the model receives them with the prompt. */
+    attachments?: ABAttachment[];
 }

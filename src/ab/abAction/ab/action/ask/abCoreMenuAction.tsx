@@ -119,16 +119,26 @@ else if (!inquiryHasSpace) {
             costRecordName = authBot.id;
         }
 
+        const attachments: ABAttachment[] = thisBot.vars.abAttachments ?? [];
+
         const askGPTParams = {
             inquiry: inquiry,
+            attachments,
             menuType: menu,
             agentMode,
             recordName: costRecordName,
             menuActionData: that,
-            sourceId: 'abBot', 
+            sourceId: 'abBot',
             historyStorageBot: ab.links.remember
         };
-        
+
+        // Clear the staged attachments now that the request owns them; the next prompt starts empty.
+        thisBot.vars.abAttachments = [];
+        const skillBot = getBot('system', 'ab.action.attachments');
+        if (skillBot) {
+            whisper(skillBot, 'refreshAttachmentsDropdown');
+        }
+
         // Give an external bot a chance to eat the user input. If nothing takes it, then we call askGPT directly.
         let consumedInput = false;
         const receiverBots = getBots(byTag('onABUserInputAskGPT'));
@@ -142,7 +152,7 @@ else if (!inquiryHasSpace) {
                 }
             }
         }
-        
+
         if (!consumedInput) {
             await thisBot.askGPT(askGPTParams);
         }

@@ -1,4 +1,4 @@
-shout("clearScaleModelMenu");
+//shout("clearScaleModelMenu");
 await os.sleep(0);
 
 const menuOptions = {
@@ -21,26 +21,29 @@ const seeAttributesButton = {
 seeAttributesButton.dropdownOptions = [];
 for (const item in tags.modelAttributes) {
     let val = tags.modelAttributes[item].start;
-    if (tags[item] || tags[item] == 0) {
-        val = tags[item];
+    let name = tags.modelAttributes[item].name;
+
+    if (tags[name] || tags[name] == 0) {
+        val = tags[name];
     }
     const tempDropdownItem = {
         ...menuOptions,
-        label: `${item}: ${val}`,
-        stat: item
+        label: `${name}: ${val}`,
+        stat: name
     }
     seeAttributesButton.dropdownOptions.push(tempDropdownItem);
 }
 
 for (const item in tags.modelStates) {
     let val = tags.modelStates[item].start;
-    if (tags[item]) {
-        val = tags[item];
+    let name = tags.modelStates[item].name;
+    if (tags[name]) {
+        val = tags[name];
     }
     const tempDropdownItem = {
         ...menuOptions,
-        state: item,
-        label: `${item}: ${val}`
+        state: name,
+        label: `${name}: ${val}`
     }
     seeAttributesButton.dropdownOptions.push(tempDropdownItem);
 }

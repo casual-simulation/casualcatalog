@@ -7,7 +7,6 @@ tags.color = data.color ?? '#031f40';
 tags.prevColor = data.color ?? '#031f40';
 tags.labelColor = data.labelColor ?? 'white';
 tags.timelinePaused = true;
-tags.timeUnit = data.timeUnit ?? 'month';
 tags.currentStep = 0;
 
 //Place bot correctly

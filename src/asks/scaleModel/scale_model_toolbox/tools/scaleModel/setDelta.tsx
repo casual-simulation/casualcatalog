@@ -17,7 +17,5 @@ for (const attr in tags.modelAttributes) {
         endValue = tags.modelAttributes[attr].start * amount;
     }
 
-    // const convertedEndValue = convertToUnit(endValue, tags.modelAttributes[attr].timeUnit);
-
-    thisBot.editAttribute({attributeName: attr, value: endValue});
+    thisBot.editAttribute({attributeName: tags.modelAttributes[attr].name, value: endValue});
 }

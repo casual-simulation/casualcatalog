@@ -17,3 +17,4 @@ delete data.tags.userPrompt;
 delete data.tags.generatedModelData;
 delete data.tags.parsedOriginalResponse;
 delete data.tags.originalPrompt;
+delete data.tags.abConfiguratorGroup;

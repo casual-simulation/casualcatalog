@@ -14,6 +14,7 @@ const shard: ABArtifactShard = {
         color: tags.color,
         labelFloatingBackgroundColor: tags.labelFloatingBackgroundColor,
         labelColor: tags.labelColor,
+        abConfiguratorGroup: tags.abConfiguratorGroup
     },
     dependencies: [
         {

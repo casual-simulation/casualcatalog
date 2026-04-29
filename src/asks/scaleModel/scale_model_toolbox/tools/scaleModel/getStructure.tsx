@@ -12,23 +12,29 @@ const struc = {
 
 for (const item in tags.modelAttributes) {
     let val = tags.modelAttributes[item].start;
-    if (tags[item]) {
-        val = tags[item];
+    let name = tags.modelAttributes[item].name;
+
+    if (tags[name]) {
+        val = tags[name];
     }
-    struc.stats[item] = val;
+    struc.stats[name] = val;
 }
 
 for (const item in tags.modelStates) {
     let val = tags.modelStates[item].start;
-    if (tags[item]) {
-        val = tags[item];
+    let name = tags.modelStates[item].name;
+
+    if (tags[name]) {
+        val = tags[name];
     }
-    struc.states[item] = val;
+    struc.states[name] = val;
 }
 
 for (const item in tags.modelListeners) {
-    let val = raw[item];
-    struc.listeners[item] = val;
+    let name = tags.modelListeners[item].name;
+
+    let val = raw[name];
+    struc.listeners[name] = val;
 }
 
 return struc;

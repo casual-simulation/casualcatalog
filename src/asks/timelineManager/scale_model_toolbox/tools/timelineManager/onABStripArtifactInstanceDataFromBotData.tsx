@@ -12,5 +12,4 @@ delete data.tags[data.tags.dimension + "RotationZ"];
 delete data.tags[data.tags.dimension];
 delete data.tags.dimension;
 delete data.tags.timelinePaused;
-delete data.tags.timeUnit;
 delete data.tags.currentStep;

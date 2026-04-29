@@ -3,6 +3,7 @@ tags.label = data.label ?? 'scale model wizard';
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? 'white';
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModelWizard_' + getID(thisBot));
 
 //Place bot correctly
 if (data.dimensionData) {

@@ -4,4 +4,4 @@ if (that) {
     }
 }
 
-ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: 'scaleModelWizard' });
+ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: tags.abConfiguratorGroup});

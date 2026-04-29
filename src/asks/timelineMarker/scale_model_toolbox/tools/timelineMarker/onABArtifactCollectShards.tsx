@@ -16,7 +16,8 @@ const shard: ABArtifactShard = {
         labelColor: tags.labelColor,
         timeUnit: tags.timeUnit,
         timeValue: tags.timeValue,
-        markerLocked: tags.markerLocked 
+        markerLocked: tags.markerLocked,
+        abConfiguratorGroup: tags.abConfiguratorGroup
     },
     dependencies: [
         {

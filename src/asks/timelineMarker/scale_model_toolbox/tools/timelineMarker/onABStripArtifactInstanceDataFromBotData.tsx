@@ -15,3 +15,4 @@ delete data.tags.dimension;
 delete data.tags.timeUnit;
 delete data.tags.timeValue;
 delete data.tags.markerLocked;
+delete data.tags.abConfiguratorGroup;

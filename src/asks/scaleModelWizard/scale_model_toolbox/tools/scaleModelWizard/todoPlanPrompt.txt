@@ -1,0 +1,112 @@
+Convert the below user prompt into a plan that describes every entity, how they relate to each other, and how they should behave over time.
+
+## User Prompt
+
+{{userPrompt}}
+
+## Guidelines
+
+## What to Include in the Plan
+
+For each entity, describe:
+- **What it is** and what numeric properties it tracks
+- **How it behaves** — does it move, does it age, can it reproduce?
+- **How it relates to other entities** — spatially, statistically, or through spawning
+- **Its lifecycle** if it changes meaningfully over time (see below)
+
+For the scene as a whole, describe:
+- The time unit (minutes, hours, days, months, etc.) and why it fits
+- Where entities are placed relative to each other
+- The timeline — what the key moments are and when they occur
+
+---
+
+## Spatial Layout
+
+Think in meters. Entities that exist physically inside or on top of another should say so explicitly. Arrange unrelated entities in a logical grid with enough space between them that they don't visually overlap.
+
+---
+
+## Choosing a Time Unit
+
+Pick the finest unit that keeps the simulation meaningful:
+
+| Scenario | Suggested unit |
+|---|---|
+| Financial modeling, business growth | month or quarter |
+| Retail operations, staffing | day or week |
+| Animal behavior, foot traffic | minute or hour |
+| Fast-moving (traffic, machinery) | second |
+
+Every entity in the scene uses this same unit as its tick granularity.
+
+---
+
+## Lifecycle Design
+
+Use a lifecycle for any entity that ages, degrades, or expires. Don't assign one to pure value-holders (a fixed salary, a static cost).
+
+A lifecycle has four phases — choose vocabulary that fits the entity's domain:
+
+| Domain | Phase 0 | Phase 1 | Phase 2 | Terminal |
+|---|---|---|---|---|
+| Living thing | alive | aging | elderly | dead |
+| Machine | active | degraded | critical | decommissioned |
+| Business / asset | operating | declining | expiring | closed |
+
+When describing a lifecycle, specify:
+- **max_age** — how many ticks the entity lives. Set this 1.5–3× beyond the final timeline marker so entities outlive the observable window slightly.
+- **Phase thresholds** — Phase 1 begins at roughly 50–65% of max_age; Phase 2 at 75–85%.
+- **spawn_tick** — use `0` for entities born at simulation start. For seed entities that should already be partway through their life at the start, use a negative value (e.g. "already 30 ticks old at start"). Stagger spawn_ticks across same-type entities so their deaths fall at different points in the timeline.
+- **Terminal behavior** — "hide" removes the entity from view (default); "freeze" leaves it visible as a historical marker.
+
+---
+
+## Spawning Design
+
+Use spawning for entities that can mate and produce offspring. Spawning requires a lifecycle to be present.
+
+When describing spawning, specify:
+- **Partner** — which entity this one mates with
+- **Maturity threshold** — what fraction of max_age the entity must reach before it can mate (typically 10–20%)
+- **Mating cooldown** — how many ticks must pass between matings (typically 15–25% of max_age — long enough that mating feels like an event, not a constant)
+- **Mating proximity** — how close the two entities must be (in meters) to trigger mating
+
+Declare spawning on **both** entities in a pair — each names the other as its partner.
+
+---
+
+## Timeline Marker Placement
+
+Markers are scrub points — they should land the user at a visibly different chapter of the story. Place 3–5 of them.
+
+**Do not place a marker at tick 0.** The simulation always starts there automatically.
+
+**Do not cluster markers at small tick values** when lifecycles are long. A simulation with max_age 200 should have markers in the hundreds.
+
+Process:
+1. Work out the full tick range from the longest-lived entity's max_age
+2. Identify the key events: first maturity window, first mating, first death, first child reaching maturity, population peak, financial inflection
+3. Place markers at or just before those events — each one should represent a meaningfully different moment
+
+---
+
+## Example
+
+**Input:** "A duck pond with 2 ducks of different ages."
+
+**Plan:**
+
+The scene uses **minutes** as its time unit — appropriate for animal behavior at this scale.
+
+**Pond** sits at the center of the scene. It's a decorative environment about 6m across that the ducks live on. It tracks a duck count.
+
+**Duck 1** is born at the start of the simulation (spawn_tick 0). It wanders within the bounds of the Pond and has a lifecycle: alive → aging → elderly → dead. max_age is 200 ticks. Phase 1 begins at tick 120 (60%), Phase 2 at tick 160 (80%). It hides on death. It mates with Duck 2 — maturity threshold 15% (mature at tick 30), mating cooldown 40 ticks, proximity 1.5m.
+
+**Duck 2** is already 30 ticks old at simulation start (spawn_tick -30), making it already mature and on track to die before Duck 1. Same lifecycle vocabulary and thresholds as Duck 1. Mates with Duck 1 on the same terms.
+
+**Timeline** — key events:
+- Tick 30: Duck 1 reaches maturity, first mating window opens → **marker**
+- Tick 80: First offspring likely born, Duck 2 approaching Phase 1 → **marker**
+- Tick 130: Duck 2 enters Phase 2, first child nearing maturity → **marker**
+- Tick 150: Duck 2 likely dead, second generation active → **marker**

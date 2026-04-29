@@ -12,9 +12,3 @@ if (!newValue && newValue != 0) {
 }
 
 tags[attributeName] = newValue;
-
-//shout("clearScaleModelMenu");
-
-// if (links.statsButton) {
-//     thisBot.showStats();
-// }

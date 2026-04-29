@@ -8,6 +8,7 @@ tags.labelColor = data.labelColor ?? 'white';
 tags.timeUnit = data.timeUnit;
 tags.timeValue = data.timeValue;
 tags.markerLocked = data.markerLocked; 
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('timelineMarker_' + getID(thisBot));
 
 //Place bot correctly
 if (data.dimensionData) {

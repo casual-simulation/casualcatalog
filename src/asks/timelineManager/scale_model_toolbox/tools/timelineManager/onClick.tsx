@@ -27,71 +27,6 @@ const resetButton = {
     `
 }
 
-const unitButton = {
-    ...menuOptions,
-    label: 'set step unit: ' + (tags.timeUnit ?? ''),
-    timelineManager_menuSortOrder: 1,
-    dropdownSortOrder: 1,
-    dropdownOptions: [
-        {
-            ...menuOptions,
-            label: 'minute',
-            onClick: `@
-                links.manager.tags.timeUnit = tags.label;
-                links.manager.onClick();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'hour',
-            onClick: `@
-                links.manager.tags.timeUnit = tags.label;
-                links.manager.onClick();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'day',
-            onClick: `@
-                links.manager.tags.timeUnit = tags.label;
-                links.manager.onClick();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'week',
-            onClick: `@
-                links.manager.tags.timeUnit = tags.label;
-                links.manager.onClick();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'month',
-            onClick: `@
-                links.manager.tags.timeUnit = tags.label;
-                links.manager.onClick();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'quarter',
-            onClick: `@
-                links.manager.tags.timeUnit = tags.label;
-                links.manager.onClick();
-            `
-        },
-        {
-            ...menuOptions,
-            label: 'year',
-            onClick: `@
-                links.manager.tags.timeUnit = tags.label;
-                links.manager.onClick();
-            `
-        }
-    ]
-}
-
 const playPauseButton = {
     ...menuOptions,
     label: tags.timelinePaused ? 'play' : 'pause',
@@ -124,7 +59,6 @@ const stepDecreaseButton = {
 }
 
 ab.links.menu.abCreateMenuButton(resetButton); 
-ab.links.menu.abCreateMenuDropdown(unitButton);
 ab.links.menu.abCreateMenuButton(stepIncreaseButton);  
 ab.links.menu.abCreateMenuButton(stepDecreaseButton);  
 ab.links.menu.abCreateMenuButton(playPauseButton);  

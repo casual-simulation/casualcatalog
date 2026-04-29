@@ -22,6 +22,7 @@ delete data.tags.formAddress;
 delete data.tags.form;
 delete data.tags.formSubtype;
 delete data.tags.modelName;
+delete data.tags.abConfiguratorGroup;
 
 const attrs = {...data.tags.modelAttributes};
 for (const attr in attrs) {

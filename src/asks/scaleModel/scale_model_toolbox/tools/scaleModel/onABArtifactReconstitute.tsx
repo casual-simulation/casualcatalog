@@ -17,20 +17,21 @@ tags.formSubtype = data.formSubtype;
 tags.modelName = data.modelName;
 tags.modelStates = data.modelStates;
 tags.modelListeners = data.modelListeners;
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModel_' + getID(thisBot));
 
 const listeners = {...data.modelListeners};
 for (const listener in listeners) {
-    tags[listener] = listeners[listener].code;
+    tags[listeners[listener].name] = listeners[listener].code;
 }
 
 const stats = {...data.modelAttributes};
 for (const stat in stats) {
-    tags[stat] = stats[stat].start;
+    tags[stats[stat].name] = stats[stat].start;
 }
 
 const states = {...data.modelStates};
 for (const state in states) {
-    tags[state] = states[state].start;
+    tags[states[state].name] = states[state].start;
 }
 
 if (!data.modelAttributes) {

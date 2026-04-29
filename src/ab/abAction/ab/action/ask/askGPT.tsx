@@ -75,12 +75,14 @@ if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
 const MAX_CALL_DEPTH = 5;
 
 if (callDepth >= MAX_CALL_DEPTH) {
-    ab.links.utils.abLog({ message: 'AI call depth limit reached' });
+    const name = thisBot.abAskHelperGetAgentName({ askContext });
+    ab.links.utils.abLog({ name, message: 'AI call depth limit reached' });
     return;
 }
 
 if (callDepth === 0) {
-    ab.links.utils.abLog({ message: `thinking...` });
+    const name = thisBot.abAskHelperGetAgentName({ askContext });
+    ab.links.utils.abLog({ name, message: `thinking...` });
     ab.links.manifestation.abBotChat({ bot: abBot, message: `thinking...` });
 }
 
@@ -190,7 +192,8 @@ for (const fc of functionCalls) {
     let toolHost: any = typeof thisBot[toolTagName] === 'function' ? thisBot : null;
 
     if (!toolHost) {
-        ab.links.utils.abLog({ message: `Unknown function call from AI: ${name}`, logType: 'error' });
+        const name = thisBot.abAskHelperGetAgentName({ askContext });
+        ab.links.utils.abLog({ name, message: `Unknown function call from AI: ${name}`, logType: 'error' });
         continue;
     }
 

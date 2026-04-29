@@ -90,6 +90,7 @@ masks.targetBot = getLink(todoBot);
 masks.menuType = 'grid';
 thisBot.agentOnRequest({
     inquiry: todoBot.tags.prompt,
+    attachments: todoBot.tags.attachments,
     data: requestData,
     model: tags.aiModel,
     todoBotId: todoBot.id,

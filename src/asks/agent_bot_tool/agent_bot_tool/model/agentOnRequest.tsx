@@ -2,6 +2,7 @@ thisBot.agentReset({ keepArm: true });
 
 let inquiry = that.inquiry ?? that;
 const todoBotId = that?.todoBotId;
+const attachments = that?.attachments;
 
 const abAskBot = ab.links.ask;
 
@@ -40,6 +41,7 @@ if (!inMapPortal && inGridPortal) {
 
 abAskBot.askGPT({
     inquiry,
+    attachments,
     menuType: tags.menuType,
     model: tags.aiModel,
     abBot: thisBot,

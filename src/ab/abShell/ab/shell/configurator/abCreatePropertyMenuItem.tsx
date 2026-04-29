@@ -741,17 +741,8 @@ if (property.type === 'boolean') {
             }
             thisBot.vars.entryBots = [];
 
-            const isComplex = property.itemSchema?.type === 'group';
-            const backButton = links.backButton as Bot;
-
             const newBots: Bot[] = [];
             for (let i = 0; i < arr.length; i++) {
-                if (isComplex && backButton) {
-                    const entrySynthKey = `${property.key}::${i}`;
-                    backButton.tags[`abConfiguratorMenu_${entrySynthKey}`] = true;
-                    backButton.tags[`abConfiguratorMenu_${entrySynthKey}SortOrder`] = Number.MAX_SAFE_INTEGER;
-                }
-
                 const created = links.manager.abCreateListEntryMenuItem({
                     abConfiguratorGroup: tags.abConfiguratorGroup,
                     listMenuBot: thisBot,

@@ -26,9 +26,38 @@ if (menuActionData?.menu === 'grid') {
 
 const createdBots = [];
 
+const aiChatModels: any[] = configBot.tags.aiChatModels ?? [];
+
 for (let i = 0; i < todos.length; i++) {
     const todo = todos[i];
     const step = todoStartOffset + i;
+
+    // If this todo has non-image attachments, override to the best available Gemini Flash model
+    // since OpenAI and Anthropic models only support image files as multimodal input (as of 2026-04-29). 
+    // This ensures that the todo can be processed correctly without requiring the user to specify a compatible model.
+    let effectiveModel = model;
+    const hasNonImageAttachment = (todo.attachments ?? []).some(
+        (a: ABAttachment) => !a.mimeType?.startsWith('image/')
+    );
+    if (hasNonImageAttachment) {
+        const currentModelEntry = aiChatModels.find(m => m.name === model);
+        if (currentModelEntry?.provider !== 'google') {
+            const flashModels = aiChatModels.filter(
+                m => m.provider === 'google' && m.name.toLowerCase().includes('flash')
+            );
+            flashModels.sort((a, b) => {
+                const isLiteA = a.name.toLowerCase().includes('lite');
+                const isLiteB = b.name.toLowerCase().includes('lite');
+                if (isLiteA !== isLiteB) return isLiteA ? 1 : -1;
+                const version = (name: string) => parseFloat(name.match(/gemini-(\d+(?:\.\d+)?)/)?.[1] ?? '0');
+                return version(b.name) - version(a.name);
+            });
+            if (flashModels.length > 0) {
+                effectiveModel = flashModels[0].name;
+            }
+        }
+    }
+
     const abArtifactShard: ABArtifactShard = {
         data: {
             prompt: todo.prompt,
@@ -36,7 +65,7 @@ for (let i = 0; i < todos.length; i++) {
             attachments: todo.attachments,
             budgetCredits: todo.budget_credits,
             budgetRecordName: recordName,
-            aiModel: model,
+            aiModel: effectiveModel,
             todoPlanId,
             todoOrder: i,
             eggParameters: {

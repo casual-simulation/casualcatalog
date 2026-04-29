@@ -72,6 +72,6 @@ options.push({
     })
 });
 
-const label = list.length > 0 ? "attachments (" + list.length + ")" : "attachments";
+const label = list.length > 0 ? "ask attachments (" + list.length + ")" : "ask attachments";
 
 return { options, label };

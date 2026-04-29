@@ -6,6 +6,7 @@ const data = that.data;
 
 tags.prompt = data.prompt;
 tags.todoLabel = data.todoLabel;
+tags.attachments = data.attachments ?? [];
 tags.todoApproved = data.todoApproved;
 tags.budgetCredits = data.budgetCredits;
 tags.budgetRecordName = data.budgetRecordName;

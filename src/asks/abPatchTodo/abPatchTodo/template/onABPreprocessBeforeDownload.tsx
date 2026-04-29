@@ -20,6 +20,7 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.agentMode;
     delete thisBotData.tags.currAnimation;
     delete thisBotData.tags.prompt;
+    delete thisBotData.tags.attachments;
     delete thisBotData.tags.lineTo;
     delete thisBotData.tags.todoLabel;
     delete thisBotData.tags.todoReadyForAgent;

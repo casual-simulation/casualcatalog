@@ -22,7 +22,7 @@ if (tags.debug) {
 }
 
 const originalUserInquiry = askThat.inquiry ?? askThat;
-const originalUserInquiryLabel = askThat.inquiryLabel ?? originalUserInquiry.slice(0, 40);
+const originalUserInquiryLabel = askThat.inquiryLabel ?? (originalUserInquiry.length > 40 ? originalUserInquiry.slice(0, 40) + '...' : originalUserInquiry);
 const abBot = askThat.abBot ? getBot('id', askThat.abBot) : ab.links.manifestation.links.abBot;
 const sourceId = askThat.sourceId ?? uuid();
 const abDimension = askThat.abDimension ?? ab.links.remember.tags.abActiveDimension;
@@ -69,6 +69,10 @@ const askContext: ABAskContext = {
 
 if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
     await thisBot.abAskHelperCreateUserRequestTodo({ askContext });
+
+    const name = thisBot.abAskHelperGetAgentName({ askContext });
+    ab.links.utils.abLog({ name, message: `Created a user request todo for "${originalUserInquiryLabel}"` });
+
     return;
 }
 

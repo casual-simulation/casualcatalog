@@ -1,0 +1,4 @@
+[
+  { "task": "water the plants", "done": false, "priority": 1 },
+  { "task": "feed the cat", "done": true, "priority": 3 }
+]

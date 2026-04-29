@@ -72,6 +72,75 @@ switch (property.type) {
     case 'group':
         return { valid: true, value };
 
+    case 'list': {
+        const itemSchema = property.itemSchema;
+        if (!itemSchema || typeof itemSchema !== 'object' || !itemSchema.type) {
+            return { valid: false, reason: 'list itemSchema is required and must be a property schema' };
+        }
+
+        const allowedSimple = ['boolean', 'number', 'text'];
+        if (itemSchema.type !== 'group' && !allowedSimple.includes(itemSchema.type)) {
+            return { valid: false, reason: `list itemSchema.type "${itemSchema.type}" is not supported (allowed: ${allowedSimple.join(', ')}, group)` };
+        }
+
+        if (itemSchema.type === 'group') {
+            const fields = itemSchema.properties ?? [];
+            for (const field of fields) {
+                if (!allowedSimple.includes(field.type)) {
+                    return { valid: false, reason: `complex list field "${field.key}" type "${field.type}" is not supported (allowed: ${allowedSimple.join(', ')})` };
+                }
+            }
+        }
+
+        if (!Array.isArray(value)) {
+            return { valid: false, reason: `Expected array, got ${typeof value}` };
+        }
+
+        if (property.minLength !== undefined && value.length < property.minLength) {
+            return { valid: false, reason: `Array length ${value.length} is below minLength ${property.minLength}` };
+        }
+        if (property.maxLength !== undefined && value.length > property.maxLength) {
+            return { valid: false, reason: `Array length ${value.length} is above maxLength ${property.maxLength}` };
+        }
+
+        const resolved = [];
+        for (let i = 0; i < value.length; i++) {
+            const entry = value[i];
+
+            if (itemSchema.type === 'group') {
+                if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+                    return { valid: false, reason: `Entry at index ${i} must be an object` };
+                }
+                const resolvedEntry: any = {};
+                for (const field of itemSchema.properties ?? []) {
+                    const fieldValue = entry[field.key];
+                    if (fieldValue == null) {
+                        resolvedEntry[field.key] = fieldValue;
+                        continue;
+                    }
+                    const fieldResult = thisBot.abValidatePropertyValue({ property: field, value: fieldValue });
+                    if (!fieldResult.valid) {
+                        return { valid: false, reason: `Entry ${i}.${field.key}: ${fieldResult.reason}` };
+                    }
+                    resolvedEntry[field.key] = fieldResult.value;
+                }
+                resolved.push(resolvedEntry);
+            } else {
+                if (entry == null) {
+                    resolved.push(entry);
+                    continue;
+                }
+                const result = thisBot.abValidatePropertyValue({ property: itemSchema, value: entry });
+                if (!result.valid) {
+                    return { valid: false, reason: `Entry ${i}: ${result.reason}` };
+                }
+                resolved.push(result.value);
+            }
+        }
+
+        return { valid: true, value: resolved };
+    }
+
     default:
         return { valid: false, reason: `Unknown property type: ${property.type}` };
 }

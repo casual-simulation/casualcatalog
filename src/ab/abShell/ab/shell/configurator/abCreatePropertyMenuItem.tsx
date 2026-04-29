@@ -52,6 +52,10 @@ const BASE_TAGS = {
 
             whisper(thisBot, 'onRefreshDisplay');
             whisper(links.menuItemBots, 'onABConfiguratorPropertyChanged', { property: tags.property });
+
+            if (links.bubbleUpTarget) {
+                whisper(thisBot, 'onPropertyValueBubbleUp');
+            }
         }
     }),
     onPointerEnter: ListenerString(() => {
@@ -692,11 +696,119 @@ if (property.type === 'boolean') {
         formAddress: 'folder',
         onClick: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyGroup;
+            const stack = links.manager.vars.menuStack ?? [];
+            stack.push(configBot.tags.menuPortal);
+            links.manager.vars.menuStack = stack;
             configBot.masks.menuPortal = `abConfiguratorMenu_${property.key}`;
         }),
         onRefreshDisplay: ListenerString(() => {
             const property = tags.property as ABConfiguratorPropertyGroup;
             tags.label = property.label ?? property.key;
+        }),
+    })
+} else if (property.type === 'list') {
+    menuItem = ab.links.menu.abCreateMenuButton({
+        ...BASE_TAGS,
+        formAddress: 'list',
+        abUpdateListEntryValue: ListenerString(() => {
+            const { index, fieldKey, value } = that ?? {};
+            const property = tags.property as ABConfiguratorPropertyList;
+            const arr: any[] = Array.isArray(property.value) ? [...property.value] : (Array.isArray(property.default) ? [...property.default] : []);
+
+            if (fieldKey != null) {
+                if (!arr[index] || typeof arr[index] !== 'object') {
+                    arr[index] = {};
+                }
+                arr[index][fieldKey] = value;
+            } else {
+                arr[index] = value;
+            }
+
+            thisBot.updatePropertyField({ name: 'value', value: arr });
+
+            const entryBots = thisBot.vars.entryBots ?? [];
+            for (const entryBot of entryBots) {
+                if (entryBot) whisper(entryBot, 'onRefreshDisplay');
+            }
+        }),
+        abRebuildListEntries: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyList;
+            const arr: any[] = Array.isArray(property.value) ? property.value : (Array.isArray(property.default) ? property.default : []);
+
+            const oldBots = thisBot.vars.entryBots ?? [];
+            for (const b of oldBots) {
+                if (b) destroy(b);
+            }
+            thisBot.vars.entryBots = [];
+
+            const isComplex = property.itemSchema?.type === 'group';
+            const backButton = links.backButton as Bot;
+
+            const newBots: Bot[] = [];
+            for (let i = 0; i < arr.length; i++) {
+                if (isComplex && backButton) {
+                    const entrySynthKey = `${property.key}::${i}`;
+                    backButton.tags[`abConfiguratorMenu_${entrySynthKey}`] = true;
+                    backButton.tags[`abConfiguratorMenu_${entrySynthKey}SortOrder`] = Number.MAX_SAFE_INTEGER;
+                }
+
+                const created = links.manager.abCreateListEntryMenuItem({
+                    abConfiguratorGroup: tags.abConfiguratorGroup,
+                    listMenuBot: thisBot,
+                    listKey: property.key,
+                    itemSchema: property.itemSchema,
+                    index: i,
+                    entryValue: arr[i],
+                });
+                if (Array.isArray(created)) {
+                    newBots.push(...created);
+                } else if (created) {
+                    newBots.push(created);
+                }
+            }
+            thisBot.vars.entryBots = newBots;
+        }),
+        abAddListEntry: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyList;
+            const arr: any[] = Array.isArray(property.value) ? [...property.value] : (Array.isArray(property.default) ? [...property.default] : []);
+            const newEntry = links.manager.abGetListEntryDefault({ itemSchema: property.itemSchema });
+            arr.push(newEntry);
+            thisBot.vars.suppressRefresh = true;
+            thisBot.updatePropertyField({ name: 'value', value: arr });
+            whisper(thisBot, 'abRebuildListEntries');
+            whisper(thisBot, 'onRefreshDisplay');
+        }),
+        abRemoveListEntry: ListenerString(() => {
+            const { index } = that ?? {};
+            const property = tags.property as ABConfiguratorPropertyList;
+            const arr: any[] = Array.isArray(property.value) ? [...property.value] : (Array.isArray(property.default) ? [...property.default] : []);
+            if (index < 0 || index >= arr.length) return;
+            arr.splice(index, 1);
+            thisBot.vars.suppressRefresh = true;
+            thisBot.updatePropertyField({ name: 'value', value: arr });
+
+            const stack = links.manager.vars.menuStack ?? [];
+            const currentPortal = configBot.tags.menuPortal;
+            if (currentPortal && currentPortal.startsWith(`abConfiguratorMenu_${property.key}::`)) {
+                const prev = stack.pop();
+                links.manager.vars.menuStack = stack;
+                configBot.masks.menuPortal = prev ?? `abConfiguratorMenu_${property.key}`;
+            }
+
+            whisper(thisBot, 'abRebuildListEntries');
+            whisper(thisBot, 'onRefreshDisplay');
+        }),
+        onClick: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyList;
+            const stack = links.manager.vars.menuStack ?? [];
+            stack.push(configBot.tags.menuPortal);
+            links.manager.vars.menuStack = stack;
+            configBot.masks.menuPortal = `abConfiguratorMenu_${property.key}`;
+        }),
+        onRefreshDisplay: ListenerString(() => {
+            const property = tags.property as ABConfiguratorPropertyList;
+            const arr: any[] = Array.isArray(property.value) ? property.value : (Array.isArray(property.default) ? property.default : []);
+            tags.label = (property.label ?? property.key) + `: ${arr.length} ${arr.length === 1 ? 'entry' : 'entries'}`;
         }),
     })
 } else {

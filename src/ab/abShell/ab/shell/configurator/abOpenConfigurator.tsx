@@ -28,6 +28,9 @@ if (dataFound) {
     // retrieved from the menu items.
     thisBot.vars.cachedConfiguratorData = configuratorData;
 
+    // Navigation stack used by group/list/scalar sub-menus and the unified back button.
+    thisBot.vars.menuStack = [];
+
     const menuGroups: ABConfiguratorPropertyGroup[] = thisBot.abGetGroupsFromProperties({ properties: configuratorData.properties });
 
     configBot.masks.menuPortal = 'abConfiguratorMenu';
@@ -50,6 +53,7 @@ if (dataFound) {
     })
     
     const menuItemBots = [];
+    const listMenuItemBots: Bot[] = [];
 
     // Put creation logic into function to allow for recursive calling.
     function createPropertyMenuItems(properties: ABConfiguratorProperty[], menuGroup: string) {
@@ -61,11 +65,49 @@ if (dataFound) {
 
             if (property.type === 'group') {
                 createPropertyMenuItems(property.properties, property.key);
+            } else if (property.type === 'list') {
+                listMenuItemBots.push(menuItemBot);
             }
         }
     }
 
     createPropertyMenuItems(configuratorData.properties);
+
+    // Create list sub-menu chrome (title + add button) for each list and pre-create entry bots.
+    for (const listMenuBot of listMenuItemBots) {
+        const listProperty = listMenuBot.tags.property as ABConfiguratorPropertyList;
+        const listKey = listProperty.key;
+        const listPortal = `abConfiguratorMenu_${listKey}`;
+
+        ab.links.menu.abCreateMenuText({
+            space: 'tempLocal',
+            name: `abConfiguratorListTitle.${listKey}`,
+            [listPortal]: true,
+            [`${listPortal}SortOrder`]: Number.MIN_SAFE_INTEGER,
+            formAddress: 'list',
+            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot); }),
+            label: listProperty.label ?? listKey,
+            labelAlignment: 'center',
+            menuItemStyle: {},
+            menuItemLabelStyle: { 'font-weight': 'bold' },
+        });
+
+        ab.links.menu.abCreateMenuButton({
+            space: 'tempLocal',
+            name: `abConfiguratorListAdd.${listKey}`,
+            [listPortal]: true,
+            [`${listPortal}SortOrder`]: Number.MAX_SAFE_INTEGER - 2,
+            listOwnerKey: listKey,
+            listOwnerBot: getLink(listMenuBot),
+            abConfiguratorMenuReset: ListenerString(() => { destroy(thisBot); }),
+            formAddress: 'add',
+            label: 'add entry',
+            color: '#cce5ff',
+            onClick: ListenerString(() => {
+                links.listOwnerBot.abAddListEntry();
+            }),
+        });
+    }
 
     const defaultsButton = ab.links.menu.abCreateMenuButton({
         space: 'tempLocal',
@@ -83,10 +125,16 @@ if (dataFound) {
         onClick: ListenerString(() => {
             const menuItemBots = Array.isArray(links.menuItemBots) ? links.menuItemBots : [links.menuItemBots];
             for (const menuItemBot of menuItemBots) {
+                if (menuItemBot.tags.bubbleUpTarget) {
+                    continue;
+                }
                 const property = menuItemBot.tags.property as ABConfiguratorProperty;
                 if (property) {
                     property.value = undefined;
                     menuItemBot.tags.property = '🧬' + JSON.stringify(property);
+                    if (property.type === 'list') {
+                        whisper(menuItemBot, 'abRebuildListEntries');
+                    }
                 }
             }
         }),
@@ -94,7 +142,7 @@ if (dataFound) {
         menuItemLabelStyle: {},
     })
 
-    const submitButton = ab.links.menu.abCreateMenuButton({ 
+    const submitButton = ab.links.menu.abCreateMenuButton({
         space: 'tempLocal',
         name: 'abConfiguratorMenuSubmit',
         abConfiguratorMenu: true,
@@ -116,6 +164,9 @@ if (dataFound) {
             const menuItemBots = Array.isArray(links.menuItemBots) ? links.menuItemBots : [links.menuItemBots];
 
             for (const menuItemBot of menuItemBots) {
+                if (menuItemBot.tags.bubbleUpTarget) {
+                    continue;
+                }
                 const property = menuItemBot.tags.property as ABConfiguratorProperty;
 
                 if (property && property.type !== 'group') {
@@ -149,19 +200,10 @@ if (dataFound) {
         formAddress: 'arrow_back',
         label: `back`,
         onClick: ListenerString(() => {
-            if (configBot.tags.menuPortal) {
-                const currentGroupKey: string = configBot.tags.menuPortal.replace('abConfiguratorMenu_', '');
-                const parentGroupProperty: ABConfiguratorPropertyGroup = links.manager.abGetParentGroupProperty({
-                    properties: links.manager.vars.cachedConfiguratorData.properties,
-                    targetKey: currentGroupKey
-                })
-
-                if (parentGroupProperty) {
-                    configBot.masks.menuPortal = `abConfiguratorMenu_${parentGroupProperty.key}`;
-                } else {
-                    configBot.masks.menuPortal = 'abConfiguratorMenu';
-                }
-            }
+            const stack = links.manager.vars.menuStack ?? [];
+            const prev = stack.pop();
+            links.manager.vars.menuStack = stack;
+            configBot.masks.menuPortal = prev ?? 'abConfiguratorMenu';
         }),
     });
 
@@ -189,6 +231,21 @@ if (dataFound) {
         // Put the group back button in each menu group.
         groupBackButton.tags[`abConfiguratorMenu_${menuGroup.key}`] = true;
         groupBackButton.tags[`abConfiguratorMenu_${menuGroup.key}SortOrder`] = Number.MAX_SAFE_INTEGER;
+    }
+
+    // Put the back button in each list's sub-menu and remember the link so list-entry
+    // sub-menus (created dynamically) can share the same back button instance.
+    for (const listMenuBot of listMenuItemBots) {
+        const listKey = listMenuBot.tags.property.key;
+        groupBackButton.tags[`abConfiguratorMenu_${listKey}`] = true;
+        groupBackButton.tags[`abConfiguratorMenu_${listKey}SortOrder`] = Number.MAX_SAFE_INTEGER;
+        listMenuBot.tags.backButton = getLink(groupBackButton);
+    }
+
+    // With the back button bound to each list, build the initial entry rows.
+    // (Done after binding so complex-entry sub-dimensions can pick up the back button.)
+    for (const listMenuBot of listMenuItemBots) {
+        whisper(listMenuBot, 'abRebuildListEntries');
     }
 
     shout('onABConfiguratorMenuOpened', { abConfiguratorGroup, menuItemBots });

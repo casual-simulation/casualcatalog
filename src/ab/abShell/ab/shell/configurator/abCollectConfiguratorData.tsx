@@ -26,6 +26,11 @@ function processProperties(properties, bot) {
             continue;
         }
 
+        if (typeof property.key === 'string' && property.key.includes('::')) {
+            ab.links.utils.abLog({ message: `[${tagName}] Property key "${property.key}" from bot ${bot.id} contains the reserved "::" separator. Ignoring.`, logType: 'warning' });
+            continue;
+        }
+
         if (seenKeys.has(property.key)) {
             ab.links.utils.abLog({ message: `[${tagName}] Duplicate key "${property.key}" from bot ${bot.id} — already defined by bot ${seenKeys.get(property.key)}. Ignoring.`, logType: 'warning' });
             continue;

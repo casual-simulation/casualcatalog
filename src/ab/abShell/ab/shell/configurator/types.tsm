@@ -80,6 +80,21 @@ interface ABConfiguratorPropertyGroup extends ABConfiguratorPropertyBase {
   properties: ABConfiguratorProperty[];
 }
 
+interface ABConfiguratorPropertyList extends ABConfiguratorPropertyBase {
+  type: 'list';
+  /**
+   * Schema for entries.
+   * Simple list: a scalar property variant (boolean | number | text).
+   * Complex list: a property with type: 'group' whose `properties` are scalar
+   * (boolean | number | text) and define each entry's object shape.
+   */
+  itemSchema: ABConfiguratorProperty;
+  value?: any[];
+  default?: any[];
+  minLength?: number;
+  maxLength?: number;
+}
+
 // ============================================
 // Union + Data
 // ============================================
@@ -90,7 +105,8 @@ type ABConfiguratorProperty =
   | ABConfiguratorPropertyBoolean
   | ABConfiguratorPropertySelect
   | ABConfiguratorPropertyMultiSelect
-  | ABConfiguratorPropertyGroup;
+  | ABConfiguratorPropertyGroup
+  | ABConfiguratorPropertyList;
 
 interface ABConfiguratorData {
   group: string;

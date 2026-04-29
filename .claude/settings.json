@@ -10,7 +10,8 @@
       "Read(//opt/homebrew/bin/**)",
       "Bash(grep -E \"\\\\.\\(ts|js\\)$\")",
       "Bash(grep -E \"\\\\.tsx$\")",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "Bash(pnpm pack:dev)"
     ]
   }
 }

@@ -44,6 +44,20 @@ menuOptions.menuItems.push({
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchPromptClick'); }),
 });
 
+// Attachments (read-only) — only shown when the todo has attachments
+const todoAttachments: ABAttachment[] = tags.attachments ?? [];
+if (todoAttachments.length > 0) {
+    menuOptions.menuItems.push({
+        label: `attachments (${todoAttachments.length})`,
+        menuItemType: 'dropdown',
+        formAddress: 'attach_file',
+        dropdownOptions: todoAttachments.map((att: ABAttachment) => {
+            const icon = att.mimeType?.startsWith('image/') ? 'image' : 'insert_drive_file';
+            return { label: att.name, formAddress: icon };
+        }),
+    });
+}
+
 // Always: ai agent
 menuOptions.menuItems.push({
     label: `ai agent: ${tags.agentName ?? tags.aiModel ?? 'default'}`,

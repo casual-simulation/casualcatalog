@@ -119,6 +119,9 @@ for (let i = 0; i < menuItems.length; ++i) {
         newMenuButton[tag] = indivAdditionalTags[tag];
     }
 
+    // Re-apply after tag copies — additionalTags may carry a stale sort order from the parent menuOptions.
+    newMenuButton[configBot.tags.menuPortal + "SortOrder"] = Number(that.groupSortOrder) + ((i + 1) / 100);
+
     let newMenuBot;
     switch(indivMenuType) {
         case "dropdown": 

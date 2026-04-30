@@ -16,12 +16,16 @@ Convert the below user prompt into a multi-step plan with a todo for every scale
 
 ### Spatial Layout
 
-Think in meters. Note when entities exist physically inside or on top of another. Arrange unrelated entities in a logical grid with enough space that they don't visually overlap. Timeline markers sit below the models on the y-axis, centered on x.
+Think in meters. Note when entities exist physically inside or on top of another. Arrange unrelated entities in a logical grid with enough space that they don't visually overlap.
+
+All models should be offset **20 units to the right** (positive x) so they don't interfere with other things in the scene.
 
 Rough footprint defaults:
 - Large building: ~10–15m wide
 - Medium structure (pond, pen): ~5–8m wide
 - Small entity (person, animal): ~1–2m wide
+
+Timeline markers are placed in a row, spaced **3 units apart on the x-axis**, below the models on the y-axis. No labels or key event descriptions — just the step and timeUnit. Steps should be meaningfully spread across the simulation's total range.
 
 ---
 
@@ -80,11 +84,17 @@ Always declare spawning on both entities in a pair.
 
 For every entity, explicitly describe all listeners — what triggers them and what they do. The builder has no other source of truth for this. Be specific about tag names and values.
 
+**Data format** — stats, states, and listeners must each be described as ordered lists, not named objects. The builder should output them as arrays.
+
+**modelAttributes** — must not be modified. It stores starting/seed values and is not meant to hold live state.
+
 **Listener naming** — always specify the exact listener name when describing reactive behavior:
 - Stat listener: `on<StatName>Changed` — e.g. `oncash_balanceChanged`
 - State listener: `<stateName><value>OnEnter` — e.g. `lifecycleagingOnEnter`, `shiftworkingOnEnter`
 - Custom listener: any meaningful name
-- `onDeltaOverwrite`: replaces all per-tick logic. When present, this listener fires on every tick instead of the built-in delta function. The current tick value is available as `that` inside the listener. Use this for any stat that needs conditional, derived, or cross-model update logic. All lifecycle transitions, speed scaling, movement, stat recalculation, and mating checks should live here rather than in a `current_tick` stat delta.
+- `onDeltaOverwrite`: replaces all per-tick logic. When present, this listener fires on every tick instead of the built-in delta function. The current tick value is available as `that` inside the listener. Use this for any stat that needs conditional, derived, or cross-model update logic. All lifecycle transitions, speed scaling, movement, stat recalculation, and mating checks should live here rather than in a `current_tick` stat delta. Every model with `onDeltaOverwrite` must also include reset logic: when `that` is less than the previous tick value, restore all stats and states to their starting values. This ensures scrubbing backwards fully reverses any derived changes (e.g. a closed shop reopens, a dead entity comes back alive).
+
+**State changes** — always use `changeState(thisBot, '<value>', '<stateName>')` to transition between states. This ensures the correct `<stateName><value>OnEnter` listeners fire. Example: `changeState(thisBot, 'aging', 'lifecycle')`.
 
 **Lifecycle listeners** — describe what happens on every phase transition:
 - What color the entity becomes
@@ -99,16 +109,15 @@ For every entity, explicitly describe all listeners — what triggers them and w
 
 ---
 
+### Timeline Manager
+
+Always include a todo to load the timeline manager from the catalog. Place it at the start of the timeline row (same y as the markers, at the leftmost x position — before the first marker).
+
+---
+
 ### Timeline Marker Placement
 
-Markers are scrub points — place 3–5 at steps where something meaningfully different is happening. Do not place one at step 0.
-
-Do not cluster markers at small step values when lifecycles are long. A simulation with max_age 200 should have markers in the hundreds.
-
-Process:
-1. Determine total step range from the longest-lived entity's max_age
-2. Identify key events: first maturity, first mating, first death, first child maturing, population peak, financial inflection
-3. Place markers at or just before those events — each marker has a `step` (the tick number) and a `timeUnit`
+Place 3–5 markers. Do not place one at step 0. Steps should be meaningfully spread across the full simulation range — do not cluster at small values when lifecycles are long. Each marker has a `step` and a `timeUnit`. No labels or descriptions.
 
 ---
 
@@ -120,7 +129,7 @@ Process:
 
 The scene uses **minutes** as its time unit.
 
-**Pond** — centered at the scene origin, ~6m across. Tracks duck_count. Stationary, no lifecycle.
+**Pond** — centered at (20, 0), ~6m across. Tracks duck_count. Stationary, no lifecycle.
 
 **Duck 1** — sits on top of the Pond. Lifecycle: alive → aging → elderly → dead. max_age: 200 steps. Phase 1 at step 120 (60%), Phase 2 at step 160 (80%). spawn_tick: 0. Terminal: hide. Speed scales with phase. Wanders within the Pond bounds. Mates with Duck 2 — maturity threshold 15%, mating cooldown 40 steps, proximity 1.5m.
 Reactive behavior:
@@ -132,8 +141,8 @@ Reactive behavior:
 
 **Duck 2** — sits on top of the Pond. Same lifecycle and reactive behavior as Duck 1. spawn_tick: -30 (already 30 steps old at start, already mature, will die before Duck 1). Mates with Duck 1 on the same terms.
 
-**Markers** — key events:
-- step 30 (timeUnit: minute): Duck 1 reaches maturity, first mating window opens
-- step 80 (timeUnit: minute): First offspring likely born, Duck 2 approaching Phase 1
-- step 130 (timeUnit: minute): Duck 2 enters Phase 2, first child nearing maturity
-- step 150 (timeUnit: minute): Duck 2 likely dead, second generation active
+**Markers** — placed in a row below the models, spaced 3 units apart on x:
+- step 30, timeUnit: minute — position (0, -20)
+- step 80, timeUnit: minute — position (3, -20)
+- step 130, timeUnit: minute — position (6, -20)
+- step 150, timeUnit: minute — position (9, -20)

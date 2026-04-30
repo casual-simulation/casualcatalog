@@ -41,7 +41,7 @@ if  (!that) {
     return;
 }
 
-if (!that.groupSortOrder) {
+if (!Number.isFinite(that.groupSortOrder)) {
     throw new Error(`abCreateMenuGroup: groupSortOrder is not provided.`);
 }
 

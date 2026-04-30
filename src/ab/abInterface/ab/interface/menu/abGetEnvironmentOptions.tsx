@@ -260,6 +260,7 @@ if (links.voice) {
 }
 
 if (links.gpt) {
+    /*
     aiDropdownOptions.push({
         formAddress: "edit_note",
         onCreate: ListenerString(() => {
@@ -276,13 +277,15 @@ if (links.gpt) {
             links.gptBot.editPrompt();
         }),
     });
+    */
 
     aiDropdownOptions.push({
         label: `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history`,
         formAddress: 'clear_all',
         onCreate: ListenerString(() => {
             const history = ab.links.ask.abConversationHistoryGet({ historyStorageBot: ab.links.remember }) ?? [];
-            tags.label = `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history (${history.length > 0 ? `${history.length} messages` : `empty`})`;
+            const percentFilled = Math.round((history.length / ab.links.ask.tags.maxHistoryMessages) * 100);
+            tags.label = `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history (${percentFilled}% full)`;
         }),
         onClick: ListenerString(() => {
             ab.links.ask.abConversationHistoryClear({ historyStorageBot: ab.links.remember });

@@ -1,2 +1,7 @@
 shout("abMenuRefresh");
-thisBot.handleToolMenu(that);
+
+if (!tags.studioId) {
+    thisBot.onClick();
+} else {
+  thisBot.handleToolMenu(that);  
+}

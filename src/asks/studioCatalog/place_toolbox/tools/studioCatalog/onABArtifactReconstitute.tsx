@@ -7,7 +7,7 @@ tags.scaleZ = data.scaleZ ?? 1;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black';
-tags.studioId = data.studioId ?? authBot.id;
+tags.studioId = data.studioId;
 tags.strokeBot = null;
 tags.prevBotID = data.prevBotID;
 tags.respawnPoint = data.respawnPoint;
@@ -36,4 +36,4 @@ if (data.eggParameters) {
 const strokeBot = await thisBot.generateStroke();
 tags.strokeBot = getLink(strokeBot);
 
-shout("onStudioStationReconstituted", thisBot);
+shout("onStudioCatalogReconstituted", thisBot);

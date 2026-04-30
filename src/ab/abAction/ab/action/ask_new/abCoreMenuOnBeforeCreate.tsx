@@ -1,0 +1,1 @@
+thisBot.generateAskMenuItems({ menuType: 'core' });

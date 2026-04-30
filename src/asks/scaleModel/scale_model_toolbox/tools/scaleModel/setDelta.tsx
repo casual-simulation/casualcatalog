@@ -1,5 +1,10 @@
 const value = that;
 
+if (tags.onDeltaOverwrite) {
+    thisBot.onDeltaOverwrite(value);
+    return;
+}
+
 for (const attr in tags.modelAttributes) {
 
     const deltaMod = tags.modelAttributes[attr].deltaModifier;

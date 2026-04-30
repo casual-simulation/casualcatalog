@@ -30,7 +30,7 @@ for (let toolbox of toolboxes) {
         ...menuOptions,
         label: toolbox.title,
         toolboxTitle: toolbox.title,
-        studioStationID: tags.studioId,
+        studioId: tags.studioId,
         formAddress: 'home_repair_service',
         targetAB: toolbox.name,
         onClick:`@
@@ -39,7 +39,7 @@ for (let toolbox of toolboxes) {
             eggParameters: {
                 gridInformation: {
                     toolbox_name: tags.toolboxTitle,
-                    studioID: tags.studioStationID,
+                    studioId: tags.studioId,
                     ...tags.gridInformation
                 }
             }

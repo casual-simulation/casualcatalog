@@ -39,6 +39,11 @@ if (!inMapPortal && inGridPortal) {
     }
 }
 
+// By default store the conversation history for this agent bot, but if it's working 
+// on a todo bot then store the history on the abRemember bot so it can be accessed by 
+// other agents working on the same todo bot.
+const historyStorageBot = todoBotId ? ab.links.remember : thisBot;
+
 abAskBot.askGPT({
     inquiry,
     attachments,
@@ -50,7 +55,7 @@ abAskBot.askGPT({
     abPosition: patchBotPosition,
     menuActionData: data,
     todoBot: todoBotId,
-    historyStorageBot: thisBot.id,
+    historyStorageBot
 })
 
 // Wait some amount of time before bringing bot label back.

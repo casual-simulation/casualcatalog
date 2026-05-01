@@ -16,6 +16,8 @@ tags.toolbox_array = data.toolbox_array ?? ab.links.remember.tags.toolbox_array;
 tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/hexagon.glb");
 tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/hexagon_stroke.glb");
 
+tags.abIgnore = true;
+
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
         tags[tagName] = data.dimensionData[tagName];

@@ -6,7 +6,8 @@ const stroke = {
     anchorPoint: 'top',
     [tags.dimension]: true,
     scaleMode: 'absolute',
-    pointable: false
+    pointable: false,
+    abIgnore: true
 }
 
 if (tags.strokeColor) {

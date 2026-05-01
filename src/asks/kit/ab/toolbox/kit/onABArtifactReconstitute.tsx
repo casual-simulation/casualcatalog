@@ -9,6 +9,8 @@ tags.tool_array = data.tool_array;
 
 tags.formAddress = await ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_holographic.glb");
 
+tags.abIgnore = true;
+
 if (data.studioId) {
     thisBot.determineLineTo(data.studioId);
 }

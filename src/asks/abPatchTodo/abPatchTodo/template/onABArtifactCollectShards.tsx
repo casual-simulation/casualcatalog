@@ -12,6 +12,8 @@ const shard: ABArtifactShard = {
         debug: tags.debug,
         todoPlanId: tags.todoPlanId,
         todoOrder: tags.todoOrder,
+        focusMenuType: tags.focusMenuType,
+        focusMenuActionData: tags.focusMenuActionData,
         eggParameters: {
             gridInformation: {
                 dimension: tags.dimension,

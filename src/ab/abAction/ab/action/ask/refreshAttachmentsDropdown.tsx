@@ -6,7 +6,7 @@ const { options, label } = thisBot.getAttachmentsDropdownOptions();
 
 const menuPortal = configBot.tags.menuPortal;
 const skillLink = getLink(thisBot);
-const dropdownHeader = getBot(byTag('baseSkill', skillLink), byTag(menuPortal, true));
+const dropdownHeader = getBot('abAttachmentsDropdownHeader', true);
 
 if (!dropdownHeader) {
     return;

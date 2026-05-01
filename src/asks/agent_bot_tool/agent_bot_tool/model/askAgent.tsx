@@ -20,8 +20,7 @@ thisBot.vars.inputBot = ab.links.menu.abCreateMenuInput({
     agentBot: getLink(thisBot),
     onABAIAgentReset: `@destroy(thisBot)`,
     onSubmit: `@
-        links.agentBot.masks.menuType = tags.menuType;
-        links.agentBot.onSubmit(that);
+        links.agentBot.onSubmit({ ...that, menuType: tags.menuType });
     `,
     onAnyBotsRemoved: `@
         const { botIDs } = that;
@@ -32,7 +31,7 @@ thisBot.vars.inputBot = ab.links.menu.abCreateMenuInput({
     `,
 })
 
-if (that.bot && that.prompt === "bot") {
+if (that.bot && that.menuType === "bot") {
     masks.targetBot = getLink(that.bot);
 }
 

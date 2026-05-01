@@ -76,25 +76,19 @@ if (!links.armBot) {
 //work on todo
 setTag(todoBot, 'animationState', 'processing');
 
-const requestData = {};
-if (thisBot.links.armBot) {
-    const armBot = links.armBot;
-    const armDimension = armBot.tags.dimension;
-
-    requestData.armDimension = armDimension;
-    requestData.armDimensionX = armBot.tags[armDimension + "X"];
-    requestData.armDimensionY = armBot.tags[armDimension + "Y"];
-}
-
-masks.targetBot = getLink(todoBot);
-masks.menuType = todoBot.tags.focusMenuType ?? 'grid';
+const armBot = links.armBot;
+const armDimension = armBot?.tags.dimension;
 
 thisBot.agentOnRequest({
     inquiry: todoBot.tags.prompt,
     attachments: todoBot.tags.attachments,
-    data: requestData,
-    model: tags.aiModel,
     todoBotId: todoBot.id,
+    menuType: todoBot.tags.focusMenuType ?? 'grid',
+    armPosition: armBot ? {
+        dimension: armDimension,
+        x: armBot.tags[armDimension + 'X'],
+        y: armBot.tags[armDimension + 'Y'],
+    } : undefined,
 });
 
 tags.todoInProgress = true;

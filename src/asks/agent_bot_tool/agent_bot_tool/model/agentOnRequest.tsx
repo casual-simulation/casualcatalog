@@ -1,19 +1,20 @@
 thisBot.agentReset({ keepArm: true });
 
-let inquiry = that.inquiry ?? that;
+const inquiry = that.inquiry;
 const todoBot = that?.todoBotId ? getBot('id', that.todoBotId) : undefined;
 const attachments = that?.attachments;
+const armPosition = that?.armPosition;
 
 ab.links.ask.masks.gptActive = true;
 
-const todoFocusData = todoBot?.tags.focusMenuActionData;
+const storedFocus = todoBot?.tags.focusMenuActionData;
 
-const data = {
-    dimension: todoFocusData?.dimension ?? that.data?.armDimension,
-    dimensionX: todoFocusData?.dimensionX ?? that.data?.armDimensionX,
-    dimensionY: todoFocusData?.dimensionY ?? that.data?.armDimensionY,
-    bot: todoFocusData?.bot ?? links.targetBot?.id,
-    bots: todoFocusData?.bots ?? that.data?.bots,
+const menuActionData = {
+    dimension: storedFocus?.dimension ?? armPosition?.dimension,
+    dimensionX: storedFocus?.dimensionX ?? armPosition?.x,
+    dimensionY: storedFocus?.dimensionY ?? armPosition?.y,
+    bot: storedFocus?.bot ?? links.targetBot?.id,
+    bots: storedFocus?.bots,
 }
 
 const prevLabel = tags.label;
@@ -47,13 +48,13 @@ const historyStorageBot = todoBot ? ab.links.remember : thisBot;
 ab.links.ask.askGPT({
     inquiry,
     attachments,
-    menuType: tags.menuType,
+    menuType: that.menuType,
     model: tags.aiModel,
     abBot: thisBot,
     sourceId: thisBot.id,
     abDimension: tags.dimension,
     abPosition: patchBotPosition,
-    menuActionData: data,
+    menuActionData,
     todoBot,
     historyStorageBot
 })

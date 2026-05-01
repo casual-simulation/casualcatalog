@@ -459,6 +459,7 @@ ab.links.menu.abCreateMenuButton({
                     confirmText: "publish",
                     cancelText: "cancel"
                 });
+                configBot.tags.selected_studioID = targetStudio;
             }
 
             if (!confirmPush)

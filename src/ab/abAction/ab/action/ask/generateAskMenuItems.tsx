@@ -82,7 +82,7 @@ menuItems.push({
 const { options, label } = thisBot.getAttachmentsDropdownOptions();
 menuItems.push({
     label: label,
-    formAddress: 'attach_file',
+    formAddress: 'add',
     menuItemType: 'dropdown',
     dropdownOptions: options,
 });

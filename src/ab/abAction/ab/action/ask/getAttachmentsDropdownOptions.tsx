@@ -31,8 +31,8 @@ for (let i = 0; i < list.length; i++) {
 }
 
 options.push({
-    label: "attach file",
-    formAddress: "add",
+    label: "add photos & files",
+    formAddress: "attach_file",
     onClick: ListenerString(async () => {
         const files = await os.showUploadFiles();
         if (!files || files.length === 0) {
@@ -63,6 +63,6 @@ options.push({
     })
 });
 
-const label = list.length > 0 ? "ask attachments (" + list.length + ")" : "ask attachments";
+const label = list.length > 0 ? "add files (" + list.length + ")" : "add files";
 
 return { options, label };

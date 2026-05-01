@@ -67,7 +67,7 @@ for (let i = 0; i < todos.length; i++) {
         dimension: todoDimension,
         center: computedPosition,
         radius: 15,
-        innerRadius: 2,
+        innerRadius: 0,
         direction: 'outward',
         spacing: 1,
     })

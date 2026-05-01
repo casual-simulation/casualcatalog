@@ -1,0 +1,98 @@
+[
+    {
+        "name": "sim action",
+        "studio": "AB",
+        "targetAB": "simAction",
+        "artifact": true
+    },
+    {
+        "name": "sim camera reaction",
+        "studio": "AB",
+        "targetAB": "simCameraReaction",
+        "artifact": true
+    },
+    {
+        "name": "sim cycle",
+        "studio": "AB",
+        "targetAB": "simCycle",
+        "artifact": true
+    },
+    {
+        "name": "sim door",
+        "studio": "AB",
+        "targetAB": "simDoor",
+        "artifact": true
+    },
+    {
+        "name": "sim filter",
+        "studio": "AB",
+        "targetAB": "simFilter",
+        "artifact": true
+    },
+    {
+        "name": "sim place",
+        "studio": "AB",
+        "targetAB": "simPlace",
+        "artifact": true
+    },
+    {
+        "name": "sim place HD",
+        "studio": "AB",
+        "targetAB": "simPlaceHD",
+        "artifact": true
+    },
+    {
+        "name": "sim player",
+        "studio": "AB",
+        "targetAB": "simPlayer",
+        "artifact": true
+    },
+    {
+        "name": "sim prop",
+        "studio": "AB",
+        "targetAB": "simProp",
+        "artifact": true
+    },
+    {
+        "name": "sim prop action",
+        "studio": "AB",
+        "targetAB": "simPropAction",
+        "artifact": true
+    },
+    {
+        "name": "sim prop reaction",
+        "studio": "AB",
+        "targetAB": "simPropReaction",
+        "artifact": true
+    },
+    {
+        "name": "sim reaction",
+        "studio": "AB",
+        "targetAB": "simReaction",
+        "artifact": true
+    },
+    {
+        "name": "sim restart",
+        "studio": "AB",
+        "targetAB": "simMenu",
+        "artifact": true
+    },
+    {
+        "name": "sim role",
+        "studio": "AB",
+        "targetAB": "simRole",
+        "artifact": true
+    },
+    {
+        "name": "sim smart reaction",
+        "studio": "AB",
+        "targetAB": "simSmartReaction",
+        "artifact": true
+    },
+    {
+        "name": "sim wizard",
+        "studio": "AB",
+        "targetAB": "simWizard",
+        "artifact": true
+    }
+]

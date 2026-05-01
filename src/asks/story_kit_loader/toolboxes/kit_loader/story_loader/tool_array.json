@@ -1,0 +1,32 @@
+[
+    {
+        "name": "story element",
+        "studio": "AB",
+        "targetAB": "storyElement",
+        "artifact": true
+    },
+    {
+        "name": "story cycle",
+        "studio": "AB",
+        "targetAB": "storyCycle",
+        "artifact": true
+    },
+    {
+        "name": "story place",
+        "studio": "AB",
+        "targetAB": "storyPlace",
+        "artifact": true
+    },
+    {
+        "name": "story recipe",
+        "studio": "AB",
+        "targetAB": "storyRecipe",
+        "artifact": true
+    },
+    {
+        "name": "storyteller",
+        "studio": "AB",
+        "targetAB": "storyTeller",
+        "artifact": true
+    }
+]

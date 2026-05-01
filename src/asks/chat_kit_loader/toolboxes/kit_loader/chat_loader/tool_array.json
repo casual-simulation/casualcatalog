@@ -1,0 +1,11 @@
+[
+    {
+        "name": "chat bot",
+        "studio": "AB",
+        "targetAB": "rhetoricBotTool"
+    },
+    {
+        "name": "chat bar",
+        "targetAB": "chatBotTool"
+    }
+]

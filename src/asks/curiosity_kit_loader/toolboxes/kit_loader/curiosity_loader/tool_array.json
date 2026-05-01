@@ -1,0 +1,14 @@
+[
+    {
+        "name": "curiosity camera",
+        "studio": "AB",
+        "targetAB": "curiosityCamera",
+        "artifact": true
+    },
+    {
+        "name": "artifact journal",
+        "studio": "AB",
+        "targetAB": "artifactJournal",
+        "artifact": true
+    }
+]

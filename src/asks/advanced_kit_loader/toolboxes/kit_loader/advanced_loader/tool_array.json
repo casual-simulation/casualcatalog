@@ -1,0 +1,10 @@
+[
+    {
+        "name": "generate new toolbox",
+        "targetAB": "abGenerateToolbox"
+    },
+    {
+        "name": "artifact wizard",
+        "targetAB": "abArtifactWizard"
+    }
+]

@@ -37,9 +37,9 @@ for (let toolbox of toolboxes) {
             await ab.links.search.onLookupAskID({
             askID: tags.targetAB,
             eggParameters: {
+                studioId: tags.studioId,
                 gridInformation: {
                     toolbox_name: tags.toolboxTitle,
-                    studioId: tags.studioId,
                     ...tags.gridInformation
                 }
             }

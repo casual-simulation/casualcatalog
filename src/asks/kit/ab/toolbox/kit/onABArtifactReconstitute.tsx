@@ -4,13 +4,13 @@ tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.label = data.label ?? 'kit';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'white';
-tags.studioID = data.studioID;
+tags.studioId = data.studioId;
 tags.tool_array = data.tool_array;
 
 tags.formAddress = await ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_holographic.glb");
 
-if (data.studioID) {
-    const catalogBot = getBot(byTag("studioId", data.studioID), byTag("studioCatalog", true));
+if (data.studioId) {
+    const catalogBot = getBot(byTag("studioId", data.studioId), byTag("studioCatalog", true));
     tags.lineTo = getID(catalogBot);
 }
 

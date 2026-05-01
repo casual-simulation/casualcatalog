@@ -134,10 +134,7 @@ else if (!inquiryHasSpace) {
 
         // Clear the staged attachments now that the request owns them; the next prompt starts empty.
         thisBot.vars.abAttachments = [];
-        const skillBot = getBot('system', 'ab.action.attachments');
-        if (skillBot) {
-            whisper(skillBot, 'refreshAttachmentsDropdown');
-        }
+        thisBot.refreshAttachmentsDropdown();
 
         // Give an external bot a chance to eat the user input. If nothing takes it, then we call askGPT directly.
         let consumedInput = false;

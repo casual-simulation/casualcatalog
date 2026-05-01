@@ -79,11 +79,12 @@ menuItems.push({
     })
 })
 
-// menuItems.push({
-//     label: 'foo',
-//     onClick: ListenerString(() => {
-//         os.toast('bar');
-//     })
-// })
+const { options, label } = thisBot.getAttachmentsDropdownOptions();
+menuItems.push({
+    label: label,
+    formAddress: 'attach_file',
+    menuItemType: 'dropdown',
+    dropdownOptions: options,
+});
 
 masks.menuItems = menuItems;

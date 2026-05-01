@@ -25,10 +25,7 @@ for (let i = 0; i < list.length; i++) {
                     ab.links.ask.vars.abAttachments = current;
                 }
             }
-            const skillBot = getBot('system', 'ab.action.attachments');
-            if (skillBot) {
-                whisper(skillBot, 'refreshAttachmentsDropdown');
-            }
+            ab.links.ask?.refreshAttachmentsDropdown();
         })
     });
 }
@@ -54,10 +51,7 @@ options.push({
         if (ab.links.ask) {
             ab.links.ask.vars.abAttachments = current;
         }
-        const skillBot = getBot('system', 'ab.action.attachments');
-        if (skillBot) {
-            whisper(skillBot, 'refreshAttachmentsDropdown');
-        }
+        ab.links.ask?.refreshAttachmentsDropdown();
     })
 });
 
@@ -65,10 +59,7 @@ options.push({
     label: "take a photo",
     formAddress: "photo_camera",
     onClick: ListenerString(() => {
-        const skillBot = getBot('system', 'ab.action.attachments');
-        if (skillBot) {
-            whisper(skillBot, 'onAttachmentsCaptureClick');
-        }
+        ab.links.ask?.onAttachmentsCaptureClick();
     })
 });
 

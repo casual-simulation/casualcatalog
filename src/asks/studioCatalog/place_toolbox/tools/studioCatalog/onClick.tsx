@@ -146,8 +146,19 @@ if (studioData.success) {
     })   
 }
 
+const shareButton = {
+    ...menuOptions,
+    label: 'share',
+    formAddress: 'ios_share',
+    onClick: `@
+        shout('clearHomePlaceMenu');
+        links.place.onStoreMenu();
+    `
+};
+
 if (tags.studioId) {
     ab.links.menu.abCreateMenuDropdown(moveToPlaceButton);
+    ab.links.menu.abCreateMenuButton(shareButton);
 } else {
     ab.links.menu.abCreateMenuDropdown(studioGroup);
 }

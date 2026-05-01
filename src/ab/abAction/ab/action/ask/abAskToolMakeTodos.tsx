@@ -21,7 +21,6 @@ let todoStartOffset = 1;
 if (menuActionData?.menu === 'grid') {
     todoDimension = menuActionData.dimension;
     todoBasePosition = { x: menuActionData.dimensionX, y: menuActionData.dimensionY, z: 0 };
-    todoStartOffset = 0;
 }
 
 const createdBots = [];
@@ -58,6 +57,21 @@ for (let i = 0; i < todos.length; i++) {
         }
     }
 
+    let computedPosition = {
+        x: todoBasePosition.x + step * todoDir.x * todoSpacing,
+        y: todoBasePosition.y + step * todoDir.y * todoSpacing,
+        z: todoBasePosition.z + step * todoDir.z * todoSpacing
+    }
+    
+    computedPosition = ab.links.utils.findOpenPositionAround({
+        dimension: todoDimension,
+        center: computedPosition,
+        radius: 15,
+        innerRadius: 2,
+        direction: 'outward',
+        spacing: 1,
+    })
+
     const abArtifactShard: ABArtifactShard = {
         data: {
             prompt: todo.prompt,
@@ -72,9 +86,9 @@ for (let i = 0; i < todos.length; i++) {
                 gridInformation: {
                     dimension: todoDimension,
                     position: {
-                        x: todoBasePosition.x + step * todoDir.x * todoSpacing,
-                        y: todoBasePosition.y + step * todoDir.y * todoSpacing,
-                        z: todoBasePosition.z + step * todoDir.z * todoSpacing,
+                        x: computedPosition.x,
+                        y: computedPosition.y,
+                        z: computedPosition.z,
                     }
                 }
             }

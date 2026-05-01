@@ -1,4 +1,4 @@
-const { askContext } = that;
+const askContext: ABAskContext = that.askContext;
 const inquiry = askContext.originalUserInquiry;
 const inquiryLabel = askContext.originalUserInquiryLabel;
 const attachments = askContext.attachments ?? [];

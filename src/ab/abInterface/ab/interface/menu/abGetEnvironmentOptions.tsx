@@ -303,6 +303,48 @@ if (aiDropdownOptions && aiDropdownOptions.length > 0) {
     })
 }
 
+// ========================================
+// ▼ HOMEWORLD
+// ========================================
+const homeBot = getBot("isHomeWorldCore", true);
+if (homeBot) {
+    options.push({
+        label: `homeworld`,
+        abEnvironmentMenuSortOrder: 300,
+        menuItemType: 'dropdown',
+        dropdownOptions: [
+            {
+                formAddress: 'refresh',
+                label: 'refresh homeworld',
+                onClick: ListenerString(async () => {
+                    const homeBot = getBot("isHomeWorldCore", true);
+                    homeBot.updateHomeWorld();
+                    shout('abMenuRefresh');
+                }),
+            },
+            {
+                formAddress: 'history',
+                label: 'homeworld version history',
+                onClick: ListenerString(async () => {
+                    const homeBot = getBot("isHomeWorldCore", true);
+                    homeBot.showHomeVersionHistory();
+                    shout('abMenuRefresh');
+                }),
+            },
+            {
+                formAddress: 'delete_forever',
+                color: 'red',
+                labelColor: 'black',
+                label: 'factory reset homeworld',
+                onClick: ListenerString(async () => {
+                    const homeBot = getBot("isHomeWorldCore", true);
+                    homeBot.factoryResetHomeWorld();
+                    shout('abMenuRefresh');
+                }),
+            }
+        ]
+    })
+}
 
 // ========================================
 // ▼ PRESENCE

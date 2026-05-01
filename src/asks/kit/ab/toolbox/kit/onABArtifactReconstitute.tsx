@@ -10,8 +10,7 @@ tags.tool_array = data.tool_array;
 tags.formAddress = await ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_holographic.glb");
 
 if (data.studioId) {
-    const catalogBot = getBot(byTag("studioId", data.studioId), byTag("studioCatalog", true));
-    tags.lineTo = getID(catalogBot);
+    thisBot.determineLineTo(data.studioId);
 }
 
 //Place bot correctly

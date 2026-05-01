@@ -13,4 +13,4 @@ if (Array.isArray(selectedBots)) {
     }
 }
 
-thisBot.askAgent({ menuType: "bot", bot: selectedBots });
+thisBot.agentMenuOpen({ menuType: "bot", bot: selectedBots });

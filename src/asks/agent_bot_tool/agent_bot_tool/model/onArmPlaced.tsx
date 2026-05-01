@@ -1,4 +1,4 @@
-thisBot.askAgent({ menuType: "grid" });
+thisBot.agentMenuOpen({ menuType: "grid" });
 
 if (links.armBot && tags.usingAgentMesh) {
     const multiSelect = links.armBot.tags.multiSelect;

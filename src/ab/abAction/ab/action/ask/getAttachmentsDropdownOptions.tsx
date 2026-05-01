@@ -63,6 +63,6 @@ options.push({
     })
 });
 
-const label = list.length > 0 ? "add files (" + list.length + ")" : "add files";
+const label = list.length > 0 ? "add files to ask (" + list.length + ")" : "add files to ask";
 
 return { options, label };

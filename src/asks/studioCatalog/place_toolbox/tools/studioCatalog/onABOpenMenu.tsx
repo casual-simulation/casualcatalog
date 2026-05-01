@@ -20,23 +20,19 @@ if (tags.draggable == false) {
    //move
     menuGroup.menuItems.push({
         formAddress: 'open_with',
-        label: 'move studio',
+        label: 'move catalog',
         onClick: `@links.place.moveStudio(); shout('abMenuRefresh');`
     }); 
 } else {
    //lock
     menuGroup.menuItems.push({
         formAddress: 'lock',
-        label: 'lock studio position',
+        label: 'lock catalog position',
         onClick: `@links.place.lockStudio(); shout('abMenuRefresh');`
     });  
 }
 
-menuGroup.menuItems.push({
-    formAddress: 'open_with',
-    label: 'move studio to current location',
-    onClick: `@links.place.moveStudioToLocation(); shout('abMenuRefresh');`
-});
+const inMap = configBot.tags.mapPortal ? true : false;
 
 //publish
 // menuGroup.menuItems.push({
@@ -45,11 +41,22 @@ menuGroup.menuItems.push({
 //     onClick: `@links.place.publishStudio(); shout('abMenuRefresh');`
 // });
 
-//set home
-menuGroup.menuItems.push({
-    formAddress: 'home',
-    label: 'set as home place',
-    onClick: `@shout("setHomePlace", thisBot); shout('abMenuRefresh');`
-});
+
+if (inMap) {
+    
+    menuGroup.menuItems.push({
+        formAddress: 'open_with',
+        label: 'move catalog to current location',
+        onClick: `@links.place.moveStudioToLocation(); shout('abMenuRefresh');`
+    });
+
+
+   //set home
+    menuGroup.menuItems.push({
+        formAddress: 'home',
+        label: 'set as home',
+        onClick: `@shout("setHomePlace", thisBot); shout('abMenuRefresh');`
+    }); 
+}
 
 ab.links.menu.abCreateMenuGroup(menuGroup);

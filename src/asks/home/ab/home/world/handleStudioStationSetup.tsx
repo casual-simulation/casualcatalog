@@ -39,7 +39,7 @@ if (!homeBot) {
     if (hasGeolocationPermission) {
         const geolocation = await os.getGeolocation();
         if (geolocation.success) {
-            positionX = geolocation.longitude;
+            positionX = geolocation.longitude - .001;
             positionY = geolocation.latitude;
         }
     } else {

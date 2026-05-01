@@ -51,12 +51,14 @@ if (inMap) {
     });
 
 
-   //set home
-    menuGroup.menuItems.push({
-        formAddress: 'home',
-        label: 'set as home',
-        onClick: `@shout("setHomePlace", thisBot); shout('abMenuRefresh');`
-    }); 
+    if (!tags.respawnPoint) {
+        //set home
+        menuGroup.menuItems.push({
+            formAddress: 'home',
+            label: 'set as home',
+            onClick: `@shout("setHomePlace", thisBot); shout('abMenuRefresh');`
+        }); 
+    }
 }
 
 ab.links.menu.abCreateMenuGroup(menuGroup);

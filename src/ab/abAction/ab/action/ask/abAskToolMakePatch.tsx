@@ -4,7 +4,7 @@ const code = that.args.code;
 if (todoBot) {
     whisper(todoBot, 'updatePatch', { patchCode: code });
 } else {
-    const name = thisBot.abAskHelperGetAgentName({ askContext });
+    const name = thisBot.abAskHelperGetAgentName({ askContext: that.askContext });
     ab.links.utils.abLog({ name, message: `[generated code]:\n${code}` });
 
     const eggParameters = {

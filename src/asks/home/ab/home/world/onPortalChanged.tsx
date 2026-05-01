@@ -1,7 +1,7 @@
 if (that.portal == "mapPortal") {
     if (that.dimension) {
         // Override the mapZoomPosition with the homeBase position (if available).
-        const homeBase = getBot(byTag("studioStation", true), byTag("studioId", authBot?.id)); 
+        const homeBase = getBot(byTag("studioCatalog", true), byTag("respawnPoint", true)); 
 
         if (tags.debug) {
             console.log(`[${tags.system}.${tagName}] homeBase:`, homeBase);
@@ -37,7 +37,7 @@ if (that.portal == "mapPortal") {
             links.menu.abCreateMenuButton({
                 space: 'tempLocal',
                 homeIntroMenu: true,
-                label: 'go to home studio',
+                label: 'go to home',
                 homeworldBot: getLink(thisBot),
                 resetHomeIntroMenu: `@
                     destroy(thisBot);

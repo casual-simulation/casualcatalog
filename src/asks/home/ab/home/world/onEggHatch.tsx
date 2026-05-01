@@ -2,6 +2,8 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, that);
 }
 
+tags.abIgnore = true;
+
 // Immediately disable automatic map camera animation from manifestation bot.
 setTagMask(links.remember, "mapPreventFocus", true);
 

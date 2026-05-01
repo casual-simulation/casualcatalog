@@ -6,7 +6,7 @@ if (that.eggParameters) {
     const abArtifactShard = {
         data: {
             label: that.eggParameters.toolbox_name ?? "scale model kit",
-            studioID: that.eggParameters.studioID,
+            studioId: that.eggParameters.studioId,
             tool_array: tags.tool_array,
             eggParameters: {
                 gridInformation: {

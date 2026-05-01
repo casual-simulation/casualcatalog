@@ -1,4 +1,4 @@
-Convert the below user prompt into a plan that describes every entity, how they relate to each other, and how they should behave over time.
+Convert the below user prompt into a multi-step plan with a todo for every scale model that describes how they relate to each other, and how they should behave over time. Also make a todo for the markers.
 
 ## User Prompt
 
@@ -6,28 +6,30 @@ Convert the below user prompt into a plan that describes every entity, how they 
 
 ## Guidelines
 
-## What to Include in the Plan
+### What Deserves Its Own Model
 
-For each entity, describe:
-- **What it is** and what numeric properties it tracks
-- **How it behaves** — does it move, does it age, can it reproduce?
-- **How it relates to other entities** — spatially, statistically, or through spawning
-- **Its lifecycle** if it changes meaningfully over time (see below)
+**Create a model for:** people, physical locations, assets, machines, external services/vendors.
 
-For the scene as a whole, describe:
-- The time unit (minutes, hours, days, months, etc.) and why it fits
-- Where entities are placed relative to each other
-- The timeline — what the key moments are and when they occur
+**Do NOT create a model for:** financial metrics, abstract concepts, or derived values — these are stats on a parent model.
 
 ---
 
-## Spatial Layout
+### Spatial Layout
 
-Think in meters. Entities that exist physically inside or on top of another should say so explicitly. Arrange unrelated entities in a logical grid with enough space between them that they don't visually overlap.
+Think in meters. Note when entities exist physically inside or on top of another. Arrange unrelated entities in a logical grid with enough space that they don't visually overlap.
+
+All models should be offset **20 units to the right** (positive x) so they don't interfere with other things in the scene.
+
+Rough footprint defaults:
+- Large building: ~10–15m wide
+- Medium structure (pond, pen): ~5–8m wide
+- Small entity (person, animal): ~1–2m wide
+
+Timeline markers are placed in a row, spaced **3 units apart on the x-axis**, below the models on the y-axis. No labels or key event descriptions — just the step and timeUnit. Steps should be meaningfully spread across the simulation's total range.
 
 ---
 
-## Choosing a Time Unit
+### Choosing a Time Unit
 
 Pick the finest unit that keeps the simulation meaningful:
 
@@ -38,11 +40,11 @@ Pick the finest unit that keeps the simulation meaningful:
 | Animal behavior, foot traffic | minute or hour |
 | Fast-moving (traffic, machinery) | second |
 
-Every entity in the scene uses this same unit as its tick granularity.
+Every entity in the scene uses this same unit.
 
 ---
 
-## Lifecycle Design
+### Lifecycle Design
 
 Use a lifecycle for any entity that ages, degrades, or expires. Don't assign one to pure value-holders (a fixed salary, a static cost).
 
@@ -54,59 +56,93 @@ A lifecycle has four phases — choose vocabulary that fits the entity's domain:
 | Machine | active | degraded | critical | decommissioned |
 | Business / asset | operating | declining | expiring | closed |
 
-When describing a lifecycle, specify:
-- **max_age** — how many ticks the entity lives. Set this 1.5–3× beyond the final timeline marker so entities outlive the observable window slightly.
-- **Phase thresholds** — Phase 1 begins at roughly 50–65% of max_age; Phase 2 at 75–85%.
-- **spawn_tick** — use `0` for entities born at simulation start. For seed entities that should already be partway through their life at the start, use a negative value (e.g. "already 30 ticks old at start"). Stagger spawn_ticks across same-type entities so their deaths fall at different points in the timeline.
-- **Terminal behavior** — "hide" removes the entity from view (default); "freeze" leaves it visible as a historical marker.
+For each lifecycle entity, specify:
+- **Lifecycle chain** — e.g. alive → aging → elderly → dead
+- **max_age** — how many steps. Set 1.5–3× beyond the final marker so entities outlive the observable window slightly.
+- **Phase thresholds** — Phase 1 at ~50–65% of max_age; Phase 2 at ~75–85%
+- **spawn_tick** — 0 for entities born at start; negative for seed entities already partway through life. Stagger across same-type entities to spread deaths across the timeline.
+- **Terminal behavior** — hide (default) or freeze
+- **Speed scaling** — whether movement speed scales across phases (yes for most moving entities)
 
 ---
 
-## Spawning Design
+### Spawning Design
 
-Use spawning for entities that can mate and produce offspring. Spawning requires a lifecycle to be present.
+Use spawning for entities that can mate and produce offspring. Requires a lifecycle.
 
-When describing spawning, specify:
-- **Partner** — which entity this one mates with
-- **Maturity threshold** — what fraction of max_age the entity must reach before it can mate (typically 10–20%)
-- **Mating cooldown** — how many ticks must pass between matings (typically 15–25% of max_age — long enough that mating feels like an event, not a constant)
-- **Mating proximity** — how close the two entities must be (in meters) to trigger mating
+For each spawning entity, specify:
+- **Partner** — which entity it mates with
+- **Maturity threshold** — fraction of max_age before mating is possible (typically 10–20%)
+- **Mating cooldown** — steps between matings (typically 15–25% of max_age)
+- **Mating proximity** — distance in meters to trigger mating
 
-Declare spawning on **both** entities in a pair — each names the other as its partner.
-
----
-
-## Timeline Marker Placement
-
-Markers are scrub points — they should land the user at a visibly different chapter of the story. Place 3–5 of them.
-
-**Do not place a marker at tick 0.** The simulation always starts there automatically.
-
-**Do not cluster markers at small tick values** when lifecycles are long. A simulation with max_age 200 should have markers in the hundreds.
-
-Process:
-1. Work out the full tick range from the longest-lived entity's max_age
-2. Identify the key events: first maturity window, first mating, first death, first child reaching maturity, population peak, financial inflection
-3. Place markers at or just before those events — each one should represent a meaningfully different moment
+Always declare spawning on both entities in a pair.
 
 ---
 
-## Example
+### Reactive Behavior
+
+For every entity, explicitly describe all listeners — what triggers them and what they do. The builder has no other source of truth for this. Be specific about tag names and values.
+
+**Data format** — stats, states, and listeners must each be described as ordered lists, not named objects. The builder should output them as arrays.
+
+**modelAttributes** — must not be modified. It stores starting/seed values and is not meant to hold live state.
+
+**Listener naming** — always specify the exact listener name when describing reactive behavior:
+- Stat listener: `on<StatName>Changed` — e.g. `oncash_balanceChanged`
+- State listener: `<stateName><value>OnEnter` — e.g. `lifecycleagingOnEnter`, `shiftworkingOnEnter`
+- Custom listener: any meaningful name
+- `onDeltaOverwrite`: replaces all per-tick logic. When present, this listener fires on every tick instead of the built-in delta function. The current tick value is available as `that` inside the listener. Use this for any stat that needs conditional, derived, or cross-model update logic. All lifecycle transitions, speed scaling, movement, stat recalculation, and mating checks should live here rather than in a `current_tick` stat delta. Every model with `onDeltaOverwrite` must also include reset logic: when `that` is less than the previous tick value, restore all stats and states to their starting values. This ensures scrubbing backwards fully reverses any derived changes (e.g. a closed shop reopens, a dead entity comes back alive).
+
+**State changes** — always use `changeState(thisBot, '<value>', '<stateName>')` to transition between states. This ensures the correct `<stateName><value>OnEnter` listeners fire. Example: `changeState(thisBot, 'aging', 'lifecycle')`.
+
+**Lifecycle listeners** — describe what happens on every phase transition:
+- What color the entity becomes
+- Whether visibility changes (hide on terminal, restore on phase 0 reset)
+- Any stat or state changes that accompany the transition
+
+**Stat listeners** — if a stat crossing a threshold should trigger something, say so. Example: "when cash_balance drops below 0, change operating_status state to 'insolvent'."
+
+**State listeners** — if entering a state should change tags or trigger behavior, describe it. Example: "when shift state enters 'on_break', set color to yellow."
+
+**Per-tick behavior** — describe what happens every step: which stats are recalculated, how movement is determined, what conditions gate it, and which other models are read. Example: "each step, read monthly_salary from Employee 1 and add it to total_expenses on the Coffee Shop."
+
+---
+
+### Timeline Manager
+
+Always include a todo to load the timeline manager from the catalog. Place it at the start of the timeline row (same y as the markers, at the leftmost x position — before the first marker).
+
+---
+
+### Timeline Marker Placement
+
+Place 3–5 markers. Do not place one at step 0. Steps should be meaningfully spread across the full simulation range — do not cluster at small values when lifecycles are long. Each marker has a `step` and a `timeUnit`. No labels or descriptions.
+
+---
+
+### Example
 
 **Input:** "A duck pond with 2 ducks of different ages."
 
 **Plan:**
 
-The scene uses **minutes** as its time unit — appropriate for animal behavior at this scale.
+The scene uses **minutes** as its time unit.
 
-**Pond** sits at the center of the scene. It's a decorative environment about 6m across that the ducks live on. It tracks a duck count.
+**Pond** — centered at (20, 0), ~6m across. Tracks duck_count. Stationary, no lifecycle.
 
-**Duck 1** is born at the start of the simulation (spawn_tick 0). It wanders within the bounds of the Pond and has a lifecycle: alive → aging → elderly → dead. max_age is 200 ticks. Phase 1 begins at tick 120 (60%), Phase 2 at tick 160 (80%). It hides on death. It mates with Duck 2 — maturity threshold 15% (mature at tick 30), mating cooldown 40 ticks, proximity 1.5m.
+**Duck 1** — sits on top of the Pond. Lifecycle: alive → aging → elderly → dead. max_age: 200 steps. Phase 1 at step 120 (60%), Phase 2 at step 160 (80%). spawn_tick: 0. Terminal: hide. Speed scales with phase. Wanders within the Pond bounds. Mates with Duck 2 — maturity threshold 15%, mating cooldown 40 steps, proximity 1.5m.
+Reactive behavior:
+- lifecyclealiveOnEnter: color white, restore visibility
+- lifecycleagingOnEnter: color tan (#c8a882), speed 75% of base
+- lifecycleelderlyOnEnter: color grey (#a0a0a0), speed 40% of base
+- lifecycledeadOnEnter: hide the bot
+- onDeltaOverwrite: tick value available as `that`. If lifecycle is not dead, wander within Pond bounds; check proximity to Duck 2 and shout mergeModels if mating conditions are met. Handle lifecycle transitions and speed scaling here too.
 
-**Duck 2** is already 30 ticks old at simulation start (spawn_tick -30), making it already mature and on track to die before Duck 1. Same lifecycle vocabulary and thresholds as Duck 1. Mates with Duck 1 on the same terms.
+**Duck 2** — sits on top of the Pond. Same lifecycle and reactive behavior as Duck 1. spawn_tick: -30 (already 30 steps old at start, already mature, will die before Duck 1). Mates with Duck 1 on the same terms.
 
-**Timeline** — key events:
-- Tick 30: Duck 1 reaches maturity, first mating window opens → **marker**
-- Tick 80: First offspring likely born, Duck 2 approaching Phase 1 → **marker**
-- Tick 130: Duck 2 enters Phase 2, first child nearing maturity → **marker**
-- Tick 150: Duck 2 likely dead, second generation active → **marker**
+**Markers** — placed in a row below the models, spaced 3 units apart on x:
+- step 30, timeUnit: minute — position (0, -20)
+- step 80, timeUnit: minute — position (3, -20)
+- step 130, timeUnit: minute — position (6, -20)
+- step 150, timeUnit: minute — position (9, -20)

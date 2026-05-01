@@ -87,7 +87,8 @@ if (thisBot.links.armBot) {
 }
 
 masks.targetBot = getLink(todoBot);
-masks.menuType = 'grid';
+masks.menuType = todoBot.tags.focusMenuType ?? 'grid';
+
 thisBot.agentOnRequest({
     inquiry: todoBot.tags.prompt,
     attachments: todoBot.tags.attachments,

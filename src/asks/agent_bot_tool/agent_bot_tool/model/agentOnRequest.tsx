@@ -1,19 +1,19 @@
 thisBot.agentReset({ keepArm: true });
 
 let inquiry = that.inquiry ?? that;
-const todoBotId = that?.todoBotId;
+const todoBot = that?.todoBotId ? getBot('id', that.todoBotId) : undefined;
 const attachments = that?.attachments;
 
-const abAskBot = ab.links.ask;
+ab.links.ask.masks.gptActive = true;
 
-abAskBot.masks.gptActive = true;
+const todoFocusData = todoBot?.tags.focusMenuActionData;
 
 const data = {
-    dimension: that.data?.armDimension,
-    dimensionX: that.data?.armDimensionX,
-    dimensionY: that.data?.armDimensionY,
-    bot: links.targetBot?.id,
-    bots: that.data?.bots,
+    dimension: todoFocusData?.dimension ?? that.data?.armDimension,
+    dimensionX: todoFocusData?.dimensionX ?? that.data?.armDimensionX,
+    dimensionY: todoFocusData?.dimensionY ?? that.data?.armDimensionY,
+    bot: todoFocusData?.bot ?? links.targetBot?.id,
+    bots: todoFocusData?.bots ?? that.data?.bots,
 }
 
 const prevLabel = tags.label;
@@ -42,9 +42,9 @@ if (!inMapPortal && inGridPortal) {
 // By default store the conversation history for this agent bot, but if it's working 
 // on a todo bot then store the history on the abRemember bot so it can be accessed by 
 // other agents working on the same todo bot.
-const historyStorageBot = todoBotId ? ab.links.remember : thisBot;
+const historyStorageBot = todoBot ? ab.links.remember : thisBot;
 
-abAskBot.askGPT({
+ab.links.ask.askGPT({
     inquiry,
     attachments,
     menuType: tags.menuType,
@@ -54,7 +54,7 @@ abAskBot.askGPT({
     abDimension: tags.dimension,
     abPosition: patchBotPosition,
     menuActionData: data,
-    todoBot: todoBotId,
+    todoBot,
     historyStorageBot
 })
 

@@ -5,6 +5,7 @@ const {
     abDimension = ab.links.remember.tags.abActiveDimension ?? 'home', // Optional: dimensio nto place the todos, defaults to ab active dimension or home;
     abPosition = { x: 0, y: 0}, // Optional: position to place the first todo, subsequent todos in this plan will be placed alongside.
     menuActionData, // Optional: extra data that is often included with calls to abCoreMenuAction
+    menuType,
 } = that.askContext;
 
 const todos: ABTodoParameters[] = that.args.todos ?? []; // List of todos to make.
@@ -82,6 +83,8 @@ for (let i = 0; i < todos.length; i++) {
             aiModel: effectiveModel,
             todoPlanId,
             todoOrder: i,
+            focusMenuType: menuType,
+            focusMenuActionData: menuActionData,
             eggParameters: {
                 gridInformation: {
                     dimension: todoDimension,

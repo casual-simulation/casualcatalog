@@ -13,4 +13,7 @@ if (userRequestTodo) {
     userRequestTodo.tags.agentMode = 'plan';
 }
 
+// Automatically assign the todo to agents.
+whisper(userRequestTodo, 'onAssignAgentsClick');
+
 shout('onABUserRequestTodoCreated', { todoBot: userRequestTodo });

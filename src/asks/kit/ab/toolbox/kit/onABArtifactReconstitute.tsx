@@ -11,10 +11,6 @@ tags.abIgnore = true;
 tags.system = `ab.toolbox.${data.label ?? 'kit'}`;
 tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
 
-if (data.studioId) {
-    thisBot.determineLineTo(data.studioId);
-}
-
 //Place bot correctly
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
@@ -34,4 +30,8 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 
     thisBot.onClick();
+}
+
+if (data.studioId) {
+    thisBot.determineLineTo(data.studioId);
 }

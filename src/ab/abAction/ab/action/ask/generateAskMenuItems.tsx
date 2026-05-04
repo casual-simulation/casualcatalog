@@ -2,6 +2,15 @@ const { menuType } = that ?? {};
 
 const menuItems = [];
 
+const { options, label } = thisBot.getAttachmentsDropdownOptions();
+menuItems.push({
+    label: label,
+    abAttachmentsDropdownHeader: true,
+    formAddress: 'add',
+    menuItemType: 'dropdown',
+    dropdownOptions: options,
+});
+
 menuItems.push({
     label: 'ask ab',
     formAddress: 'cube',
@@ -78,14 +87,5 @@ menuItems.push({
         setTagMask(links.baseSkill, 'hasUserSubmittedBotText', true, 'local');
     })
 })
-
-const { options, label } = thisBot.getAttachmentsDropdownOptions();
-menuItems.push({
-    label: label,
-    abAttachmentsDropdownHeader: true,
-    formAddress: 'add',
-    menuItemType: 'dropdown',
-    dropdownOptions: options,
-});
 
 masks.menuItems = menuItems;

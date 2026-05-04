@@ -536,28 +536,3 @@ else
         onClick: `@ configBot.tags.publishScan = true; os.openQRCodeScanner();`,
     });
 }
-
-let hostButton = {
-    studioCalatogPublishMenu: true,
-    studioCalatogPublishMenuSortOrder: 50,
-    abMenuRefresh: "@ destroy(thisBot);",
-    formAddress: "group_add",
-    learn: tags.learn,
-    onClick: `@ 
-        links.learn.abCreateHost(thisBot);
-        if (!ab.links.remember.tags.hostID) {
-            tags.label = 'generating code now';
-        }
-    `,
-};
-
-if (ab.links.remember.tags.hostID) {
-    hostButton.label = "join code: " + ab.links.remember.tags.hostID;
-} else {
-    hostButton.label = "generate join code";
-}
-
-if (configBot.tags.staticInst == undefined)
-{
-    ab.links.menu.abCreateMenuButton(hostButton);//generate a host button
-}

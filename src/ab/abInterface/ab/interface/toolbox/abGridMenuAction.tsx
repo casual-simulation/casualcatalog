@@ -42,3 +42,23 @@
 //         links.menu.abCreateMenuButton(menuBot);
 //     }
 // }
+
+const abArtifactShard = {
+    data: {
+        eggParameters: {
+            gridInformation: links.remember.tags.abGridFocus
+        }
+    },
+    dependencies: [
+        {
+            askID: "studioCatalog"
+        }
+    ]
+};
+ab.links.artifact.abCreateArtifactPromiseBot({
+    abArtifactName: "studioCatalog",
+    abArtifactInstanceID: uuid(),
+    abArtifactShard,
+});
+
+shout("abMenuRefresh");

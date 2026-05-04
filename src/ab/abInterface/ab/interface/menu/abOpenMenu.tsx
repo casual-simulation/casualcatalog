@@ -80,6 +80,9 @@ for (let i = 0; i < menuSkills.length; i++)//ADD LOGIC FOR MORE OPTIONS THAN 5 :
         abMenuButton.menuItems = currentSkill.tags.menuItems;
         thisBot.abCreateMenuGroup(abMenuButton);
     } else if (menuItemType == "input") {
+        abMenuButton.onSubmit = `@
+            links.baseSkill.onSubmit(that);
+        `
         thisBot.abCreateMenuInput(abMenuButton);
     } else if (menuItemType == "text") {
         thisBot.abCreateMenuText(abMenuButton);

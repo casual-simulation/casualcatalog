@@ -39,3 +39,5 @@ const strokeBot = await thisBot.generateStroke();
 tags.strokeBot = getLink(strokeBot);
 
 shout("onStudioCatalogReconstituted", thisBot);
+
+thisBot.onClick();

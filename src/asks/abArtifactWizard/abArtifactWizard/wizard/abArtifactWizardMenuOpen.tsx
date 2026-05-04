@@ -106,7 +106,7 @@ const downloadButton = links.menu.abCreateMenuButton({
     onArtifactWizardSelection: `@
         const { abArtifactName, abArtifactInstanceID, abArtifactInstanceOwner } = that;
 
-        const shardBots = getBots(b => b.tags.abArtifactName === abArtifactName && b.tags.abArtifactInstanceID === abArtifactInstanceID && b.space === 'shared' && !b.tags.abIgnore);
+        const shardBots = getBots(b => b.tags.abArtifactName === abArtifactName && b.tags.abArtifactInstanceID === abArtifactInstanceID && b.space === 'shared');
 
         if (shardBots.length > 0) {
             links.wizardBot.links.artifact.abDownloadArtifactPattern({ abArtifactName, shardBots });
@@ -331,7 +331,7 @@ const submitButton = links.menu.abCreateMenuButton({
         const instanceID = configBot.tags.abArtifactWizardSelectedArtifactInstanceID;
         const recordKey = links.studioButton.tags.recordKey;
 
-        const shardBots = getBots(b => b.tags.abArtifactName === name && b.tags.abArtifactInstanceID === instanceID && b.space === 'shared' && !b.tags.abIgnore );
+        const shardBots = getBots(b => b.tags.abArtifactName === name && b.tags.abArtifactInstanceID === instanceID && b.space === 'shared' );
         thisBot.vars.shardBots = shardBots;
 
         if (shardBots.length > 1) {

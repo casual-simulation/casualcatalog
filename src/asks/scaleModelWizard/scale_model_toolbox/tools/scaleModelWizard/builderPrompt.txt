@@ -41,9 +41,9 @@ TARGET:
   "rotation": { "x": number, "y": number, "z": number },
   "form": "cube" | "sphere" | "cylinder" | "plane" | "portal" | "egg",
   "color": "string",
-  "stats": { ... },
-  "states": { ... },
-  "listeners": { ... }
+  "stats": [ ... ],
+  "states": [ ... ],
+  "listeners": [ ... ]
 }
 ```
 
@@ -77,10 +77,11 @@ All values are in **meters**.
 
 Stats describe numeric properties of the entity: capacity, revenue, salary, inventory.
 
-Each stat follows this schema:
+The `stats` field is an **array** of stat objects. Each stat object has a `name` field plus the stat schema:
 
 ```json
-"<statName>": {
+{
+  "name": "statName",
   "start": number,
   "delta": "string",
   "deltaModifier": "+" | "-" | "/" | "*",
@@ -88,7 +89,9 @@ Each stat follows this schema:
 }
 ```
 
-**When a stat will be used as a base in tick-based calculations**, also define "starting_<statName>" with the same initial value and "delta": "0". This preserves the original for use in oncurrent_tickChanged.
+**When a stat will be used as a base in tick-based calculations**, also include a `"starting_<statName>"` entry in the stats array with the same initial value and `"delta": "0"`. This preserves the original for use in `oncurrent_tickChanged`.
+
+Stats are still accessed via `tags.<name>` in listener code (e.g. `tags.monthly_revenue`).
 
 ---
 
@@ -96,11 +99,13 @@ Each stat follows this schema:
 
 States represent qualitative modes or lifecycle phases (categorical, not numeric).
 
+The `states` field is an **array** of state objects. Each state object has a `name` field plus the state schema:
+
 ```json
-"states": {
-  "behavior": { "start": "foraging" },
-  "operating_status": { "start": "open" }
-}
+[
+  { "name": "behavior", "start": "foraging" },
+  { "name": "operating_status", "start": "open" }
+]
 ```
 
 States change dynamically via listeners using `changeState(thisBot, <value>, <state>)`. States are commonly used to influence movement behavior — check the current state in `oncurrent_tickChanged` to decide which movement code to run.
@@ -131,10 +136,11 @@ tags.cash_balance = tags.starting_cash
 | Any model whose own stats change over time | Yes |
 | Simple value-holder (fixed salary, fixed cost) | No |
 
-For models that have current_tick:
+For models that have `current_tick`, include it in the stats array:
 
 ```json
-"current_tick": {
+{
+  "name": "current_tick",
   "start": 0,
   "delta": "1",
   "deltaModifier": "+",
@@ -148,35 +154,39 @@ Use **delta** when the change is fixed, unconditional, and independent of other 
 
 Use **oncurrent_tickChanged** when reading from other models, performing arithmetic across stats, applying conditions, calculating derived values, or running movement code.
 
-Never approximate a derived stat with a delta. Always calculate it properly in oncurrent_tickChanged.
+Never approximate a derived stat with a delta. Always calculate it properly in `oncurrent_tickChanged`.
 
 ---
 
 ## Listeners
 
+The `listeners` field is an **array** of listener objects. Each listener object has a `name` field (the listener name) plus the listener schema.
+
 Listener names follow these conventions:
-- stat type → "on<statName>Changed"
-- state type → "<state><value>OnEnter"
+- stat type → `"on<statName>Changed"`
+- state type → `"<state><value>OnEnter"`
 - custom type → any meaningful name
 
-All code values must start with @. Code is valid JavaScript in the CasualOS bot runtime. No external libraries. Stats and states are accessed via `tags.<name>`. You may use `await`.
+All `code` values must start with `@`. Code is valid JavaScript in the CasualOS bot runtime. No external libraries. Stats and states are accessed via `tags.<name>`. You may use `await`.
 
 ### Listener types
 
 **stat** — triggered when a stat changes:
 
 ```json
-"onmonthly_revenueChanged": {
+{
+  "name": "onmonthly_revenueChanged",
   "type": "stat",
   "stat": "monthly_revenue",
   "code": "@if (tags.monthly_revenue > 10000) { changeState(thisBot, 'small_business', 'growth_phase'); }"
 }
 ```
 
-**state** — triggered when a state enters a specific value. Listener name format is `<state><value>OnEnter`:
+**state** — triggered when a state enters a specific value. Name format is `<state><value>OnEnter`:
 
 ```json
-"growth_phasesmall_businessOnEnter": {
+{
+  "name": "growth_phasesmall_businessOnEnter",
   "type": "state",
   "state": "growth_phase",
   "value": "small_business",
@@ -187,7 +197,8 @@ All code values must start with @. Code is valid JavaScript in the CasualOS bot 
 **custom** — triggered by arbitrary logic:
 
 ```json
-"high_traffic_boost": {
+{
+  "name": "high_traffic_boost",
   "type": "custom",
   "code": "@if (tags.daily_customers > 100) { tags.monthly_revenue += 2000; }"
 }
@@ -195,14 +206,14 @@ All code values must start with @. Code is valid JavaScript in the CasualOS bot 
 
 ### Accessing other models
 
-Use the manifest to identify other model names. Reference them via getBot():
+Use the manifest to identify other model names. Reference them via `getBot()`:
 
 ```javascript
 const emp = getBot('modelName', 'Employee 1');
 const salary = emp.tags.monthly_salary;
 ```
 
-You MUST use 'modelName' as the first argument. 'name' will NOT work.
+You MUST use `'modelName'` as the first argument. `'name'` will NOT work.
 
 ### Accessing position
 
@@ -354,14 +365,14 @@ Any entity can have a lifecycle — living things, machines, businesses, or asse
 
 ### Lifecycle Stats
 
-Define these on any entity with a lifecycle, alongside any other stats:
+Define these in the `stats` array on any entity with a lifecycle, alongside any other stats:
 
 ```json
-"spawn_tick":  { "start": <number, can be negative>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
-"base_speed":  { "start": <number>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
-"max_age":     { "start": <number>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
-"phase_1_age": { "start": <max_age * phase_thresholds[0]>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
-"phase_2_age": { "start": <max_age * phase_thresholds[1]>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
+{ "name": "spawn_tick",  "start": <number, can be negative>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+{ "name": "base_speed",  "start": <number>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+{ "name": "max_age",     "start": <number>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+{ "name": "phase_1_age", "start": <max_age * phase_thresholds[0]>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+{ "name": "phase_2_age", "start": <max_age * phase_thresholds[1]>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
 ```
 
 `spawn_tick` can be negative for seed entities that begin the simulation already partway through their life. Age is always derived inline — never stored as a stat:
@@ -383,12 +394,10 @@ The manifest description declares the lifecycle vocabulary. Map it onto this fou
 | Phase 2 | Near end of life | `elderly`, `critical`, `expiring` |
 | Terminal | End state | `dead`, `decommissioned`, `closed`, `expired` |
 
-Define the lifecycle state in the states block using the vocabulary from the description:
+Define the lifecycle state in the `states` array using the vocabulary from the description:
 
 ```json
-"states": {
-  "lifecycle": { "start": "<phase 0 value>" }
-}
+{ "name": "lifecycle", "start": "<phase 0 value>" }
 ```
 
 ### Lifecycle Transitions in oncurrent_tickChanged
@@ -431,13 +440,14 @@ if (tags.lifecycle !== '<terminal>') {
 
 ### Lifecycle State Listeners
 
-Add one state listener per lifecycle transition. Color choices should fit the entity — grey suits aging animals, brown suits a wilting plant, amber suits a degrading machine. The terminal listener either hides or freezes the bot depending on what the manifest description specifies.
+Add one state listener per lifecycle transition in the `listeners` array. Color choices should fit the entity — grey suits aging animals, brown suits a wilting plant, amber suits a degrading machine. The terminal listener either hides or freezes the bot depending on what the manifest description specifies.
 
 Hiding is the default terminal behavior. It removes the entity from the scene visually while keeping the bot intact for easy simulation reset. Never use `destroyBot`.
 
 **hide** (entity is removed from view but preserved for reset):
 ```json
-"lifecycle<terminal>OnEnter": {
+{
+  "name": "lifecycle<terminal>OnEnter",
   "type": "state",
   "state": "lifecycle",
   "value": "<terminal>",
@@ -447,7 +457,8 @@ Hiding is the default terminal behavior. It removes the entity from the scene vi
 
 **freeze** (entity stays visible as a historical marker, all updates stop):
 ```json
-"lifecycle<terminal>OnEnter": {
+{
+  "name": "lifecycle<terminal>OnEnter",
   "type": "state",
   "state": "lifecycle",
   "value": "<terminal>",
@@ -459,28 +470,32 @@ Every lifecycle entity **must** include a listener for the phase 0 (starting) st
 
 For the hide terminal state, also restore visibility in the phase 0 listener so hidden entities reappear on reset.
 
-Full example listener set for a living entity with the `alive → aging → elderly → dead` vocabulary:
+Full example listener array entries for a living entity with the `alive → aging → elderly → dead` vocabulary:
 
 ```json
-"lifecyclealiveOnEnter": {
+{
+  "name": "lifecyclealiveOnEnter",
   "type": "state",
   "state": "lifecycle",
   "value": "alive",
   "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\ntags[dimension] = true;\ntags.color = '#ffffff';"
 },
-"lifecycleagingOnEnter": {
+{
+  "name": "lifecycleagingOnEnter",
   "type": "state",
   "state": "lifecycle",
   "value": "aging",
   "code": "@tags.color = '#c8a882';"
 },
-"lifecycleelderlyOnEnter": {
+{
+  "name": "lifecycleelderlyOnEnter",
   "type": "state",
   "state": "lifecycle",
   "value": "elderly",
   "code": "@tags.color = '#a0a0a0';"
 },
-"lifecycledeadOnEnter": {
+{
+  "name": "lifecycledeadOnEnter",
   "type": "state",
   "state": "lifecycle",
   "value": "dead",
@@ -498,20 +513,20 @@ Any entity that can mate and produce offspring uses this pattern. Spawning is tr
 
 ### Spawning Stats
 
-Define these on any mating-capable entity alongside lifecycle stats:
+Define these in the `stats` array on any mating-capable entity alongside lifecycle stats:
 
 ```json
-"mating_cooldown":  { "start": <per model, in ticks>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
-"mating_proximity": { "start": <per model, in meters>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
-"maturity_age":     { "start": <max_age * maturity_threshold>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
+{ "name": "mating_cooldown",  "start": <per model, in ticks>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+{ "name": "mating_proximity", "start": <per model, in meters>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" },
+{ "name": "maturity_age",     "start": <max_age * maturity_threshold>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
 ```
 
 `maturity_age` is derived from `max_age` multiplied by the maturity threshold declared in the manifest description — same pattern as `phase_1_age` and `phase_2_age`.
 
-Also define `last_mated_tick` as a plain tag (not a stat) initialised to `-mating_cooldown` so the entity can mate immediately at tick 0 if conditions are met:
+Also define `last_mated_tick` in the stats array as a plain tag (not a ticking stat) initialised to `-mating_cooldown` so the entity can mate immediately at tick 0 if conditions are met:
 
 ```json
-"last_mated_tick": { "start": <-mating_cooldown>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
+{ "name": "last_mated_tick", "start": <-mating_cooldown>, "delta": "0", "deltaModifier": "+", "timeUnit": "<match manifest>" }
 ```
 
 ### Heritable Stats
@@ -557,10 +572,11 @@ Always use `pdx/pdy/pdist` variable names for the proximity check to avoid colli
 
 ## oncurrent_tickChanged — canonical example
 
-Every model with current_tick must include this listener as the sole entry point for all per-tick logic. For entities with a lifecycle, the canonical order is: **(1) lifecycle transitions, (2) speed scaling, (3) stat updates, (4) guarded movement, (5) mating**.
+Every model with `current_tick` must include this listener as the sole entry point for all per-tick logic. For entities with a lifecycle, the canonical order is: **(1) lifecycle transitions, (2) speed scaling, (3) stat updates, (4) guarded movement, (5) mating)**.
 
 ```json
-"oncurrent_tickChanged": {
+{
+  "name": "oncurrent_tickChanged",
   "type": "stat",
   "stat": "current_tick",
   "code": "@const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;\n\n// 1. Lifecycle transitions\nconst age = tags.current_tick - tags.spawn_tick;\nif (age >= tags.max_age) {\n  changeState(thisBot, 'dead', 'lifecycle');\n} else if (age >= tags.phase_2_age) {\n  changeState(thisBot, 'elderly', 'lifecycle');\n} else if (age >= tags.phase_1_age) {\n  changeState(thisBot, 'aging', 'lifecycle');\n}\n\n// 2. Speed scaling\nconst speedScale = tags.lifecycle === 'elderly' ? 0.4 : tags.lifecycle === 'aging' ? 0.75 : 1.0;\nconst speed = tags.base_speed * speedScale;\n\n// 3. Stat updates (example)\nconst rent = getBot('modelName', 'Rent Expense');\ntags.total_expenses = rent.tags.monthly_cost;\ntags.cash_balance = tags.starting_cash + (tags.monthly_revenue * tags.current_tick) - (tags.total_expenses * tags.current_tick);\n\n// 4. Guarded movement\nif (tags.lifecycle !== 'dead') {\n  if (tags.behavior === 'foraging') {\n    // Bounds derived from Pond: location {x:0,y:0}, scale {x:6,y:6}, inset 0.5m\n    const bounds = { minX: -2.5, maxX: 2.5, minY: -2.5, maxY: 2.5 };\n    const dx = (Math.random() - 0.5) * 2 * speed;\n    const dy = (Math.random() - 0.5) * 2 * speed;\n    const newX = Math.max(bounds.minX, Math.min(bounds.maxX, tags[dimension + 'X'] + dx));\n    const newY = Math.max(bounds.minY, Math.min(bounds.maxY, tags[dimension + 'Y'] + dy));\n    await animateTag(thisBot, { fromValue: { [dimension + 'X']: tags[dimension + 'X'], [dimension + 'Y']: tags[dimension + 'Y'] }, toValue: { [dimension + 'X']: newX, [dimension + 'Y']: newY }, duration: 1, easing: { type: 'sinusoidal', mode: 'inout' } });\n  }\n}\n\n// 5. Mating\nconst partner = getBot('modelName', 'Duck 2');\nif (partner) {\n  const iInitiate = tags.modelName < partner.tags.modelName;\n  if (iInitiate) {\n    const partnerAge = tags.current_tick - partner.tags.spawn_tick;\n    const canMate = tags.lifecycle !== 'dead' && partner.tags.lifecycle !== 'dead' && (tags.current_tick - tags.last_mated_tick) >= tags.mating_cooldown && age >= tags.maturity_age && partnerAge >= partner.tags.maturity_age;\n    const pdx = partner.tags[dimension + 'X'] - tags[dimension + 'X'];\n    const pdy = partner.tags[dimension + 'Y'] - tags[dimension + 'Y'];\n    const pdist = Math.sqrt(pdx * pdx + pdy * pdy);\n    if (pdist < tags.mating_proximity && canMate) {\n      tags.last_mated_tick = tags.current_tick;\n      shout('mergeModels', { model1: thisBot, model2: partner });\n    }\n  }\n}"

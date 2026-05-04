@@ -5,14 +5,15 @@ configBot.masks.menuPortal = "abMenu";
 let menuType = that ? "ab" + that.charAt(0).toUpperCase() + that.slice(1) + "Menu": "abCoreMenu"; //set up a check to see what type of menu should be occuring [core, bot, grid, inst]
 let menuSkills = getBots(menuType + "Action");
 let maxOptions = menuType == "inst" ? 7 : 5;
-let abMenuButton = {};
 
-abMenuButton.abMenu = true;
-abMenuButton.remember = tags.remember;
-abMenuButton.personality = tags.personality;
-abMenuButton.manifestation = tags.manifestation;
-abMenuButton.abMenuRefresh = "@ destroy(thisBot);";
-abMenuButton.onClick = `@ links.baseSkill.${menuType + "Action"}({bot: thisBot});`;
+const BASE_TAGS = {
+    abMenu: true,
+    remember: tags.remember,
+    personality: tags.personality,
+    manifestation: tags.manifestation,
+    abMenuRefresh: "@ destroy(thisBot);",
+    onClick: `@ links.baseSkill.${menuType + "Action"}({bot: thisBot});`,
+};
 
 let sortOrderIndex = menuSkills.length;
 for (let i = 0; i < menuSkills.length; i++)//ADD LOGIC FOR MORE OPTIONS THAN 5 : maxOptions
@@ -20,26 +21,27 @@ for (let i = 0; i < menuSkills.length; i++)//ADD LOGIC FOR MORE OPTIONS THAN 5 :
     //Allows for code to get called before the menu generates, useful for dynamically set groups or dropdowns
     if (menuSkills[i].tags[menuType + "OnBeforeCreate"]) {
         await whisper(menuSkills[i], menuType + "OnBeforeCreate");
-    } 
+    }
 
     if (menuSkills[i].tags[menuType + "Hide"]) {
         continue;
     }
-    
-    let currentSkill = menuSkills[i];
 
-    abMenuButton.baseSkill = "🔗" + currentSkill.id;
-    abMenuButton.label = currentSkill.tags[menuType + "Label"];
-    abMenuButton.formAddress = currentSkill.tags[menuType + "Icon"];
-    abMenuButton.onCreate = currentSkill.tags[menuType + "OnGenerate"];
-    abMenuButton.abMenuSortOrder = currentSkill.tags[menuType + "SortOrder"];
-    abMenuButton.color = currentSkill.tags[menuType + "Color"] ?? links.personality.tags.abBaseMenuColor;
+    const currentSkill = menuSkills[i];
+
+    const abMenuButton = {
+        ...BASE_TAGS,
+        baseSkill: "🔗" + currentSkill.id,
+        label: currentSkill.tags[menuType + "Label"],
+        formAddress: currentSkill.tags[menuType + "Icon"],
+        onCreate: currentSkill.tags[menuType + "OnGenerate"],
+        abMenuSortOrder: currentSkill.tags[menuType + "SortOrder"],
+        color: currentSkill.tags[menuType + "Color"] ?? links.personality.tags.abBaseMenuColor,
+    };
 
     const clickSound = currentSkill.tags[menuType + 'ClickSound'];
-    if (clickSound != null) {
+    if (clickSound) {
         abMenuButton.soundClick = clickSound;
-    } else {
-        delete abMenuButton.soundClick;
     }
 
     const menuItemType = currentSkill.tags[menuType + "ItemType"];
@@ -52,14 +54,10 @@ for (let i = 0; i < menuSkills.length; i++)//ADD LOGIC FOR MORE OPTIONS THAN 5 :
             if (prevDropdown == currentSkill) {
                 setTagMask(links.remember, "lastOpenedDropdown", null);
                 abMenuButton.defaultOpen = true;
-            } else {
-                delete abMenuButton.defaultOpen;
             }
         } else {
             if (currentSkill.tags[menuType + "DefaultOpen"] == true) {
                 abMenuButton.defaultOpen = true;
-            } else {
-                delete abMenuButton.defaultOpen;
             }
         }
 
@@ -69,7 +67,7 @@ for (let i = 0; i < menuSkills.length; i++)//ADD LOGIC FOR MORE OPTIONS THAN 5 :
         } else {
             abMenuButton.dropdownSortOrder = currentSkill.tags.dropdownSortOrder;
         }
-        await thisBot.abCreateMenuDropdown(abMenuButton);        
+        await thisBot.abCreateMenuDropdown(abMenuButton);
     } else if (menuItemType == "group") {
          if (currentSkill.tags.groupSortOrder == "auto") {
             abMenuButton.groupSortOrder = sortOrderIndex;

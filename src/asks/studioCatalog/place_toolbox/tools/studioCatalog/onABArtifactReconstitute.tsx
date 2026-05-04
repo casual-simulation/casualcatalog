@@ -33,6 +33,8 @@ if (data.eggParameters) {
     tags[dimension] = true;
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
+
+    thisBot.loadCasualKit();
 }
 
 const strokeBot = await thisBot.generateStroke();

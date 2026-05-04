@@ -8,4 +8,5 @@ if (!tags.studioId) {
     thisBot.onClick();
 } else {
   thisBot.handleToolMenu(that);  
+  masks.selected = true;
 }

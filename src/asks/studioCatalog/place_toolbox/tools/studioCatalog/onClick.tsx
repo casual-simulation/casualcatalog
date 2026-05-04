@@ -159,6 +159,8 @@ const shareButton = {
 if (tags.studioId) {
     ab.links.menu.abCreateMenuDropdown(moveToPlaceButton);
     ab.links.menu.abCreateMenuButton(shareButton);
+
+    masks.selected = true;
 } else {
     ab.links.menu.abCreateMenuDropdown(studioGroup);
 }

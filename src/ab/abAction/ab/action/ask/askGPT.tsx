@@ -133,7 +133,7 @@ if (!hasInquiry && storedHistory.length > 0) {
 }
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] sending to AI (depth ${callDepth}):`, aiChatMessages);
+    console.log(`[${tags.system}.${tagName}] sending to AI (depth ${callDepth}):`, ab.links.utils.abDebugFormatChatMessages(aiChatMessages));
 }
 
 // ── Call AI ─────────────────────────────────────────────────────────────
@@ -148,7 +148,7 @@ try {
 }
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] raw response:`, response);
+    console.log(`[${tags.system}.${tagName}] raw response:`, ab.links.utils.abDebugFormatChatMessages(response));
 }
 
 if (requestErrorMsg || !response) {
@@ -171,7 +171,7 @@ const functionCalls = thisBot.abAskHelperParseFunctionCalls({ response, askConte
 if (functionCalls === null) {
     // Response did not contain detectable function calls. Attempting to extract code from response for patch bot.
     if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] Response did not contain detectable function calls. Attempting to extract code from response for patch bot. Response:`, response);
+        console.log(`[${tags.system}.${tagName}] Response did not contain detectable function calls. Attempting to extract code from response for patch bot. Response:`, ab.links.utils.abDebugFormatChatMessages(response));
     }
     const extractedCode = thisBot.abAskHelperExtractCode({ response, askContext });
     await thisBot['abAskToolMakePatch']({ args: { code: extractedCode }, askContext });

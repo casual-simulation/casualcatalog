@@ -1,5 +1,5 @@
 const dimension = tags.dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;
-const pos = ab.links.shell.findOpenPositionAround({center: new Vector2(tags[dimension + 'X'], tags[dimension + 'Y']), dimension: dimension})
+const pos = ab.links.utils.findOpenPositionAround({center: new Vector2(tags[dimension + 'X'], tags[dimension + 'Y']), dimension: dimension, innerRadius: 3, radius: 5})
 
 await ab.links.search.onLookupAskID({
     askID: 'casual_kit_loader',
@@ -15,3 +15,4 @@ await ab.links.search.onLookupAskID({
         }
     }
 })
+

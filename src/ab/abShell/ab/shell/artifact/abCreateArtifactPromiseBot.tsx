@@ -42,7 +42,7 @@ const matchByInstanceId = (listenerThat) =>
     listenerThat?.abArtifactInstanceID === abArtifactInstanceID ||
     listenerThat?.abArtifactInstanceIDPrevious === abArtifactInstanceID;
 
-const reconstituteResult = await ab.links.utils.awaitArtifactReconstitution({
+const reconstituteResult = await ab.links.artifact.awaitArtifactReconstitution({
     matchSuccess: matchByInstanceId,
 });
 

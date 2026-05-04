@@ -56,7 +56,7 @@ if (type === 'kit') {
     // Wait for the kit's reconstitute before reading the catalog, otherwise
     // the kit's tool_array won't be populated yet. Listen before triggering
     // the lookup to avoid missing the event. Timeouts are soft-handled.
-    const reconstitutionPromise = ab.links.utils.awaitArtifactReconstitution({
+    const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
         matchSuccess: (e) => {
             return e?.abArtifactName === 'kit' && e?.shardBots?.some((b) => {
                 return b?.tags?.label === expectedLabel &&

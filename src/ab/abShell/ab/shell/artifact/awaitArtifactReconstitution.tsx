@@ -16,7 +16,7 @@
 // Example:
 //
 //   try {
-//       await ab.links.utils.awaitArtifactReconstitution({
+//       await ab.links.artifact.awaitArtifactReconstitution({
 //           matchSuccess: e => e?.abArtifactName === 'kit' && e.shardBots?.some(b => b?.tags?.label === expectedLabel),
 //           matchFailure: e => e?.abArtifactName === 'kit',
 //           timeoutMs: 15000,

@@ -53,62 +53,27 @@ if (type === 'kit') {
     const studioId = argStudioId;
     const expectedLabel = toolboxData.title ?? toolboxData.name;
 
-    // The kit_loader askID we're about to lookup hatches the loader bot, which
-    // fire-and-forgets `abCreateArtifactPromiseBot` for the `kit` artifact and
-    // destroys itself. The kit's `tool_array` is only populated once the kit
-    // artifact's `onABArtifactReconstitute` runs. To return an accurate updated
-    // catalog, wait for the matching reconstitute broadcast before reading it.
-    // Mirrors the pattern in abCreateArtifactPromiseBot.
-    const RECONSTITUTE_TIMEOUT_MS = 15000;
-
-    const matchesExpectedKit = (shardBots) => {
-        if (!Array.isArray(shardBots)) return false;
-        return shardBots.some(b => {
-            if (!b || !b.tags) return false;
-            if (b.tags.abArtifactName !== 'kit') return false;
-            if (b.tags.label !== expectedLabel) return false;
-            const botStudioId = b.tags.studioId ?? null;
-            return botStudioId === (studioId ?? null);
-        });
-    };
-
-    let cleanupListeners = () => {};
-    const waitForReconstitution = new Promise((resolve, reject) => {
-        const handleReconstituted = (listenerThat) => {
-            if (listenerThat?.abArtifactName !== 'kit') return;
-            if (!matchesExpectedKit(listenerThat?.shardBots)) return;
-            cleanupListeners();
-            resolve(listenerThat);
-        };
-
-        const handleReconstitutionFailed = (listenerThat) => {
-            if (listenerThat?.abArtifactName !== 'kit') return;
-            // The failed event doesn't carry the new bots, so we can't filter
-            // by label/studioId. Accept any kit failure during this window —
-            // racing failures from unrelated kits are unlikely in practice.
-            cleanupListeners();
-            reject(new Error(listenerThat?.errorMessage ?? 'kit reconstitution failed'));
-        };
-
-        cleanupListeners = () => {
-            os.removeBotListener(thisBot, 'onAnyABArtifactReconstituted', handleReconstituted);
-            os.removeBotListener(thisBot, 'onAnyABArtifactReconstitutionFailed', handleReconstitutionFailed);
-        };
-
-        os.addBotListener(thisBot, 'onAnyABArtifactReconstituted', handleReconstituted);
-        os.addBotListener(thisBot, 'onAnyABArtifactReconstitutionFailed', handleReconstitutionFailed);
+    // Wait for the kit's reconstitute before reading the catalog, otherwise
+    // the kit's tool_array won't be populated yet. Listen before triggering
+    // the lookup to avoid missing the event. Timeouts are soft-handled.
+    const reconstitutionPromise = ab.links.utils.awaitArtifactReconstitution({
+        matchSuccess: (e) => {
+            return e?.abArtifactName === 'kit' && e?.shardBots?.some((b) => {
+                return b?.tags?.label === expectedLabel &&
+                    (b?.tags?.studioId ?? null) === (studioId ?? null);
+            });
+        },
+        matchFailure: (e) => {
+            return e?.abArtifactName === 'kit';
+        },
+        timeoutMs: 15000,
+    }).catch(e => {
+        if (e?.timedOut) {
+            console.warn(`[${tags.system}.${tagName}] kit ${id} reconstitute did not arrive within timeout; returning catalog as-is.`);
+            return null;
+        }
+        throw e;
     });
-
-    let timeoutHandle;
-    const waitWithTimeout = Promise.race([
-        waitForReconstitution.then(() => ({ timedOut: false })),
-        new Promise(resolve => {
-            timeoutHandle = setTimeout(() => {
-                cleanupListeners();
-                resolve({ timedOut: true });
-            }, RECONSTITUTE_TIMEOUT_MS);
-        }),
-    ]);
 
     try {
         const lookupResult: ABLookupAskIDResult = await ab.links.search.onLookupAskID({
@@ -123,27 +88,18 @@ if (type === 'kit') {
         });
 
         if (lookupResult && lookupResult.success === false) {
-            cleanupListeners();
-            if (timeoutHandle) clearTimeout(timeoutHandle);
             const errorMessage = lookupResult.errorMessage ?? 'kit lookup failed';
             console.error(`[${tags.system}.${tagName}] failed to load kit ${id}. Error: ${errorMessage}`);
             return { success: false, type, id, errorMessage };
         }
 
-        const waitOutcome = await waitWithTimeout;
-        if (timeoutHandle) clearTimeout(timeoutHandle);
-
-        if (waitOutcome.timedOut) {
-            console.warn(`[${tags.system}.${tagName}] kit ${id} reconstitute did not arrive within ${RECONSTITUTE_TIMEOUT_MS}ms; returning catalog as-is.`);
-        }
+        await reconstitutionPromise;
 
         shout("abMenuRefresh");
 
         const catalog = thisBot.abAskToolGetCatalog();
         return { success: true, type, id, catalog };
     } catch (e) {
-        cleanupListeners();
-        if (timeoutHandle) clearTimeout(timeoutHandle);
         const errorMessage = ab.links.utils.getErrorMessage(e);
         console.error(`[${tags.system}.${tagName}] failed to load kit ${id}. Error: ${errorMessage}`);
         return { success: false, type, id, errorMessage };

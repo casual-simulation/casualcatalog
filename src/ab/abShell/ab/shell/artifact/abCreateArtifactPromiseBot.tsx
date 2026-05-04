@@ -33,39 +33,17 @@ botData[promiseId] = {
     }
 }
 
-// Create artifact promise through abCreateBots. 
+// Create artifact promise through abCreateBots.
 // This will trigger artifact's onABPreprocessBeforeCreate and it will find
 // this artifact promise and use the data to reconstitute it.
 links.create.abCreateBots({ botData, sourceEvent: 'create_artifact_promise' });
 
-const waitForReconstitution = new Promise((resolve, reject) => {
-    function cleanup() {
-        os.removeBotListener(thisBot, 'onAnyABArtifactReconstituted', handleAnyABArtifactReconstituted);
-        os.removeBotListener(thisBot, 'onAnyABArtifactReconstitutionFailed', handleAnyABArtifactReconstitutionFailed);
-    }
+const matchByInstanceId = (listenerThat) =>
+    listenerThat?.abArtifactInstanceID === abArtifactInstanceID ||
+    listenerThat?.abArtifactInstanceIDPrevious === abArtifactInstanceID;
 
-    function handleAnyABArtifactReconstituted(listenerThat) {
-        if (listenerThat.abArtifactInstanceID === abArtifactInstanceID ||
-            listenerThat.abArtifactInstanceIDPrevious === abArtifactInstanceID
-        ) {
-            cleanup();
-            resolve(listenerThat);
-        }
-    }
-
-    function handleAnyABArtifactReconstitutionFailed(listenerThat) {
-        if (listenerThat.abArtifactInstanceID === abArtifactInstanceID ||
-            listenerThat.abArtifactInstanceIDPrevious === abArtifactInstanceID
-        ) {
-            cleanup();
-            reject(new Error(listenerThat.errorMessage));
-        }
-    }
-
-    os.addBotListener(thisBot, 'onAnyABArtifactReconstituted', handleAnyABArtifactReconstituted);
-    os.addBotListener(thisBot, 'onAnyABArtifactReconstitutionFailed', handleAnyABArtifactReconstitutionFailed);
-})
-
-const reconstituteResult = await waitForReconstitution;
+const reconstituteResult = await ab.links.utils.awaitArtifactReconstitution({
+    matchSuccess: matchByInstanceId,
+});
 
 return reconstituteResult.shardBots;

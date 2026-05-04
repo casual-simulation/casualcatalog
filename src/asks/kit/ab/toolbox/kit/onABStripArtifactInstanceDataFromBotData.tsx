@@ -14,3 +14,5 @@ delete data.tags[data.tags.dimension];
 delete data.tags.dimension;
 delete data.tags.tool_array;
 delete data.tags.studioID;
+
+data.tags.system = `ab.toolbox.kit`;

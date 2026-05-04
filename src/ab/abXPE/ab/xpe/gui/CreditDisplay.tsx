@@ -195,7 +195,7 @@ const CreditDisplay = forwardRef(({
                         className="credit-float"
                         style={{ color: f.value > 0 ? '#22c55e' : '#ef4444' }}
                     >
-                        {f.value > 0 ? '+' : ''}{f.value}
+                        {f.value > 0 ? '+' : ''}{f.value.toLocaleString()}
                     </span>
                 ))}
             </div>

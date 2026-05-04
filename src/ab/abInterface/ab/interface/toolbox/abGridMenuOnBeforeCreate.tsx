@@ -1,9 +1,9 @@
-if (ab.links.personality.tags.abCatalogName) {
-    setTagMask(thisBot, "abGridMenuLabel", ab.links.personality.tags.abCatalogName);
-}
+// if (ab.links.personality.tags.abCatalogName) {
+//     setTagMask(thisBot, "abGridMenuLabel", ab.links.personality.tags.abCatalogName);
+// }
 
 
-//NEW
+// //NEW
 const dropdownOptions = [];
 
 const possibleToolboxes = links.remember.tags.toolbox_array;
@@ -19,20 +19,29 @@ for (let i = 0; i < possibleToolboxes.length; i++)
     menuBot.formAddress = "add_box";
     menuBot.manifestation = tags.manifestation;
     menuBot.onClick = `@ 
-        links.manager.toolbox_add({toolboxData: tags.toolbox_data, gridData: tags.gridData}); 
-        setTagMask(ab.links.remember, "lastOpenedDropdown", null);
+        // links.manager.toolbox_add({toolboxData: tags.toolbox_data, gridData: tags.gridData}); 
+        // setTagMask(ab.links.remember, "lastOpenedDropdown", null);
+        await ab.links.search.onLookupAskID({
+            askID: tags.toolbox_data.name,
+            eggParameters: {
+                gridInformation: {
+                    toolbox_name: tags.toolbox_data.name,
+                    ...tags.gridData
+                }
+            }
+        })
         shout("abMenuRefresh");`;
     
     const activeToolbox = possibleToolboxes[i];
-    const extantBot = activeToolbox.studio ? getBot("abIDOrigin", activeToolbox.name): getBot(activeToolbox.name, true);
+    // const extantBot = activeToolbox.studio ? getBot("abIDOrigin", activeToolbox.name): getBot(activeToolbox.name, true);
 
     menuBot.toolbox_data = activeToolbox;
     menuBot.label = activeToolbox.title ?? activeToolbox.name;
 
-    if (!extantBot)
-    {
+    // if (!extantBot)
+    // {
         dropdownOptions.push(menuBot);
-    }
+    // }
 }
 
 masks.dropdownOptions = dropdownOptions;

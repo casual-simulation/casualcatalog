@@ -1,5 +1,6 @@
 const type: 'kit' | 'tool' = that?.args?.type;
 const id: string = that?.args?.id;
+const argStudioId: string | null = that?.args?.studioId ?? null;
 const gridDimension: string = that?.args?.gridDimension ?? ab.links.remember.tags.abActiveDimension ?? 'home';
 const gridPositionX: number = that?.args?.gridPositionX ?? 0;
 const gridPositionY: number = that?.args?.gridPositionY ?? 0;
@@ -33,7 +34,15 @@ async function collectConfiguratorProperties(bots: Bot[]): Promise<ABConfigurato
 }
 
 if (type === 'kit') {
-    const toolboxData = ab.links.remember.tags.toolbox_array?.find(toolBox => toolBox.name == id);
+    // Find the toolbox in the catalog. studioId present → that studio's
+    // studioCatalog bot. studioId absent → the global remember catalog.
+    let toolboxData;
+    if (argStudioId) {
+        const catalog = getBot(byTag("abArtifactName", "studioCatalog"), byTag("studioId", argStudioId));
+        toolboxData = catalog?.tags.toolbox_array?.find(toolBox => toolBox.name == id);
+    } else {
+        toolboxData = ab.links.remember.tags.toolbox_array?.find(toolBox => toolBox.name == id);
+    }
 
     if (!toolboxData) {
         const errorMessage = `kit '${id}' not found in catalog`;
@@ -41,8 +50,28 @@ if (type === 'kit') {
         return { success: false, type, id, errorMessage };
     }
 
+    const studioId = argStudioId;
+
     try {
-        await links.toolbox.toolbox_add({ toolboxData, gridData });
+        const lookupResult: ABLookupAskIDResult = await ab.links.search.onLookupAskID({
+            askID: id,
+            eggParameters: {
+                studioId,
+                gridInformation: {
+                    toolbox_name: toolboxData.title ?? toolboxData.name,
+                    ...gridData,
+                },
+            },
+        });
+
+        shout("abMenuRefresh");
+
+        if (lookupResult && lookupResult.success === false) {
+            const errorMessage = lookupResult.errorMessage ?? 'kit lookup failed';
+            console.error(`[${tags.system}.${tagName}] failed to load kit ${id}. Error: ${errorMessage}`);
+            return { success: false, type, id, errorMessage };
+        }
+
         const catalog = thisBot.abAskToolGetCatalog();
         return { success: true, type, id, catalog };
     } catch (e) {
@@ -53,22 +82,25 @@ if (type === 'kit') {
 } else if (type === 'tool') {
     let isArtifact = false;
 
-    // find the toolbox for this ask, to determine if its an artifact
-    const toolbox = getBot(byTag("tool_array", tool_arr => {
-        if (tool_arr.find(tool => tool.targetAB == id)) {
-            return true;
-        }
-    }));
+    // Find a kit in the scene containing this tool. Scope by studioId: when
+    // given, restrict to kits from that studio; when omitted, restrict to kits
+    // with no studioId (sourced from the global remember catalog).
+    const toolbox = getBot(
+        byTag("tool_array", tool_arr => Array.isArray(tool_arr) && tool_arr.find(tool => tool.targetAB == id)),
+        argStudioId ? byTag("studioId", argStudioId) : bot => !bot.tags.studioId,
+    );
 
     if (toolbox) {
         isArtifact = toolbox.tags.tool_array.find(tool => tool.targetAB == id)?.artifact;
     }
 
+    const toolboxBot = toolbox ? getLink(toolbox) : null;
+
     if (isArtifact) {
         const abArtifactShard = {
             data: {
                 eggParameters: {
-                    toolboxBot: null,
+                    toolboxBot,
                     gridInformation: gridData,
                 }
             },
@@ -101,8 +133,8 @@ if (type === 'kit') {
                 askID: id,
                 sourceEvent: 'tool',
                 eggParameters: {
-                    toolboxBot: null,
-                    gridInformation: ab.links.remember.tags.abGridFocus
+                    toolboxBot,
+                    gridInformation: gridData,
                 },
             });
 

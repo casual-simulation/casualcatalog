@@ -255,6 +255,7 @@ Each entry has the following shape:
 - `type`: `"kit"` or `"tool"`
 - `name`: display name
 - `id`: identifier used to load it
+- `studioId`: the studio this entry is sourced from. For kits, two studios may list a kit with the same `name` but different contents. For tools, this is inherited from the kit they live in, so the same tool from two different studios appears as two distinct entries. Pass this back to `loadFromCatalog` so the entry is loaded from the right studio.
 - `description`: human-readable description of what it does
 - `agentReady` *(tools only)*: `true` if the tool is configured for agent use — only invoke tools where this is `true`
 
@@ -268,11 +269,12 @@ Load a kit or tool from the catalog into the current inst.
 **Only call this function when the user explicitly asks you to load or install a specific kit or tool by name.** Do not call it speculatively, as a convenience, or because you think it might be useful — wait for a clear direct instruction from the user.
 
 ```json
-{ "function": { "name": "loadFromCatalog", "args": { "type": "kit" | "tool", "id": "<string>", "gridDimension": "<string>", "gridPositionX": <number>, "gridPositionY": <number> } } }
+{ "function": { "name": "loadFromCatalog", "args": { "type": "kit" | "tool", "id": "<string>", "studioId": "<string>", "gridDimension": "<string>", "gridPositionX": <number>, "gridPositionY": <number> } } }
 ```
 
 - `type` *(required)*: `"kit"` to load a kit (toolbox container); `"tool"` to load an individual tool
 - `id` *(required)*: the `id` value from the `getCatalog` result
+- `studioId` *(optional)*: pass through the exact `studioId` field from the catalog entry. When the entry has a `studioId`, the load is scoped to that studio's catalog. When the entry's `studioId` is absent or `null`, omit this arg — the load is scoped to the global remember catalog. There is no fallback between the two; the arg must match the entry.
 - `gridDimension` *(optional)*: dimension to place the loaded content in — defaults to the user's active dimension
 - `gridPositionX` / `gridPositionY` *(optional)*: grid coordinates — default to `0, 0`
 

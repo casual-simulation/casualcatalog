@@ -15,3 +15,4 @@ await ab.links.search.onLookupAskID({
         }
     }
 })
+

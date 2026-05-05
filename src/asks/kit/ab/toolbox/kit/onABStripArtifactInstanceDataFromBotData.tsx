@@ -14,5 +14,9 @@ delete data.tags[data.tags.dimension];
 delete data.tags.dimension;
 delete data.tags.tool_array;
 delete data.tags.studioID;
+delete data.tags.armMeshPath;
+delete data.tags.armColor;
+delete data.tags.studioId;
+delete data.tags.lineTo;
 
 data.tags.system = `ab.toolbox.kit`;

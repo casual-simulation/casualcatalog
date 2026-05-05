@@ -9,6 +9,7 @@ tags.tool_array = data.tool_array;
 tags.abIgnore = true;
 tags.system = `ab.toolbox.${data.label ?? 'kit'}`;
 tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
+tags.armColor = abPersonality?.tags.abBaseStrokeColor;
 
 tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_filledStroke.glb");
 

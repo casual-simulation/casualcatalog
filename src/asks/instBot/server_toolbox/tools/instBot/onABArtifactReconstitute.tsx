@@ -17,9 +17,9 @@ tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'b
 
 tags.studioStationID = data.studioStationID;
 
-tags.strokeBot = null;
-tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/inst_cylinder_16.glb");
-tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/inst_cylinder_16_stroke.glb");
+// tags.strokeBot = null;
+tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/cylindar_16_unlit_both.glb");
+// tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/inst_cylinder_16_stroke.glb");
 
 tags.lineTo = data.lineTo ?? [];
 
@@ -84,6 +84,6 @@ if (data.expiredInstBot) {
     thisBot.expireInstBot();
 }
 
-const strokeBot = await thisBot.generateStroke();
-tags.strokeBot = getLink(strokeBot);
+// const strokeBot = await thisBot.generateStroke();
+// tags.strokeBot = getLink(strokeBot);
 shout('clearInstCreatorMenu');

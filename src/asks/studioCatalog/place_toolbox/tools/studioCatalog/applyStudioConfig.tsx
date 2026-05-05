@@ -9,9 +9,11 @@ if (hasCustomMesh) {
     }
 
     if (tags.strokeBot) {
-        destroy(tags.strokeBot);
+        destroy(links.strokeBot);
         tags.strokeBot = null;
     }
+
+    tags.scaleMode = null; // Need to do this so that the floating billboard is positioned correctly.
 }
 
 if (instStudioConfig?.studio_catalog_scale != null) {

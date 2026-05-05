@@ -16,6 +16,7 @@ tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPerso
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black'
 
 tags.studioId = data.studioId;
+tags.originType = data.originType;
 
 tags.strokeBot = null;
 tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/inst_cylinder_16.glb");

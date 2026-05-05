@@ -15,6 +15,7 @@ const shard: ABArtifactShard = {
         scale: tags.scale,
         expiredInstBot: tags.expiredInstBot,
         studioId: tags.studioId,
+        originType: tags.originType,
 
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,

@@ -23,3 +23,4 @@ delete data.tags.color;
 delete data.tags.scale;
 delete data.tags.expiredInstBot;
 delete data.tags.studioId;
+delete data.tags.originType;

@@ -3,7 +3,7 @@ if (!tags.studioId) {
     return;
 }
 
-const catalogBots = getBots(byTag("studioCatalog", true), byTag("studioId", tags.studioId));
+const catalogBots = getBots(byTag((tags.originType ?? "studioCatalog"), true), byTag("studioId", tags.studioId));
 
 if (catalogBots.length === 0) {
     return;

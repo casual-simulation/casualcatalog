@@ -30,8 +30,7 @@ ab.links.sound.abPlaySound({ value: ab.links.sound.tags.defaultCreateSound });
 
 const newBotPosition = getBotPosition(newBot, gridInformation.dimension);
 
-shout("abMenuRefresh");
-links.manifestation.abClick();
+links.manifestation.abClick({ reset: true });
 
 const armBot = ab.links.arm_tool.abCreateArm({
     originBot: links.manifestation.links.abBot,

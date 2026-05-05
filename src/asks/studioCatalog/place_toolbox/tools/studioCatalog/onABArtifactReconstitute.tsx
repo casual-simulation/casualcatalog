@@ -45,6 +45,16 @@ if (formAddress.startsWith('https://')) {
     tags.formAddress = ab.abBuildCasualCatalogURL(formAddress);
 }
 
+if (instStudioConfig?.studio_catalog_scale != null) {
+    tags.scaleX = instStudioConfig.studio_catalog_scale;
+    tags.scaleY = instStudioConfig.studio_catalog_scale;
+    tags.scaleZ = instStudioConfig.studio_catalog_scale;
+}
+
+if (instStudioConfig?.studio_catalog_color) {
+    tags.color = instStudioConfig.studio_catalog_color;
+}
+
 const hasStrokeSet = 'strokeFormAddress' in data;
 
 if (hasStrokeSet) {

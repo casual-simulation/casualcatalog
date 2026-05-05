@@ -41,6 +41,7 @@ if(state)
 }
 else
 {
+    await os.closeCircleWipe();
     configBot.tags.mapPortal = "${currentDim == "blueprint" ? "home" : currentDim}";
     configBot.tags.miniMapPortal = null;
 }`;

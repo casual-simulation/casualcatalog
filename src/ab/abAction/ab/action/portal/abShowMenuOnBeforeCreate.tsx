@@ -41,6 +41,7 @@ if(state)
 }
 else
 {
+    await os.closeCircleWipe();
     configBot.tags.mapPortal = "${currentDim == "blueprint" ? "home" : currentDim}";
     configBot.tags.miniMapPortal = null;
 }`;
@@ -66,6 +67,7 @@ if(state)
 } 
 else
 {
+    await os.closeCircleWipe();
     configBot.tags.gridPortal = "${currentDim == "blueprint" ? "home" : currentDim}"; configBot.tags.mapPortal = null;
 }`;
 
@@ -91,7 +93,9 @@ if(state)
 } 
 else
 {
+    await os.closeCircleWipe();
     configBot.tags.gridPortal = "blueprint"; configBot.tags.mapPortal = null;
+    await os.openCircleWipe();
 }
 
 links.skillBot.abBlueprint();`;
@@ -118,6 +122,7 @@ if(state)
 } 
 else
 { 
+    await os.closeCircleWipe();
     configBot.tags.sheetPortal = "${currentDim}";
 }`;
 
@@ -141,6 +146,7 @@ if(state)
 } 
 else
 { 
+    await os.closeCircleWipe();
     configBot.tags.systemPortal = true;
 }`;
 

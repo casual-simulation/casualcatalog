@@ -1,1 +1,1 @@
-thisBot.updateLineTo();
+thisBot.determineLineTo();

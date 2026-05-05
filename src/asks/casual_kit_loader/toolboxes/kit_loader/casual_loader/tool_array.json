@@ -8,7 +8,8 @@
         "name": "blank egg",
         "studio": "AB",
         "targetAB": "eggConfigurator",
-        "formAddress": "egg"
+        "formAddress": "egg",
+        "artifact": true
     },
     {
         "name": "blank inst",

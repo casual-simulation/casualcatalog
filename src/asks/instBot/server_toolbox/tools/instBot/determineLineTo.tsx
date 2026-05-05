@@ -3,13 +3,7 @@ if (!tags.studioId) {
     return;
 }
 
-const catalogBots = [];
-
-getBots(b => {
-    if (b.tags.abArtifactName === 'studioCatalog' && b.tags.studioId === tags.studioId) {
-        catalogBots.push(b);
-    }
-});
+const catalogBots = getBots(byTag("studioCatalog", true), byTag("studioId", tags.studioId));
 
 if (catalogBots.length === 0) {
     return;

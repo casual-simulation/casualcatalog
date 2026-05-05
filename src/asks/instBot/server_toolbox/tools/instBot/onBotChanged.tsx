@@ -5,5 +5,5 @@ if (that.tags.includes("strokeColor")) {
 }
 
 if (that.tags.includes(tags.dimension)) {
-    links.strokeBot.tags[tags.dimension] = tags[tags.dimension];
+    links.strokeBot?.tags[tags.dimension] = tags[tags.dimension];
 }

@@ -10,8 +10,8 @@ await ab.links.search.onLookupAskID({
     askID: 'casual_kit_loader',
     eggParameters: {
         studioId: tags.studioId,
+        toolbox_name: 'casual kit',
         gridInformation: {
-            toolbox_name: 'casual kit',
             dimension: dimension,
             position: {
                 x: pos.x,

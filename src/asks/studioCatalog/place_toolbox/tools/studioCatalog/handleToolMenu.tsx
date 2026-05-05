@@ -53,8 +53,8 @@ if (toolboxes.length > 0) {
                     askID: tags.targetAB,
                     eggParameters: {
                         studioId: tags.studioId,
+                        toolbox_name: tags.toolboxTitle,
                         gridInformation: {
-                            toolbox_name: tags.toolboxTitle,
                             ...tags.gridInformation
                         }
                     }

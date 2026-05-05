@@ -63,7 +63,7 @@ if (tags.strokeFormAddress) {
     tags.strokeBot = getLink(strokeBot);
 }
 
-if (authBot) {
+if (!tags.studioId && authBot) {
     if (!configBot.tags.user_studios) {
         await ab.abRefreshStudios();
     }
@@ -80,4 +80,7 @@ if (authBot) {
 
 shout('onStudioCatalogReconstituted', thisBot);
 
-thisBot.onClick();
+if (!tags.studioId) {
+    // If the bot doesn't have a studioId, automatically open the studio select menu.
+    thisBot.onClick();
+}

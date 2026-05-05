@@ -6,10 +6,11 @@ tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPerso
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'white';
 tags.studioId = data.studioId;
 tags.tool_array = data.tool_array;
-tags.formAddress = await ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_holographic.glb");
 tags.abIgnore = true;
 tags.system = `ab.toolbox.${data.label ?? 'kit'}`;
 tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
+
+tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_filledStroke.glb");
 
 //Place bot correctly
 if (data.dimensionData) {

@@ -1,16 +1,24 @@
 [
     {
         "name": "blank bot",
-        "targetAB": "blankBot"
+        "targetAB": "blankBot",
+        "formAddress": "cube"
     },
     {
         "name": "blank egg",
         "studio": "AB",
-        "targetAB": "eggConfigurator",
-        "artifact": true
+        "targetAB": "studioEggWizard",
+        "formAddress": "egg"
+    },
+    {
+        "name": "blank inst",
+        "studio": "AB",
+        "targetAB": "instCreatorWizard",
+        "formAddress": "https://auth-aux-prod-filesbucket-682397690660.s3.amazonaws.com/64beb439-12b9-4155-b388-db03b7ec1c9c/b420a437d46113ec17929f3577909c88366f2d568f7734ea43f573fb53e2d1e8.png"
     },
     {
         "name": "aux importer",
-        "targetAB": "abAuxImporter"
+        "targetAB": "abAuxImporter",
+        "formAddress": "download"
     }
 ]

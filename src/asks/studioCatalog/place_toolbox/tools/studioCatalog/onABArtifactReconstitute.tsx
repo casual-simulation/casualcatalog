@@ -8,11 +8,13 @@ tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black';
 tags.studioId = data.studioId;
+tags.strokeBot = null;
 tags.prevBotID = data.prevBotID;
 tags.respawnPoint = data.respawnPoint;
 tags.toolbox_array = data.toolbox_array ?? ab.links.remember.tags.toolbox_array;
 
-tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/hexagon_unlit.glb");
+tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/hexagon.glb");
+tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/hexagon_stroke.glb");
 
 tags.abIgnore = true;
 
@@ -32,6 +34,9 @@ if (data.eggParameters) {
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
 }
+
+const strokeBot = await thisBot.generateStroke();
+tags.strokeBot = getLink(strokeBot);
 
 shout("onStudioCatalogReconstituted", thisBot);
 

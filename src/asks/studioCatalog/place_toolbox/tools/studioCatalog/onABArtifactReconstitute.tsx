@@ -13,7 +13,7 @@ tags.prevBotID = data.prevBotID;
 tags.respawnPoint = data.respawnPoint;
 tags.toolbox_array = data.toolbox_array ?? ab.links.remember.tags.toolbox_array;
 tags.armColor = data.armColor ?? abPersonality?.tags.abBaseStrokeColor;
-tags.armMeshPath = data.armMeshPath ?? ab.links.remember.abArmMeshPath;
+tags.armMeshPath = data.armMeshPath ?? ab.links.remember.tags.abArmMeshPath;
 tags.abIgnore = true;
 
 if (data.dimensionData) {

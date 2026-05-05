@@ -11,37 +11,36 @@ const BASE_TAGS = {
     })
 }
 
-ab.links.menu.abCreateMenuGroup({
+const studioGroup = {
     ...BASE_TAGS,
-    groupSortOrder: 1,
+    label: 'select studio:',
+    dropdownSortOrder: 1,
+    defaultOpen: true,
     configuratorBot: getLink(thisBot),
-    menuItems: [
-        {
-            label: 'enter studio id:',
-            menuItemLabelStyle: {
-                'font-weight': 'bold',
-            },
-            menuItemType: 'text',
-        },
-        {
-            menuItemType: 'input',
-            menuItemShowSubmitWhenEmpty: true,
-            menuItemText: tags.studioId,
-            onSubmit: ListenerString(() => {
-                const { text } = that;
+    dropdownOptions: []
+}
 
+const studioListResponse = await os.listUserStudios();
+
+if (studioListResponse.success) {
+    for (const studio of studioListResponse.studios) {
+        studioGroup.dropdownOptions.push({
+            ...BASE_TAGS,
+            configuratorBot: getLink(thisBot),
+            label: studio.displayName.toLocaleLowerCase(),
+            formAddress: 'radio_button_unchecked',
+            studioData: studio,
+            onClick: ListenerString(() => {
                 shout('abStudioConfiguratorMenuReset');
-
-                if (text) {
-                    setTagMask(links.configuratorBot, 'studioId', text, 'local');
-                    ab.links.configurator.abOpenConfigurator({ 
-                        abConfiguratorGroup: 'abStudioConfigurator', 
-                        abConfiguratorTitle: `configure studio:\n${text}`,
-                        bots: [links.configuratorBot] });
-                } else {
-                    setTagMask(links.configuratorBot, 'studioId', null, 'local');
-                }
+                setTagMask(links.configuratorBot, 'studioId', tags.studioData.studioId, 'local');
+                ab.links.configurator.abOpenConfigurator({
+                    abConfiguratorGroup: 'abStudioConfigurator',
+                    abConfiguratorTitle: `configure studio:\n${tags.studioData.displayName}`,
+                    bots: [links.configuratorBot]
+                });
             })
-        }
-    ]
-})
+        });
+    }
+}
+
+ab.links.menu.abCreateMenuDropdown(studioGroup);

@@ -1,24 +1,21 @@
-const dimension = configBot.tags.mapPortal ? "map" : "grid";
+const dimension = tags.dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+const isMap = configBot.tags.mapPortal ? true : false;
 
 let gridInfo;
-if (dimension == "map") {
-    gridInfo = {    
-        "dimension":tags.dimension,
-        "position":
-            {
-                "x":tags[tags.dimension + "X"] + ((Math.floor(Math.random() * 5) + 2) / 10000),
-                "y":tags[tags.dimension + "Y"] + ((Math.floor(Math.random() * 5) + 2) / 10000)
-            }
-    }
-} else {
-    gridInfo = {
-        "dimension":tags.dimension,
-        "position":
-            {
-                "x":tags[tags.dimension + "X"] + Math.floor(Math.random() * 5) + 2,
-                "y":tags[tags.dimension + "Y"] + Math.floor(Math.random() * 5) + 2
-            }
-    }
+
+const inRad = isMap ? .0001 : 3;
+const rad = isMap ? .0005 : 5;
+const space = isMap ? .0005 : 1;
+
+const pos = ab.links.utils.findOpenPositionAround({center: new Vector2(tags[dimension + 'X'], tags[dimension + 'Y']), dimension: dimension, innerRadius: inRad, radius: rad, spacing: space})
+
+gridInfo = {    
+    "dimension": dimension,
+    "position":
+        {
+            "x": pos.x,
+            "y": pos.y
+        }
 }
 
 ab.links.search.onLookupAskID({

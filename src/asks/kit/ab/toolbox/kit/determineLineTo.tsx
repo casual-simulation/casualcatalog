@@ -1,22 +1,38 @@
-const catalogBots = getBots(byTag("studioId", that), byTag("studioCatalog", true));
-if (!catalogBots) {
+if (!tags.studioId) {
+    tags.lineTo = null;
     return;
 }
+
+const catalogBots = [];
+const sameKitBots = [];
+
+getBots(b => {
+    if (b.tags.abArtifactName === 'studioCatalog' && b.tags.studioId === tags.studioId) {
+        catalogBots.push(b);
+    } else if (b !== thisBot && b.tags.abArtifactName === 'kit' && b.tags.label === tags.label && b.tags.studioId === tags.studioId) {
+        sameKitBots.push(b);
+    }
+});
+
+if (catalogBots.length === 0) {
+    return;
+}
+
+const takenCatalogIds = new Set(sameKitBots.map(b => b.tags.lineTo).filter(Boolean));
+
+const candidates = catalogBots.filter(c => !takenCatalogIds.has(getID(c)));
+const pool = candidates.length > 0 ? candidates : catalogBots;
 
 let closest;
 let closestDistance;
 
-for (let i = 0; i < catalogBots.length; ++i) {
-    const distance = Math.sqrt((catalogBots[i].tags[(tags.dimension ?? 'home') + 'X'] - tags[(tags.dimension ?? 'home') + 'X']) ** 2 + (catalogBots[i].tags[(tags.dimension ?? 'home') + 'Y'] - tags[(tags.dimension ?? 'home') + 'Y']) ** 2);
+for (let i = 0; i < pool.length; ++i) {
+    const dim = tags.dimension ?? 'home';
+    const distance = Math.sqrt((pool[i].tags[dim + 'X'] - tags[dim + 'X']) ** 2 + (pool[i].tags[dim + 'Y'] - tags[dim + 'Y']) ** 2);
 
-    if (!closest) {
-        closest = catalogBots[i];
+    if (!closest || distance < closestDistance) {
+        closest = pool[i];
         closestDistance = distance;
-    } else {
-        if (distance < closestDistance) {
-            closest = catalogBots[i];
-            closestDistance = distance;
-        }
     }
 }
 

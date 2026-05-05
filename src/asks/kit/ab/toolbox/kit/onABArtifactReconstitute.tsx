@@ -34,6 +34,4 @@ if (data.eggParameters) {
     thisBot.onClick();
 }
 
-if (data.studioId) {
-    thisBot.determineLineTo(data.studioId);
-}
+thisBot.determineLineTo();

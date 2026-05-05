@@ -15,20 +15,11 @@ tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#0000FF';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#0000FF'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black'
 
-tags.studioStationID = data.studioStationID;
+tags.studioId = data.studioId;
 
 tags.strokeBot = null;
 tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/inst_cylinder_16.glb");
 tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/inst_cylinder_16_stroke.glb");
-
-tags.lineTo = data.lineTo ?? [];
-
-if (data.studioStationID) {
-    const studioBot = getBot("studioId", data.studioStationID);
-    if (studioBot && !tags.lineTo.includes(getID(studioBot)) && !tags.lineTo.includes(studioBot.tags.prevBotID)) {
-        tags.lineTo.push(getID(studioBot));
-    }
-}
 
 if (!tags.label) {
     let instShortening;
@@ -87,3 +78,5 @@ if (data.expiredInstBot) {
 const strokeBot = await thisBot.generateStroke();
 tags.strokeBot = getLink(strokeBot);
 shout('clearInstCreatorMenu');
+
+thisBot.determineLineTo();

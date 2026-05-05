@@ -21,5 +21,3 @@ if (!dataResponse.success) {
 //setup menus
 tags.eggConfigConfirmed = true;
 thisBot.showEggSetupMenu();
-
-thisBot.updateBillboardLabel();

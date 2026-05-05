@@ -14,7 +14,7 @@ const shard: ABArtifactShard = {
         channelSetting: tags.channelSetting,
         scale: tags.scale,
         expiredInstBot: tags.expiredInstBot,
-        studioStationID: tags.studioStationID,
+        studioId: tags.studioId,
 
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,

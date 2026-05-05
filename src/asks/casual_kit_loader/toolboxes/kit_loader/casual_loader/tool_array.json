@@ -7,7 +7,7 @@
     {
         "name": "blank egg",
         "studio": "AB",
-        "targetAB": "studioEggWizard",
+        "targetAB": "eggConfigurator",
         "formAddress": "egg"
     },
     {

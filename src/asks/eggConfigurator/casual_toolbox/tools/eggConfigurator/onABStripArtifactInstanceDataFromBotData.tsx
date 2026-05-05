@@ -1,9 +1,9 @@
 const { data } = that;
 
 delete data.tags.chosenEggName;
-delete data.tags.eggSetupLabel;
-delete data.tags.eggSetupLabelColor;
-delete data.tags.eggSetupLabelFloatingBackgroundColor;
+delete data.tags.label;
+delete data.tags.labelColor;
+delete data.tags.labelFloatingBackgroundColor;
 delete data.tags.color;
 delete data.tags.chosenStudio;
 delete data.tags.eggConfigConfirmed;
@@ -16,5 +16,5 @@ delete data.tags[data.tags.dimension + 'RotationY'];
 delete data.tags[data.tags.dimension + 'RotationZ'];
 delete data.tags.dimension;
 delete data.tags.prevBotID;
-delete data.tags.studioStationID;
+delete data.tags.studioId;
 delete data.tags.lineTo;

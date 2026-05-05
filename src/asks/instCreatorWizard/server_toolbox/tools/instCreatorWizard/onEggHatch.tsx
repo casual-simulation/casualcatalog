@@ -12,7 +12,7 @@ if (that.eggParameters) {
     tags.labelFloatingBackgroundColor = abPersonality?.tags?.abBaseColor ?? '#0000FF'; 
     tags.labelColor = abPersonality?.tags?.abBaseLabelColor ?? 'black';
 
-    tags.studioStationID = that.eggParameters.studioStationID;
+    tags.studioId = that.eggParameters.studioId;
 
     setTagMask(thisBot, "gridInformation", that.eggParameters.gridInformation, "shared");
     setTagMask(thisBot, "chosenBIOS", "free", "shared");

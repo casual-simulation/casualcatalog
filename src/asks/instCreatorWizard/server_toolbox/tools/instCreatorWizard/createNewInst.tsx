@@ -106,7 +106,7 @@ const abArtifactShard = {
         'label': label,
         'color': color,
         'form': form,
-        studioStationID: tags.studioStationID,
+        studioId: tags.studioId,
         eggParameters: {
             gridInformation: tags.gridInformation
         }

@@ -2,13 +2,13 @@ const shard: ABArtifactShard = {
     data: {
         eggName: tags.chosenEggName,
         eggStudio: tags.chosenStudio,
-        eggSetupLabel: tags.eggSetupLabel,
+        label: tags.label,
         eggConfigConfirmed: tags.eggConfigConfirmed,
         prevBotID: thisBot.id,
         color: tags.color,
-        labelFloatingBackgroundColor: tags.eggSetupLabelFloatingBackgroundColor,
-        labelColor: tags.eggSetupLabelColor,
-        studioStationID: tags.studioStationID,
+        labelFloatingBackgroundColor: tags.labelFloatingBackgroundColor,
+        labelColor: tags.labelColor,
+        studioId: tags.studioId,
         lineTo: tags.lineTo,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,

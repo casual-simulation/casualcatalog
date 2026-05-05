@@ -10,5 +10,3 @@ while(!globalThis.ab?.links.bot_factory) {
 }
 
 masks.ready = true;
-
-thisBot.updateBillboardLabel();

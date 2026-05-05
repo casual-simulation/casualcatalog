@@ -19,8 +19,7 @@ const eggNameButton = {
         });
 
         links.eggConfigurator.tags.chosenEggName = instName;
-        links.eggConfigurator.tags.eggSetupLabel = instName;
-        links.eggConfigurator.updateBillboardLabel();
+        links.eggConfigurator.tags.label = instName;
         links.eggConfigurator.showEggSetupMenu();
     `,
     eggSetupMenuSortOrder: 1

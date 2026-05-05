@@ -22,4 +22,4 @@ delete data.tags.channelSetting;
 delete data.tags.color;
 delete data.tags.scale;
 delete data.tags.expiredInstBot;
-delete data.tags.studioStationID;
+delete data.tags.studioId;

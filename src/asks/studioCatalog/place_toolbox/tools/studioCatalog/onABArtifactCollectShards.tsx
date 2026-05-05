@@ -21,9 +21,6 @@ const shard: ABArtifactShard = {
         studioId: tags.studioId,
         prevBotID: getID(thisBot),
         toolbox_array: tags.toolbox_array,
-        armMeshPath: tags.armMeshPath,
-        strokeColor: tags.strokeColor,
-        strokeFormAddress: tags.strokeFormAddress,
     },
     dependencies: [
         {

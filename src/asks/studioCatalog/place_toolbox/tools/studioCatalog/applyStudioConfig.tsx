@@ -1,0 +1,18 @@
+const instStudioConfig = await ab.links.search.abInstStudioConfig();
+const hasCustomMesh = !!instStudioConfig?.studio_catalog_mesh_url;
+
+if (hasCustomMesh) {
+    tags.formAddress = instStudioConfig.studio_catalog_mesh_url;
+}
+
+if (instStudioConfig?.studio_catalog_scale != null) {
+    tags.scaleX = instStudioConfig.studio_catalog_scale;
+    tags.scaleY = instStudioConfig.studio_catalog_scale;
+    tags.scaleZ = instStudioConfig.studio_catalog_scale;
+}
+
+if (instStudioConfig?.studio_catalog_color) {
+    tags.color = instStudioConfig.studio_catalog_color;
+}
+
+return hasCustomMesh;

@@ -8,12 +8,12 @@ tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black';
 tags.studioId = data.studioId;
-tags.strokeColor = data.strokeColor ?? abPersonality?.tags.abBaseStrokeColor;
+tags.strokeColor = abPersonality?.tags.abBaseStrokeColor;
 tags.prevBotID = data.prevBotID;
 tags.respawnPoint = data.respawnPoint;
 tags.toolbox_array = data.toolbox_array ?? ab.links.remember.tags.toolbox_array;
-tags.armColor = data.armColor ?? abPersonality?.tags.abBaseStrokeColor;
-tags.armMeshPath = data.armMeshPath ?? ab.links.remember.tags.abArmMeshPath;
+tags.armColor = abPersonality?.tags.abBaseStrokeColor;
+tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
 tags.abIgnore = true;
 
 if (data.dimensionData) {
@@ -33,47 +33,14 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 }
 
-let formAddress = '/asks/meshes/hexagon.glb';
-const instStudioConfig = await ab.links.search.abInstStudioConfig();
-if (instStudioConfig?.studio_catalog_mesh_url) {
-    formAddress = instStudioConfig.studio_catalog_mesh_url;
+let hasCustomMesh = false;
+if (tags.studioId) {
+    hasCustomMesh = await thisBot.applyStudioConfig();
 }
 
-if (formAddress.startsWith('https://')) {
-    tags.formAddress = formAddress;
-} else {
-    tags.formAddress = ab.abBuildCasualCatalogURL(formAddress);
-}
-
-if (instStudioConfig?.studio_catalog_scale != null) {
-    tags.scaleX = instStudioConfig.studio_catalog_scale;
-    tags.scaleY = instStudioConfig.studio_catalog_scale;
-    tags.scaleZ = instStudioConfig.studio_catalog_scale;
-}
-
-if (instStudioConfig?.studio_catalog_color) {
-    tags.color = instStudioConfig.studio_catalog_color;
-}
-
-const hasStrokeSet = 'strokeFormAddress' in data;
-
-if (hasStrokeSet) {
-    if (data.strokeFormAddress) {
-        if (data.strokeFormAddress.startsWith('https://')) {
-            tags.strokeFormAddress = data.strokeFormAddress;
-        } else {
-            tags.strokeFormAddress = ab.abBuildCasualCatalogURL(data.strokeFormAddress);
-        }
-    } else {
-        // Stroke explicitly set to nothing.
-        tags.strokeFormAddress = null;
-    }
-} else {
-    // Use default stroke.
+if (!hasCustomMesh) {
+    tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon.glb');
     tags.strokeFormAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_stroke.glb');
-}
-
-if (tags.strokeFormAddress) {
     const strokeBot = await thisBot.generateStroke();
     tags.strokeBot = getLink(strokeBot);
 }

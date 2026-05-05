@@ -1,4 +1,8 @@
-const askID = that?.askID;
+let askID = that?.askID;
+if (tags.askAliases?.[askID]) {
+    askID = tags.askAliases[askID];
+}
+
 const showIndicator = that?.showIndicator ?? true;
 const autoHatch = that?.autoHatch ?? true;
 const eggParameters = that?.eggParameters;

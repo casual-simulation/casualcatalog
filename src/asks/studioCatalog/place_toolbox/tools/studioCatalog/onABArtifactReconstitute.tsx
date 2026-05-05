@@ -33,7 +33,12 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 }
 
-const formAddress = data.formAddress ?? '/asks/meshes/hexagon.glb';
+let formAddress = '/asks/meshes/hexagon.glb';
+const instStudioConfig = await ab.links.search.abInstStudioConfig();
+if (instStudioConfig?.studio_catalog_mesh_url) {
+    formAddress = instStudioConfig.studio_catalog_mesh_url;
+}
+
 if (formAddress.startsWith('https://')) {
     tags.formAddress = formAddress;
 } else {

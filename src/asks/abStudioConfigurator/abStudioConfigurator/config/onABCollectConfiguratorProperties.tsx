@@ -23,6 +23,13 @@ const properties: ABConfiguratorProperty[] = [
         label: 'studio bootstrap egg name',
         description: 'Egg to load into every new inst that is owned by the studio.',
         value: studioConfig['studio_bootstrap_egg_name']
+    },
+    {
+        key: 'studio_catalog_mesh_url',
+        type: 'text',
+        label: 'studio catalog mesh url',
+        description: 'Mesh URL to use for the studio\'s catalog bot.',
+        value: studioConfig['studio_catalog_mesh_url']
     }
 ]
 

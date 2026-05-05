@@ -24,7 +24,6 @@ const shard: ABArtifactShard = {
         armMeshPath: tags.armMeshPath,
         strokeColor: tags.strokeColor,
         strokeFormAddress: tags.strokeFormAddress,
-        formAddress: tags.formAddress,
     },
     dependencies: [
         {

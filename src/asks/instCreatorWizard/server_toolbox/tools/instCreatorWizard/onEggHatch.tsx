@@ -7,6 +7,8 @@ if (that.eggParameters) {
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
 
+    
+
     tags.color = abPersonality?.tags?.abBaseColor ?? '#0000FF';
     tags.strokeColor = abPersonality?.tags?.abBaseColor ?? '#0000FF';
     tags.labelFloatingBackgroundColor = abPersonality?.tags?.abBaseColor ?? '#0000FF'; 
@@ -17,6 +19,11 @@ if (that.eggParameters) {
 
     setTagMask(thisBot, "gridInformation", that.eggParameters.gridInformation, "shared");
     setTagMask(thisBot, "chosenBIOS", "free", "shared");
+    
+    tags.toolbox = data.eggParameters.toolboxBot;
+    if (links?.toolbox?.tags?.studioId && !data.studioId) {
+        setTagMask(thisBot, "studioId", links.toolbox.tags.studioId, "shared");
+    }
 
     if (that.eggParameters.initializationInfo) {
         if (that.eggParameters.initializationInfo.pattern) {

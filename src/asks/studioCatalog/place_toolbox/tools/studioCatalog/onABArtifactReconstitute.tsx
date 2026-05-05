@@ -63,6 +63,21 @@ if (tags.strokeFormAddress) {
     tags.strokeBot = getLink(strokeBot);
 }
 
+if (authBot) {
+    if (!configBot.tags.user_studios) {
+        await ab.abRefreshStudios();
+    }
+    
+    // If there the user is not part of any studios, automatically load this catalog with the user studio.
+    const studios = configBot.tags.user_studios?.studios ?? [];
+    if (studios.length === 0) {
+        thisBot.setStudio({
+            studioId: authBot?.id,
+            displayName: 'user studio'
+        })
+    }
+}
+
 shout('onStudioCatalogReconstituted', thisBot);
 
 thisBot.onClick();

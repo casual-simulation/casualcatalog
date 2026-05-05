@@ -1,2 +1,3 @@
-masks.autoSpeak = false;
+masks.autoSpeakTemp = false; 
+
 masks.muted = true;

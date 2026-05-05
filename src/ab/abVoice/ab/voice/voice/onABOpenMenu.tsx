@@ -4,8 +4,7 @@ if (that.menu == 'core' || that.menu == 'grid') {
         if (!thisBot.vars.humeSocket) {
             thisBot.startHume();
         }
-
-        masks.autoSpeak = true;
+        
         masks.muted = false;
     }
 }

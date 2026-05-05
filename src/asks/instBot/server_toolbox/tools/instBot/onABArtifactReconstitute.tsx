@@ -42,6 +42,11 @@ if (data.eggParameters) {
     const dimensionX = data.eggParameters.gridInformation?.position?.x ?? 0;
     const dimensionY = data.eggParameters.gridInformation?.position?.y ?? 0;
 
+    tags.toolbox = data.eggParameters.toolboxBot;
+    if (links?.toolbox?.tags?.studioId && !data.studioId) {
+        tags.studioId = links.toolbox.tags.studioId;
+    }
+
     tags.dimension = dimension;
     tags[dimension] = true;
     tags[dimension + 'X'] = dimensionX;

@@ -21,3 +21,10 @@ if (that.tags.includes("eggConfigConfirmed")) {
         }
     }
 }
+
+if (that.tags.includes(tags.dimension)) {
+    links.strokeBot.tags[tags.dimension] = tags[tags.dimension];
+
+    const connectedBots = getBots("lineTo", getID(thisBot));
+    setTag(connectedBots, tags.dimension, tags[tags.dimension]);
+}

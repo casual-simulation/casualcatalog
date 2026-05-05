@@ -24,6 +24,7 @@ ab.links.search.onLookupAskID({
     eggParameters: {
         gridInformation: gridInfo,
         studioId: tags.studioId,
+        originType: 'eggConfigurator',
         initializationInfo: {
             pattern: tags.chosenEggName,
             studio: tags.chosenStudio,

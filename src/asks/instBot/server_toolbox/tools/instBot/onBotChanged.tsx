@@ -3,3 +3,7 @@ if (that.tags.includes("strokeColor")) {
         links.strokeBot.tags.color = tags.strokeColor;
     }
 }
+
+if (that.tags.includes(tags.dimension)) {
+    links.strokeBot.tags[tags.dimension] = tags[tags.dimension];
+}

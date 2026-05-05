@@ -1,4 +1,4 @@
-const instStudioConfig = await ab.links.search.abInstStudioConfig();
+const instStudioConfig = await ab.links.search.abStudioConfig({ studioId: tags.studioId });
 const hasCustomMesh = !!instStudioConfig?.studio_catalog_mesh_url;
 
 if (hasCustomMesh) {

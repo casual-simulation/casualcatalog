@@ -6,7 +6,8 @@ for (let i = toolboxes.length - 1; i >= 0; i--) {
     const existingToolboxBot = getBot((b) => {
         return b.tags.abArtifactName === 'kit' && 
                b.tags.studioId === tags.studioId &&
-               b.tags.label === toolboxes[i].title
+               b.tags.label === toolboxes[i].title && 
+               b.tags.lineTo === thisBot.id
     });
 
     if (existingToolboxBot) {

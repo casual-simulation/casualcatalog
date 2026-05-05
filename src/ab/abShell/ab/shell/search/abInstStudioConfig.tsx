@@ -18,7 +18,7 @@ if (ab.links.utils.isInstOwnedByStudio()) {
                     studioDisplayName: ownerStudio.displayName,
                     ...data,
                 };
-                setTagMask(thisBot, 'instStudioConfig', '🧬' + JSON.stringify(instStudioConfig), 'shared');
+                setTagMask(thisBot, 'instStudioConfig', '🧬' + JSON.stringify(instStudioConfig), 'tempLocal');
 
                 return instStudioConfig;
             }

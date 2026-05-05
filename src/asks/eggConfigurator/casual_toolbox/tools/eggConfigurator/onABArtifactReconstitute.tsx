@@ -26,8 +26,9 @@ if (data.eggParameters) {
     const dimensionX = data.eggParameters.gridInformation?.position?.x ?? 0;
     const dimensionY = data.eggParameters.gridInformation?.position?.y ?? 0;
 
-    if (data.eggParameters.toolboxBot?.tags?.studioId && !data.studioId) {
-        tags.studioId = data.eggParameters.toolboxBot.tags.studioId;
+    tags.toolbox = data.eggParameters.toolboxBot;
+    if (links?.toolbox?.tags?.studioId && !data.studioId) {
+        tags.studioId = links.toolbox.tags.studioId;
     }
 
     tags.dimension = dimension;

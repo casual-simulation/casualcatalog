@@ -3,6 +3,15 @@ const hasCustomMesh = !!instStudioConfig?.studio_catalog_mesh_url;
 
 if (hasCustomMesh) {
     tags.formAddress = instStudioConfig.studio_catalog_mesh_url;
+
+    if (tags.strokeFormAddress) {
+        tags.strokeFormAddress = null;
+    }
+
+    if (tags.strokeBot) {
+        destroy(tags.strokeBot);
+        tags.strokeBot = null;
+    }
 }
 
 if (instStudioConfig?.studio_catalog_scale != null) {

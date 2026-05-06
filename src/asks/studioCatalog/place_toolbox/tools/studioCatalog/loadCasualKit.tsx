@@ -21,3 +21,4 @@ await ab.links.search.onLookupAskID({
     }
 })
 
+masks.selected = true;

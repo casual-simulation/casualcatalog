@@ -59,3 +59,7 @@ if (!tags.studioId) {
     // If the bot doesn't have a studioId, automatically open the studio select menu.
     thisBot.onClick();
 }
+
+if (data.autoLoadCasualKit) {
+    thisBot.loadCasualKit();
+}

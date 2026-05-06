@@ -54,6 +54,7 @@ if (!homeBot) {
             studioId: authBot.id,
             label: 'user catalog',
             respawnPoint: true,
+            autoLoadCasualKit: true,
             eggParameters: {
                 toolboxBot: getLink(thisBot),
                 gridInformation: {

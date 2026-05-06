@@ -1,3 +1,5 @@
-console.log(`[${tags.system}.${tagName}] that:`, that, `tags:`, self.structuredClone(thisBot.tags));
+console.log(`[${tags.system}.${tagName}] that:`, that, `tags:`, JSON.parse(JSON.stringify(tags)));
 
-thisBot.setup({ data: { eggParameters: that.eggParameters } });
+if (that.sourceEvent !== 'reconstitute') {
+    thisBot.setup({ data: { eggParameters: that.eggParameters } });
+}

@@ -1,8 +1,8 @@
-if (that.tags.includes("strokeColor")) {
-    if (links.strokeBot) {
-        links.strokeBot.tags.color = tags.strokeColor;
-    }
-}
+// if (that.tags.includes("strokeColor")) {
+//     if (links.strokeBot) {
+//         links.strokeBot.tags.color = tags.strokeColor;
+//     }
+// }
 
 if (that.tags.includes("selected")) {
     const attachedBots = getBots("lineTo", getID(thisBot));

@@ -32,10 +32,10 @@ if (tags.studioId) {
 }
 
 if (!hasCustomMesh) {
-    tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon.glb');
-    tags.strokeFormAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_stroke.glb');
-    const strokeBot = await thisBot.generateStroke();
-    tags.strokeBot = getLink(strokeBot);
+    tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_unlit.glb');
+    // tags.strokeFormAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_stroke.glb');
+    // const strokeBot = await thisBot.generateStroke();
+    // tags.strokeBot = getLink(strokeBot);
 }
 
 if (!tags.studioId && authBot) {

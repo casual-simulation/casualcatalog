@@ -8,10 +8,10 @@ if (hasCustomMesh) {
         tags.strokeFormAddress = null;
     }
 
-    if (tags.strokeBot) {
-        destroy(links.strokeBot);
-        tags.strokeBot = null;
-    }
+    // if (tags.strokeBot) {
+    //     destroy(links.strokeBot);
+    //     tags.strokeBot = null;
+    // }
 
     tags.scaleMode = null; // Need to do this so that the floating billboard is positioned correctly.
 }

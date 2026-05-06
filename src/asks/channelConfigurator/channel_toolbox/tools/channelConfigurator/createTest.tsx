@@ -21,22 +21,31 @@ if (dimension == "map") {
     }
 }
 
-ab.links.search.onLookupAskID({
-    askID: "instCreatorWizard",
-    sourceEvent: 'tool',
-    eggParameters: {
-        gridInformation: gridInfo,
-        initializationInfo: {
-            pattern: null,
-            studio: null,
-            linkTo: thisBot.id,
-            bios: 'local',
-            instName: 'channel-redirect',
-            label: tags.chosenChannelName,
-            urlVariables: {
-                channel: tags.chosenChannelName
-            },
-            completeOnLoad: true
+const abArtifactShard = {
+    data: {
+        biosSetting: 'local',
+        patternSetting: null,
+        studioSetting: null,
+        instSetting: 'channel-redirect',
+        originType: 'channelConfigurator',
+        studioId: tags.studioId,
+        labelSetting: tags.chosenChannelName,
+        label: tags.chosenChannelName,
+        urlVariables: {
+            channel: tags.chosenChannelName
+        },
+        eggParameters: {
+            gridInformation: gridInfo
         }
     },
+    dependencies: [
+        {
+            askID: 'instBot'
+        }
+    ]
+};
+ab.links.artifact.abCreateArtifactPromiseBot({
+    abArtifactName: 'instBot',
+    abArtifactInstanceID: uuid(),
+    abArtifactShard,
 });

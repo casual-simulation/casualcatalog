@@ -16,7 +16,7 @@ tags.scale = data.scale ?? null;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#0000FF';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#0000FF'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black'
-tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModel_' + getID(thisBot));
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('inst_' + getID(thisBot));
 
 tags.studioId = data.studioId;
 tags.originType = data.originType;

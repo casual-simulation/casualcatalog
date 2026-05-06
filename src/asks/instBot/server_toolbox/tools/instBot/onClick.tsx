@@ -1,7 +1,15 @@
+if (tags.expiredInstBot) {
+    return;
+}
+
 if (that) {
     if (that.modality == 'mouse' && that.buttonId == 'right') {
         return;
     }
 }
-    
-os.openURL(tags.instURL);
+
+if (!tags.instURL) {
+    ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: tags.abConfiguratorGroup});
+} else {
+   os.openURL(tags.instURL); 
+}

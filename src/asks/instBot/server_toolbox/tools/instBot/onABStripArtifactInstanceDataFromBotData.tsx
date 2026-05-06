@@ -24,3 +24,8 @@ delete data.tags.scale;
 delete data.tags.expiredInstBot;
 delete data.tags.studioId;
 delete data.tags.originType;
+delete data.tags.abConfiguratorGroup;
+delete data.tags.comIdSetting;
+delete data.tags.abAwakeSetting;
+delete data.tags.urlVariables;
+delete data.tags.labelSetting;

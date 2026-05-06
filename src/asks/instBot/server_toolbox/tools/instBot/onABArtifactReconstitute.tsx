@@ -1,7 +1,8 @@
 const data = that.data;
 
 tags.label = data.label ?? null;
-tags.biosSetting = data.biosSetting ?? null;
+tags.labelSetting = data.labelSetting ?? null;
+tags.biosSetting = data.biosSetting ?? null; 
 tags.creationTime = data.creationTime ?? null;
 tags.expirationTime = data.expirationTime ?? null;
 tags.instSetting = data.instSetting ?? null;
@@ -10,26 +11,17 @@ tags.patternSetting = data.patternSetting ?? null;
 tags.studioSetting = data.studioSetting ?? null;
 tags.versionSetting = data.versionSetting ?? null;
 tags.channelSetting = data.channelSetting ?? null;
+tags.abAwakeSetting = data.abAwakeSetting ?? null;
 tags.scale = data.scale ?? null;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#0000FF';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#0000FF'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black'
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModel_' + getID(thisBot));
 
 tags.studioId = data.studioId;
 tags.originType = data.originType;
 
-// tags.strokeBot = null;
 tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/cylinder_16_unlit_both.glb");
-// tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/inst_cylinder_16_stroke.glb");
-
-if (!tags.label) {
-    let instShortening;
-    if(data.instSetting) {
-        instShortening = data?.instSetting?.slice(-4);
-    }
-    let label = (instShortening ?? 'inst ') + (tags.biosSetting ? (" (" + tags.biosSetting + ")") : "");
-    tags.label = label;
-}
 
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
@@ -51,15 +43,6 @@ if (data.eggParameters) {
     tags[dimension] = true;
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
-}
-
-//set creation time if none provided
-if (!tags.creationTime) {
-    tags.creationTime = DateTime?.now()?.toMillis();
-
-    if (tags.biosSetting == 'free') {
-        tags.expirationTime = DateTime?.fromMillis(tags.creationTime + (24 * 1000 * 60 * 60))?.toMillis();
-    }
 }
 
 //Check if expired
@@ -86,3 +69,5 @@ if (data.expiredInstBot) {
 shout('clearInstCreatorMenu');
 
 thisBot.determineLineTo();
+
+thisBot.onClick();

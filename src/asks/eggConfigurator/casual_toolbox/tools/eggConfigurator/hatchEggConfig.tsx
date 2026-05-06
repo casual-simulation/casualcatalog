@@ -18,22 +18,30 @@ gridInfo = {
         }
 }
 
-ab.links.search.onLookupAskID({
-    askID: "instCreatorWizard",
-    sourceEvent: 'tool',
-    eggParameters: {
-        gridInformation: gridInfo,
-        studioId: tags.studioId,
+const abArtifactShard = {
+    data: {
+        patternSetting: tags.chosenEggName,
+        studioSetting: tags.chosenStudio ?? tags.studioId,
         originType: 'eggConfigurator',
-        initializationInfo: {
-            pattern: tags.chosenEggName,
-            studio: tags.chosenStudio,
-            linkTo: thisBot.id,
-            abAwake: true,
-            label: tags.chosenEggName + " v" + (tags.chosenVersionNumber ?? tags.maxEggVersion),
-            urlVariables: {
-                version: tags.chosenVersionNumber == tags.maxEggVersion ? null : tags.chosenVersionNumber
-            }
+        studioId: tags.studioId,
+        abAwakeSetting: true,
+        labelSetting: tags.chosenEggName + " v" + (tags.chosenVersionNumber ?? tags.maxEggVersion),
+        label: tags.chosenEggName + " v" + (tags.chosenVersionNumber ?? tags.maxEggVersion),
+        urlVariables: {
+            version: tags.chosenVersionNumber == tags.maxEggVersion ? null : tags.chosenVersionNumber
+        },
+        eggParameters: {
+            gridInformation: gridInfo
         }
     },
+    dependencies: [
+        {
+            askID: 'instBot'
+        }
+    ]
+};
+ab.links.artifact.abCreateArtifactPromiseBot({
+    abArtifactName: 'instBot',
+    abArtifactInstanceID: uuid(),
+    abArtifactShard,
 });

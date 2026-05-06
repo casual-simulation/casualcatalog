@@ -4,19 +4,15 @@ const menuOptions = {
     instBot: getLink(thisBot)
 }
 
-const renameButton = {
+//EDIT
+const editButton = {
     ...menuOptions,
+    label: 'edit',
+    scaleModel_menuSortOrder: 0,
     formAddress: 'edit',
-    label: 'rename server bot',
-    onClick: `@const newName = await os.showInput(links.instBot.tags.label, {
-        autoSelect: true,
-        title: 'rename this bot'
-    });
-    if (newName) {
-        links.instBot.tags.label = newName;
-    }
-    shout('abMenuRefresh');
+    onClick: `@
+        ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: links.instBot.tags.abConfiguratorGroup});
     `
 }
 
-ab.links.menu.abCreateMenuButton(renameButton);
+ab.links.menu.abCreateMenuButton(editButton);

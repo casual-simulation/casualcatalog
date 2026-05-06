@@ -1,4 +1,4 @@
-const dimension = tags.dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+const dimension = that.dimension ?? tags.dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;
 const isMap = configBot.tags.mapPortal ? true : false;
 
 let gridInfo;
@@ -13,8 +13,8 @@ gridInfo = {
     "dimension": dimension,
     "position":
         {
-            "x": pos.x,
-            "y": pos.y
+            "x": that.x ?? pos.x,
+            "y": that.y ?? pos.y
         }
 }
 

@@ -108,6 +108,5 @@ if (!tags.eggConfigConfirmed) {
 } else {
     ab.links.menu.abCreateMenuText(eggNameButton);
     ab.links.menu.abCreateMenuText(studioButton);
-    ab.links.menu.abCreateMenuButton(testButton);
     ab.links.menu.abCreateMenuButton(pubButton);
 }

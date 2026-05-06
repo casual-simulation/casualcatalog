@@ -20,4 +20,5 @@ if (!dataResponse.success) {
 
 //setup menus
 tags.eggConfigConfirmed = true;
+thisBot.lockEgg();
 thisBot.showEggSetupMenu();

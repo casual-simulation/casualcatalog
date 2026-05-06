@@ -12,6 +12,12 @@ tags.prevBotID = data.prevBotID;
 tags.studioId = data.studioId;
 tags.strokeBot = null;
 
+if (tags.eggConfigConfirmed) {
+    thisBot.lockEgg();
+} else {
+    thisBot.moveEgg();
+}
+
 tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/egg.glb");
 tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/egg_stroke.glb");
 

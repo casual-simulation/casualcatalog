@@ -16,6 +16,12 @@ assert(typeof askID === 'string', `[${tags.system}.${tagName}] askID is a requir
 let lookupAsk: ABLookupAskIDResult;
 let busyIndicator;
 
+async function maybePromoteArtifactPatterns() {
+    if (lookupAsk?.success && Array.isArray(lookupAsk.hatchedBots) && lookupAsk.hatchedBots.length > 0) {
+        await ab.links.artifact.abPromoteArtifactPatterns({ hatchedBots: lookupAsk.hatchedBots });
+    }
+}
+
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, {...that});
 }
@@ -39,6 +45,7 @@ if (links?.learn?.tags?.reservedAsks?.includes(askID) && !ignoreReserved && auth
             if (tags.debug) {
                 console.log(`[${tags.system}.${tagName}] returning reserved ask '${askID}' found in studio:`, lookupAsk);
             }
+            await maybePromoteArtifactPatterns();
             return lookupAsk;
         }
     }
@@ -106,6 +113,7 @@ try {
             console.log(`[${tags.system}.${tagName}] returning ask '${askID}' found in casual catalog:`, lookupAsk)
         }
 
+        await maybePromoteArtifactPatterns();
         return lookupAsk;
     }
 } catch (e) {
@@ -122,4 +130,5 @@ if (busyIndicator) {
     destroy(busyIndicator);
 }
 
+await maybePromoteArtifactPatterns();
 return lookupAsk;

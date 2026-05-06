@@ -8,6 +8,7 @@ if (bot && eggParameters) {
     const dimensionX = that.eggParameters.gridInformation?.position?.x ?? 0;
     const dimensionY = that.eggParameters.gridInformation?.position?.y ?? 0;
 
+    bot.tags.dimension = dimension;
     bot.tags[dimension] = true;
     bot.tags[dimension + 'X'] = dimensionX;
     bot.tags[dimension + 'Y'] = dimensionY;

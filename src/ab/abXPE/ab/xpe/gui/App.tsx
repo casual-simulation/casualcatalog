@@ -3,7 +3,7 @@ const { useState, useEffect, useCallback, useRef } = os.appHooks;
 const CreditDisplay = thisBot.CreditDisplay();
 
 const TOP_DEFAULT = '1.25rem';
-const INPUT_HEIGHT = '40px';
+const INPUT_HEIGHT = '4rem';
 
 const App = () => {
     const [userCredits, setUserCredits] = useState();

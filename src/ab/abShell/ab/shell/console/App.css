@@ -57,10 +57,6 @@
   height: calc(var(--ab-console-expanded-height) + var(--ab-console-chat-height));
 }
 
-.ab-console:not(.expanded) .ab-console-message-container > div:first-child {
-  display: none;
-}
-
 .ab-console:not(.expanded) .ab-console-content {
   white-space: nowrap;
   overflow: hidden;

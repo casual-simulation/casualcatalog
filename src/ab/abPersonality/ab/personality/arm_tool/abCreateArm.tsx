@@ -80,6 +80,7 @@ const arm = {
         thisBot.originClearSelection();
 
         whisper(links.originBot, 'onArmCreate');
+        shout('onAnyArmCreate', { originBot: links.originBot });
     }),
     setArmVisible: ListenerString(() => {
         let visible = that;
@@ -127,6 +128,7 @@ const arm = {
         }
 
         whisper(links.originBot, 'onArmClick', { dimension });
+        shout('onAnyArmClick', { originBot: links.originBot, dimension });
 
         destroy(thisBot);
     }),
@@ -220,6 +222,7 @@ const arm = {
             }
 
             whisper(links.originBot, 'onArmPlaced', { dimension: that.to.dimension, x: that.to.x, y: that.to.y, z: that.to.z });
+            shout('onAnyArmPlaced', { originBot: links.originBot, dimension: that.to.dimension, x: that.to.x, y: that.to.y, z: that.to.z });
         }
         
     }),
@@ -248,7 +251,8 @@ const arm = {
         links.originBot.masks.lineTo = links.originBot.tags.armSelectedBots;
         
         if (links.originBot.links.armSelectedBots) {
-            whisper(links.originBot, 'onArmSelectedBots', links.originBot.links.armSelectedBots)
+            whisper(links.originBot, 'onArmSelectedBots', links.originBot.links.armSelectedBots);
+            shout('onAnyArmSelectedBots', { originBot: links.originBot, selectedBots: links.originBot.links.armSelectedBots });
         }
     }),
     onAnyBotsRemoved: ListenerString(() => {
@@ -293,6 +297,7 @@ const arm = {
             links.originBot.masks.armBot = null;
             links.originBot.masks.draggable = null;
             whisper(links.originBot, 'onArmDestroy');
+            shout('onAnyArmDestroy', { originBot: links.originBot });
         }
     }),
 };

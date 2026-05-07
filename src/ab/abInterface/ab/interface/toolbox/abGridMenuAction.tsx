@@ -61,4 +61,9 @@ ab.links.artifact.abCreateArtifactPromiseBot({
     abArtifactShard,
 });
 
+const abBot = links.manifestation.links.abBot;
+if (abBot && abBot.links.armBot) {
+    destroy(abBot.links.armBot);
+}
+
 shout("abMenuRefresh");

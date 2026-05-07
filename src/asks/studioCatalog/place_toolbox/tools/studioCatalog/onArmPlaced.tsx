@@ -6,7 +6,8 @@ if (masks.selectedBots) {
 
 if (!tags.studioId) {
     thisBot.onClick();
+    destroy(links.armBot);
 } else {
-  thisBot.handleToolMenu(that);  
-  masks.selected = true;
+    thisBot.handleToolMenu(that);  
+    masks.selected = true;
 }

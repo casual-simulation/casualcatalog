@@ -280,6 +280,16 @@ const abMod = {
     onArmDestroy: ListenerString(() => {
         shout('abMenuRefresh');
     }),
+    onAnyArmCreate: ListenerString(() => {
+        const { originBot } = that;
+
+        if (originBot && originBot !== thisBot) {
+            if (masks.armBot) {
+                destroy(links.armBot);
+                masks.armBot = null;
+            }
+        }
+    }),
     onDestroy: ListenerString(() => {
         clearInterval(tags.interval);
         shout('abMenuRefresh');

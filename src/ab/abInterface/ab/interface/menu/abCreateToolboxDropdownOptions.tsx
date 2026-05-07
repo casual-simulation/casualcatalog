@@ -28,10 +28,11 @@ if (toolboxTools.length === 0) {
 for (let tool of toolboxTools) {
     const toolButton = {
         ...menuOptions,
+        tool,
         label: tool.name,
         targetAB: tool.targetAB,
         isArtifact: tool.artifact || false,
-        onClick:`@
+        onClick: ListenerString(() => {
             if (tags.isArtifact) {
                 const abArtifactShard = {
                     data: {
@@ -51,7 +52,6 @@ for (let tool of toolboxTools) {
                     abArtifactInstanceID: uuid(),
                     abArtifactShard,
                 });
-                shout("abMenuRefresh");
             } else {
                 links.search.onLookupAskID({
                     askID: tags.targetAB,
@@ -61,9 +61,11 @@ for (let tool of toolboxTools) {
                         gridInformation: tags.gridInformation
                     },
                 });
-                shout("abMenuRefresh");
             }
-        `,
+            
+            shout('abMenuRefresh');
+            whisper(links.toolbox, 'onToolboxDropdownOptionClick', { toolbox: links.toolbox, tool: tags.tool });
+        })
     };
 
     if (tool.formAddress) {

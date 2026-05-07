@@ -46,6 +46,20 @@ const App = () => {
     }, []);
 
     useEffect(() => {
+        const collapsed = '120px';
+        const expanded = '33vh';
+        const chat = '72px';
+
+        let height;
+        if (showAll && showChat) height = `calc(${expanded} + ${chat})`;
+        else if (showAll) height = expanded;
+        else if (showChat) height = `calc(${collapsed} + ${chat})`;
+        else height = collapsed;
+
+        thisBot.masks.consoleEffectiveHeight = height;
+    }, [showAll, showChat]);
+
+    useEffect(() => {
         if (inputRef.current) inputRef.current.focus();
     }, [showChat]);
 
@@ -81,7 +95,7 @@ const App = () => {
 
         <div
             id="ab-console"
-            className="ab-console"
+            className={`ab-console${showAll ? ' expanded' : ''}${showChat ? ' chat-open' : ''}`}
             onPointerEnter={(e) => {
                 gridPortalBot.masks.portalZoomable = false;
             }}

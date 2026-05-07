@@ -10,6 +10,7 @@
     flex-wrap: wrap;
     justify-content: end;
     gap: 1rem;
+    transition: top 0.3s ease;
 }
 
 .credit-display {

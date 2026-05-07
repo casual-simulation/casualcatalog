@@ -2,6 +2,9 @@ const { useState, useEffect, useCallback, useRef } = os.appHooks;
 
 const CreditDisplay = thisBot.CreditDisplay();
 
+const TOP_DEFAULT = '1.25rem';
+const INPUT_HEIGHT = '40px';
+
 const App = () => {
     const [userCredits, setUserCredits] = useState();
     const [userCreditsIcon, setUserCreditsIcon] = useState();
@@ -12,6 +15,8 @@ const App = () => {
     const [studioCreditsBackgroundColor, setStudioCreditsBackgroundColor] = useState();
     const [studioName, setStudioName] = useState();
     const studioCreditDisplayRef = useRef(null);
+
+    const [top, setTop] = useState(TOP_DEFAULT);
 
     // on mount
     useEffect(async () => {
@@ -64,11 +69,56 @@ const App = () => {
             setUserCreditsIcon(ab.abBuildCasualCatalogURL(tags.userCreditIcon));
         }
 
+        const consoleBot = ab.links.console;
+
+        if (consoleBot) {
+            os.addBotListener(consoleBot, 'onBotChanged', updateTop);
+        }
+
+        const inputBot = ab.links.input;
+
+        if (inputBot) {
+            os.addBotListener(inputBot, 'onBotChanged', updateTop);
+        }
+
+        updateTop();
+
         return () => {
             os.removeBotListener(thisBot, 'spawnCoins', spawnCoins);
             os.removeBotListener(abXPE, 'onABXPEAvailableCreditsChanged', onCreditsChanged);
+
+            if (consoleBot) {
+                os.removeBotListener(consoleBot, 'onBotChanged', updateTop);
+            }
+
+            if (inputBot) {
+                os.removeBotListener(inputBot, 'onBotChanged', updateTop);
+            }
         };
     }, []);
+
+    const updateTop = useCallback(() => {
+        const consoleBot = ab.links.console;
+        const inputBot = ab.links.input;
+
+        const heights = [];
+
+        if (consoleBot?.masks.open) {
+            heights.push(consoleBot.masks.consoleEffectiveHeight ?? '120px');
+        }
+
+        if (inputBot?.masks.chatOpen) {
+            heights.push(INPUT_HEIGHT);
+        }
+
+        if (!heights.length) {
+            setTop(TOP_DEFAULT);
+        } else if (heights.length === 1) {
+            setTop(`calc(${TOP_DEFAULT} + ${heights[0]})`);
+        } else {
+            setTop(`calc(${TOP_DEFAULT} + max(${heights.join(', ')}))`);
+        }
+    }, [])
 
     const onCreditsChanged = useCallback(async () => {
         const data = abXPE.tags.availableCredits ?? {};
@@ -124,7 +174,7 @@ const App = () => {
         <>
             <style>{tags['style.css']}</style>
             <div className='ab-xpe-gui'>
-                <div className='top-right'>
+                <div className='top-right' style={{ top }}>
                     {studioCredits != null &&
                         <CreditDisplay
                             name={`${studioName} Credits`}

@@ -10,6 +10,7 @@ const armColor = that.armColor ?? originBot.tags.armColor ?? originBot.tags.stro
 const armMeshPath = that.armMeshPath ?? originBot.tags.armMeshPath;
 const armDropSound = that.armDropSound ?? originBot.tags.armDropSound;
 const armTeleportSound = that.armTeleportSound ?? originBot.tags.armTeleportSound;
+const armCoexist = that.armCoexist ?? originBot.tags.armCoexist ?? false;
 
 const arm = {
     space: 'tempLocal',
@@ -28,6 +29,7 @@ const arm = {
     armMeshPath,
     armDropSound,
     armTeleportSound,
+    armCoexist,
     defaultArmDropSound: tags.defaultArmDropSound,
     defaultArmTeleportSound: tags.defaultArmTeleportSound,
     lineColor: armColor,
@@ -81,6 +83,13 @@ const arm = {
 
         whisper(links.originBot, 'onArmCreate');
         shout('onAnyArmCreate', { originBot: links.originBot });
+    }),
+    onAnyArmCreate: ListenerString(() => {
+        const { originBot } = that;
+        
+        if (!tags.armCoexist && originBot && originBot !== links.originBot) {
+            destroy(thisBot);
+        }
     }),
     setArmVisible: ListenerString(() => {
         let visible = that;

@@ -61,6 +61,10 @@ if (toolboxes.length > 0) {
                     }
                 })
 
+                if (links.toolbox.links.armBot) {
+                    destroy(links.toolbox.links.armBot);
+                }
+
                 shout('abMenuRefresh');
             })
         };

@@ -7,6 +7,8 @@ const {
     recordName,
     sourceId,
     messages,
+    useStreaming = true,
+    onPartialResponse,
 } = that ?? {};
 
 if (tags.debug) {
@@ -88,7 +90,31 @@ if (tags.debug) {
 let aiResponse: AIChatMessage;
 
 try {
-    aiResponse = await ai.chat(aiChatMessages, aiChatOptions);
+    if (useStreaming) {
+        const chatStream = await ai.stream.chat(aiChatMessages, aiChatOptions);
+
+        const contentChunks: string[] = [];
+        let streamRole: string;
+
+        for await (const message of chatStream) {
+            if (message.role) {
+                streamRole = message.role;
+            }
+            if (message.content) {
+                contentChunks.push(message.content);
+                if (typeof onPartialResponse === 'function') {
+                    onPartialResponse(message.content);
+                }
+            }
+        }
+
+        aiResponse = {
+            role: streamRole ?? 'assistant',
+            content: contentChunks.join('')
+        };
+    } else {
+        aiResponse = await ai.chat(aiChatMessages, aiChatOptions);
+    }
 
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] ai response:`, ab.links.utils.abDebugFormatChatMessages(aiResponse));

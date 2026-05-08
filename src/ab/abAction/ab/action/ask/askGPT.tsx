@@ -31,6 +31,8 @@ const patchBotDimension = askThat.abDimension ?? ab.links.remember.tags.abActive
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
 const hasInquiry = askThat.inquiry != null;
 const model = askThat.model;
+const useStreaming: boolean = askThat.useStreaming ?? true;
+const onPartialResponse = askThat.onPartialResponse;
 const callDepth: number = askThat.callDepth ?? 0;
 const todoBot = askThat.todoBot ? getBot('id', askThat.todoBot) : undefined;
 const agentMode: string = todoBot?.tags.agentMode ?? askThat.agentMode ?? 'build';
@@ -142,7 +144,7 @@ let response;
 let requestErrorMsg;
 
 try {
-    response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model, recordName, sourceId });
+    response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model, recordName, sourceId, useStreaming, onPartialResponse });
 } catch (e) {
     requestErrorMsg = ab.links.utils.getErrorMessage(e);
 }

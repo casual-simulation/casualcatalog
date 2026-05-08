@@ -84,7 +84,7 @@ if (!ab.links.menu) {
 }
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] sending to ai:`, { aiChatMessages: ab.links.utils.abDebugFormatChatMessages(aiChatMessages), aiChatOptions });
+    console.log(`[${tags.system}.${tagName}] sending to ai:`, { useStreaming, aiChatMessages: ab.links.utils.abDebugFormatChatMessages(aiChatMessages), aiChatOptions });
 }
 
 let aiResponse: AIChatMessage;
@@ -102,6 +102,11 @@ try {
             }
             if (message.content) {
                 contentChunks.push(message.content);
+
+                if (tags.debug) {
+                    console.log(`[${tags.system}.${tagName}] partial response:`, message);
+                }
+                
                 if (typeof onPartialResponse === 'function') {
                     onPartialResponse(message);
                 }

@@ -78,11 +78,11 @@ if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
     return;
 }
 
-const MAX_CALL_DEPTH = 5;
+const MAX_CALL_DEPTH = 10; // Prevent infinite loops — if the agent calls askGPT recursively too many times, we stop and log an error.
 
 if (callDepth >= MAX_CALL_DEPTH) {
     const name = thisBot.abAskHelperGetAgentName({ askContext });
-    ab.links.utils.abLog({ name, message: 'AI call depth limit reached' });
+    ab.links.utils.abLog({ name, message: 'AI call depth limit reached', logType: 'error' });
     return;
 }
 
@@ -134,10 +134,6 @@ if (!hasInquiry && storedHistory.length > 0) {
     ];
 }
 
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] sending to AI (depth ${callDepth}):`, ab.links.utils.abDebugFormatChatMessages(aiChatMessages));
-}
-
 // ── Call AI ─────────────────────────────────────────────────────────────
 
 let response;
@@ -147,10 +143,6 @@ try {
     response = await thisBot.submitRequestGPT({ messages: aiChatMessages, model, recordName, sourceId, useStreaming, onPartialResponse });
 } catch (e) {
     requestErrorMsg = ab.links.utils.getErrorMessage(e);
-}
-
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] raw response:`, ab.links.utils.abDebugFormatChatMessages(response));
 }
 
 if (requestErrorMsg || !response) {

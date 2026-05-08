@@ -122,6 +122,19 @@ interface ABAskGPTParameters {
      * @internal
      */
     callDepth?: number;
+
+    /**
+     * Whether to use streaming for the AI request. Defaults to `true`.
+     * Pass `false` to use a standard non-streaming request instead.
+     */
+    useStreaming?: boolean;
+
+    /**
+     * Optional callback invoked with each partial response chunk as it arrives from the stream.
+     * Only called when `useStreaming` is `true` (the default).
+     * Useful for displaying in-progress output before the full response is available.
+     */
+    onPartialResponse?: (message: AIChatMessage) => void;
 }
 
 /**

@@ -103,7 +103,7 @@ try {
             if (message.content) {
                 contentChunks.push(message.content);
                 if (typeof onPartialResponse === 'function') {
-                    onPartialResponse(message.content);
+                    onPartialResponse(message);
                 }
             }
         }

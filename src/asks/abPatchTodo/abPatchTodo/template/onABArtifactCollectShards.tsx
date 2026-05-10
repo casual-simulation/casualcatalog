@@ -1,6 +1,8 @@
 const shard: ABArtifactShard = {
     data: {
         prompt: tags.prompt,
+        abTodoComplete: tags.abTodoComplete,
+        animationState: tags.animationState,
         todoLabel: tags.todoLabel,
         attachments: tags.attachments,
         todoApproved: tags.todoApproved,
@@ -8,7 +10,6 @@ const shard: ABArtifactShard = {
         budgetRecordName: tags.budgetRecordName,
         aiModel: tags.aiModel,
         agentName: tags.agentName,
-        todoReadyForAgent: tags.todoReadyForAgent,
         debug: tags.debug,
         todoPlanId: tags.todoPlanId,
         todoOrder: tags.todoOrder,

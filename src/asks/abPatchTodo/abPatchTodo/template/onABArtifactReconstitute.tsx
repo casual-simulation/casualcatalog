@@ -6,13 +6,14 @@ const data = that.data;
 
 tags.prompt = data.prompt;
 tags.todoLabel = data.todoLabel;
+tags.abTodoComplete = data.abTodoComplete;
+tags.animationState = data.animationState;
 tags.attachments = data.attachments ?? [];
 tags.todoApproved = data.todoApproved;
 tags.budgetCredits = data.budgetCredits;
 tags.budgetRecordName = data.budgetRecordName;
 tags.aiModel = data.aiModel ?? ab.links.personality.tags.abPreferredAIModel;
 tags.agentName = data.agentName ?? null;
-tags.todoReadyForAgent = data.todoReadyForAgent ?? false;
 tags.debug = data.debug;
 tags.agentMode = data.agentMode ?? 'build';
 tags.todoPlanId = data.todoPlanId;

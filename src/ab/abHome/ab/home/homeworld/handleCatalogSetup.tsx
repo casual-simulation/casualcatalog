@@ -1,3 +1,7 @@
+if (!thisBot.isInPrimary()) {
+    return;
+}
+
 //check authbot
 if (!authBot) {
     await os.requestAuthBotInBackground();
@@ -31,6 +35,7 @@ if (!homeBot) {
         positionY = 42.96621621621622;
     }
 
+    console.log("creating user catalog");
 
     //setup user catalog
     const userAbArtifactShard = {
@@ -56,7 +61,7 @@ if (!homeBot) {
             }
         ]
     };
-    await ab.links.artifact.abCreateArtifactPromiseBot({
+    await links.artifact.abCreateArtifactPromiseBot({
         abArtifactName: 'studioCatalog',
         abArtifactInstanceID: uuid(),
         abArtifactShard: userAbArtifactShard,

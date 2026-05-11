@@ -1,4 +1,4 @@
-if (!links.learn.abIsPrimary()) {
+if (!links.homeworld.isInPrimary()) {
     return;
 }
 
@@ -8,4 +8,5 @@ if (!tags.activeInsts) {
 
 if (tags.activeInsts.includes(that)) {
     masks.activeInsts.splice(masks.activeInsts.indexOf(that), 1);
+    thisBot.updateLayersMenuDropdown();
 }

@@ -1,6 +1,6 @@
 const dropdownOptions = [];
 
-const currentDim = ab.links.remember.tags.abActiveDimension;
+const currentDim = links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 const activeMenu = configBot.tags.menuPortal;
 
@@ -26,8 +26,10 @@ if (!tags.activeInsts) {
 if (studioData.success) {
     const studios = studioData.studios;
     for (let i = 0; i < studios.length; ++i) {
-        const instName = "studioInst_" + studios[i].studioId;
-        const isLoaded = tags.activeInsts.includes(instName);
+        let idString = studios[i].studioId;
+        idString = idString.slice(0, 4);
+        
+        const isLoaded = tags.activeInsts.find(item => item.includes(idString));
 
         dropdownOptions.push( {
             ...menuOptions,
@@ -36,7 +38,7 @@ if (studioData.success) {
             formAddress: isLoaded ? 'radio_button_checked' : 'radio_button_unchecked',
             onClick: `@
                 links.skillBot.toggleLayer(tags.studioData);
-                shout('clearHomePlaceMenu');
+                shout('abMenuRefresh');
             `
         })
     }

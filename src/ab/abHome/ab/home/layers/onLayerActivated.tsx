@@ -1,4 +1,4 @@
-if (!links.learn.abIsPrimary()) {
+if (!links.homeworld.isInPrimary()) {
     return;
 }
 
@@ -6,7 +6,9 @@ if (!tags.activeInsts) {
     setTagMask(thisBot, "activeInsts", []);
 }
 
-console.log("layerActive", that)
+console.log("layerActive", JSON.stringify(that))
 if (!tags.activeInsts.includes(that)) {
     masks.activeInsts.push(that);
+
+    thisBot.updateLayersMenuDropdown();
 }

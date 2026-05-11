@@ -1,3 +1,7 @@
+if (!thisBot.isInPrimary()) {
+    return;
+} 
+
 if (that.portal == "mapPortal") {
     if (that.dimension) {
         // Override the mapZoomPosition with the homeBase position (if available).
@@ -15,6 +19,8 @@ if (that.portal == "mapPortal") {
             }
 
             setTagMask(links.remember, "mapZoomPosition", homeBasePosition);
+        } else {
+            thisBot.handleCatalogSetup();
         }
 
         if (!masks.introPlayed) {

@@ -1,16 +1,14 @@
-superShout("instCheckin", configBot.tags);
-
 //prevent automatic map focus
-setTagMask(ab.links.remember, "mapPreventFocus", true);
+setTagMask(links.remember, "mapPreventFocus", true);
 
 const currentDim = 'home';
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 
-ab.links.manifestation.abSetAwake({ awake: true })
-
-if (currentPortal != 'map') {
-    configBot.tags.mapPortal = currentDim;
+if (thisBot.isInPrimary()) {
+    links.manifestation.abSetAwake({ awake: true })
 }
+
+configBot.tags.mapPortal = currentDim;
 
 //Check login
 if (!authBot) {
@@ -26,6 +24,8 @@ if (!authBot) {
     }
     return;
 }
+
+await thisBot.handleCatalogSetup();
 
 const studio = configBot.tags.studio ?? authBot.id;
 const homeEggData = await os.getData(studio, 'home');
@@ -50,8 +50,6 @@ if (!homeEggData.success) {
         thisBot.saveHomeworld();
     }
 }
-
-await thisBot.handleCatalogSetup();
 
 // Manually call homeworld's onPortalChanged so it sets up the intro state.
 thisBot.onPortalChanged({ portal: 'mapPortal', dimension: currentDim });

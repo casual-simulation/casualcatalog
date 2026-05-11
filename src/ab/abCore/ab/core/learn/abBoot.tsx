@@ -78,6 +78,8 @@ if (!links.personality) {
 }
 
 if ((ask && ask == "home") || (bootFlag && bootFlag == "home")) {
+    //prevent automatic map focus
+    setTagMask(links.remember, "mapPreventFocus", true);
     await thisBot.abAdapt("abHome");
 }
 

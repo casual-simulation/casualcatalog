@@ -1,8 +1,12 @@
-if (!links.learn.abIsPrimary()) {
+if (!links.homeworld.isInPrimary()) {
     return;
 }
 
-const instName = "studioInst_" + that.studioId;
+let idString = that.studioId;
+idString = idString.slice(0, 4);
+let uuidString = uuid();
+uuidString = uuidString.slice(0, 4);
+const instName = idString + uuidString;
 
 if (!tags.activeInsts) {
     setTagMask(thisBot, "activeInsts", []);
@@ -10,23 +14,26 @@ if (!tags.activeInsts) {
 
 //check if inst is loaded
 let instLoaded = false;
-if (tags.activeInsts.includes(instName)) {
+if (tags.activeInsts.find(item => item.includes(idString))) {
     instLoaded = true;
 }
 
 //if loaded, unload
 if (instLoaded) {
-    os.unloadInst(instName);
-    console.log("unloading", instName)
+    os.unloadInst({
+        inst: tags.activeInsts.find(item => item.includes(idString)),
+        record: that.studioId,
+        owner: 'public'
+    });
+    console.log("unloading", tags.activeInsts.find(item => item.includes(idString)))
 }
 //if unloaded, sideload it
 else {
     console.log("loading", instName)
-    configBot.tags.pattern = "home";
-    await os.sleep(0);
 
     os.loadInst({
         inst: instName,
-        owner: that.studioId
+        record: that.studioId,
+        owner: 'public'
     });
 }

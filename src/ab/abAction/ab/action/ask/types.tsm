@@ -207,6 +207,10 @@ interface ABAskContext {
 
     /** Extra data associated with the triggering menu interaction. Shape varies by `menuType`. */
     menuActionData: Record<string, any> | undefined;
+
+    useStreaming: boolean;
+
+    onPartialResponse?: (message: AIChatMessage) => void;
 }
 
 /**

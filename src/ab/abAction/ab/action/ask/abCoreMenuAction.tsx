@@ -121,7 +121,7 @@ else if (!inquiryHasSpace) {
 
         const attachments: ABAttachment[] = thisBot.vars.abAttachments ?? [];
 
-        const askGPTParams = {
+        const askGPTParams: ABAskGPTParameters = {
             inquiry: inquiry,
             attachments,
             menuType: menu,
@@ -129,7 +129,8 @@ else if (!inquiryHasSpace) {
             recordName: costRecordName,
             menuActionData: that,
             sourceId: 'abBot',
-            historyStorageBot: ab.links.remember
+            historyStorageBot: ab.links.remember,
+            useStreaming: tags.abChatStreaming,
         };
 
         // Clear the staged attachments now that the request owns them; the next prompt starts empty.

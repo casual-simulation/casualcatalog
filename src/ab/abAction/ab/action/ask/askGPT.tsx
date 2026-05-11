@@ -31,7 +31,7 @@ const patchBotDimension = askThat.abDimension ?? ab.links.remember.tags.abActive
 const patchBotPosition = { x: abPosition?.x ?? 0, y: abPosition?.y ?? 0, z: 2 };
 const hasInquiry = askThat.inquiry != null;
 const model = askThat.model;
-const useStreaming: boolean = askThat.useStreaming ?? true;
+const useStreaming: boolean = askThat.useStreaming ?? tags.abChatStreaming;
 const onPartialResponse = askThat.onPartialResponse;
 const callDepth: number = askThat.callDepth ?? 0;
 const todoBot = askThat.todoBot ? getBot('id', askThat.todoBot) : undefined;
@@ -67,6 +67,8 @@ const askContext: ABAskContext = {
     storedHistory,
     todoBot,
     recordName,
+    useStreaming,
+    onPartialResponse,
 };
 
 if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {

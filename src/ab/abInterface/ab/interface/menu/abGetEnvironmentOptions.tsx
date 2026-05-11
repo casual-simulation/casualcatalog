@@ -280,6 +280,31 @@ if (links.gpt) {
     */
 
     aiDropdownOptions.push({
+        label: "chat streaming",
+        ask: getLink(ab.links.ask),
+        onCreate: ListenerString(() => {
+            links.ask.vars.onBotChanged = (that) => {
+                if (that.tags.includes('abChatStreaming')) {
+                    thisBot.refreshDisplay();
+                }
+            }
+
+            os.addBotListener(links.ask, 'onBotChanged', links.ask.vars.onBotChanged);
+
+            thisBot.refreshDisplay();
+        }),
+        refreshDisplay: ListenerString(() => {
+            links.ask.tags.abChatStreaming ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
+        }),
+        onClick: ListenerString(() => {
+            setTagMask(links.ask, 'abChatStreaming', !!!links.ask.tags.abChatStreaming, 'shared');
+        }),
+        onDestroy: ListenerString(() => {
+            os.removeBotListener(links.ask, 'onBotChanged', links.ask.vars.onBotChanged);
+        })
+    });
+
+    aiDropdownOptions.push({
         label: `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history`,
         formAddress: 'clear_all',
         onCreate: ListenerString(() => {

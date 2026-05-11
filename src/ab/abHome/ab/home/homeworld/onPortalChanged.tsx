@@ -1,3 +1,7 @@
+if (!links.learn.abIsPrimary()) {
+    return;
+} 
+
 if (that.portal == "mapPortal") {
     if (that.dimension) {
         // Override the mapZoomPosition with the homeBase position (if available).

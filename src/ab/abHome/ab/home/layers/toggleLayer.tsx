@@ -14,14 +14,18 @@ if (!tags.activeInsts) {
 
 //check if inst is loaded
 let instLoaded = false;
-if (tags.activeInsts.find(item => item.splice(0, 4) == idString)) {
+if (tags.activeInsts.find(item => item.includes(idString))) {
     instLoaded = true;
 }
 
 //if loaded, unload
 if (instLoaded) {
-    os.unloadInst(tags.activeInsts.find(item => item.splice(0, 4) == idString));
-    console.log("unloading", tags.activeInsts.find(item => item.splice(0, 4) == idString))
+    os.unloadInst({
+        inst: tags.activeInsts.find(item => item.includes(idString)),
+        record: that.studioId,
+        owner: 'public'
+    });
+    console.log("unloading", tags.activeInsts.find(item => item.includes(idString)))
 }
 //if unloaded, sideload it
 else {

@@ -29,7 +29,7 @@ if (studioData.success) {
         let idString = studios[i].studioId;
         idString = idString.slice(0, 4);
         
-        const isLoaded = tags.activeInsts.find(item => item.splice(0, 4) == idString);
+        const isLoaded = tags.activeInsts.find(item => item.includes(idString));
 
         dropdownOptions.push( {
             ...menuOptions,
@@ -38,7 +38,7 @@ if (studioData.success) {
             formAddress: isLoaded ? 'radio_button_checked' : 'radio_button_unchecked',
             onClick: `@
                 links.skillBot.toggleLayer(tags.studioData);
-                shout('clearHomePlaceMenu');
+                shout('abMenuRefresh');
             `
         })
     }

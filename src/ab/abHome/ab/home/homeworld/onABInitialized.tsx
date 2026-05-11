@@ -6,3 +6,5 @@ if (links.learn.abIsPrimary()) {
 } else {
     ab.links.manifestation.abSetAwake({ awake: false });
 }
+
+thisBot.init();

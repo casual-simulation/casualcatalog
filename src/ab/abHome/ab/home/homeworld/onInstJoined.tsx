@@ -1,4 +1,4 @@
-superShout("instCheckin", configBot.tags);
+superShout("instCheckin", {"config": configBot.tags, "isPrimary": ab.abIsPrimary()});
 
 //prevent automatic map focus
 setTagMask(links.remember, "mapPreventFocus", true);
@@ -8,7 +8,6 @@ if (links.learn.abIsPrimary()) {
     if (!homeBase) {
         thisBot.handleCatalogSetup();
     }
-    thisBot.init();
 } else {
     ab.links.manifestation.abSetAwake({ awake: false });
 }

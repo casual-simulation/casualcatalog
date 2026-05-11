@@ -9,4 +9,6 @@ if (!tags.activeInsts) {
 console.log("layerActive", that)
 if (!tags.activeInsts.includes(that)) {
     masks.activeInsts.push(that);
+
+    thisBot.updateLayersMenuDropdown();
 }

@@ -1,3 +1,7 @@
+if (!ab.abIsPrimary()) {
+    return;
+}
+
 //check authbot
 if (!authBot) {
     await os.requestAuthBotInBackground();

@@ -1,5 +1,3 @@
-superShout("instCheckin", configBot.tags);
-
 //prevent automatic map focus
 setTagMask(links.remember, "mapPreventFocus", true);
 
@@ -10,9 +8,7 @@ if (links.learn.abIsPrimary()) {
     links.manifestation.abSetAwake({ awake: true })
 }
 
-if (currentPortal != 'map') {
-    configBot.tags.mapPortal = currentDim;
-}
+configBot.tags.mapPortal = currentDim;
 
 //Check login
 if (!authBot) {

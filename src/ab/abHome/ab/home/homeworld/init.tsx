@@ -6,7 +6,9 @@ setTagMask(links.remember, "mapPreventFocus", true);
 const currentDim = 'home';
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 
-links.manifestation.abSetAwake({ awake: true })
+if (links.learn.abIsPrimary()) {
+    links.manifestation.abSetAwake({ awake: true })
+}
 
 if (currentPortal != 'map') {
     configBot.tags.mapPortal = currentDim;

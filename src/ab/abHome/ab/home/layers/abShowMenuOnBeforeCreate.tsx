@@ -27,10 +27,9 @@ if (studioData.success) {
     const studios = studioData.studios;
     for (let i = 0; i < studios.length; ++i) {
         let idString = studios[i].studioId;
-        idString = idString.slice(-4);
-        const instName = "sti_" + idString;
+        idString = idString.slice(0, 4);
         
-        const isLoaded = tags.activeInsts.includes(instName);
+        const isLoaded = tags.activeInsts.find(item => item.splice(0, 4) == idString);
 
         dropdownOptions.push( {
             ...menuOptions,

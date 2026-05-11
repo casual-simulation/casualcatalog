@@ -3,8 +3,10 @@ if (!links.learn.abIsPrimary()) {
 }
 
 let idString = that.studioId;
-idString = idString.slice(-4);
-const instName = "sti_" + idString;
+idString = idString.slice(0, 4);
+let uuidString = uuid();
+uuidString = uuidString.slice(0, 4);
+const instName = idString + uuidString;
 
 if (!tags.activeInsts) {
     setTagMask(thisBot, "activeInsts", []);
@@ -12,14 +14,14 @@ if (!tags.activeInsts) {
 
 //check if inst is loaded
 let instLoaded = false;
-if (tags.activeInsts.includes(instName)) {
+if (tags.activeInsts.find(item => item.splice(0, 4) == idString)) {
     instLoaded = true;
 }
 
 //if loaded, unload
 if (instLoaded) {
-    os.unloadInst(instName);
-    console.log("unloading", instName)
+    os.unloadInst(tags.activeInsts.find(item => item.splice(0, 4) == idString));
+    console.log("unloading", tags.activeInsts.find(item => item.splice(0, 4) == idString))
 }
 //if unloaded, sideload it
 else {
@@ -27,6 +29,7 @@ else {
 
     os.loadInst({
         inst: instName,
-        record: that.studioId
+        record: that.studioId,
+        owner: 'public'
     });
 }

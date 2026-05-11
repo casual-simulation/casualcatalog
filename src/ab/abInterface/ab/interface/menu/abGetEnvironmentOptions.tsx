@@ -176,12 +176,12 @@ options.push({
 })
 
 // ========================================
-// ▼ AI
+// ▼ Inst AI
 // ========================================
-const aiDropdownOptions = [];
+const instAIDropdownOptions = [];
 
 if (links.voice) {
-    aiDropdownOptions.push({
+    instAIDropdownOptions.push({
         label: "voice enabled",
         voice: tags.voice,
         onCreate: ListenerString(() => {
@@ -206,7 +206,7 @@ if (links.voice) {
         })
     });
 
-    aiDropdownOptions.push({
+    instAIDropdownOptions.push({
         label: "auto speaks",
         voice: tags.voice,
         onCreate: ListenerString(() => {
@@ -232,7 +232,7 @@ if (links.voice) {
         })
     });
 
-    aiDropdownOptions.push({
+    instAIDropdownOptions.push({
         label: "mic muted",
         voice: tags.voice,
         onCreate: ListenerString(() => {
@@ -279,7 +279,7 @@ if (links.gpt) {
     });
     */
 
-    aiDropdownOptions.push({
+    instAIDropdownOptions.push({
         label: "chat streaming",
         ask: getLink(ab.links.ask),
         onCreate: ListenerString(() => {
@@ -304,7 +304,7 @@ if (links.gpt) {
         })
     });
 
-    aiDropdownOptions.push({
+    instAIDropdownOptions.push({
         label: `clear ${ab.links.personality.tags.abBuilderIdentity} ai chat history`,
         formAddress: 'clear_all',
         onCreate: ListenerString(() => {
@@ -319,12 +319,12 @@ if (links.gpt) {
     });
 }
 
-if (aiDropdownOptions && aiDropdownOptions.length > 0) {
+if (instAIDropdownOptions && instAIDropdownOptions.length > 0) {
     options.push({
-        label: `${links.personality.tags.abBuilderIdentity} ai`,
+        label: `${links.personality.tags.abBuilderIdentity} ai (this inst)`,
         abEnvironmentMenuSortOrder: 400,
         menuItemType: 'dropdown',
-        dropdownOptions: aiDropdownOptions
+        dropdownOptions: instAIDropdownOptions
     })
 }
 

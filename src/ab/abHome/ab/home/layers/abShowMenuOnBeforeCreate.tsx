@@ -1,6 +1,6 @@
 const dropdownOptions = [];
 
-const currentDim = ab.links.remember.tags.abActiveDimension;
+const currentDim = links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 const activeMenu = configBot.tags.menuPortal;
 

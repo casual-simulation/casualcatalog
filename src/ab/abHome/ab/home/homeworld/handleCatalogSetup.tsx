@@ -31,6 +31,7 @@ if (!homeBot) {
         positionY = 42.96621621621622;
     }
 
+    console.log("creating user catalog");
 
     //setup user catalog
     const userAbArtifactShard = {

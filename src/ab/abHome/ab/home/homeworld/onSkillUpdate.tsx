@@ -1,12 +1,12 @@
 superShout("instCheckin", configBot.tags);
 
 //prevent automatic map focus
-setTagMask(ab.links.remember, "mapPreventFocus", true);
+setTagMask(links.remember, "mapPreventFocus", true);
 
 const currentDim = 'home';
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 
-ab.links.manifestation.abSetAwake({ awake: true })
+links.manifestation.abSetAwake({ awake: true })
 
 if (currentPortal != 'map') {
     configBot.tags.mapPortal = currentDim;

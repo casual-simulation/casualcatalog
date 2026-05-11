@@ -1,6 +1,6 @@
-superShout("instCheckin", JSON.stringify({"config": configBot.tags.inst, "isPrimary": links.learn.abIsPrimary()}));
+superShout("instCheckin", JSON.stringify({"config": configBot.tags.inst, "isPrimary": thisBot.isInPrimary()}));
 
-if (links.learn.abIsPrimary()) {
+if (thisBot.isInPrimary()) {
     //prevent automatic map focus
     setTagMask(links.remember, "mapPreventFocus", true);
 

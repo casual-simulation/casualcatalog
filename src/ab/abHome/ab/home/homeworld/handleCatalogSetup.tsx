@@ -1,4 +1,4 @@
-if (!ab.abIsPrimary()) {
+if (!thisBot.isInPrimary()) {
     return;
 }
 

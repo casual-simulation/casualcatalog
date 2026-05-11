@@ -1,6 +1,6 @@
 // superShout("instCheckin", configBot.tags);
 
-if (links.learn.abIsPrimary()) {
+if (thisBot.isInPrimary()) {
     setTagMask(links.remember, "mapPreventFocus", true);
     thisBot.init();
 } else {

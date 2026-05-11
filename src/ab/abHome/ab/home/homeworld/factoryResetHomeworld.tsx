@@ -9,7 +9,7 @@ if (!confirmed) {
 
 os.toast("backing up home world...");
 
-const backup = await thisBot.backupHomeworld();
+const backup = await thisBot.saveHomeworld();
 
 if (!backup.success) {
     let confirmed = await os.showConfirm({
@@ -24,14 +24,13 @@ if (!backup.success) {
 
 os.toast("resetting home base...");
 
-const currentDim = ab.links.remember.tags.abActiveDimension;
+const currentDim = 'home';
 const homeWorldBots = getBots(byTag(currentDim, true), not(byTag("system", sys => sys?.substring(0, 3) == 'ab.')), not(byTag("abIgnore", true)), byTag("space", 'shared'));
+const catalogs = getBots(byTag("studioCatalog", true));
+const kits = getBots(byTag("abArtifactName", "kit"));
 
 destroy(homeWorldBots);
+destroy(catalogs);
+destroy(kits);
 
-await ab.links.search.onLookupAskID({askID: 'home', channelConfig: false, autoHatch: true, sourceEvent: 'factory_reset_home_base', ignoreReserved: true, eggParameters: {saveOnLoad: true}});
-
-tags.homeLoaded = false;
-thisBot.onEggHatched({eggParameters: {
-    saveOnLoad: true
-}});
+thisBot.handleCatalogSetup();

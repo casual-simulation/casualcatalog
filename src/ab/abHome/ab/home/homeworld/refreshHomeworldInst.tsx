@@ -2,7 +2,7 @@ configBot.tags.menuPortal = 'home_place_update_menu';
 let busyIndicator = await ab.links.menu.abCreateMenuBusyIndicator({ home_place_update_menu: true, label: `refreshing homeworld` });
 
 //backup
-const result = await thisBot.backupHomeworld();
+const result = await thisBot.saveHomeworld();
 
 if (result.success) {
     try {

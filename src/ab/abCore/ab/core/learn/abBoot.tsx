@@ -77,6 +77,10 @@ if (!links.personality) {
     await thisBot.abAdapt("abPersonality");
 }
 
+if (ask && ask == "home") {
+    await thisBot.abAdapt("abHome");
+}
+
 //initialize some ab globals.
 globalThis.ab = thisBot;
 globalThis.abInstMemory = links.remember;

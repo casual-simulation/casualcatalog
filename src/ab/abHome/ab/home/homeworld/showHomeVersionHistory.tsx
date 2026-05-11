@@ -7,8 +7,6 @@ if (!getRecord.success) {
 configBot.tags.menuPortal = "homeWorldVersionMenu";
 shout("clearHomeWorldVersionMenu");
 
-const homeWorldCore = getBot("isHomeWorldCore", true);
-
 const keepCurrentButton = {
     homeWorldVersionMenu: true,
     clearHomeWorldVersionMenu: `@destroy(thisBot)`,

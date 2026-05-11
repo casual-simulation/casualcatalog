@@ -3,4 +3,6 @@ if (links.learn.abIsPrimary()) {
     if (!homeBase) {
         thisBot.handleCatalogSetup();
     }
+} else {
+    ab.links.manifestation.abSetAwake({ awake: false });
 }

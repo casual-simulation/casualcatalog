@@ -57,7 +57,7 @@ if (!homeBot) {
             }
         ]
     };
-    await ab.links.artifact.abCreateArtifactPromiseBot({
+    await links.artifact.abCreateArtifactPromiseBot({
         abArtifactName: 'studioCatalog',
         abArtifactInstanceID: uuid(),
         abArtifactShard: userAbArtifactShard,

@@ -77,7 +77,7 @@ if (!links.personality) {
     await thisBot.abAdapt("abPersonality");
 }
 
-if (ask && ask == "home") {
+if ((ask && ask == "home") || (bootFlag && bootFlag == "home")) {
     await thisBot.abAdapt("abHome");
 }
 

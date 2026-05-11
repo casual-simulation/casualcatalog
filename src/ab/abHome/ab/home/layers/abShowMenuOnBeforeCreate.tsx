@@ -26,7 +26,10 @@ if (!tags.activeInsts) {
 if (studioData.success) {
     const studios = studioData.studios;
     for (let i = 0; i < studios.length; ++i) {
-        const instName = "studioInst_" + studios[i].studioId;
+        let idString = studios[i].studioId;
+        idString = idString.slice(-4);
+        const instName = "sti_" + idString;
+        
         const isLoaded = tags.activeInsts.includes(instName);
 
         dropdownOptions.push( {

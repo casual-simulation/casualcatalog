@@ -2,7 +2,9 @@ if (!links.learn.abIsPrimary()) {
     return;
 }
 
-const instName = "studioInst_" + that.studioId;
+let idString = that.studioId;
+idString = idString.slice(-4);
+const instName = "sti_" + idString;
 
 if (!tags.activeInsts) {
     setTagMask(thisBot, "activeInsts", []);
@@ -22,11 +24,9 @@ if (instLoaded) {
 //if unloaded, sideload it
 else {
     console.log("loading", instName)
-    configBot.tags.pattern = "home";
-    await os.sleep(0);
 
     os.loadInst({
         inst: instName,
-        owner: that.studioId
+        record: that.studioId
     });
 }

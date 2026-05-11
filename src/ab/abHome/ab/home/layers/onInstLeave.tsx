@@ -1,1 +1,1 @@
-superShout("onLayerDeactivated", that)
+superShout("onLayerDeactivated", that.inst ?? that)

@@ -1,3 +1,5 @@
+superShout("instCheckin", configBot.tags);
+
 //prevent automatic map focus
 setTagMask(ab.links.remember, "mapPreventFocus", true);
 

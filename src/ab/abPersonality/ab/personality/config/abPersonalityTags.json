@@ -11,5 +11,5 @@
     "abPreferredAIModel",
     "abCatalogName",
     "abMapPortalBase",
-    "abAlwaysApprovePatchBots"
+    "abAutoAssignAgentToUserRequestTodo"
 ]

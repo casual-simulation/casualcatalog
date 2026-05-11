@@ -101,10 +101,10 @@ options.push({
             }),
         },
         {
-            label: `ai always approve: ${links.personality.tags.abAlwaysApprovePatchBots ? 'yes' : 'no'}`,
+            label: `ai auto assign agent to user request todo: ${links.personality.tags.abAutoAssignAgentToUserRequestTodo ? 'yes' : 'no'}`,
             formAddress: 'edit_note',
             onClick: ListenerString(async () => {
-                shout('abPersonalityChange', { abAlwaysApprovePatchBots: !links.personality.tags.abAlwaysApprovePatchBots });
+                shout('abPersonalityChange', { abAutoAssignAgentToUserRequestTodo: !links.personality.tags.abAutoAssignAgentToUserRequestTodo });
                 shout('abMenuRefresh');
             })
         },

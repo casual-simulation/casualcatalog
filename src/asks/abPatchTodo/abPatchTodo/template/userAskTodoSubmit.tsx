@@ -4,6 +4,7 @@ if (!data || tags.userAskAnswer == null) return;
 setTag(thisBot, 'abTodoComplete', true);
 setTag(thisBot, 'animationState', 'complete');
 setTag(thisBot, 'userAskOtherText', null);
+setTag(thisBot, 'todoShowArrow', false);
 
 // Close the menu portal — the user is done with this question.
 shout('abPatchTodoMenuReset');

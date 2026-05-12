@@ -69,6 +69,7 @@ for (let i = 0; i < questionTodos.length; i++) {
     setTag(questionTodos[i], 'isUserAskTodo', true);
     setTag(questionTodos[i], 'userAskData', '🧬' + JSON.stringify(data));
     setTag(questionTodos[i], 'todoReadyForAgent', false);
+    setTag(questionTodos[i], 'todoShowArrow', true);
     setTag(questionTodos[i], 'onDestroy', '@whisper(thisBot, "userAskTodoOnDestroy")');
 }
 

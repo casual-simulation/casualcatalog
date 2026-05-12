@@ -17,6 +17,7 @@ if (tags.todoShowArrow) {
         todoBot: getLink(thisBot),
         transformer: thisBot.id,
         dimension: tags.dimension,
+        anchorPoint: [0, 0, -2],
         [tags.dimension]: true,
         [tags.dimension + 'X']: 0,
         [tags.dimension + 'Y']: 0,

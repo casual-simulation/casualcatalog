@@ -15,10 +15,6 @@ if (!tags.todoFormConfigs[desiredTodoForm]) {
     desiredTodoForm = 'build';
 }
 
-if (tags.todoForm === desiredTodoForm) {
-    return;
-}
-
 tags.todoForm = desiredTodoForm;
 
 const config = tags.todoFormConfigs[desiredTodoForm];
@@ -26,6 +22,10 @@ const targetFormAddress = ab.abBuildCasualCatalogURL(config.meshPath);
 
 if (masks.form !== 'mesh') {
     masks.form = 'mesh';
+}
+
+if (masks.formSubtype !== 'gltf') {
+    masks.formSubtype = 'gltf';
 }
 
 if (masks.formAddress !== targetFormAddress) {

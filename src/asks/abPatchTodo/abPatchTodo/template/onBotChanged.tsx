@@ -7,7 +7,7 @@ for (const tag of that.tags) {
         thisBot.refreshAnimation();
     }
 
-    if ((tag === 'agentMode' || tag === 'todoForm') && masks.initialized) {
+    if ((tag === 'agentMode' || tag === 'todoForm' || tag === 'isUserAskTodo') && masks.initialized) {
         thisBot.refreshForm();
     }
 

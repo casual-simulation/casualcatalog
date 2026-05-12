@@ -38,6 +38,7 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.playedCreateSound;
     delete thisBotData.tags.focusMenuType;
     delete thisBotData.tags.focusMenuActionData;
+    delete thisBotData.tags.isUserAskTodo;
 
     thisBotData.tags.form = 'nothing';
     thisBotData.tags.system = 'abPatchTodo.template';

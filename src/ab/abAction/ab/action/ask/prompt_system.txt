@@ -140,6 +140,8 @@ The function result you receive on the next turn is an array, one entry per ques
 
 `askUser` should be the only function call in the response (a leading `chat` for status is fine). Do NOT call `makeTodos` or `completeTodo` in the same response — those come on the continuation turn after the user answers.
 
+**On the continuation turn after you receive an `askUser` function result, do NOT call `askUser` again — proceed with `makeTodos` (followed by `completeTodo`) using the user's answers.** Re-asking after receiving an answer wastes the user's time and will create duplicate question todos. The only situation where a second `askUser` is appropriate is when the answers reveal a brand-new ambiguity that the first round genuinely could not have foreseen.
+
 Use sparingly — only when the answer would materially change the plan. Prefer reasonable defaults for cosmetic preferences. Bundle related clarifications into a single `askUser` call rather than chaining multiple calls.
 
 ## makePatch
@@ -913,6 +915,66 @@ After the load result arrives, response (turn 2 — apply configuration and decl
       "name": "chat",
       "args": {
         "message": "Loaded agent_bot_tool and set model to gemini-2.0-flash."
+      }
+    }
+  },
+  { "function": { "name": "completeTodo", "args": {} } }
+]
+```
+
+## Example 12: askUser continuation — after receiving the answers, proceed with makeTodos
+
+This is the **continuation turn** that follows Example 9. The function result from `askUser` is delivered in `context.functionResults`, and the AI must now plan the implementation — NOT ask another question.
+
+```json
+{
+  "context": {
+    "mode": "plan",
+    "todoId": "todo_bot_abc123",
+    "focus": { "type": "dimension", "dimension": "home" },
+    "functionResults": [
+      {
+        "name": "askUser",
+        "result": [
+          {
+            "questionType": "select",
+            "answer": "Yes — spawn rate increases"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Response (use the answer to plan — call `makeTodos` then `completeTodo`; do NOT call `askUser` again):
+
+```json
+[
+  {
+    "function": {
+      "name": "makeTodos",
+      "args": {
+        "todos": [
+          {
+            "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5, system: 'ask.clicker.scoreboard'. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.",
+            "label": "Scoreboard",
+            "budget_credits": 25000
+          },
+          {
+            "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner', spawnIntervalMs: 2000, system: 'ask.clicker.spawner'. Add an async onCreate listener that loops forever: await os.sleep(thisBot.tags.spawnIntervalMs), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, system: 'ask.clicker.target', and an onClick listener that shouts 'onAddScore', sets thisBot.tags.spawnIntervalMs to Math.max(400, thisBot.tags.spawnIntervalMs * 0.9) to ramp difficulty, then destroys thisBot.",
+            "label": "Target spawner with ramping difficulty",
+            "budget_credits": 75000
+          }
+        ]
+      }
+    }
+  },
+  {
+    "function": {
+      "name": "chat",
+      "args": {
+        "message": "Building scoreboard + target spawner with spawn rate that ramps up as targets are clicked."
       }
     }
   },

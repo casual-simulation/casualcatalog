@@ -18,6 +18,7 @@ if (tags.todoShowArrow) {
         transformer: thisBot.id,
         dimension: tags.dimension,
         anchorPoint: [0, 0, -2],
+        pointable: false,
         [tags.dimension]: true,
         [tags.dimension + 'X']: 0,
         [tags.dimension + 'Y']: 0,
@@ -40,7 +41,14 @@ if (tags.todoShowArrow) {
                     loop: { mode: 'repeat' },
                 });
             }
-        })
+        }),
+        onAnyBotsRemoved: ListenerString(() => {
+            const { botIDs } = that;
+
+            if (botIDs.includes(tags.transformer)) {
+                destroy(thisBot);
+            }
+        },
     })
 
     masks.arrowBot = getLink(arrowBot);

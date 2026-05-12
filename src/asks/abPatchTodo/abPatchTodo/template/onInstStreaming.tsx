@@ -1,1 +1,1 @@
-whisper(thisBot, 'refreshAnimation');
+thisBot.refreshForm();

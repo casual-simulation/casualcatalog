@@ -19,7 +19,7 @@ if (tags.todoForm === desiredTodoForm) {
     return;
 }
 
-masks.todoForm = desiredTodoForm;
+tags.todoForm = desiredTodoForm;
 
 const config = tags.todoFormConfigs[desiredTodoForm];
 const targetFormAddress = ab.abBuildCasualCatalogURL(config.meshPath);

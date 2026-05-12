@@ -12,6 +12,7 @@ if (!masks.initialized && tags.abArtifactShardReconstituted && masks.abInitializ
     }
     
     thisBot.refreshConnections();
+    thisBot.refreshArrow();
 
     if (tags.todoPlanId && tags.todoOrder === 0 && !tags.playedCreateSound) {
         ab.links.sound.abPlaySound({ value: [ 'ab/audio/writing-short-1.mp3', 'ab/audio/writing-short-2.mp3', 'ab/audio/writing-short-3.mp3', ] });

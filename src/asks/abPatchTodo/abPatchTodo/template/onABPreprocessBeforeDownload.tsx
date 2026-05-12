@@ -30,6 +30,7 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.todoOrder;
     delete thisBotData.tags.todoApproved;
     delete thisBotData.tags.todoForm;
+    delete thisBotData.tags.todoShowArrow;
     delete thisBotData.tags.aiModel;
     delete thisBotData.tags.agentName;
     delete thisBotData.tags.animationState;

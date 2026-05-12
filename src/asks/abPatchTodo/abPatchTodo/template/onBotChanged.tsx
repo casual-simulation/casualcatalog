@@ -6,9 +6,15 @@ for (const tag of that.tags) {
     if (tag === 'animationState' && masks.formAddressAnimations) {
         thisBot.refreshAnimation();
     }
+    
+    if (masks.initialized) {
+        if (tag === 'agentMode' || tag === 'todoForm' || tag === 'isUserAskTodo') {
+            thisBot.refreshForm();
+        }
 
-    if ((tag === 'agentMode' || tag === 'todoForm' || tag === 'isUserAskTodo') && masks.initialized) {
-        thisBot.refreshForm();
+        if (tag === 'todoShowArrow') {
+            thisBot.refreshArrow();
+        }
     }
 
     if (tag === 'todoReadyForAgent') {

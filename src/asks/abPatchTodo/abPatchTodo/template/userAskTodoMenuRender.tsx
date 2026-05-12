@@ -20,6 +20,7 @@ const menuOptions: any = {
     menuItems: [],
 };
 
+// Question label
 menuOptions.menuItems.push({
     label: question,
     menuItemType: 'button',
@@ -40,65 +41,45 @@ if (chainComplete) {
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     });
 } else if (questionType === 'select') {
-    const current = tags.userAskAnswer ?? null;
     for (const option of options) {
-        const isSelected = current === option;
         menuOptions.menuItems.push({
             label: option,
-            formAddress: isSelected ? 'radio_button_checked' : 'radio_button_unchecked',
+            userAskOptionLabel: option,
+            formAddress: tags.userAskAnswer === option ? 'radio_button_checked' : 'radio_button_unchecked',
             onClick: ListenerString(() => {
-                setTag(links.patchBot, 'userAskAnswer', thisBot.tags.label);
-                whisper(links.patchBot, 'userAskTodoSubmit');
+                setTag(links.patchBot, 'userAskAnswer', thisBot.tags.userAskOptionLabel);
+                setTag(links.patchBot, 'userAskOtherText', null);
+                shout('userAskRefreshSelect');
+            }),
+            userAskRefreshSelect: ListenerString(() => {
+                const cur = links.patchBot.tags.userAskAnswer;
+                masks.formAddress = cur === thisBot.tags.userAskOptionLabel
+                    ? 'radio_button_checked'
+                    : 'radio_button_unchecked';
             }),
         });
     }
     if (allowOther) {
-        const isOtherActive = current != null && !options.includes(current);
         menuOptions.menuItems.push({
-            label: isOtherActive ? `Other: ${current}` : 'Other...',
-            formAddress: isOtherActive ? 'radio_button_checked' : 'edit',
-            onClick: ListenerString(async () => {
-                const text = await os.showInput(links.patchBot.tags.userAskAnswer ?? '', { placeholder: 'Type your answer' });
-                if (text != null && text !== '') {
-                    setTag(links.patchBot, 'userAskAnswer', text);
-                    whisper(links.patchBot, 'userAskTodoSubmit');
+            label: 'Other',
+            menuItemType: 'input',
+            formAddress: 'edit',
+            placeholder: 'Type a custom answer',
+            onCreate: ListenerString(() => {
+                const text = links.patchBot.tags.userAskOtherText;
+                masks.menuItemText = text ?? '';
+            }),
+            onInputTyping: ListenerString(() => {
+                const text = String(that.text ?? '');
+                setTag(links.patchBot, 'userAskOtherText', text || null);
+                if (text) {
+                    setTag(links.patchBot, 'userAskAnswer', null);
+                    shout('userAskRefreshSelect');
                 }
             }),
-        });
-    }
-} else if (questionType === 'multiselect') {
-    const selected: string[] = Array.isArray(tags.userAskAnswer) ? tags.userAskAnswer : [];
-    for (const option of options) {
-        const isChecked = selected.includes(option);
-        menuOptions.menuItems.push({
-            label: option,
-            formAddress: isChecked ? 'check_box' : 'check_box_outline_blank',
-            onClick: ListenerString(() => {
-                const cur = Array.isArray(links.patchBot.tags.userAskAnswer)
-                    ? links.patchBot.tags.userAskAnswer.slice()
-                    : [];
-                const optLabel = thisBot.tags.label;
-                const idx = cur.indexOf(optLabel);
-                if (idx >= 0) cur.splice(idx, 1); else cur.push(optLabel);
-                setTag(links.patchBot, 'userAskAnswer', cur);
-                whisper(links.patchBot, 'abPatchTodoMenuOpen');
-            }),
-        });
-    }
-    if (allowOther) {
-        const otherEntries = selected.filter(s => !options.includes(s));
-        menuOptions.menuItems.push({
-            label: otherEntries.length > 0 ? `Other: ${otherEntries.join(', ')}` : 'Other...',
-            formAddress: otherEntries.length > 0 ? 'check_box' : 'edit',
-            onClick: ListenerString(async () => {
-                const text = await os.showInput('', { placeholder: 'Type your answer' });
-                if (text != null && text !== '') {
-                    const cur = Array.isArray(links.patchBot.tags.userAskAnswer)
-                        ? links.patchBot.tags.userAskAnswer.slice()
-                        : [];
-                    cur.push(text);
-                    setTag(links.patchBot, 'userAskAnswer', cur);
-                    whisper(links.patchBot, 'abPatchTodoMenuOpen');
+            userAskRefreshSelect: ListenerString(() => {
+                if (links.patchBot.tags.userAskAnswer != null) {
+                    masks.menuItemText = '';
                 }
             }),
         });
@@ -107,22 +88,85 @@ if (chainComplete) {
         label: 'Submit',
         formAddress: 'send',
         onClick: ListenerString(() => {
+            const otherText = links.patchBot.tags.userAskOtherText;
+            if (otherText) {
+                setTag(links.patchBot, 'userAskAnswer', otherText);
+            }
+            whisper(links.patchBot, 'userAskTodoSubmit');
+        }),
+    });
+} else if (questionType === 'multiselect') {
+    for (const option of options) {
+        menuOptions.menuItems.push({
+            label: option,
+            userAskOptionLabel: option,
+            formAddress: (Array.isArray(tags.userAskAnswer) && tags.userAskAnswer.includes(option))
+                ? 'check_box'
+                : 'check_box_outline_blank',
+            onClick: ListenerString(() => {
+                const cur = Array.isArray(links.patchBot.tags.userAskAnswer)
+                    ? links.patchBot.tags.userAskAnswer.slice()
+                    : [];
+                const optLabel = thisBot.tags.userAskOptionLabel;
+                const idx = cur.indexOf(optLabel);
+                if (idx >= 0) cur.splice(idx, 1); else cur.push(optLabel);
+                setTag(links.patchBot, 'userAskAnswer', cur);
+                masks.formAddress = cur.includes(optLabel) ? 'check_box' : 'check_box_outline_blank';
+            }),
+        });
+    }
+    if (allowOther) {
+        menuOptions.menuItems.push({
+            label: 'Other',
+            menuItemType: 'input',
+            formAddress: 'edit',
+            placeholder: 'Type a custom answer to add',
+            onCreate: ListenerString(() => {
+                const text = links.patchBot.tags.userAskOtherText;
+                masks.menuItemText = text ?? '';
+            }),
+            onInputTyping: ListenerString(() => {
+                const text = String(that.text ?? '');
+                setTag(links.patchBot, 'userAskOtherText', text || null);
+            }),
+        });
+    }
+    menuOptions.menuItems.push({
+        label: 'Submit',
+        formAddress: 'send',
+        onClick: ListenerString(() => {
+            const otherText = links.patchBot.tags.userAskOtherText;
+            const cur = Array.isArray(links.patchBot.tags.userAskAnswer)
+                ? links.patchBot.tags.userAskAnswer.slice()
+                : [];
+            if (otherText && !cur.includes(otherText)) {
+                cur.push(otherText);
+            }
+            setTag(links.patchBot, 'userAskAnswer', cur);
             whisper(links.patchBot, 'userAskTodoSubmit');
         }),
     });
 } else if (questionType === 'custom') {
-    const current = tags.userAskAnswer;
     menuOptions.menuItems.push({
-        label: current
-            ? `Answer: ${current.length > 40 ? current.slice(0, 40) + '...' : current}`
-            : 'Provide answer',
-        formAddress: current ? 'edit_note' : 'edit',
-        onClick: ListenerString(async () => {
-            const text = await os.showInput(links.patchBot.tags.userAskAnswer ?? '', { placeholder: 'Type your answer', multiline: true });
-            if (text != null && text !== '') {
-                setTag(links.patchBot, 'userAskAnswer', text);
-                whisper(links.patchBot, 'userAskTodoSubmit');
-            }
+        label: 'Answer',
+        menuItemType: 'input',
+        formAddress: 'edit',
+        placeholder: 'Type your answer',
+        formInputMultiline: true,
+        onCreate: ListenerString(() => {
+            const text = links.patchBot.tags.userAskAnswer;
+            masks.menuItemText = text ?? '';
+        }),
+        onInputTyping: ListenerString(() => {
+            const text = String(that.text ?? '');
+            setTag(links.patchBot, 'userAskAnswer', text || null);
+        }),
+    });
+    menuOptions.menuItems.push({
+        label: 'Submit',
+        formAddress: 'send',
+        onClick: ListenerString(() => {
+            whisper(links.patchBot, 'userAskTodoSubmit');
         }),
     });
 }

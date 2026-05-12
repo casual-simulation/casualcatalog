@@ -4,12 +4,16 @@ for (const tag of that.tags) {
     }
 
     if (tag === 'animationState' && masks.formAddressAnimations) {
-        whisper(thisBot, 'refreshAnimation');
+        thisBot.refreshAnimation();
+    }
+
+    if (tag === 'agentMode' && masks.initialized) {
+        thisBot.refreshFormAddress();
     }
 
     if (tag === 'todoReadyForAgent') {
         if (masks.menuOpen) {
-            whisper(thisBot, 'abPatchTodoMenuOpen');
+            thisBot.abPatchTodoMenuOpen();
         }
     }
 

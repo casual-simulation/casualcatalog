@@ -5,7 +5,7 @@ if (!masks.initialized && tags.abArtifactShardReconstituted && masks.abInitializ
 
     masks.initialized = true;
 
-    await thisBot.refreshFormAddress();
+    await thisBot.refreshForm();
 
     if (!tags.animationState) {
         tags.animationState = 'incomplete';

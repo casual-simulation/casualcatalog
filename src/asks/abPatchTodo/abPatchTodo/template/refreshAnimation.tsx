@@ -2,15 +2,12 @@ if (!masks.formAddressAnimations) {
     return;
 }
 
-const animMap = {
-    'incomplete': 'incomplete_in',
-    'processing': 'processing_in',
-    'complete': 'complete_in',
-    'error': 'error_in',
-};
+const todoFormConfig = tags.todoFormConfigs[tags.todoForm];
+const animName = todoFormConfig?.animInMap?.[tags.animationState];
 
-const animName = animMap[tags.animationState];
-if (!animName) return;
+if (!animName) {
+    return;
+}
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] start form animation '${animName}'`);

@@ -39,7 +39,20 @@ const leaveGPSButton = {
     `,
 }
 
+const viewCollectionsButton = {
+    ...menuOptions,
+    label: 'view collection',
+    formAddress: 'cards',
+    onClick: `@
+        const journal = getBot("artifactJournal", true);
+        journal.onClick();
+
+        shout("clearMapAvatarMenu");
+    `,
+}
+
 ab.links.menu.abCreateMenuButton(leaveGPSButton);
+ab.links.menu.abCreateMenuButton(viewCollectionsButton);
 
 if (!journal.tags.continueLocationPull) {
     thisBot.showPlaceNavMenu();

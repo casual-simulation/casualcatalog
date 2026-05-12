@@ -17,6 +17,13 @@ create({
 
 masks.menuOpen = true;
 
+// User-ask question todos render a distinct menu (question + answer UI). The standard plan
+// menu below doesn't apply — return early after rendering.
+if (tags.isUserAskTodo) {
+    thisBot.userAskTodoMenuRender();
+    return;
+}
+
 const planTodos  = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
 const allCompleted = planTodos.every(b => b.tags.abTodoComplete);
 const anyFailed  = planTodos.some(b => b.tags.abPatchError);

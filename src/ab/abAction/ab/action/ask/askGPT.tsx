@@ -71,6 +71,10 @@ const askContext: ABAskContext = {
     onPartialResponse,
 };
 
+function buildUserMessage(message?: string, extra: Record<string, any> = {}): string {
+    return thisBot.abAskHelperBuildUserMessage({ askContext, message, extra });
+}
+
 if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
     await thisBot.abAskHelperCreateUserRequestTodo({ askContext });
 
@@ -97,21 +101,6 @@ if (callDepth === 0) {
 // ── Build messages for this turn ────────────────────────────────────────
 
 let aiChatMessages: AIChatMessage[];
-const focus = thisBot.abAskHelperBuildFocusContext({ askContext });
-
-function buildContextObj(extra: Record<string, any> = {}): Record<string, any> {
-    const ctx: Record<string, any> = {};
-    if (agentMode) ctx.mode = agentMode;
-    if (todoBot) ctx.todoId = todoBot.id;
-    ctx.focus = focus;
-    return { ...ctx, ...extra };
-}
-
-function buildUserMessage(message?: string, extra: Record<string, any> = {}): string {
-    const obj: Record<string, any> = { context: buildContextObj(extra) };
-    if (message != null) obj.message = message;
-    return JSON.stringify(obj);
-}
 
 // Attachments are appended to the new user message as AIDataContent blocks.
 // They never mutate storedHistory — past attachments live inside the persisted history already.
@@ -121,11 +110,20 @@ if (!hasInquiry && storedHistory.length > 0) {
     // query function continuation — history already ends with the query result user message
     aiChatMessages = storedHistory;
 } else if (storedHistory.length > 0) {
-    // New user message continuing an existing session
-    aiChatMessages = [
-        ...storedHistory,
-        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry) }, ...attachmentBlocks] }
-    ];
+    const lastStored = storedHistory[storedHistory.length - 1];
+    if (lastStored?.role === 'user') {
+        // History already ends with a pending user message (e.g. an askUser function-result
+        // resume injected by userAskTodoSubmit). Use history as-is and ignore the new inquiry —
+        // this is what lets the manager-driven resume work even though agentOnRequest passes
+        // the parent todo's prompt as the inquiry.
+        aiChatMessages = storedHistory;
+    } else {
+        // New user message continuing an existing session
+        aiChatMessages = [
+            ...storedHistory,
+            { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry) }, ...attachmentBlocks] }
+        ];
+    }
 } else {
     // Fresh start — include catalog so agents can reason about available tools immediately
     const catalog = thisBot.abAskToolGetCatalog();

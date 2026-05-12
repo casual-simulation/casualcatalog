@@ -49,6 +49,30 @@ if (tags.activeTodoId) {
         }
         // Patch applied — move to next
         thisBot.onTodoFinished({ todoId: todoBot.id });
+    } else if (todoBot.tags.awaitingUserResponse === true) {
+        // Paused on an askUser clarification chain. Do nothing — the user has
+        // pending questions to answer. The parent stays the active todo so we
+        // keep monitoring it on subsequent ticks.
+        return;
+    } else if (todoBot.tags.awaitingUserResponse === false) {
+        // The submit handler signalled that all questions are answered. Resume by
+        // re-assigning the todo to the existing agent (clears its todoInProgress flag
+        // so its next tick fires agentOnRequest → askGPT, which will detect the
+        // function-result user message at the tail of history and resume from it).
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] Resuming todo after askUser: ${todoBot.id}`);
+        }
+        setTag(todoBot, 'awaitingUserResponse', null);
+        const agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
+        if (agentBot) {
+            whisper(agentBot, 'assignTodo', todoBot.id);
+        } else {
+            // Agent gone — drop active state so the pending-scan branch will
+            // re-spawn one and assign this todo afresh on the next tick.
+            setTagMask(thisBot, 'activeTodoId', null, 'shared');
+            setTagMask(thisBot, 'activeAgentId', null, 'shared');
+        }
+        return;
     } else {
         // Todo still pending — verify an agent is actually working on it
         const agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
@@ -77,12 +101,17 @@ if (!todoBots || todoBots.length === 0) {
     return;
 }
 
-// Filter to pending todos (no patch yet, not from a failed plan, and user has readied them)
+// Filter to pending todos (no patch yet, not from a failed plan, and user has readied them).
+// User-ask question todos are never agent-assignable, and a parent still actively paused on
+// a question chain (awaitingUserResponse === true) should be skipped — but a parent that is
+// `false` (ready-to-resume) DOES pass through so a fresh executor's manager can pick it up.
 const pendingTodos = todoBots.filter(b =>
     !b.tags.abPatchCode &&
     !b.tags.abTodoComplete &&
     !b.tags.abPatchError &&
     !b.tags.abPatchApplying &&
+    !b.tags.isUserAskTodo &&
+    b.tags.awaitingUserResponse !== true &&
     b.tags.todoPlanId !== tags.failedPlanId &&
     b.tags.todoReadyForAgent
 );
@@ -122,6 +151,12 @@ if (tags.debug) {
 const nextTodo = pendingTodos[0];
 setTagMask(thisBot, 'activePlanId', nextTodo.tags.todoPlanId, 'shared');
 setTagMask(thisBot, 'activeTodoId', nextTodo.id, 'shared');
+
+// Normalize any non-null askUser resume signal — picking up the todo *is* the resume.
+// Prevents the resume branch from re-firing on subsequent ticks.
+if (nextTodo.tags.awaitingUserResponse != null) {
+    setTag(nextTodo, 'awaitingUserResponse', null);
+}
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] Emitting onTodoStarted for: ${nextTodo.id}`);

@@ -95,6 +95,53 @@ Post a message to the user in the chat log.
 
 Use for: answering questions, explaining what you are about to do, status updates.
 
+## askUser
+
+_Modes: `plan` only_
+
+Ask the user one or more clarifying questions before deciding on the plan. Each question is materialized as a user-assigned todo bot the user must answer. The conversation pauses until _all_ questions are answered; on the next turn you receive the answers as a function result and continue planning.
+
+```json
+{
+  "function": {
+    "name": "askUser",
+    "args": {
+      "questions": [
+        {
+          "questionType": "<select|multiselect|custom>",
+          "question": "<string>",
+          "options": ["<string>", "..."],
+          "allowOther": true
+        }
+      ]
+    }
+  }
+}
+```
+
+- `questions` — always an array, even for a single question.
+- `questionType` — `"select"` (one of `options`), `"multiselect"` (any of `options`), or `"custom"` (free-text only, `options` ignored).
+- `options` — required for `select`/`multiselect`. The user always gets an implicit `"Other..."` free-text entry as well unless you pass `allowOther: false`.
+- `allowOther` — defaults to `true`. Set `false` only when free text would not make sense for the question.
+
+The function result you receive on the next turn is an array, one entry per question in the same order:
+
+```json
+{
+  "name": "askUser",
+  "result": [
+    { "questionType": "select", "answer": "Option A" },
+    { "questionType": "multiselect", "answer": ["Option A", "user typed this"] }
+  ]
+}
+```
+
+- `answer` is a string for `select`/`custom`; a string array for `multiselect`. When the user picks "Other...", the free-text string appears directly in `answer` (or as an element of the array for `multiselect`) — no special prefix.
+
+`askUser` should be the only function call in the response (a leading `chat` for status is fine). Do NOT call `makeTodos` or `completeTodo` in the same response — those come on the continuation turn after the user answers.
+
+Use sparingly — only when the answer would materially change the plan. Prefer reasonable defaults for cosmetic preferences. Bundle related clarifications into a single `askUser` call rather than chaining multiple calls.
+
 ## makePatch
 
 _Modes: `build` only_
@@ -603,12 +650,12 @@ Response:
 ]
 ```
 
-## Example 6: Async listener using await → makePatch
+## Example 6: Plan-mode clarification → askUser
 
 ```json
 {
   "context": {
-    "mode": "build",
+    "mode": "plan",
     "todoId": "todo_bot_abc123",
     "focus": { "type": "grid", "dimension": "home", "x": 2, "y": 0 }
   },
@@ -622,9 +669,19 @@ Response:
 [
   {
     "function": {
-      "name": "makePatch",
+      "name": "askUser",
       "args": {
-        "code": "const dim = 'home';\nconst x = 2;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'green',\n  label: 'Click to rename',\n  system: 'ask.ui.renameable',\n  onClick: ListenerString(async () => {\n    const name = await os.showInput(thisBot.tags.label, { placeholder: 'Enter a new name' });\n    if (name != null) {\n      setTag(thisBot, 'label', name);\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];"
+        "questions": [
+          {
+            "questionType": "select",
+            "question": "How should renaming be triggered?",
+            "options": [
+              "Click opens os.showInput dialog",
+              "Inline text field in the menu portal",
+              "Toggle on the bot that listens for onKeyDown input"
+            ]
+          }
+        ]
       }
     }
   },
@@ -632,11 +689,10 @@ Response:
     "function": {
       "name": "chat",
       "args": {
-        "message": "Created a self-renaming bot at (2, 0) in home. Click it to rename."
+        "message": "Asking how you'd like the rename interaction to work before planning the build."
       }
     }
-  },
-  { "function": { "name": "completeTodo", "args": {} } }
+  }
 ]
 ```
 
@@ -677,11 +733,13 @@ Response:
 ]
 ```
 
-## Example 8: New bot with behavior → makeTodos
+## Example 8: Plan-mode clarification before decomposition → askUser
 
 ```json
 {
   "context": {
+    "mode": "plan",
+    "todoId": "todo_bot_abc123",
     "focus": { "type": "grid", "dimension": "home", "x": 2, "y": -3 }
   },
   "message": "Make a character here I can move around with WASD"
@@ -694,13 +752,17 @@ Response:
 [
   {
     "function": {
-      "name": "makeTodos",
+      "name": "askUser",
       "args": {
-        "todos": [
+        "questions": [
           {
-            "prompt": "Create a bot in dimension 'home' at position (2, -3). Tags: color: 'white', label: 'Player', draggable: false, system: 'ask.player.player'. Add an onKeyDown listener that reads that.keys: if 'w' is present decrement homeY by 1, if 's' increment homeY by 1, if 'a' decrement homeX by 1, if 'd' increment homeX by 1. Use setTag to update the position tags on thisBot.",
-            "label": "WASD character",
-            "budget_credits": 100000
+            "questionType": "select",
+            "question": "What movement style do you want for the character?",
+            "options": [
+              "Grid tile-based (snap to integer positions)",
+              "Free smooth movement",
+              "Grid-based with smooth interpolation between tiles"
+            ]
           }
         ]
       }
@@ -710,18 +772,22 @@ Response:
     "function": {
       "name": "chat",
       "args": {
-        "message": "I'll queue up a task to build a WASD-controlled character at (2, -3) in home."
+        "message": "Checking how you want WASD movement to feel before laying out the plan."
       }
     }
   }
 ]
 ```
 
-## Example 9: Multi-part feature → makeTodos with decomposition
+## Example 9: Plan-mode todo with clarification → askUser
 
 ```json
 {
-  "context": { "focus": { "type": "dimension", "dimension": "home" } },
+  "context": {
+    "mode": "plan",
+    "todoId": "todo_bot_abc123",
+    "focus": { "type": "dimension", "dimension": "home" }
+  },
   "message": "Build a clicker game — targets appear randomly and give a point when clicked, shown on a score display"
 }
 ```
@@ -732,18 +798,18 @@ Response:
 [
   {
     "function": {
-      "name": "makeTodos",
+      "name": "askUser",
       "args": {
-        "todos": [
+        "questions": [
           {
-            "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5, system: 'ask.clicker.scoreboard'. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.",
-            "label": "Scoreboard",
-            "budget_credits": 25000
-          },
-          {
-            "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner', system: 'ask.clicker.spawner'. Add an async onCreate listener that loops forever: await os.sleep(2000), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, system: 'ask.clicker.target', and an onClick listener that calls shout('onAddScore') then destroy(thisBot).",
-            "label": "Target spawner",
-            "budget_credits": 75000
+            "questionType": "select",
+            "question": "Should the game's difficulty ramp up as the player scores?",
+            "options": [
+              "Yes — spawn rate increases",
+              "Yes — targets shrink",
+              "Yes — both spawn rate and target size",
+              "No, keep it constant"
+            ]
           }
         ]
       }
@@ -753,7 +819,7 @@ Response:
     "function": {
       "name": "chat",
       "args": {
-        "message": "Breaking this into a scoreboard and a target spawner."
+        "message": "Asking how the clicker game's difficulty should behave before laying out the plan."
       }
     }
   }
@@ -847,54 +913,6 @@ After the load result arrives, response (turn 2 — apply configuration and decl
       "name": "chat",
       "args": {
         "message": "Loaded agent_bot_tool and set model to gemini-2.0-flash."
-      }
-    }
-  },
-  { "function": { "name": "completeTodo", "args": {} } }
-]
-```
-
-## Example 12: Plan-mode todo — decompose and complete → makeTodos + completeTodo
-
-```json
-{
-  "context": {
-    "mode": "plan",
-    "todoId": "todo_bot_abc123",
-    "focus": { "type": "dimension", "dimension": "home" }
-  },
-  "message": "Build a clicker game — targets appear randomly and give a point when clicked, shown on a score display"
-}
-```
-
-Response:
-
-```json
-[
-  {
-    "function": {
-      "name": "makeTodos",
-      "args": {
-        "todos": [
-          {
-            "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5, system: 'ask.clicker.scoreboard'. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.",
-            "label": "Scoreboard",
-            "budget_credits": 25000
-          },
-          {
-            "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner', system: 'ask.clicker.spawner'. Add an async onCreate listener that loops forever: await os.sleep(2000), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, system: 'ask.clicker.target', and an onClick listener that calls shout('onAddScore') then destroy(thisBot).",
-            "label": "Target spawner",
-            "budget_credits": 75000
-          }
-        ]
-      }
-    }
-  },
-  {
-    "function": {
-      "name": "chat",
-      "args": {
-        "message": "Breaking this into a scoreboard and a target spawner."
       }
     }
   },

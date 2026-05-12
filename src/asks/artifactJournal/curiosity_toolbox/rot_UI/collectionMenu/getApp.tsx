@@ -23,9 +23,11 @@ function getItems(startingIndex: number) {
             continue;
         }
 
+        const artData = artifactBot.tags.artifactLocationData.find(artifact => artifact.id === artifactBot.tags.collectableIDs[masks.openCollectionID][i])?.attributes.Artifact.data;
+
         elems.push(<td className="collection-cell" id={((masks.items[i] == 2) ? "fullUnlock" : "lock")}>
                         <div className="collection-cell-contents">
-                            <img className="collection-img" src={artifactBot.tags.artifactData.find(artifact => artifact.id === artifactBot.tags.collectableIDs[masks.openCollectionID][i])?.attributes.PhotoUrl} alt="Artifact" onClick={() => thisBot.getInfo(i)}/>
+                            <img className="collection-img" src={artData.attributes.PhotoUrl} alt="Artifact" onClick={() => thisBot.getInfo(artData.id)}/>
                         </div>
                     </td>)
     }

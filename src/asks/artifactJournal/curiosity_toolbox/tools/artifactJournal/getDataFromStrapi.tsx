@@ -15,9 +15,9 @@ try {
     })
     console.log("[RoT] contacted strapi")
     tags.artifactLocationData = (collectablesResponse.data.data).sort((a, b) => a.id - b.id);
-    let tempArray = []
+    // let tempArray = []
     for (let i = 0; i < collectablesResponse.data.data.length; i++) {
-        tempArray.push(collectablesResponse.data.data[i].attributes.Artifact.data.attributes.Name)
+        // tempArray.push(collectablesResponse.data.data[i].attributes.Artifact.data.attributes.Name)
 
         if (!tags.collectableAmounts[collectablesResponse.data.data[i].attributes.CollectionID] || tags.collectableAmounts[collectablesResponse.data.data[i].attributes.CollectionID] == 0){
             tags.collectableAmounts[collectablesResponse.data.data[i].attributes.CollectionID] = 1;
@@ -45,16 +45,16 @@ try {
         }
     })
     let artifactArray = []
-    for (let i = 0; i < artifactResponse.data.data.length; i++) {
-        for (let j = 0; j < tempArray.length; j++) {
-            //console.log(artifactResponse.data.data[i].attributes.Name + " and " + tempArray[j])
-            if (artifactResponse.data.data[i].attributes.Name == tempArray[j]) {
-                //console.log("match")
-                artifactArray.push(artifactResponse.data.data[i])
-            }
-        }
-    }
-    tags.artifactData = artifactArray.sort((a, b) => a.id - b.id);
+    // for (let i = 0; i < artifactResponse.data.data.length; i++) {
+    //     for (let j = 0; j < tempArray.length; j++) {
+    //         //console.log(artifactResponse.data.data[i].attributes.Name + " and " + tempArray[j])
+    //         if (artifactResponse.data.data[i].attributes.Name == tempArray[j]) {
+    //             //console.log("match")
+    //             artifactArray.push(artifactResponse.data.data[i])
+    //         }
+    //     }
+    // }
+    tags.artifactData = artifactResponse.data.data.sort((a, b) => a.id - b.id);
 
     //landmark
     const landmarkResponse = await web.hook({

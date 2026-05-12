@@ -4,6 +4,14 @@ if (!links.todoBot || tags.todoInProgress || masks.moving) {
     return;
 }
 
+// Stay parked while the parent todo is paused on an askUser clarification chain.
+// Without this, an executor change (e.g. page reload) clears todoInProgress via
+// onABTodoExecutorChanged and we'd re-fire agentOnRequest, duplicating the questions.
+// The manager triggers the actual resume by re-assigning the todo once the user answers.
+if (links.todoBot.tags.awaitingUserResponse === true) {
+    return;
+}
+
 const todoBot = links.todoBot;
 const dim = todoBot.tags.dimension;
 

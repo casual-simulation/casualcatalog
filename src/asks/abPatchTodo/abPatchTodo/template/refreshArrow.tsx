@@ -48,7 +48,7 @@ if (tags.todoShowArrow) {
             if (botIDs.includes(tags.transformer)) {
                 destroy(thisBot);
             }
-        },
+        }),
     })
 
     masks.arrowBot = getLink(arrowBot);

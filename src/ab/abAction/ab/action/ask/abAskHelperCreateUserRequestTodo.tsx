@@ -11,9 +11,13 @@ const [userRequestTodo] = await thisBot.abAskToolMakeTodos({
 
 if (userRequestTodo) {
     userRequestTodo.tags.agentMode = 'plan';
+
+    const autoAssign = ab.links.personality.tags.abAutoAssignAgentToUserRequestTodo ?? true;
+
+    if (autoAssign) {
+        // Automatically assign the todo to agents.
+        whisper(userRequestTodo, 'onAssignAgentsClick');
+    }
+    
+    shout('onABUserRequestTodoCreated', { todoBot: userRequestTodo });
 }
-
-// Automatically assign the todo to agents.
-whisper(userRequestTodo, 'onAssignAgentsClick');
-
-shout('onABUserRequestTodoCreated', { todoBot: userRequestTodo });

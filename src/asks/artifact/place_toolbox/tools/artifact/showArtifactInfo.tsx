@@ -1,6 +1,10 @@
 const journal = getBot("artifactJournal", true);
 let info = journal.tags.artifactData.find(artifact => artifact.id === tags.artifactID);
 
+if (!info) {
+    return;
+}
+
 let infoBot = getBot(byTag("name", "infoMenu"));
 infoBot.tags.itemName = info.attributes.Name;
 infoBot.tags.itemYear = info.attributes.Year;

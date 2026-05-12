@@ -12,19 +12,20 @@ function getItemGrid() {
                     {getItems(i * 3)}
                 </tr>)
     }
+
     return elems;
 }
 
 function getItems(startingIndex: number) {
     const elems = [];
     for (let i = startingIndex; i < startingIndex + 3; ++i) {
-        if (!artifactBot.tags.collectableIDs[masks.openCollectionID][i]) {
+        if (!artifactBot.tags.collectableIDs[masks.openCollectionID] || !artifactBot.tags.collectableIDs[masks.openCollectionID][i] ) {
             continue;
         }
 
         elems.push(<td className="collection-cell" id={((masks.items[i] == 2) ? "fullUnlock" : "lock")}>
                         <div className="collection-cell-contents">
-                            <img className="collection-img" src={artifactBot.tags.artifactData.find(artifact => artifact.id === artifactBot.tags.collectableIDs[masks.openCollectionID][i]).attributes.PhotoUrl} alt="Artifact 3" onClick={() => thisBot.getInfo(i)}/>
+                            <img className="collection-img" src={artifactBot.tags.artifactData.find(artifact => artifact.id === artifactBot.tags.collectableIDs[masks.openCollectionID][i])?.attributes.PhotoUrl} alt="Artifact" onClick={() => thisBot.getInfo(i)}/>
                         </div>
                     </td>)
     }
@@ -46,9 +47,12 @@ const App = () => {
             </div>
             <span className="collection-collectionName">{artifactBot.tags.collectionNames[masks.openCollectionID]}</span>
             <span className="collection-numFound">{masks.openCollectionCompletion}/{collectionAmount} Artifacts Found</span>
-            <table className="collection-table">
-                {getItemGrid()}
-            </table>
+            <div style={{'overflow-x': 'auto'}}>
+                <table className="collection-table">
+                    {getItemGrid()}
+                </table>
+            </div>
+            
         </div>
     </>)
 }

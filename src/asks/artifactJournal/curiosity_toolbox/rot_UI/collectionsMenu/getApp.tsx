@@ -4,6 +4,10 @@ function getItems() {
     const elems = [];
     for (let i = 0; i < artifactBot.tags.collectableIDs.length; ++i) {
         let numFound = 0;
+        if (!artifactBot.tags.collectableIDs[i]) {
+            continue;
+        }
+        
         for (let id of artifactBot.tags.collectableIDs[i]){
             if (artifactBot.tags.userData.collectedArtifacts.find(item => item.id == id)?.state == "collected") numFound++;
         }

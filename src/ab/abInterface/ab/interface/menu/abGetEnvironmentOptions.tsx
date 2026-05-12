@@ -331,19 +331,26 @@ if (instAIDropdownOptions && instAIDropdownOptions.length > 0) {
 // ========================================
 // ▼ HOMEWORLD
 // ========================================
-const homeBot = getBot("isHomeWorldCore", true);
-if (homeBot) {
+if (links.homeworld) {
     options.push({
         label: `homeworld`,
         abEnvironmentMenuSortOrder: 300,
+        homeworld: tags.homeworld,
         menuItemType: 'dropdown',
         dropdownOptions: [
+            {
+                formAddress: 'save',
+                label: 'backup homeworld',
+                onClick: ListenerString(async () => {
+                    links.homeworld.saveHomeworld();
+                    shout('abMenuRefresh');
+                }),
+            },
             {
                 formAddress: 'refresh',
                 label: 'refresh homeworld',
                 onClick: ListenerString(async () => {
-                    const homeBot = getBot("isHomeWorldCore", true);
-                    homeBot.updateHomeWorld();
+                    links.homeworld.refreshHomeworldInst();
                     shout('abMenuRefresh');
                 }),
             },
@@ -351,8 +358,7 @@ if (homeBot) {
                 formAddress: 'history',
                 label: 'homeworld version history',
                 onClick: ListenerString(async () => {
-                    const homeBot = getBot("isHomeWorldCore", true);
-                    homeBot.showHomeVersionHistory();
+                    links.homeworld.showHomeVersionHistory();
                     shout('abMenuRefresh');
                 }),
             },
@@ -362,8 +368,7 @@ if (homeBot) {
                 labelColor: 'black',
                 label: 'factory reset homeworld',
                 onClick: ListenerString(async () => {
-                    const homeBot = getBot("isHomeWorldCore", true);
-                    homeBot.factoryResetHomeWorld();
+                    links.homeworld.factoryResetHomeworld();
                     shout('abMenuRefresh');
                 }),
             }

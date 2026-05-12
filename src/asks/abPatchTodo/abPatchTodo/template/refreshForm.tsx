@@ -1,4 +1,14 @@
-let desiredTodoForm = tags.agentMode;
+let desiredTodoForm;
+
+if (tags.isUserAskTodo) {
+    desiredTodoForm = 'plan';
+} else if (tags.agentMode === 'build') {
+    desiredTodoForm = 'build';
+} else if (tags.agentMode === 'plan') {
+    desiredTodoForm = 'plan';
+} else {
+    desiredTodoForm = 'build';
+}
 
 if (!tags.todoFormConfigs[desiredTodoForm]) {
     // Fallback to 'build' form if current desired form doesn't have a config.

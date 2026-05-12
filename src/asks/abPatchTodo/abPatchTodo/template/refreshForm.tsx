@@ -1,7 +1,7 @@
 let desiredTodoForm;
 
 if (tags.isUserAskTodo) {
-    desiredTodoForm = 'plan';
+    desiredTodoForm = 'userAsk';
 } else if (tags.agentMode === 'build') {
     desiredTodoForm = 'build';
 } else if (tags.agentMode === 'plan') {

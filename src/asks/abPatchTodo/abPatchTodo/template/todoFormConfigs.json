@@ -28,5 +28,20 @@
             "complete": "complete_static",
             "error": "error_static"
         }
+    },
+    "userAsk": {
+        "meshPath": "/asks/meshes/todoBot_plan.glb",
+        "animInMap": {
+            "incomplete": "incomplete_in",
+            "processing": "processing_in",
+            "complete": "complete_in",
+            "error": "error_in"
+        },
+        "animStaticMap": {
+            "incomplete": "incomplete_static",
+            "processing": "processing_loop",
+            "complete": "complete_static",
+            "error": "error_static"
+        }
     }
 }

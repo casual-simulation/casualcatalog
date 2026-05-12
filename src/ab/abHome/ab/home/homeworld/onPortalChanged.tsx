@@ -1,4 +1,4 @@
-if (!thisBot.isInPrimary()) {
+if (!links.learn.abIsPrimary()) {
     return;
 } 
 

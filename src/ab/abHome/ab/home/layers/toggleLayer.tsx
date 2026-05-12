@@ -1,4 +1,4 @@
-if (!links.homeworld.isInPrimary()) {
+if (!links.learn.abIsPrimary()) {
     return;
 }
 

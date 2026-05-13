@@ -10,7 +10,7 @@ const agentMode = that.agentMode ?? 'plan';
 
 whisper(menuBots, "abMenuRefresh");
 
-const username = await ab.links.utils.getUserName();
+const username = await ab.links.console.getUserName();
 
 ab.log({ message: inquiry, name: username, space: 'shared' });
 

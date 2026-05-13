@@ -20,7 +20,7 @@ const Message = ({ timestamp, message, name }) => {
             }
         }
 
-        if (name == "user" || name == "User") {
+        if (name === `user ${configBot.id.substring(0, 5)}`) {
             setUserMessage(true);
         } else {
             setUserMessage(false);

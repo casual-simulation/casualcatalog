@@ -6,13 +6,15 @@ const parentTodo = askContext.todoBot;
 
 if (askContext.agentMode !== 'plan' || !parentTodo) {
     const name = thisBot.abAskHelperGetAgentName({ askContext });
-    ab.links.utils.abLog({ name, message: 'askUser is only available in plan mode with an active todoBot — ignored.', logType: 'warn' });
+    const avatar = thisBot.abAskHelperGetAgentAvatar({ askContext });
+    ab.links.utils.abLog({ name, avatar, message: 'askUser is only available in plan mode with an active todoBot — ignored.', logType: 'warn' });
     return;
 }
 
 if (questions.length === 0) {
     const name = thisBot.abAskHelperGetAgentName({ askContext });
-    ab.links.utils.abLog({ name, message: 'askUser called with no questions — ignored.', logType: 'warn' });
+    const avatar = thisBot.abAskHelperGetAgentAvatar({ askContext });
+    ab.links.utils.abLog({ name, avatar, message: 'askUser called with no questions — ignored.', logType: 'warn' });
     return;
 }
 

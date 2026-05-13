@@ -62,12 +62,12 @@ const Message = ({ timestamp, message, name, showName = true }) => {
                                ? 'row'
                                : 'row-reverse'
             }}>
-                <div className="ab-console-spacer"
+                <div
+                    className={`ab-console-spacer${showTime ? ' visible' : ''}`}
                     style={{
                         textAlign: userMessage
                                    ? 'right'
                                    : 'left',
-                        opacity: showTime ? 0.6 : 0
                     }}
                 >
                     {timeText}

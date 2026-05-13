@@ -1,32 +1,7 @@
-const { useState, useMemo, useEffect } = os.appHooks
-const TopBar = thisBot.TopBar()
+const { useState, useMemo } = os.appHooks
 
-const Message = ({ timestamp, message, name, showName = true }) => {
+const Message = ({ timestamp, message, name, avatar = 'account_circle', showName = true }) => {
     const [showTime, setShowTime] = useState(false);
-    const [userMessage, setUserMessage] = useState(false);
-
-    useEffect(() => {
-        if (authBot && authBot.tags.name) {
-            if (authBot.tags.name == name) {
-                setUserMessage(true);
-                return;
-            }
-        } else {
-            if (masks.preferredName) {
-                if (masks.preferredName == name) {
-                    setUserMessage(true);
-                    return;
-                } 
-            }
-        }
-
-        if (name === `user ${configBot.id.substring(0, 5)}`) {
-            setUserMessage(true);
-        } else {
-            setUserMessage(false);
-        }
-
-    }, [name])
 
     const timeText = useMemo(
         () => {
@@ -43,36 +18,35 @@ const Message = ({ timestamp, message, name, showName = true }) => {
         [timestamp]
     );
 
+    const avatarElement = useMemo(() => {
+        if (avatar.startsWith('http://') || avatar.startsWith('https://')) {
+            return <img className="ab-console-message-avatar" src={avatar} />;
+        }
+        if (avatar.includes('/') || avatar.includes('.')) {
+            return <img className="ab-console-message-avatar" src={ab.abBuildCasualCatalogURL(avatar)} />;
+        }
+        return <span className="ab-console-message-avatar md-icon md-icon-font">{avatar}</span>;
+    }, [avatar]);
+
     if (!timestamp || !message) { return <></> }
 
     return (
         <div
-            className="ab-console-message-container"
+            className={`ab-console-message-container${showName ? ' first' : ''}`}
             onPointerEnter={() => setShowTime(true)}
             onPointerLeave={() => setShowTime(false)}
         >
-            {showName && <div
-                className="ab-console-message-name"
-                style={userMessage && {textAlign: 'right'}}
-            >
-                {name}
-            </div>}
-            <div className="ab-console-message" style={{
-                flexDirection: userMessage
-                               ? 'row'
-                               : 'row-reverse'
-            }}>
-                <div
-                    className={`ab-console-spacer${showTime ? ' visible' : ''}`}
-                    style={{
-                        textAlign: userMessage
-                                   ? 'right'
-                                   : 'left',
-                    }}
-                >
-                    {timeText}
+            <div className="ab-console-message-avatar-slot">
+                {showName && avatarElement}
+            </div>
+            <div className="ab-console-message-body">
+                {showName && <div className="ab-console-message-name">{name}</div>}
+                <div className="ab-console-message">
+                    <div className="ab-console-content">{message}</div>
+                    <div className={`ab-console-spacer${showTime ? ' visible' : ''}`}>
+                        {timeText}
+                    </div>
                 </div>
-                <div className="ab-console-content">{message}</div>
             </div>
         </div>
     )

@@ -120,6 +120,14 @@
 .ab-console-message-container {
   margin: 0.125rem 0;
   animation: message-in 0.25s ease-out;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.ab-console-message-container.first {
+  margin-top: 0.5rem;
 }
 
 @keyframes message-in {
@@ -133,9 +141,37 @@
   }
 }
 
+.ab-console-message-avatar-slot {
+  width: 1.5rem;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ab-console-message-body {
+  flex-grow: 1;
+  min-width: 0;
+}
+
 .ab-console-message-name {
   font-weight: bold;
-  margin-top: 0.5rem;
+}
+
+.ab-console-message-avatar {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+img.ab-console-message-avatar {
+  border-radius: 50%;
+  object-fit: cover;
 }
 .ab-console-message {
   display: flex;

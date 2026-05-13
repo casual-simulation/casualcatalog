@@ -8,6 +8,7 @@ if (that.tags.includes('availableCredits')) {
                 name: 'Credits',
                 message: `${data.userCreditsPrev.toLocaleString()} → ${data.userCredits.toLocaleString()} (${sign}${delta.toLocaleString()})`,
                 space: 'tempLocal',
+                avatar: 'ab/icons/aux_credit_icon_48px.png',
             });
         }
         if (data.studioId && data.studioCreditsPrev != null && data.studioCredits !== data.studioCreditsPrev) {

@@ -23,7 +23,8 @@ const App = () => {
                 messageLogArr.push({
                     message: messageBot.tags.message,
                     timestamp: messageBot.tags.timestamp,
-                    name: messageBot.tags.name
+                    name: messageBot.tags.name,
+                    avatar: messageBot.tags.avatar
                 })
             }
         }
@@ -125,6 +126,7 @@ const App = () => {
                                 timestamp={m.timestamp}
                                 message={m.message}
                                 name={m.name}
+                                avatar={m.avatar}
                                 showName={i === consoleLog.length - 1 || consoleLog[i + 1]?.name !== m.name}
                                 key={`message-${m.timestamp}`}
                             />
@@ -133,6 +135,7 @@ const App = () => {
                         timestamp={consoleLog[0]?.timestamp}
                         message={consoleLog[0]?.message}
                         name={consoleLog[0]?.name}
+                        avatar={consoleLog[0]?.avatar}
                     />
                 : <></>}
 

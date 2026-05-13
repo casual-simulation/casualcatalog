@@ -17,6 +17,14 @@ const BASE_MENU_TAGS = {
 }
 
 if (tags.studioId) {
+
+    if (tags.selected) {
+        masks.selected = null;
+        return;
+    } else {
+        masks.selected = true;
+    }
+
     const moveToPlaceButton = {
         ...BASE_MENU_TAGS,
         label: 'places',
@@ -108,7 +116,6 @@ if (tags.studioId) {
     ab.links.menu.abCreateMenuDropdown(moveToPlaceButton);
     ab.links.menu.abCreateMenuButton(shareButton);
 
-    masks.selected = true;
 } else {
 
     //STUDIO CHOICE

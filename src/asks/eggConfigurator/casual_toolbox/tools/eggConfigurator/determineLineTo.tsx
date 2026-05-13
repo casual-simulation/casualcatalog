@@ -23,4 +23,6 @@ for (let i = 0; i < catalogBots.length; ++i) {
 }
 
 tags.lineToValue = getID(closest);
-//tags.lineTo = getID(closest);
+if (closest.tags.selected) {
+    tags.lineTo = getID(closest);
+}

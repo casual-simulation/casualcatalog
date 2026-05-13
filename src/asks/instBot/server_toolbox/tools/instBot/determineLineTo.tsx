@@ -23,4 +23,11 @@ for (let i = 0; i < catalogBots.length; ++i) {
 }
 
 tags.lineToValue = getID(closest);
-// tags.lineTo = getID(closest);
+
+if (tags.originType && tags.originType != 'studioCatalog') {
+    tags.lineTo = getID(closest);
+} else {
+    if (closest.tags.selected) {
+        tags.lineTo = getID(closest);
+    }
+}

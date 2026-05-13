@@ -34,6 +34,8 @@ else
 
 ab.log(ab.links.personality.tags.abBuilderIdentity + ": pasted data");
 
+ab.log({ message: inquiry, name: username, space: 'shared' });
+
 ab.links.create.abCreateBots({bots: pastedData, sourceEvent: 'paste'});
 
 function replaceMacros(text) {

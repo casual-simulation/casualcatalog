@@ -17,7 +17,7 @@ if (authBot && authBot.tags.name) {
     username = ab.links.console.masks.preferredName;
 }
 
-ab.log({ message: inquiry, name: username });
+ab.log({ message: inquiry, name: username, space: 'shared' });
 
 if (!configBot.tags.tagPortal && ab.links.manifestation.tags.abAwake && inquiry != ".log") {
     shout("showConsole");

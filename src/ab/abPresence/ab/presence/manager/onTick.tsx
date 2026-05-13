@@ -63,7 +63,7 @@ async function tryGeneratePresenceDataForPortal(portal: string): ABUserPresenceD
     
     const presenceData: ABUserPresenceData = {
         remoteId: configBot.id,
-        remoteName: thisBot.getRemoteName(),
+        remoteName: await ab.links.shell.getUserName(),
         portal,
         dimension,
         color: thisBot.getRemoteColor(),

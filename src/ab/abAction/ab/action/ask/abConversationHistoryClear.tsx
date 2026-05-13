@@ -4,5 +4,7 @@ assert(ab.links.utils.isBot(historyStorageBot), `[${tags.system}.${tagName}] his
 
 setTagMask(historyStorageBot, 'abConversationHistory', null, historyStorageBot.space);
 
-const name = thisBot.abAskHelperGetAgentName({ askContext: { abBot: historyStorageBot} });
-ab.links.utils.abLog({ name, message: 'Conversation history cleared.' });
+const agentName = thisBot.abAskHelperGetAgentName({ askContext: { abBot: historyStorageBot} });
+const username = await ab.links.console.getUserName();
+
+ab.links.utils.abLog({ name: agentName, message: `${username} has cleared my conversation history.`, space: 'shared' });

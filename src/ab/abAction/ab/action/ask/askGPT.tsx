@@ -78,8 +78,9 @@ function buildUserMessage(message?: string, extra: Record<string, any> = {}): st
 if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
     await thisBot.abAskHelperCreateUserRequestTodo({ askContext });
 
-    const name = thisBot.abAskHelperGetAgentName({ askContext });
-    ab.links.utils.abLog({ name, message: `Created a user request todo for "${originalUserInquiryLabel}"` });
+    const agentName = thisBot.abAskHelperGetAgentName({ askContext });
+    const username = await ab.links.console.getUserName();
+    ab.links.utils.abLog({ name: agentName, message: `${username} created a user request todo for "${originalUserInquiryLabel}"`, space: 'shared' });
 
     return;
 }
@@ -88,13 +89,13 @@ const MAX_CALL_DEPTH = 10; // Prevent infinite loops — if the agent calls askG
 
 if (callDepth >= MAX_CALL_DEPTH) {
     const name = thisBot.abAskHelperGetAgentName({ askContext });
-    ab.links.utils.abLog({ name, message: 'AI call depth limit reached', logType: 'error' });
+    ab.links.utils.abLog({ name, message: 'AI call depth limit reached', logType: 'error', space: 'local' });
     return;
 }
 
 if (callDepth === 0) {
     const name = thisBot.abAskHelperGetAgentName({ askContext });
-    ab.links.utils.abLog({ name, message: `thinking...` });
+    ab.links.utils.abLog({ name, message: `thinking...`, space: 'local' });
     ab.links.manifestation.abBotChat({ bot: abBot, message: `thinking...` });
 }
 
@@ -191,7 +192,7 @@ for (const fc of functionCalls) {
 
     if (!toolHost) {
         const name = thisBot.abAskHelperGetAgentName({ askContext });
-        ab.links.utils.abLog({ name, message: `Unknown function call from AI: ${name}`, logType: 'error' });
+        ab.links.utils.abLog({ name, message: `Unknown function call from AI: ${name}`, logType: 'error', space: 'local' });
         continue;
     }
 

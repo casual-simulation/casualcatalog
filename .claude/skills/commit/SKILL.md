@@ -10,4 +10,5 @@ Commit all staged changes.
    - Prefix: `[packageName]` — comma-separated if multiple packages, e.g. `[abTodo, abPatchTodo]`
    - Followed by a colon and a concise description of what changed and why
    - Example: `[agentBotTool]: simplify movement to orthogonal tile steps on shared position`
+   - DO NOT include Co-authored by lines.
 5. Commit using that message (do not amend — always create a new commit).

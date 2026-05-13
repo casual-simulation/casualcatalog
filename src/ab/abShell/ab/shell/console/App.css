@@ -118,7 +118,12 @@
 }
 
 .ab-console-message-container {
-  margin: 0.5rem 0;
+  margin: 0.125rem 0;
+}
+
+.ab-console-message-name {
+  font-weight: bold;
+  margin-top: 0.5rem;
 }
 .ab-console-message {
   display: flex;

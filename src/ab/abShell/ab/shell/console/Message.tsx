@@ -31,8 +31,15 @@ const Message = ({ timestamp, message, name, showName = true }) => {
     const timeText = useMemo(
         () => {
             if (!timestamp) { return }
-            return new Date(timestamp).toLocaleString(
-                   'en-us', {timeStyle: 'medium'})},
+            const date = new Date(timestamp);
+            const isToday = new Date().toDateString() === date.toDateString();
+            return date.toLocaleString(
+                undefined,
+                isToday
+                    ? { timeStyle: 'medium' }
+                    : { dateStyle: 'short', timeStyle: 'medium' }
+            );
+        },
         [timestamp]
     );
 
@@ -45,6 +52,7 @@ const Message = ({ timestamp, message, name, showName = true }) => {
             onPointerLeave={() => setShowTime(false)}
         >
             {showName && <div
+                className="ab-console-message-name"
                 style={userMessage && {textAlign: 'right'}}
             >
                 {name}

@@ -126,7 +126,7 @@ const App = () => {
                                 message={m.message}
                                 name={m.name}
                                 showName={i === consoleLog.length - 1 || consoleLog[i + 1]?.name !== m.name}
-                                key={`message-${i}`}
+                                key={`message-${m.timestamp}`}
                             />
                         )})
                     : <Message

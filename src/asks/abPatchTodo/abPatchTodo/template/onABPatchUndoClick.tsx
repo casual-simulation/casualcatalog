@@ -13,4 +13,8 @@ for (const todo of unappliedTodos) {
     destroy(todo);
 }
 
+const username = await ab.links.console.getUserName();
+
+ab.links.utils.abLog({ message: `Todo plan ${planId} has been cancelled by ${username}.`, space: 'shared' });
+
 shout('abPatchTodoMenuReset');

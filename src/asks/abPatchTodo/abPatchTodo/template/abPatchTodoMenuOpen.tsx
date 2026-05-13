@@ -110,13 +110,13 @@ if (isApproved) {
     // no action buttons — approved todos are read-only receipts
 } else if (notStarted) {
     menuOptions.menuItems.push({
-        label: 'assign agents',
-        formAddress: 'slideshow',
+        label: 'begin plan',
+        formAddress: 'play_circle',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onAssignAgentsClick'); }),
     });
     menuOptions.menuItems.push({
-        label: 'undo plan',
-        formAddress: 'undo',
+        label: 'cancel plan',
+        formAddress: 'cancel',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
 } else if (isBusy) {
@@ -127,8 +127,8 @@ if (isApproved) {
         label: 'agents working',
     });
     menuOptions.menuItems.push({
-        label: 'undo plan',
-        formAddress: 'undo',
+        label: 'cancel plan',
+        formAddress: 'cancel',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
 } else if (allCompleted) {
@@ -138,8 +138,8 @@ if (isApproved) {
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchApproveClick'); }),
     });
     menuOptions.menuItems.push({
-        label: 'undo plan',
-        formAddress: 'undo',
+        label: 'cancel plan',
+        formAddress: 'cancel',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
     menuOptions.menuItems.push({
@@ -158,8 +158,8 @@ if (isApproved) {
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     });
     menuOptions.menuItems.push({
-        label: 'undo plan',
-        formAddress: 'undo',
+        label: 'cancel plan',
+        formAddress: 'cancel',
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
     menuOptions.menuItems.push({

@@ -2,6 +2,7 @@ interface ABAgentConfig {
     meshPath: string | null;
     armMeshPath: string | null;
     armColor: string;
+    avatar: string;
     chatBarColor: string;
     namePlateColor: string;
     labelColor: string;

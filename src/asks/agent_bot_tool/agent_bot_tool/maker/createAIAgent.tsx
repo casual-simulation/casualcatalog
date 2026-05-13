@@ -27,6 +27,7 @@ const botTags = {
     labelColor: agentConfig.labelColor,
     armColor: agentConfig.armColor,
     armMeshPath: agentConfig.armMeshPath,
+    avatar: agentConfig.avatar,
     scale: agentConfig.scale,
     agentName: agentConfig.agentName,
     system: "ai.agent." + aiModel

@@ -38,7 +38,7 @@ if (typeof thisBot.abPatchCode === 'function') {
         });
     } catch (e) {
         const errorMessage = `Something went wrong applying patch — ${ab.links.utils.getErrorMessage(e)}`;
-        ab.links.utils.abLogAndToast({ name: tags.patchLabel, message: errorMessage, logType: 'error' });
+        ab.links.utils.abLogAndToast({ name: tags.patchLabel, message: errorMessage, logType: 'error', space: 'shared' });
         tags.abPatchError = errorMessage;
     } finally {
         tags.abPatchApplying = null;
@@ -57,7 +57,7 @@ if (typeof thisBot.abPatchCode === 'function') {
     }
 } else {
     const errorMessage = `Patch code is not a valid function.`;
-    ab.links.utils.abLogAndToast({ name: tags.patchLabel, message: errorMessage, logType: 'error' });
+    ab.links.utils.abLogAndToast({ name: tags.patchLabel, message: errorMessage, logType: 'error', space: 'shared' });
     tags.abPatchInvalid = true;
     tags.abPatchError = errorMessage;
 }

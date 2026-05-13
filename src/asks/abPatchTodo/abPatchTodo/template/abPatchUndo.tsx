@@ -41,7 +41,7 @@ if (abPatchResults && abPatchResults.length > 0) {
                 // After tags and masks have been rolled back, destroy this patch bot.
                 if (!that?.keepBot) destroy(thisBot);
             } else {
-                ab.links.utils.abLogAndToast({ message: `Cannot undo ${tags.system}. Something went wrong during patch process? No data found to undo changes.`, logType: 'warning' });
+                ab.links.utils.abLogAndToast({ message: `Cannot undo ${tags.system}. Something went wrong during patch process? No data found to undo changes.`, logType: 'warning', space: 'shared' });
             }
         } else {
             // Patched bot not found, quietly destroy the patch bot.

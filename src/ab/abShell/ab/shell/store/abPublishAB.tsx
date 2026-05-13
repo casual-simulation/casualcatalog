@@ -214,9 +214,9 @@ if (publishFile.success && publishRecord.success) {
         os.setClipboard(url);
 
         if (key) {
-            links.utils.abLogAndToast(`${instType} inst url with encrypted data copied to clipboard: ${url}`);
+            links.utils.abLogAndToast({ message: `${instType} inst url with encrypted data copied to clipboard: ${url}`, space: 'local' });
         } else {
-            links.utils.abLogAndToast(`${instType} inst url copied to clipboard: ${url}`);
+            links.utils.abLogAndToast({ message: `${instType} inst url copied to clipboard: ${url}`, space: 'local' });
         }
     }
 

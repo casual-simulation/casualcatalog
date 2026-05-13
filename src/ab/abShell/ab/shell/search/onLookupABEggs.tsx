@@ -20,7 +20,7 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, {...that});
 }
 
-links.utils.abLog("loading " + abID);
+links.utils.abLog({ message: `searching for egg: ${abID}`, space: 'tempLocal' });
 
 //clear ab-1
 if (links.manifestation && configBot.tags.menuPortal == "abMenu") {
@@ -240,7 +240,7 @@ if (busyIndicator) {
     destroy(busyIndicator);
 }
 
-links.utils.abLog(abID + " loaded, version " + getRecord.data.targetVersion + " of " + getRecord.data.maxVersion);
+links.utils.abLog({ message: `${abID} loaded, version ${getRecord.data.targetVersion} of ${getRecord.data.maxVersion}`, space: 'shared' });
 
 return {
     success: true,

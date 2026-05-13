@@ -3,7 +3,7 @@ if (!builderVersion)
     return;
 }
 
-ab.log({ name: abPersonality.tags.abBuilderIdentity, message: "scanned " + that, space: "local" });
+ab.log({ name: abPersonality.tags.abBuilderIdentity, avatar: abPersonality.tags.abBuilderAvatar, message: "scanned " + that, space: "local" });
 
 let requestingAI = false;
 if (configBot.tags.requestingAI) {

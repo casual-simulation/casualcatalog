@@ -265,7 +265,7 @@ abCommands.addCommand('uuid', () => {
     os.setClipboard(uuid());
 
     let message = `Copied new uuid to clipboard`;
-    ab.log({ name: links.personality.tags.abBuilderIdentity, message, space: "tempLocal" });
+    ab.log({ name: links.personality.tags.abBuilderIdentity, avatar: links.personality.tags.abBuilderAvatar, message, space: "tempLocal" });
     os.toast(message);
 }, {
     shortDescription: 'Generate a universally unique identifier (uuid) and copy it to the clipboard.',

@@ -20,7 +20,7 @@ menuOptions.artifact = tags.artifact;
 if (toolboxTools.length === 0) {
     const message = toolboxName + " does not have any tools listed in the tool_array tag";
 
-    ab.log({ name: abPersonality.tags.abBuilderIdentity, message, space: "tempLocal" });
+    ab.log({ name: abPersonality.tags.abBuilderIdentity, avatar: abPersonality.tags.abBuilderAvatar, message, space: "tempLocal" });
     os.toast(message, 5);
     console.error(message);
 }

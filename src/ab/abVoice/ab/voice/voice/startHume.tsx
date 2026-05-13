@@ -87,7 +87,7 @@ humeSocket.addEventListener('message', async (event) => {
         if (data.name == "think") {
             const parameters = JSON.parse(data.parameters);
             if (parameters.message) {
-                ab.log({ message: parameters.message, name: `${abPersonality.tags.abBuilderIdentity} thoughts:`, space: "shared", messageOrigin: configBot.id });
+                ab.log({ message: parameters.message, name: `${abPersonality.tags.abBuilderIdentity} thoughts:`, avatar: abPersonality.tags.abBuilderAvatar, space: "shared", messageOrigin: configBot.id });
             }
 
             thisBot.sendToolResponse({ id: data.tool_call_id });

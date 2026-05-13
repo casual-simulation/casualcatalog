@@ -22,6 +22,10 @@ if (typeof that === 'string') {
     space = that.space ?? space;
 }
 
+if (!avatar && name === abPersonality.tags.abBuilderIdentity) {
+    avatar = abPersonality.tags.abBuilderAvatar;
+}
+
 if (logType === 'log') {
     if (abLog) ab.log({ name, avatar, message, space });
     if (consoleLog) console.log(name + ': ' + message);

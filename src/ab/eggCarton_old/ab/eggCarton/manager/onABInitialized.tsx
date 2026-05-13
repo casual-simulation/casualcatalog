@@ -44,7 +44,7 @@ Click on me to get a guided tour, or feel free to explore on your own.`;
 
 shout("showConsole");
 
-ab.log({ name: abPersonality.tags.abBuilderIdentity, message: welcomeMessage, space: "tempLocal" });
+ab.log({ name: abPersonality.tags.abBuilderIdentity, avatar: abPersonality.tags.abBuilderAvatar, message: welcomeMessage, space: "tempLocal" });
 
 thisBot.onEggMenuCreate();
 

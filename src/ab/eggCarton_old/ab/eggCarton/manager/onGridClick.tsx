@@ -12,5 +12,5 @@ if (tags.tourPoint != null)
 
     shout("showConsole");
 
-    ab.log({ name: abPersonality.tags.abBuilderIdentity, message: welcomeMessage, space: "tempLocal" });
+    ab.log({ name: abPersonality.tags.abBuilderIdentity, avatar: abPersonality.tags.abBuilderAvatar, message: welcomeMessage, space: "tempLocal" });
 }

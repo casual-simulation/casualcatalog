@@ -16,7 +16,7 @@ while (thisBot.masks.audioQueue?.length > 0)
     let soundId = os.playSound(activeAudio);
     thisBot.masks.activeSound = soundId;
     if (activeText) {
-        ab.log({ message: activeText, name: abPersonality.tags.abBuilderIdentity, space: "shared", messageOrigin: configBot.id });
+        ab.log({ message: activeText, name: abPersonality.tags.abBuilderIdentity, avatar: abPersonality.tags.abBuilderAvatar, space: "shared", messageOrigin: configBot.id });
     }
     
     await os.sleep((getDuration(activeAudio) * 1000));

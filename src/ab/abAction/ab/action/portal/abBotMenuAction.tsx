@@ -10,6 +10,4 @@ if (selectedBot) {
     } else {
         configBot.tags.sheetPortal = selectedBot.id;
     }
-
-    ab.log(ab.links.personality.tags.abBuilderIdentity + ": opened bot sheet");
 }

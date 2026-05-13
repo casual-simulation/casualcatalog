@@ -49,13 +49,13 @@ if (tags.abAwake !== awake) {
 
                 if (Array.isArray(links.remember.tags.abInitialMessage)) {
                     for (let i = 0; i < links.remember.tags.abInitialMessage.length; i++) {
-                        ab.log(links.personality.tags.abBuilderIdentity + ": " + links.remember.tags.abInitialMessage[i]);
+                        ab.log({ name: links.personality.tags.abBuilderIdentity, message: links.remember.tags.abInitialMessage[i], space: "shared" });
 
                         await os.sleep(2000);
                     }
                 }
                 else {
-                    ab.log(links.personality.tags.abBuilderIdentity + ": " + links.remember.tags.abInitialMessage);
+                    ab.log({ name: links.personality.tags.abBuilderIdentity, message: links.remember.tags.abInitialMessage, space: "shared" });
                 }
             }
         }

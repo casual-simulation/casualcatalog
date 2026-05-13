@@ -12,5 +12,3 @@ masks.onPortalChanged = ListenerString(() => {
         clearTagMasks(thisBot);
     }
 });
-
-ab.log(ab.links.personality.tags.abBuilderIdentity + ": opened multiple select sheet");

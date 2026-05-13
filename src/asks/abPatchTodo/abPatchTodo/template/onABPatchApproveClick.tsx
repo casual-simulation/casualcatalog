@@ -25,10 +25,11 @@ if (planTodos.length > 0) {
         todo.tags['logY'] = prevDimPos.y;
         todo.tags['logZ'] = prevDimPos.z;
     }
-    
+
     const username = await ab.links.console.getUserName();
+    const planId = planTodos[0].tags.todoPlanId;
     
-    ab.links.utils.abLog({ message: `Todo plan ${todo.tags.todoPlanId} has been approved by ${username}. Moved todo bots to the "log" dimension.`, space: 'shared' });
+    ab.links.utils.abLog({ message: `Todo plan ${planId} has been approved by ${username}. Moved todo bots to the "log" dimension.`, space: 'shared' });
 }
 
 

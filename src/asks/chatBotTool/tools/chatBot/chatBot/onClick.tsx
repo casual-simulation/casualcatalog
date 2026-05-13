@@ -1,7 +1,6 @@
 //If console is not open, open console
 if (!ab.links.console.masks.open) {
     whisper(ab.links.console, "showConsole");
-    ab.links.console.masks.open = true;
 }
 
 if (thisBot.vars.menuBot) {

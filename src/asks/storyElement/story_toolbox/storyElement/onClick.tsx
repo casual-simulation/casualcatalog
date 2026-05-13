@@ -10,7 +10,6 @@ if (!tags.elementPrompt) {
 
 if (!ab.links.console.masks.open) {
     whisper(ab.links.console, "showConsole");
-    ab.links.console.masks.open = true;
 }
 
 os.tip("thinking...", null, null, 4);

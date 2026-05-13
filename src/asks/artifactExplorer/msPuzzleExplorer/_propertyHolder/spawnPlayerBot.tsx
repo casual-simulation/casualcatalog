@@ -31,7 +31,6 @@ if (tags.mode == "play") {
         hide: `@
             if (!ab.links.console.masks.open) {
                 whisper(ab.links.console, "showConsole");
-                ab.links.console.masks.open = true;
             }
             ab.log("The whale was made to run home and restart their adventure.") 
             destroy(thisBot)

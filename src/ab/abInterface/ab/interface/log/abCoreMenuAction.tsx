@@ -1,6 +1,6 @@
 shout("abMenuRefresh");
 
-if (!ab.links.console.tags.open) {
+if (!ab.links.console.masks.open) {
     ab.links.console.showConsole();
 }
 

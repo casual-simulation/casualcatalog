@@ -1,6 +1,5 @@
 if (!ab.links.console.masks.open) {
     whisper(ab.links.console, "showConsole");
-    ab.links.console.masks.open = true;
 }
 
 const username = await ab.links.console.getUserName({ canSetPreferredName: true });

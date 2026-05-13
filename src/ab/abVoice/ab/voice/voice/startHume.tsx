@@ -27,7 +27,6 @@ humeSocket.addEventListener('open', (event) => {
     //If console is not open, open console
     if (!links.console.masks.open) {
         whisper(links.console, "showConsole");
-        links.console.masks.open = true;
     }
 
     thisBot.sendSessionSettings();

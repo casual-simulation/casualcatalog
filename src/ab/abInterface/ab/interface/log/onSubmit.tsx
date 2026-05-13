@@ -1,7 +1,7 @@
 const menuBot = getBot(byTag("abMenu", true), byTag("baseSkill", getLink(thisBot)));
 menuBot.masks.menuItemText = ""; 
 
-if (!ab.links.console.tags.open) {
+if (!ab.links.console.masks.open) {
     ab.links.console.showConsole();
 }
 

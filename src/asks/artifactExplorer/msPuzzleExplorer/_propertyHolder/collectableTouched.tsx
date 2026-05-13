@@ -42,7 +42,6 @@ if (tags.home == true) {
         if (collectablesLeft == 0) {
             if (!ab.links.console.masks.open) {
                 whisper(ab.links.console, "showConsole");
-                ab.links.console.masks.open = true;
             }
             ab.log("The whale found the final artifact. Now they can find their way to the end.")
 
@@ -52,7 +51,6 @@ if (tags.home == true) {
         else {
             if (!ab.links.console.masks.open) {
                 whisper(ab.links.console, "showConsole");
-                ab.links.console.masks.open = true;
             }
             ab.log("The whale found one of the artifacts.")
         }
@@ -60,7 +58,6 @@ if (tags.home == true) {
     else if (that.tags.harmfulTile == true) {
         if (!ab.links.console.masks.open) {
             whisper(ab.links.console, "showConsole");
-            ab.links.console.masks.open = true;
         }
         ab.log("A monster took one of the artifacts, and without it, the whale had to go home and try again.")
 

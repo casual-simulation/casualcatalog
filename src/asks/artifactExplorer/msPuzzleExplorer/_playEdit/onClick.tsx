@@ -31,7 +31,6 @@ if (tags.label == "Play") {
             shout("onBoardStateChange", "play");
             if (!ab.links.console.masks.open) {
                 whisper(ab.links.console, "showConsole");
-                ab.links.console.masks.open = true;
             }
             ab.log("A brave whale started on an adventure.")
             await os.sleep(100);
@@ -46,7 +45,6 @@ else if (tags.label == "Edit") {
     shout("onBoardStateChange", "edit");
     if (!ab.links.console.masks.open) {
         whisper(ab.links.console, "showConsole");
-        ab.links.console.masks.open = true;
     }
     ab.log("The whale ended their adventure early.")
 }

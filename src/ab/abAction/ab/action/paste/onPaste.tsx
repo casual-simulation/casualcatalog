@@ -32,9 +32,9 @@ else
     os.toast("bots added to inst");
 }
 
-ab.log(ab.links.personality.tags.abBuilderIdentity + ": pasted data");
+const username = await ab.links.console.getUserName();
 
-ab.log({ message: inquiry, name: username, space: 'shared' });
+ab.log({ name: username, message: 'pasted data', space: 'shared' });
 
 ab.links.create.abCreateBots({bots: pastedData, sourceEvent: 'paste'});
 

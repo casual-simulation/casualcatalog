@@ -9,6 +9,7 @@ delete data.tags.instURL;
 delete data.tags.patternSetting;
 delete data.tags.studioSetting;
 delete data.tags.lineTo;
+delete data.tags.lineToValue;
 delete data.tags.versionSetting;
 delete data.tags[data.tags.dimension];
 delete data.tags[data.tags.dimension + 'X'];

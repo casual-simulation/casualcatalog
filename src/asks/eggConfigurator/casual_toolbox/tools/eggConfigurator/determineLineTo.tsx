@@ -22,4 +22,5 @@ for (let i = 0; i < catalogBots.length; ++i) {
     }
 }
 
-tags.lineTo = getID(closest);
+tags.lineToValue = getID(closest);
+//tags.lineTo = getID(closest);

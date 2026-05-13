@@ -18,3 +18,4 @@ delete data.tags.dimension;
 delete data.tags.prevBotID;
 delete data.tags.studioId;
 delete data.tags.lineTo;
+delete data.tags.lineToValue;

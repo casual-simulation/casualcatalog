@@ -5,13 +5,9 @@
 // }
 
 if (that.tags.includes("selected")) {
-    const attachedBots = getBots("lineTo", getID(thisBot));
-    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? tags.dimension ?? 'home';
-
     if (tags.selected) {
-        setTagMask(attachedBots, dimension, true);
+        shout("onStudioCatalogSelected", thisBot);
     } else {
-        setTag(attachedBots, dimension, false);
-        setTagMask(attachedBots, dimension, null);
+        shout("onStudioCatalogDeselected", thisBot);
     }
 }

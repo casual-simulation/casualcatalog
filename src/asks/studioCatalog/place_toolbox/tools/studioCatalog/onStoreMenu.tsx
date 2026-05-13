@@ -12,7 +12,7 @@ if (thisBot.links.selectedBots) {
 
 possiblePublishBot = Array.from(possiblePublishBot);
 
-const baseAB = (multiSelect || !thisBot.links.selectedBots) ? ab.links.remember.tags.baseAB: thisBot.links.selectedBots.id;
+const baseAB = that?.baseAB ?? ((multiSelect || !thisBot.links.selectedBots) ? ab.links.remember.tags.baseAB: thisBot.links.selectedBots.id);
 const baseBots = getBots(b => b.tags.abIDOrigin === baseAB && b.space === 'shared' && !b.tags.abIgnore);
 const nonABBots = getBots(b => b.tags.abIDOrigin == null && b.space === 'shared' && !b.tags.abIgnore);
 

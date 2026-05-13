@@ -65,48 +65,25 @@ if (!tags.chosenEggName) {
     }
 }
 
-//TEST
-const testButton = {
-    ...menuTags,
-    label: "test",
-    formAddress: 'science',
-    onClick: `@
-        links.eggConfigurator.showTestMenu();
-        shout("clearEggSetupMenu");
-    `,
-    eggSetupMenuSortOrder: 10,
-}
-
-const currentURL = new URL(configBot.tags.url);
-const host = currentURL.host;
-
-//PUBLISH ASK
-const pubButton = {
-    ...menuTags,
-    label: "publish to " + host + " catalog",
-    formAddress: 'call_made',
-    onClick: `@
-        const confirm = await os.showConfirm({
-            title: "confirm request",
-            content: "request " + links.eggConfigurator.tags.chosenEggName + " to be published to catalog?",
-            confirmText: "request",
-            cancelText: "cancel"
-        })
-        if (confirm) {
-            //request ask
-            ab.links.store.abPublishAskID({askID: links.eggConfigurator.tags.chosenEggName, studioID: links.eggConfigurator.tags.chosenStudio ?? authBot.id, patternID: links.eggConfigurator.tags.chosenEggName})
-        }
-        links.eggConfigurator.showEggSetupMenu();
-    `,
-    eggSetupMenuSortOrder: 10,
-}
-
 if (!tags.eggConfigConfirmed) {
     ab.links.menu.abCreateMenuButton(eggNameButton);
     ab.links.menu.abCreateMenuButton(studioButton);
     ab.links.menu.abCreateMenuButton(createButton);
 } else {
-    ab.links.menu.abCreateMenuText(eggNameButton);
-    ab.links.menu.abCreateMenuText(studioButton);
-    ab.links.menu.abCreateMenuButton(pubButton);
+    const catalog = getBot(byTag("studioCatalog", true), byTag("studioId", tags.studioId));
+    if (catalog) {
+        //PUBLISH CHANGES
+        const publishButton = {
+            ...menuTags,
+            label: "publish current inst to egg",
+            formAddress: 'publish',
+            catalog: getLink(catalog),
+            onClick: `@
+                shout("clearEggSetupMenu");
+                links.catalog.onStoreMenu({baseAB: links.eggConfigurator.tags.chosenEggName});
+            `,
+            eggSetupMenuSortOrder: 11,
+        }
+        ab.links.menu.abCreateMenuButton(publishButton);
+    }
 }

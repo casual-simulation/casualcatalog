@@ -10,8 +10,8 @@ const menuOptions = {
 
 const menuGroup = {
     ...menuOptions,
-    groupSortOrder: -1,
-    abMenuSortOrder: -1,
+    groupSortOrder: -2,
+    abMenuSortOrder: -2,
     menuItems: [
     ]
 }
@@ -32,5 +32,32 @@ if (tags.draggable == false) {
     });  
 }
 
+const currentURL = new URL(configBot.tags.url);
+const host = currentURL.host;
+
+//PUBLISH ASK
+const pubButton = {
+    ...menuOptions,
+    label: "publish to " + host + " catalog",
+    formAddress: 'call_made',
+    onClick: `@
+        const confirm = await os.showConfirm({
+            title: "confirm request",
+            content: "request " + links.egg.tags.chosenEggName + " to be published to catalog?",
+            confirmText: "request",
+            cancelText: "cancel"
+        })
+        if (confirm) {
+            //request ask
+            ab.links.store.abPublishAskID({askID: links.egg.tags.chosenEggName, studioID: links.egg.tags.chosenStudio ?? authBot.id, patternID: links.egg.tags.chosenEggName})
+        }
+        links.egg.showEggSetupMenu();
+    `,
+    abMenuSortOrder: -1,
+}
+
+if (tags.eggConfigConfirmed) {
+    ab.links.menu.abCreateMenuButton(pubButton);
+}
 
 ab.links.menu.abCreateMenuGroup(menuGroup);

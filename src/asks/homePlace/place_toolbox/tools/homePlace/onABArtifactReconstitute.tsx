@@ -8,9 +8,9 @@ tags.scaleZ = data.scaleZ ?? 2;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.placeLabelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.placeLabelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black';
-tags.form = data.form ?? 'hex';
-tags.formSubtype = data.formSubtype;
-tags.formAddress = data.formAddress;
+tags.form = data.form ?? 'mesh';
+tags.formSubtype = data.formSubtype ?? "gltf";
+tags.formAddress = data.formAddress ?? ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_unlit.glb');;
 tags.formAddressAspectRatio = data.formAddressAspectRatio;
 
 if (data.dimensionData) {

@@ -30,6 +30,7 @@ const menuOptions = {
 const leaveGPSButton = {
     ...menuOptions,
     label: (journal.tags.continueLocationPull ? 'disable' : 'enable') + ' gps tracking',
+    mapAvatar_menuSortOrder: -1,
     formAddress: journal.tags.continueLocationPull ? 'near_me_disabled' : 'near_me',
     onClick: `@
         const journal = getBot("artifactJournal", true);
@@ -41,14 +42,33 @@ const leaveGPSButton = {
 
 const viewCollectionsButton = {
     ...menuOptions,
-    label: 'view collection',
-    formAddress: 'cards',
+    label: 'artifact journal',
+    formAddress: 'menu_book',
+    mapAvatar_menuSortOrder: -31,
     onClick: `@
         const journal = getBot("artifactJournal", true);
         journal.onClick();
 
         shout("clearMapAvatarMenu");
     `,
+}
+
+const camBot = getBot("curiosityCamera", true);
+if (camBot) {
+    const cameraButton = {
+        ...menuOptions,
+        label: 'curiosity camera',
+        mapAvatar_menuSortOrder: -2,
+        formAddress: 'photo_camera',
+        onClick: `@
+            const camBot = getBot("curiosityCamera", true);
+            camBot.onClick();
+
+            shout("clearMapAvatarMenu");
+        `,
+    }
+
+    ab.links.menu.abCreateMenuButton(cameraButton);
 }
 
 ab.links.menu.abCreateMenuButton(leaveGPSButton);

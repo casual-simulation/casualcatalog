@@ -68,7 +68,7 @@ humeSocket.addEventListener('message', async (event) => {
     } else if (data.type == "error") {
         console.error(`[${tags.system}.${tagName}] hume error:`, data);
     } else if (data.type == "user_message") {
-        let username = await ab.links.utils.getUserName({ canSetPreferredName: true });
+        let username = await ab.links.console.getUserName({ canSetPreferredName: true });
         setTagMask(thisBot, "handRaised", false);
 
         const message = data.message.content;

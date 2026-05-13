@@ -4,7 +4,7 @@ if (tags.debugMode) {
 
 if (tags.voiceEnabled) {
     if (that && that.inquiry) {
-        let username = await ab.links.utils.getUserName({ canSetPreferredName: true });
+        let username = await ab.links.console.getUserName({ canSetPreferredName: true });
 
         if (!thisBot.vars.humeSocket) {
             setTagMask(thisBot, "awaitingText", {user: username, message: that.inquiry});

@@ -70,7 +70,7 @@ humeSocket.addEventListener('message', async (event) => {
         console.warn('error: ', data.message);
     }
     else if (data.type == "user_message") {
-        const username = await ab.links.utils.getUserName({ canSetPreferredName: true });
+        const username = await ab.links.console.getUserName({ canSetPreferredName: true });
 
         const message = data.message.content;
 

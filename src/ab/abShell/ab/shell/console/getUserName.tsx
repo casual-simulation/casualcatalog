@@ -6,8 +6,8 @@ let username = "user";
 
 if (authBot && authBot.tags.name) {
     username = authBot.tags.name;
-} else if (ab.links.console.masks.preferredName) {
-    username = ab.links.console.masks.preferredName;
+} else if (masks.preferredName) {
+    username = masks.preferredName;
 } else {
     if (canSetPreferredName) {
         const usernameInput = await os.showInput("", {
@@ -16,7 +16,7 @@ if (authBot && authBot.tags.name) {
 
         if (usernameInput) {
             username = usernameInput;
-            ab.links.console.masks.preferredName = usernameInput;
+            masks.preferredName = usernameInput;
         }
     }
 

@@ -5,7 +5,7 @@ if (!ab.links.console.masks.open) {
     ab.links.console.masks.open = true;
 }
 
-const username = await ab.links.utils.getUserName({ canSetPreferredName: true });
+const username = await ab.links.console.getUserName({ canSetPreferredName: true });
 
 if (that.text && that.text[0] == ".") {
     ab.links.input.onChat({message: that.text});

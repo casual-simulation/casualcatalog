@@ -3,7 +3,7 @@ if (!ab.links.console.masks.open) {
     ab.links.console.masks.open = true;
 }
 
-const username = await ab.links.utils.getUserName({ canSetPreferredName: true });
+const username = await ab.links.console.getUserName({ canSetPreferredName: true });
 
 masks.menuItemText = "";
 

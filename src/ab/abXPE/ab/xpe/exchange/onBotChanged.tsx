@@ -7,7 +7,7 @@ if (that.tags.includes('availableCredits')) {
             ab.links.utils.abLog({
                 name: 'Credits',
                 message: `${data.userCreditsPrev.toLocaleString()} → ${data.userCredits.toLocaleString()} (${sign}${delta.toLocaleString()})`,
-                space: 'local',
+                space: 'tempLocal',
             });
         }
         if (data.studioId && data.studioCreditsPrev != null && data.studioCredits !== data.studioCreditsPrev) {
@@ -18,7 +18,7 @@ if (that.tags.includes('availableCredits')) {
             ab.links.utils.abLog({
                 name: `${studioName} Credits`,
                 message: `${data.studioCreditsPrev.toLocaleString()} → ${data.studioCredits.toLocaleString()} (${sign}${delta.toLocaleString()})`,
-                space: 'local',
+                space: 'tempLocal',
             });
         }
     }

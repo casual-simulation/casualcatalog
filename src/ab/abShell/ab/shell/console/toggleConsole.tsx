@@ -1,7 +1,7 @@
 if (masks.open) {
     whisper(thisBot, "hideConsole");
-    masks.open = false;
+    setTagMask(thisBot, 'open', false, 'local');
 } else {
     whisper(thisBot, "showConsole");
-    masks.open = true;
+    setTagMask(thisBot, 'open', true, 'local');
 }

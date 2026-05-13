@@ -13,4 +13,5 @@ masks.consoleVersion = currentVer;
 const App = thisBot.getApp();
 await os.registerApp(`ab-console-${currentVer}`, thisBot);
 os.compileApp(`ab-console-${currentVer}`, <App />);
-masks.open = true;
+
+setTagMask(thisBot, 'open', true, 'local');

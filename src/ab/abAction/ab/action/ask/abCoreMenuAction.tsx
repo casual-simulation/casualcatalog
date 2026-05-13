@@ -10,12 +10,7 @@ const agentMode = that.agentMode ?? 'plan';
 
 whisper(menuBots, "abMenuRefresh");
 
-let username = "user";
-if (authBot && authBot.tags.name) {
-    username = authBot.tags.name;
-} else if (ab.links.console.masks.preferredName) {
-    username = ab.links.console.masks.preferredName;
-}
+const username = await ab.links.utils.getUserName();
 
 ab.log({ message: inquiry, name: username, space: 'shared' });
 

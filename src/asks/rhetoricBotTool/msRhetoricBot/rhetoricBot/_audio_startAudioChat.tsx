@@ -70,18 +70,7 @@ humeSocket.addEventListener('message', async (event) => {
         console.warn('error: ', data.message);
     }
     else if (data.type == "user_message") {
-        let username = "user";
-
-        if (authBot && authBot.tags.name && authBot.tags.name != "") {
-            username = authBot.tags.name;
-        } else if (ab.links.console.masks.preferredName) {
-            username = ab.links.console.masks.preferredName;
-        } else {
-            username = await os.showInput("", {
-                title: "What would you like me to call you?"
-            });
-            ab.links.console.masks.preferredName = username;
-        }
+        const username = await ab.links.utils.getUserName({ canSetPreferredName: true });
 
         const message = data.message.content;
 

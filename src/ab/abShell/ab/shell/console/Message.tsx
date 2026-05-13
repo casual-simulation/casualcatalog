@@ -1,7 +1,7 @@
 const { useState, useMemo, useEffect } = os.appHooks
 const TopBar = thisBot.TopBar()
 
-const Message = ({ timestamp, message, name }) => {
+const Message = ({ timestamp, message, name, showName = true }) => {
     const [showTime, setShowTime] = useState(false);
     const [userMessage, setUserMessage] = useState(false);
 
@@ -44,11 +44,11 @@ const Message = ({ timestamp, message, name }) => {
             onPointerEnter={() => setShowTime(true)}
             onPointerLeave={() => setShowTime(false)}
         >
-            <div
+            {showName && <div
                 style={userMessage && {textAlign: 'right'}}
             >
                 {name}
-            </div>
+            </div>}
             <div className="ab-console-message" style={{
                 flexDirection: userMessage
                                ? 'row'

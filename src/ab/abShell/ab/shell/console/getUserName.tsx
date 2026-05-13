@@ -2,7 +2,7 @@ const {
     canSetPreferredName = false
 } = that ?? {};
 
-let username = "user";
+let username = `user ${configBot.id.substring(0, 5)}`; // Anonymous default username.
 
 if (authBot && authBot.tags.name) {
     username = authBot.tags.name;
@@ -18,11 +18,6 @@ if (authBot && authBot.tags.name) {
             username = usernameInput;
             masks.preferredName = usernameInput;
         }
-    }
-
-    if (!username) {
-        // Fallback to a generic anonymous default.
-        username = `user ${configBot.id.substring(0, 5)}`;
     }
 }
 

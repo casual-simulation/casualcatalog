@@ -7,7 +7,7 @@ const App = () => {
     const [consoleLog, setConsoleLog] = useState([]);
     const [showChat, setShowChat] = useState(tags.showChatInput);
     const [userInput, setUserInput] = useState('');
-    const [showAll, setShowAll] = useState(false);
+    const [showAll, setShowAll] = useState(masks.expanded ?? false);
     const inputRef = useRef();
 
     const updateLog = () => {
@@ -44,6 +44,10 @@ const App = () => {
             thisBot.vars.setShowAll = null;
         });
     }, []);
+
+    useEffect(() => {
+        setTagMask(thisBot, 'expanded', showAll, 'local');
+    }, [showAll]);
 
     useEffect(() => {
         const collapsed = '120px';

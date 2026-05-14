@@ -1,6 +1,7 @@
 if (that.tags.includes("nearbyPlayer")) {
     if (tags.nearbyPlayer) {
         thisBot.onBotNearLandmark({'landmarkID': tags.landmarkID, 'bot': getBot(byID(tags.nearbyPlayer))});
+        await os.startFormAnimation(thisBot, "static");
     } else {
         shout("onBotNearLandmarkExit", {'landmarkID': tags.landmarkID});
         
@@ -9,6 +10,7 @@ if (that.tags.includes("nearbyPlayer")) {
         tags.discovered = discovered;
 
         thisBot.setStatusVisuals();
+        await os.startFormAnimation(thisBot, "idle");
     }
 }
 

@@ -4,6 +4,12 @@ if (that) {
     }
 }
 
+const journal = getBot("artifactJournal", true);
+if (journal) {
+    if (journal.onGridClick());
+    await os.sleep(0);
+}
+
 shout('abMenuRefresh');
 shout('clearLandmarkMenu');
 

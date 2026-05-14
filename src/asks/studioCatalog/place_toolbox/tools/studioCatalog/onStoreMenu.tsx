@@ -89,11 +89,12 @@ const totalBotCount = possiblePublishBot.length > 0 ? possiblePublishBot.length 
 // Create publish label button
 const labelBot = await ab.links.menu.abCreateMenuButton({
     ...defaults,
-    label: `publish pattern ${baseBots.length > 0 ? "" : "as "}${baseAB} (${totalBotCount} bot${baseBots.length + nonABBots.length == 1 ? "" : "s"})`,
-    totalBots: baseBots.length + nonABBots.length,
+    label: `publish pattern ${baseBots.length > 0 ? "" : "as "}${baseAB} to ${(tags.studioId == authBot.id ? "user studio" : "studio " + tags.studioId)} (${totalBotCount} bot${baseBots.length + nonABBots.length == 1 ? "" : "s"})`,
+    totalBots: totalBotCount,
     studioCalatogPublishMenuSortOrder: 1,
     labelAlignment: "center",
     formAddress: null,
+    studioId: tags.studioId,
     menuItemStyle: `🧬 {
         "border-radius": "8px 8px 0px 0px", 
         "margin-top": "8px",         
@@ -132,18 +133,18 @@ const labelBot = await ab.links.menu.abCreateMenuButton({
         {
             const abBots = getBots(b => b.tags.abIDOrigin === links.remember.tags.baseAB && b.space === 'shared' && !b.tags.abIgnore).length;
 
-            tags.label = "publish " + links.remember.tags.baseAB + " (" + abBots + " bots)";
+            tags.label = "publish " + links.remember.tags.baseAB + " to " + (tags.studioId == authBot.id ? "user studio" : "studio " + tags.studioId) " + "(" + abBots + " bots)";
             tags.totalBots = abBots;
         }
         else
         {
-            tags.label = "publish pattern as " + links.remember.tags.baseAB + " (" + totalBots + totalBotVar + ")";
+            tags.label = "publish pattern as " + links.remember.tags.baseAB + " to " + (tags.studioId == authBot.id ? "user studio" : "studio " + tags.studioId)" +  " (" + totalBots + totalBotVar + ")";
             tags.totalBots = totalBots;
         }   
     }
     else
     {   
-        tags.label = "publish " + that.ab + " (" + totalBots + totalBotVar + ")";
+        tags.label = "publish " + that.ab + " to " + (tags.studioId == authBot.id ? "user studio" : "studio " + tags.studioId)" + " (" + totalBots + totalBotVar + ")";
         tags.totalBots = totalBots;
     }`
 });
@@ -435,11 +436,12 @@ ab.links.menu.abCreateMenuButton({
     }`,
     form: "input",
     labelBot: getLink(labelBot),
-    onInputTyping: `@ links.labelBot.tags.label = 'publish pattern as ' + that.text + ' (' + links.labelBot.tags.totalBots + ' bot' + (links.labelBot.tags.totalBots == 1 ? ')' : 's)');`,
+    onInputTyping: `@ links.labelBot.tags.label = 'publish pattern as ' + that.text + ' to ' + (links.labelBot.tags.studioId == authBot.id ? 'user studio' : 'studio ' + links.labelBot.tags.studioId) + ' (' + links.labelBot.tags.totalBots + ' bot' + (links.labelBot.tags.totalBots == 1 ? ')' : 's)');`,
     menuItemShowSubmitWhenEmpty: true,
     targetBot: getLink(possiblePublishBot),
     selected_studio_id: tags.studioId,
     menuItemText: baseAB,
+    catalog: getLink(thisBot),
     onSubmit: `@
             if (that.text == null && links.remember.tags.baseAB && !links.remember.links.abBotFocus)
             {
@@ -470,6 +472,7 @@ ab.links.menu.abCreateMenuButton({
             if (that.text)
             {
                 links.manager.abPublishAB({ ab: that.text, bot: links.targetBot, baseAB: links.remember.tags.baseAB, manualPublish: true, sourceEvent: 'store_menu' });
+                links.catalog.publishedEgg({ab: that.text, bot: links.targetBot, baseAB: links.remember.tags.baseAB});
             }
             else
             {

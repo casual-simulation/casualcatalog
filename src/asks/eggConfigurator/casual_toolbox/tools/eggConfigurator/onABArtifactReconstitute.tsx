@@ -42,7 +42,9 @@ if (data.eggParameters) {
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
 
-    thisBot.showEggSetupMenu();
+    if (!tags.eggConfigConfirmed) {
+        thisBot.showEggSetupMenu();
+    }
 }
 
 const strokeBot = await thisBot.generateStroke();

@@ -1,7 +1,10 @@
 if (that.tags.includes("nearbyPlayer")) {
     if (tags.nearbyPlayer) {
         thisBot.onBotNearLandmark({'landmarkID': tags.landmarkID, 'bot': getBot(byID(tags.nearbyPlayer))});
-        await os.startFormAnimation(thisBot, "static");
+        await os.startFormAnimation(thisBot, "static", {
+            loop: {
+            mode: 'repeat'
+        }});
     } else {
         shout("onBotNearLandmarkExit", {'landmarkID': tags.landmarkID});
         
@@ -10,14 +13,18 @@ if (that.tags.includes("nearbyPlayer")) {
         tags.discovered = discovered;
 
         thisBot.setStatusVisuals();
-        await os.startFormAnimation(thisBot, "idle");
+        await os.stopFormAnimation(thisBot);
     }
 }
 
 if (that.tags.includes("landmarkLocked")) {
     if (tags.landmarkLocked) {
-        await os.startFormAnimation(thisBot, "idle");
+        await os.stopFormAnimation(thisBot);
     } else {
-        await os.startFormAnimation(thisBot, "static");
+        await os.stopFormAnimation(thisBot);
+        await os.startFormAnimation(thisBot, "static", {
+            loop: {
+            mode: 'repeat'
+        }});
     }
 }

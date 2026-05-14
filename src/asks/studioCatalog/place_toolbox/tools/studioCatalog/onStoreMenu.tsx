@@ -471,7 +471,7 @@ ab.links.menu.abCreateMenuButton({
 
             if (that.text)
             {
-                links.manager.abPublishAB({ ab: that.text, bot: links.targetBot, baseAB: links.remember.tags.baseAB, manualPublish: true, sourceEvent: 'store_menu' });
+                await links.manager.abPublishAB({ ab: that.text, bot: links.targetBot, baseAB: links.remember.tags.baseAB, manualPublish: true, sourceEvent: 'store_menu' });
                 links.catalog.publishedEgg({ab: that.text, bot: links.targetBot, baseAB: links.remember.tags.baseAB});
             }
             else

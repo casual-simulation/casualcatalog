@@ -1,5 +1,8 @@
 const data = that.data;
 
+tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/octahedron_icon.glb');
+const animations = await os.listFormAnimations(thisBot);
+
 tags.label = data.label ?? 'name me';
 tags.landmarkLocked = data.landmarkLocked ?? false;
 tags.landmarkName = data.landmarkName;
@@ -8,11 +11,6 @@ tags.landmarkID = data.landmarkID ?? uuid();
 tags.landmarkImg = data.landmarkImg;
 tags.landmarkDesc = data.landmarkDesc;
 tags.discovered = data.discovered ?? false;
-
-tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/octahedron_icon.glb');
-
-const animations = await os.listFormAnimations(thisBot);
-await os.startFormAnimation(thisBot, "idle");
 
 thisBot.setStatusVisuals();
 

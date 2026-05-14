@@ -11,3 +11,11 @@ if (that.tags.includes("nearbyPlayer")) {
         thisBot.setStatusVisuals();
     }
 }
+
+if (that.tags.includes("landmarkLocked")) {
+    if (tags.landmarkLocked) {
+        await os.startFormAnimation(thisBot, "idle");
+    } else {
+        await os.startFormAnimation(thisBot, "static");
+    }
+}

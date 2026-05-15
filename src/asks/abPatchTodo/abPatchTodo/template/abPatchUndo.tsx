@@ -12,7 +12,6 @@ if (abPatchResults && abPatchResults.length > 0) {
             if (result.created) {
                 // This patch created the bot, to undo it we destroy it.
                 destroy(patchedBot);
-                if (!that?.keepBot) destroy(thisBot);
             } else if (result.rollbackDiff) {
                 // This patch modified the bot, to undo it we apply all the the tags and masks in the rollback diff to the bot.
                 const rollbackBotData = result.rollbackDiff[patchedBot.id];
@@ -37,15 +36,9 @@ if (abPatchResults && abPatchResults.length > 0) {
                         }
                     }
                 }
-
-                // After tags and masks have been rolled back, destroy this patch bot.
-                if (!that?.keepBot) destroy(thisBot);
             } else {
                 ab.links.utils.abLogAndToast({ message: `Cannot undo ${tags.system}. Something went wrong during patch process? No data found to undo changes.`, logType: 'warning', space: 'shared' });
             }
-        } else {
-            // Patched bot not found, quietly destroy the patch bot.
-            if (!that?.keepBot) destroy(thisBot);
         }
     }
 }

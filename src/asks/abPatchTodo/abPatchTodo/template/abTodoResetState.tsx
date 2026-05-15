@@ -1,4 +1,4 @@
-whisper(thisBot, 'abPatchUndo', { keepBot: true });
+thisBot.abPatchUndo();
 
 setTag(thisBot, 'abPatchCode', null);
 setTag(thisBot, 'abPatchApplied', null);

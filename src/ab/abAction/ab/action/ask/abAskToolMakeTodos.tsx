@@ -6,7 +6,8 @@ const {
     abPosition = { x: 0, y: 0}, // Optional: position to place the first todo, subsequent todos in this plan will be placed alongside.
     menuActionData, // Optional: extra data that is often included with calls to abCoreMenuAction
     menuType,
-} = that.askContext;
+    todoBot: parentTodoBot
+}: ABAskContext = that.askContext;
 
 const todos: ABTodoParameters[] = that.args.todos ?? []; // List of todos to make.
 const returnType: 'none' | 'bots' = that.returnType ?? 'none'; // By default this is an action tool, meaning we dont return any bots to send back to the ai models.
@@ -14,6 +15,12 @@ const returnType: 'none' | 'bots' = that.returnType ?? 'none'; // By default thi
 const todoPlanId = uuid();
 const todoDir = { x: 0, y: 1, z: 0 };
 const todoSpacing = 2;
+
+let todoParentId;
+
+if (parentTodoBot) {
+    todoParentId = typeof parentTodoBot === 'string' ? parentTodoBot : parentTodoBot.id;
+}
 
 let todoDimension = abDimension;
 let todoBasePosition = { x: abPosition.x ?? 0, y: abPosition.y ?? 0, z: 0 };
@@ -83,6 +90,7 @@ for (let i = 0; i < todos.length; i++) {
             aiModel: effectiveModel,
             todoPlanId,
             todoOrder: i,
+            todoParentId,
             focusMenuType: menuType,
             focusMenuActionData: menuActionData,
             eggParameters: {

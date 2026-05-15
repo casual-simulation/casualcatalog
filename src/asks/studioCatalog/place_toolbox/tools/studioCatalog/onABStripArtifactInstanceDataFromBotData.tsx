@@ -27,3 +27,4 @@ delete data.tags.hasCustomMesh;
 delete data.tags.currentFormAnimation;
 delete data.tags.meshPositioningMode;
 delete data.tags.scaleMode;
+delete data.tags.formAnimation;

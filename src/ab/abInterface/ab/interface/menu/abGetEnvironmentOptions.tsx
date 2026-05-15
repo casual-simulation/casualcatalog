@@ -335,12 +335,12 @@ if (links.homeworld) {
     options.push({
         label: `homeworld`,
         abEnvironmentMenuSortOrder: 300,
-        homeworld: tags.homeworld,
         menuItemType: 'dropdown',
         dropdownOptions: [
             {
                 formAddress: 'save',
                 label: 'backup homeworld',
+                homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.saveHomeworld();
                     shout('abMenuRefresh');
@@ -349,6 +349,7 @@ if (links.homeworld) {
             {
                 formAddress: 'refresh',
                 label: 'refresh homeworld',
+                homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.refreshHomeworldInst();
                     shout('abMenuRefresh');
@@ -357,6 +358,7 @@ if (links.homeworld) {
             {
                 formAddress: 'history',
                 label: 'homeworld version history',
+                homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.showHomeVersionHistory();
                     shout('abMenuRefresh');
@@ -367,6 +369,7 @@ if (links.homeworld) {
                 color: 'red',
                 labelColor: 'black',
                 label: 'factory reset homeworld',
+                homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.factoryResetHomeworld();
                     shout('abMenuRefresh');

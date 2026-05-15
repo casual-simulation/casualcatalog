@@ -1,3 +1,5 @@
+"-energy"
+
 // Debug-only inspection helper. Produces a console-friendly clone of an
 // AIChatMessage / AIChatMessage[] / raw response string. Original `text`
 // fields are preserved verbatim; a sibling `_debugFormatted` is added when

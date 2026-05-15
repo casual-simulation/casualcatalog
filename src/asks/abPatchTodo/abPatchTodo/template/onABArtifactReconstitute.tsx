@@ -18,6 +18,7 @@ tags.debug = data.debug;
 tags.agentMode = data.agentMode ?? 'build';
 tags.todoPlanId = data.todoPlanId;
 tags.todoOrder = data.todoOrder ?? 0;
+tags.todoParentId = data.todoParentId;
 tags.focusMenuType = data.focusMenuType;
 tags.focusMenuActionData = data.focusMenuActionData;
 tags.system = `abPatchTodo.${(tags.todoPlanId ?? thisBot.id).substring(0, 5)}_${String(tags.todoOrder).padStart(3, '0')}`;

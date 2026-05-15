@@ -28,6 +28,7 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.budgetRecordName;
     delete thisBotData.tags.todoPlanId;
     delete thisBotData.tags.todoOrder;
+    delete thisBotData.tags.todoParentId;
     delete thisBotData.tags.todoApproved;
     delete thisBotData.tags.todoForm;
     delete thisBotData.tags.todoShowArrow;

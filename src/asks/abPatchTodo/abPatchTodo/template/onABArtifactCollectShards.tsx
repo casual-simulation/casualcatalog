@@ -13,6 +13,7 @@ const shard: ABArtifactShard = {
         debug: tags.debug,
         todoPlanId: tags.todoPlanId,
         todoOrder: tags.todoOrder,
+        todoParentId: tags.todoParentId,
         focusMenuType: tags.focusMenuType,
         focusMenuActionData: tags.focusMenuActionData,
         eggParameters: {

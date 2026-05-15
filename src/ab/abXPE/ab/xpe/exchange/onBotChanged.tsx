@@ -20,6 +20,7 @@ if (that.tags.includes('availableCredits')) {
                 name: `${studioName} Credits`,
                 message: `${data.studioCreditsPrev.toLocaleString()} → ${data.studioCredits.toLocaleString()} (${sign}${delta.toLocaleString()})`,
                 space: 'tempLocal',
+                avatar: instStudioConfig['studio_credit_icon_url']
             });
         }
     }

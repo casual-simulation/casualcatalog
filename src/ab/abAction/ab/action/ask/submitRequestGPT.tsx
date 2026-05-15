@@ -96,22 +96,24 @@ try {
         const contentChunks: string[] = [];
         let streamRole: string;
 
-        for await (const message of chatStream) {
+        const processNext = async (iter: AsyncIterator<any>): Promise<void> => {
+            const { value: message, done } = await iter.next();
+            if (done) return;
             if (message.role) {
                 streamRole = message.role;
             }
             if (message.content) {
                 contentChunks.push(message.content);
-
                 if (tags.debug) {
                     console.log(`[${tags.system}.${tagName}] partial response:`, message);
                 }
-                
                 if (typeof onPartialResponse === 'function') {
                     onPartialResponse(message);
                 }
             }
-        }
+            await processNext(iter);
+        };
+        await processNext(chatStream[Symbol.asyncIterator]());
 
         aiResponse = {
             role: streamRole ?? 'assistant',

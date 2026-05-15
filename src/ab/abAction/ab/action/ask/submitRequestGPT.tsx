@@ -1,3 +1,5 @@
+"-energy"
+
 import { AIChatOptions, AIChatMessage } from 'casualos';
 
 const {

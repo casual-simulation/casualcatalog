@@ -1,3 +1,5 @@
+"-energy"
+
 import { AIChatMessage } from 'casualos';
 const askThat = that as ABAskGPTParameters;
 

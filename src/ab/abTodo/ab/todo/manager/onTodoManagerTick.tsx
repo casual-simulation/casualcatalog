@@ -1,3 +1,5 @@
+"-energy"
+
 const cycleId = that?.cycleId;
 
 function isStaleCycle() {

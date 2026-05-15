@@ -1,3 +1,5 @@
+"-energy"
+
 thisBot.abStopAgentCycle();
 
 const managerId = thisBot.id;

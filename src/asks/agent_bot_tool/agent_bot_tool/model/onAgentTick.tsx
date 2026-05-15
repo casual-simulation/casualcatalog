@@ -1,3 +1,5 @@
+"-energy"
+
 const { tickIntervalMS, deltaTime } = that ?? {};
 
 if (!links.todoBot || tags.todoInProgress || masks.moving) {

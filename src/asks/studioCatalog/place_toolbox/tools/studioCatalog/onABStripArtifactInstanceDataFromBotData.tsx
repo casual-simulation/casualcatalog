@@ -23,3 +23,7 @@ delete data.tags.strokeColor;
 delete data.tags.armMeshPath;
 delete data.tags.armColor;
 delete data.tags.strokeBot;
+delete data.tags.hasCustomMesh;
+delete data.tags.currentFormAnimation;
+delete data.tags.meshPositioningMode;
+delete data.tags.scaleMode;

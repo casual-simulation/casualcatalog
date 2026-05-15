@@ -29,10 +29,14 @@ if (data.eggParameters) {
 let hasCustomMesh = false;
 if (tags.studioId) {
     hasCustomMesh = await thisBot.applyStudioConfig();
+    tags.hasCustomMesh = hasCustomMesh;
 }
 
 if (!hasCustomMesh) {
-    tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_unlit.glb');
+    tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/book_catalog_icon.glb');
+    const anims = await os.listFormAnimations();
+    tags.meshPositioningMode = 'absolute';
+    tags.scaleMode = 'absolute';
     // tags.strokeFormAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_stroke.glb');
     // const strokeBot = await thisBot.generateStroke();
     // tags.strokeBot = getLink(strokeBot);

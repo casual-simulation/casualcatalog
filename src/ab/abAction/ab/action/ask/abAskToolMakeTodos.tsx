@@ -11,6 +11,7 @@ const {
 
 const todos: ABTodoParameters[] = that.args.todos ?? []; // List of todos to make.
 const returnType: 'none' | 'bots' = that.returnType ?? 'none'; // By default this is an action tool, meaning we dont return any bots to send back to the ai models.
+const autoFocus: boolean = that.autoFocus ?? true; // After creation, focus and open the menu on the first todo. Callers doing tag post-processing (userAsk, userRequest) pass false and handle it themselves.
 
 const todoPlanId = uuid();
 const todoDir = { x: 0, y: 1, z: 0 };
@@ -32,6 +33,7 @@ if (menuActionData?.menu === 'grid') {
 }
 
 const createdBots = [];
+let firstTodoBot: Bot | null = null;
 
 const aiChatModels: any[] = configBot.tags.aiChatModels ?? [];
 
@@ -114,9 +116,18 @@ for (let i = 0; i < todos.length; i++) {
         abArtifactShard
     });
 
+    if (i === 0 && shardBots) {
+        firstTodoBot = shardBots.find(b => b.tags.abPatchTodoInstance) ?? null;
+    }
+
     if (returnType === 'bots' && shardBots) {
         createdBots.push(...shardBots);
     }
+}
+
+if (autoFocus && firstTodoBot) {
+    await os.focusOn(firstTodoBot, { duration: firstTodoBot.tags.todoFocusDuration });
+    whisper(firstTodoBot, 'abPatchTodoMenuOpen');
 }
 
 if (returnType === 'bots') {

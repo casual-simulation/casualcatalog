@@ -57,6 +57,9 @@ const questionTodos = await thisBot.abAskToolMakeTodos({
     },
     askContext,
     returnType: 'bots',
+    // Defer auto-focus until isUserAskTodo + userAskData are set below — otherwise the menu
+    // would briefly open in the wrong (build) mode.
+    autoFocus: false,
 }) ?? [];
 
 for (let i = 0; i < questionTodos.length; i++) {
@@ -83,3 +86,8 @@ for (const t of questionTodos) {
 
 setTag(parentTodo, 'awaitingUserResponse', true);
 setTag(parentTodo, 'animationState', 'incomplete');
+
+if (questionTodos[0]) {
+    await os.focusOn(questionTodos[0], { duration: questionTodos[0].tags.todoFocusDuration });
+    whisper(questionTodos[0], 'abPatchTodoMenuOpen');
+}

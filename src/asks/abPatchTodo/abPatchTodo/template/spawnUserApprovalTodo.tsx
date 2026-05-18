@@ -57,3 +57,6 @@ setTag(approvalBot, 'todoShowArrow', true);
 
 whisper(approvalBot, 'refreshForm');
 whisper(approvalBot, 'refreshConnections');
+
+await os.focusOn(approvalBot, { duration: approvalBot.tags.todoFocusDuration });
+whisper(approvalBot, 'abPatchTodoMenuOpen');

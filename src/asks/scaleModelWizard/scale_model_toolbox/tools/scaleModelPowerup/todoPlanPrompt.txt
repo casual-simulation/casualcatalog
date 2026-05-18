@@ -1,4 +1,4 @@
-Convert the below user prompt into a multi-step plan with a todo for every scale model that describes how they relate to each other, and how they should behave over time. Also make a todo for the markers.
+Convert the below user prompt into a multi-step plan with a todo for every scale model and a todo for the markers. For any model that represents a building or space, also create a separate visual todo that handles the walls, interior decoration, and surrounding details. Also include todos for any other visual detail that would make the scene feel alive. Scale models, timeline markers, and the timeline manager must come from the catalog, but other bots can be created freely.
 Make sure to explicitly use the verbage "make me a <scaleModel | timelineManager | timelineMarker> from the catalog <...>".
 
 ## User Prompt
@@ -23,7 +23,7 @@ The **name** is each model's unique identifier and is required. Every model must
 
 All models offset **20 units right** (positive x). Space models apart based loosely on real-world scale — a person is ~1m wide, a car ~2m, a building ~10–15m. Scale and spacing should feel proportional to each other.
 
-When a model represents a building or space, the model bot itself should be the floor — a flat plane at ground level that defines the footprint. The model is named after what it represents (e.g. "Coffee Shop", not "Coffee Shop Floor"). Additional visual-only bots can be added as scaffolding around it (walls, signage, decorative elements) — walls should sit directly on top of the floor (z = floor z + wall height / 2) so they look like real architecture. Visual-only bots do not need labels. Models can be placed on top of others (e.g. a duck on a pond) but never fully inside another model's volume — they become invisible and unclickable.
+When a model represents a building or space, the model bot itself should be the floor — a flat plane at ground level that defines the footprint. The model is named after what it represents (e.g. "Coffee Shop", not "Coffee Shop Floor"). Walls, signage, and interior decoration are handled in a separate visual todo — keep them out of the scale model todo. Visual bots should be positioned relative to the floor's location and scale. Walls sit at z = wall height / 2 (rising up from the floor surface). Note that bots are anchored at their bottom, not their center — so a bot with height 2 placed at z = 0 will sit with its base on the ground and top at z = 2. Do not add roofs — they block the user from clicking on models inside. Visual-only bots do not need labels. Models can be placed on top of others (e.g. a duck on a pond) but never fully inside another model's volume — they become invisible and unclickable.
 
 Timeline markers are placed in a row, spaced **3 units apart on the x-axis**, below the models on the y-axis. Each marker should have a label describing its step (e.g. "Day 30"). Steps should be meaningfully spread across the simulation's total range.
 
@@ -46,7 +46,7 @@ Every entity in the scene uses this same unit.
 
 ### Lifecycle Design
 
-Use a lifecycle for any entity that ages, degrades, or expires. Don't assign one to pure value-holders (a fixed salary, a static cost).
+Use a lifecycle for any entity where aging, degradation, or expiry meaningfully affects the simulation. Skip it for models where it wouldn't add useful information — not every model needs one.
 
 A lifecycle has four phases — choose vocabulary that fits the entity's domain:
 
@@ -90,7 +90,9 @@ Only describe listeners the builder cannot infer. Name them exactly:
 
 Always use `changeState(thisBot, '<value>', '<stateName>')` for state transitions.
 
-When configuring models, stats, states, and listeners must be passed as arrays, not objects. Builders should set labels, scales, and colors as they see fit. Do not modify `modelAttributes`.
+All scale models, timeline markers, and the timeline manager must come from the catalog — this keeps them consistent. Beyond that, feel free to add any additional visual bots, decorative elements, or creative details that make the scene feel alive. Use your judgment on colors, shapes, labels, and layout.
+
+When configuring catalog models, stats, states, and listeners must each be an **array of objects**, not a single object. Do not modify `modelAttributes`. Include this reminder in every todo that configures a catalog model.
 
 ---
 

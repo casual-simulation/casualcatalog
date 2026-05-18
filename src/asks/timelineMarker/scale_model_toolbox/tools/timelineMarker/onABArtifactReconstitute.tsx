@@ -27,6 +27,4 @@ if (data.eggParameters) {
     tags[dimension] = true;
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
-
-    thisBot.onClick();
 }

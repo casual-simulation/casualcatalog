@@ -59,14 +59,14 @@ const ancestorApprovals = getBots(b =>
     chainPlanIds.includes(b.tags.todoApprovalForPlanId) &&
     b.id !== thisBot.id
 );
+
 destroy(ancestorApprovals);
+destroy(thisBot);
 
 if (ab.links.manifestation.tags.abAwake && topmostManifestTarget) {
     const newAbBot = await ab.links.manifestation.abManifestBot(topmostManifestTarget);
     ab.links.manifestation.abClick();
     if (newAbBot) {
-        await os.focusOn(newAbBot, { duration: 0.5 });
+        os.focusOn(newAbBot, { duration: 0.5 });
     }
 }
-
-destroy(thisBot);

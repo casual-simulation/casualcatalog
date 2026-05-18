@@ -91,6 +91,7 @@ for (let i = 0; i < todos.length; i++) {
             todoPlanId,
             todoOrder: i,
             todoParentId,
+            todoShowArrow: true,
             focusMenuType: menuType,
             focusMenuActionData: menuActionData,
             eggParameters: {

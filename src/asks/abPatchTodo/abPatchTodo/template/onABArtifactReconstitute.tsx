@@ -22,6 +22,7 @@ tags.todoParentId = data.todoParentId;
 tags.isUserAskTodo = data.isUserAskTodo;
 tags.isUserApprovalTodo = data.isUserApprovalTodo;
 tags.todoApprovalForPlanId = data.todoApprovalForPlanId;
+tags.todoShowArrow = data.todoShowArrow;
 tags.focusMenuType = data.focusMenuType;
 tags.focusMenuActionData = data.focusMenuActionData;
 tags.system = `abPatchTodo.${(tags.todoPlanId ?? thisBot.id).substring(0, 5)}_${String(tags.todoOrder).padStart(3, '0')}`;

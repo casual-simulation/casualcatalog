@@ -1,3 +1,5 @@
+console.log('[abEnvironmentMenu] entered', { currentMenuPortal: configBot.masks.menuPortal });
+
 shout("abMenuRefresh");
 
 configBot.masks.menuPortal = "abMenu";

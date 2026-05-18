@@ -102,14 +102,11 @@ const abMod = {
         masks.interval = setInterval(() => thisBot.animateBot(), tags.spinIntervalMS);
     }),
     onClick: ListenerString(() => {
-        console.log('[abBot.onClick] fired', { modality: that.modality, buttonId: that.buttonId, hasArmBot: !!masks.armBot, hasMeshBot: !!links.meshBot });
-
         if (links.meshBot) {
             links.meshBot.changeAnimState('Click');
         }
 
         if (that.modality == 'mouse' && that.buttonId == 'right') {
-            console.log('[abBot.onClick] aborting — right-click');
             return;
         }
 
@@ -118,7 +115,6 @@ const abMod = {
             masks.armBot = null;
         }
 
-        console.log('[abBot.onClick] calling manager.abClick()');
         links.manager.abClick();
     }),
     onPointerEnter:ListenerString(() => {

@@ -1,5 +1,3 @@
-console.log('[abOpenMenu] entered', { that, currentMenuPortal: configBot.masks.menuPortal });
-
 await os.requestAuthBotInBackground();
 
 configBot.masks.menuPortal = "abMenu";
@@ -7,8 +5,6 @@ configBot.masks.menuPortal = "abMenu";
 let menuType = that ? "ab" + that.charAt(0).toUpperCase() + that.slice(1) + "Menu": "abCoreMenu"; //set up a check to see what type of menu should be occuring [core, bot, grid, inst]
 let menuSkills = getBots(menuType + "Action");
 let maxOptions = menuType == "inst" ? 7 : 5;
-
-console.log('[abOpenMenu] resolved menuType', { menuType, menuSkillCount: menuSkills.length });
 
 const BASE_TAGS = {
     abMenu: true,

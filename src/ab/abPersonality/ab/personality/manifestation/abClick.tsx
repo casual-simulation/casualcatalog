@@ -1,7 +1,4 @@
-console.log('[abClick] entered', { hasAbBot: !!links.abBot, that });
-
 if (!links.abBot) {
-    console.log('[abClick] aborting — no links.abBot');
     return;
 }
 
@@ -14,16 +11,8 @@ const menu = that ? that.menu : "core";
 const state = os.getInputState("keyboard", "Shift");
 
 const abMenuIsOpen = configBot.tags.menuPortal === 'abMenu';
-console.log('[abClick] decision inputs', {
-    reset,
-    menu,
-    shiftHeld: !!state,
-    abMenuIsOpen,
-    menuPortalValue: configBot.tags.menuPortal,
-});
 
 if (reset || (abMenuIsOpen && !state)) {
-    console.log('[abClick] CLOSE branch (close ab menu, restart idle spin)', { reset, abMenuIsOpen });
     links.abBot.animateBot();
 
     links.abBot.masks.lineTo = null;
@@ -34,7 +23,6 @@ if (reset || (abMenuIsOpen && !state)) {
     links.abBot.masks.interval = setInterval(() => links.abBot.animateBot(), links.abBot.tags.spinIntervalMS);
 }
 else {
-    console.log('[abClick] OPEN-MENU branch', { menu, shiftAndCore: !!state && menu === 'core' });
     const abMenuBots = getBots("abMenu", true);
 
     whisper(abMenuBots, "abMenuRefresh");

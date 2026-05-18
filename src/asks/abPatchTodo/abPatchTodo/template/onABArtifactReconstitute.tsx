@@ -19,6 +19,7 @@ tags.agentMode = data.agentMode ?? 'build';
 tags.todoPlanId = data.todoPlanId;
 tags.todoOrder = data.todoOrder ?? 0;
 tags.todoParentId = data.todoParentId;
+tags.isUserAskTodo = data.isUserAskTodo;
 tags.isUserApprovalTodo = data.isUserApprovalTodo;
 tags.todoApprovalForPlanId = data.todoApprovalForPlanId;
 tags.focusMenuType = data.focusMenuType;

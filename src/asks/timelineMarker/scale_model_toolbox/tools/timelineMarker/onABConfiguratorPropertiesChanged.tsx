@@ -7,3 +7,5 @@ if ('unit' in propertyValues) {
 if ('step' in propertyValues) {
     tags.timeValue = propertyValues.step;
 }
+
+tags.label = tags.timeValue + ' ' + tags.timeUnit;

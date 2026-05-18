@@ -4,4 +4,4 @@ if (that) {
     }
 }
 
-ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: tags.abConfiguratorGroup});
+shout("setDelta", tags.timeValue);

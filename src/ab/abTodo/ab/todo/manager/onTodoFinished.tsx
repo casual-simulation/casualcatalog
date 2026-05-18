@@ -12,3 +12,31 @@ if (agentBot) {
 }
 
 ab.links.utils.remoteShout({ name: 'onAnyTodoFinished', arg: that});
+
+// When a build plan finishes, spawn the approval bot and broadcast the completed event. Lives
+// on the manager (which runs on one client) so the shared approval bot isn't created N times.
+const finishedTodo = that?.todoId ? getBot('id', that.todoId) : null;
+const planId = finishedTodo?.tags.todoPlanId;
+
+const isBuildPlanCandidate =
+    finishedTodo &&
+    planId &&
+    !finishedTodo.tags.isUserAskTodo &&
+    !finishedTodo.tags.isUserApprovalTodo &&
+    finishedTodo.tags.agentMode === 'build';
+
+if (isBuildPlanCandidate) {
+    const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === planId)
+        .sort((a, b) => (a.tags.todoOrder ?? 0) - (b.tags.todoOrder ?? 0));
+
+    const planFinished = planTodos.length > 0
+        && planTodos.every(b => b.tags.abTodoComplete)
+        && !planTodos.some(b => b.tags.abPatchError);
+    const isLastTodo = planTodos.at(-1)?.id === finishedTodo.id;
+    const approvalExists = !!getBot(b => b.tags.isUserApprovalTodo && b.tags.todoApprovalForPlanId === planId);
+
+    if (planFinished && isLastTodo && !approvalExists) {
+        ab.links.utils.remoteShout({ name: 'onAnyABBuildPlanCompleted', arg: { todoId: finishedTodo.id, planId } });
+        whisper(finishedTodo, 'spawnUserApprovalTodo');
+    }
+}

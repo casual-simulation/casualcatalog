@@ -156,7 +156,7 @@ options.push({
             }),
         },
         {
-            label: `default map portal basemap`,
+            label: `default map portal basemap: ${links.personality.tags.abMapPortalBase}`,
             formAddress: "edit_note",
             onClick: ListenerString(() => {
                 shout("showABBasemapOptions");

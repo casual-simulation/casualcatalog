@@ -8,7 +8,7 @@ for (const tag of that.tags) {
     }
     
     if (masks.initialized) {
-        if (tag === 'agentMode' || tag === 'todoForm' || tag === 'isUserAskTodo') {
+        if (tag === 'agentMode' || tag === 'todoForm' || tag === 'isUserAskTodo' || tag === 'isUserApprovalTodo') {
             thisBot.refreshForm();
         }
 

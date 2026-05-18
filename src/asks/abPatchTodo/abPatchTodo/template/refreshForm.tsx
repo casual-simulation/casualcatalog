@@ -1,6 +1,8 @@
 let desiredTodoForm;
 
-if (tags.isUserAskTodo) {
+if (tags.isUserApprovalTodo) {
+    desiredTodoForm = 'userApproval';
+} else if (tags.isUserAskTodo) {
     desiredTodoForm = 'userAsk';
 } else if (tags.agentMode === 'build') {
     desiredTodoForm = 'build';

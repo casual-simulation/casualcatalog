@@ -113,6 +113,7 @@ const pendingTodos = todoBots.filter(b =>
     !b.tags.abPatchError &&
     !b.tags.abPatchApplying &&
     !b.tags.isUserAskTodo &&
+    !b.tags.isUserApprovalTodo &&
     b.tags.awaitingUserResponse !== true &&
     b.tags.todoPlanId !== tags.failedPlanId &&
     b.tags.todoReadyForAgent

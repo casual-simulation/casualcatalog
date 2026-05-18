@@ -24,6 +24,13 @@ if (tags.isUserAskTodo) {
     return;
 }
 
+// User-approval todos render approve / undo / restart buttons that act on the entire
+// related plan chain. Return early — the standard plan menu doesn't apply.
+if (tags.isUserApprovalTodo) {
+    thisBot.userApprovalTodoMenuRender();
+    return;
+}
+
 const planTodos  = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
 const allCompleted = planTodos.every(b => b.tags.abTodoComplete);
 const anyFailed  = planTodos.some(b => b.tags.abPatchError);
@@ -132,21 +139,8 @@ if (isApproved) {
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
 } else if (allCompleted) {
-    menuOptions.menuItems.push({
-        label: 'approve plan',
-        formAddress: 'done',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchApproveClick'); }),
-    });
-    menuOptions.menuItems.push({
-        label: 'cancel plan',
-        formAddress: 'cancel',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
-    });
-    menuOptions.menuItems.push({
-        label: 'restart plan',
-        formAddress: 'replay',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchRestartClick'); }),
-    });
+    // Plan-level actions (approve / undo / restart) live on the dedicated user-approval todo
+    // spawned next to the last plan todo — see spawnUserApprovalTodo.
 } else if (anyFailed) {
     const failedTodo = planTodos.find(b => b.tags.abPatchError);
     menuOptions.menuItems.push({

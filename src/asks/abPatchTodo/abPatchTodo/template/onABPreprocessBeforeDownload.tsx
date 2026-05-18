@@ -41,6 +41,8 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.focusMenuType;
     delete thisBotData.tags.focusMenuActionData;
     delete thisBotData.tags.isUserAskTodo;
+    delete thisBotData.tags.isUserApprovalTodo;
+    delete thisBotData.tags.todoApprovalForPlanId;
 
     thisBotData.tags.form = 'nothing';
     thisBotData.tags.system = 'abPatchTodo.template';

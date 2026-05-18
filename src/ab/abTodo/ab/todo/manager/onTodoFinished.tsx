@@ -11,8 +11,6 @@ if (agentBot) {
     agentBot.tags.todoInProgress = false;
 }
 
-ab.links.utils.remoteShout({ name: 'onAnyTodoFinished', arg: that});
-
 // When a build plan finishes, spawn the approval bot and broadcast the completed event. Lives
 // on the manager (which runs on one client) so the shared approval bot isn't created N times.
 const finishedTodo = that?.todoId ? getBot('id', that.todoId) : null;
@@ -25,6 +23,7 @@ const isBuildPlanCandidate =
     !finishedTodo.tags.isUserApprovalTodo &&
     finishedTodo.tags.agentMode === 'build';
 
+let buildPlanCompleted = false;
 if (isBuildPlanCandidate) {
     const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === planId)
         .sort((a, b) => (a.tags.todoOrder ?? 0) - (b.tags.todoOrder ?? 0));
@@ -35,8 +34,14 @@ if (isBuildPlanCandidate) {
     const isLastTodo = planTodos.at(-1)?.id === finishedTodo.id;
     const approvalExists = !!getBot(b => b.tags.isUserApprovalTodo && b.tags.todoApprovalForPlanId === planId);
 
-    if (planFinished && isLastTodo && !approvalExists) {
-        ab.links.utils.remoteShout({ name: 'onAnyABBuildPlanCompleted', arg: { todoId: finishedTodo.id, planId } });
-        whisper(finishedTodo, 'spawnUserApprovalTodo');
-    }
+    buildPlanCompleted = planFinished && isLastTodo && !approvalExists;
+}
+
+// Tell listeners whether this completion also ends a build plan, so the per-todo chime can
+// step aside for the plan-completed chime on the very last todo.
+ab.links.utils.remoteShout({ name: 'onAnyTodoFinished', arg: { ...that, buildPlanCompleted } });
+
+if (buildPlanCompleted) {
+    ab.links.utils.remoteShout({ name: 'onAnyABBuildPlanCompleted', arg: { todoId: finishedTodo.id, planId } });
+    whisper(finishedTodo, 'spawnUserApprovalTodo');
 }

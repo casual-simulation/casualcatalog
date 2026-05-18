@@ -1,0 +1,132 @@
+Convert the below user prompt into a multi-step plan with a todo for every scale model that describes how they relate to each other, and how they should behave over time. Also make a todo for the markers.
+Make sure to explicitly use the verbage "make me a <scaleModel | timelineManager | timelineMarker> from the catalog <...>".
+
+## User Prompt
+
+{{userPrompt}}
+
+## Guidelines
+
+Keep descriptions concise — bullet points and short phrases only. Only include details that are necessary context for linking models together. Omit anything the builder can infer on its own.
+
+---
+
+### Models
+
+Create a model for each distinct physical entity (person, location, asset, machine). Do not create models for metrics, derived values, or abstract concepts — those are stats on a parent model.
+
+The **name** is each model's unique identifier and is required. Every model must have a distinct name — even similar entities of the same type must be named individually (e.g. "Barista 1" and "Barista 2", not just "Barista"). Never reuse a name.
+
+---
+
+### Spatial Layout
+
+All models offset **20 units right** (positive x). Space models apart based loosely on real-world scale — a person is ~1m wide, a car ~2m, a building ~10–15m. Scale and spacing should feel proportional to each other.
+
+When a model represents a building or space, the model bot itself should be the floor — a flat plane at ground level that defines the footprint. The model is named after what it represents (e.g. "Coffee Shop", not "Coffee Shop Floor"). Additional visual-only bots can be added as scaffolding around it (walls, signage, decorative elements) — walls should sit directly on top of the floor (z = floor z + wall height / 2) so they look like real architecture. Visual-only bots do not need labels. Models can be placed on top of others (e.g. a duck on a pond) but never fully inside another model's volume — they become invisible and unclickable.
+
+Timeline markers are placed in a row, spaced **3 units apart on the x-axis**, below the models on the y-axis. Each marker should have a label describing its step (e.g. "Day 30"). Steps should be meaningfully spread across the simulation's total range.
+
+---
+
+### Choosing a Time Unit
+
+Pick the finest unit that keeps the simulation meaningful:
+
+| Scenario | Suggested unit |
+|---|---|
+| Financial modeling, business growth | month or quarter |
+| Retail operations, staffing | day or week |
+| Animal behavior, foot traffic | minute or hour |
+| Fast-moving (traffic, machinery) | second |
+
+Every entity in the scene uses this same unit.
+
+---
+
+### Lifecycle Design
+
+Use a lifecycle for any entity that ages, degrades, or expires. Don't assign one to pure value-holders (a fixed salary, a static cost).
+
+A lifecycle has four phases — choose vocabulary that fits the entity's domain:
+
+| Domain | Phase 0 | Phase 1 | Phase 2 | Terminal |
+|---|---|---|---|---|
+| Living thing | alive | aging | elderly | dead |
+| Machine | active | degraded | critical | decommissioned |
+| Business / asset | operating | declining | expiring | closed |
+
+For each lifecycle entity, specify:
+- **Lifecycle chain** — e.g. `alive → aging → elderly → dead`
+- **max_age** — how many steps. Set 1.5–3× beyond the final marker so entities outlive the observable window slightly.
+- **Phase thresholds** — Phase 1 at ~50–65% of max_age; Phase 2 at ~75–85%
+- **spawn_tick** — 0 for entities born at start; negative for seed entities already partway through life. Stagger across same-type entities to spread deaths across the timeline.
+- **Terminal behavior** — hide (default) or freeze
+- **Speed scaling** — whether movement speed scales across phases (yes for most moving entities)
+
+---
+
+### Spawning Design
+
+Use spawning for entities that can mate and produce offspring. Requires a lifecycle.
+
+For each spawning entity, specify:
+- **Partner** — which entity it mates with
+- **Maturity threshold** — fraction of max_age before mating is possible (typically 10–20%)
+- **Mating cooldown** — steps between matings (typically 15–25% of max_age)
+- **Mating proximity** — distance in meters to trigger mating
+
+Always declare spawning on both entities in a pair.
+
+---
+
+### Reactive Behavior
+
+Only describe listeners the builder cannot infer. Name them exactly:
+- Stat: `on<StatName>Changed`
+- State: `<stateName><value>OnEnter`
+- Custom: any meaningful name
+- `onDeltaOverwrite` — replaces all per-tick logic. Tick value is `that`. Use for lifecycle transitions, speed scaling, movement, stat recalculation, and mating checks. Must include reset logic: when `that` is less than the previous tick value, restore all stats and states to starting values.
+
+Always use `changeState(thisBot, '<value>', '<stateName>')` for state transitions.
+
+When configuring models, stats, states, and listeners must be passed as arrays, not objects. Builders should set labels, scales, and colors as they see fit. Do not modify `modelAttributes`.
+
+---
+
+### Timeline Manager
+
+Always include a todo to load the timeline manager from the catalog. Place it just before the first marker (same y as markers, leftmost x position).
+
+---
+
+### Timeline Marker Placement
+
+Place 3–5 markers. Do not place one at step 0. Steps meaningfully spread across the full simulation range — do not cluster at small values when lifecycles are long. Each marker has a `step`, `timeUnit`, and a label.
+
+---
+
+### Example
+
+**Input:** "A duck pond with 2 ducks of different ages."
+
+**Plan:** timeUnit: minute
+
+**Pond** — (20, 0). The model bot is the floor/surface of the pond. Tracks duck_count. No lifecycle.
+
+**Duck 1** — beside Pond at (27, 0). Lifecycle: alive → aging → elderly → dead. max_age: 200, thresholds: 120, 160. spawn_tick: 0. Terminal: hide. Wanders near Pond. Mates with Duck 2 — maturity 15%, cooldown 40, proximity 1.5m.
+- lifecyclealiveOnEnter: restore visibility, color white
+- lifecycleagingOnEnter: color #c8a882
+- lifecycleelderlyOnEnter: color #a0a0a0
+- lifecycledeadOnEnter: hide
+- onDeltaOverwrite: lifecycle transitions, wander, mating check, reset on scrub back
+
+**Duck 2** — beside Pond at (29, 0). Same lifecycle and reactive behavior as Duck 1. spawn_tick: -30. Mates with Duck 1.
+
+**Timeline manager** — from catalog, position (-3, -20).
+
+**Markers** — timeUnit: minute, spaced 3 units apart on x starting at (0, -20):
+- step 30, label "Minute 30"
+- step 80, label "Minute 80"
+- step 130, label "Minute 130"
+- step 150, label "Minute 150"

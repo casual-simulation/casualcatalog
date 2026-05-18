@@ -20,6 +20,8 @@ const properties: ABConfiguratorProperty[] = [
             properties: [
                 { key: 'name', type: 'text', default: 'unnamed', label: 'Name' },
                 { key: 'start', type: 'number', default: 0, label: 'Initial Value' },
+                { key: 'deltaModifier', description: 'the modifier that should apply every tick', type: 'select', label: 'Delta Modifier', default: '+', options: [{value: '+', label: '+'}, {value: '-', label: '-'}, {value: '/', label: '/'}, {value: '*', label: '*'}]},
+                { key: 'delta', description: 'the value that the stat should change by each tick', type: 'number', default: 0, label: 'Delta Value' },
             ],
         },
     },

@@ -2,6 +2,7 @@ const { propertyValues } = that;
 
 if ('scaleModelName' in propertyValues) {
     tags.modelName = propertyValues.scaleModelName;
+    tags.label = propertyValues.scaleModelName;
 }
 
 if ('scaleModelStats' in propertyValues) {

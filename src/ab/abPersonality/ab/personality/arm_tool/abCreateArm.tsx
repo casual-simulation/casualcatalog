@@ -126,18 +126,29 @@ const arm = {
     }),
     onClick: ListenerString(() => {
         const { dimension } = that;
+        let fromX;
+        let fromY;
+        let toX;
+        let toY;
 
         if (links.originBot?.tags.armTeleport ?? true) {
             links.originBot.tags[dimension] = true;
+
+            fromX = links.originBot.tags[dimension + 'X'];
+            fromY = links.originBot.tags[dimension + 'Y'];
+
             links.originBot.tags[dimension + 'X'] = tags[dimension + 'X'];
             links.originBot.tags[dimension + 'Y'] = tags[dimension + 'Y'];
             links.originBot.tags[dimension + 'Z'] = tags[dimension + 'Z'];
 
+            toX = tags[dimension + 'X'];
+            toY = tags[dimension + 'Y'];
+
             ab.links.sound.abPlaySound({ value: tags.armTeleportSound, defaultValue: tags.defaultArmTeleportSound });
         }
 
-        whisper(links.originBot, 'onArmClick', { dimension });
-        shout('onAnyArmClick', { originBot: links.originBot, dimension });
+        whisper(links.originBot, 'onArmClick', { dimension, from: {x: fromX, y: fromY}, to: {x: toX, y: toY} });
+        shout('onAnyArmClick', { originBot: links.originBot, dimension, from: {x: fromX, y: fromY}, to: {x: toX, y: toY} });
 
         destroy(thisBot);
     }),

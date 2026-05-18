@@ -6,6 +6,21 @@ if (!chain || chain.plans.length === 0) {
     return;
 }
 
+// Capture the topmost todo's location before the approval loop moves it to the log dimension.
+let topmostManifestTarget: { dimension: string; position: { x: number; y: number } } | null = null;
+if (chain.topmostTodo) {
+    const topDim = chain.topmostTodo.tags.dimension;
+    if (topDim) {
+        topmostManifestTarget = {
+            dimension: topDim,
+            position: {
+                x: chain.topmostTodo.tags[topDim + 'X'] ?? 0,
+                y: chain.topmostTodo.tags[topDim + 'Y'] ?? 0,
+            },
+        };
+    }
+}
+
 for (const todo of chain.allTodos) {
     shout('onAnyABPatchApprove', { botId: todo.id });
 
@@ -46,15 +61,12 @@ const ancestorApprovals = getBots(b =>
 );
 destroy(ancestorApprovals);
 
-if (ab.links.manifestation.tags.abAwake) {
-    const approvalDim = tags.dimension;
-    const approvalPos = {
-        x: tags[approvalDim + 'X'] ?? 0,
-        y: tags[approvalDim + 'Y'] ?? 0,
-    };
-
-    await ab.links.manifestation.abManifestBot({ dimension: approvalDim, position: approvalPos });
+if (ab.links.manifestation.tags.abAwake && topmostManifestTarget) {
+    const newAbBot = await ab.links.manifestation.abManifestBot(topmostManifestTarget);
     ab.links.manifestation.abClick();
+    if (newAbBot) {
+        await os.focusOn(newAbBot, { duration: 0.5 });
+    }
 }
 
 destroy(thisBot);

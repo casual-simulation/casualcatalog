@@ -46,4 +46,15 @@ const ancestorApprovals = getBots(b =>
 );
 destroy(ancestorApprovals);
 
+if (ab.links.manifestation.tags.abAwake) {
+    const approvalDim = tags.dimension;
+    const approvalPos = {
+        x: tags[approvalDim + 'X'] ?? 0,
+        y: tags[approvalDim + 'Y'] ?? 0,
+    };
+
+    await ab.links.manifestation.abManifestBot({ dimension: approvalDim, position: approvalPos });
+    ab.links.manifestation.abClick();
+}
+
 destroy(thisBot);

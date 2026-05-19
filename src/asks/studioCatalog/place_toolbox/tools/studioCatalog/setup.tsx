@@ -33,7 +33,15 @@ if (tags.studioId) {
 }
 
 if (!hasCustomMesh) {
-    tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_unlit.glb');
+    // tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_unlit.glb');
+    tags.scaleX = 2;
+    tags.scaleY = 3;
+    tags.scaleZ = 1.1;
+    tags.form = null;
+
+    tags.visualBot = getLink(await thisBot.generateVisualBot());
+    tags.color = 'clear';
+    tags.strokeColor = null;
     // tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/book_catalog_icon.glb');
     // const anims = await os.listFormAnimations();
     // tags.meshPositioningMode = 'absolute';

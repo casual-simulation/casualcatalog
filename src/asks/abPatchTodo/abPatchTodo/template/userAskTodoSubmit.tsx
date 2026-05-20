@@ -10,17 +10,25 @@ setTag(thisBot, 'todoShowArrow', false);
 shout('abPatchTodoMenuReset');
 configBot.masks.menuPortal = null;
 
-const parentTodo = getBot('id', data.askContext?.todoBot);
-if (!parentTodo || parentTodo.tags.abTodoComplete || parentTodo.tags.abPatchError) return;
-
 // Find all sibling question todos in this chain (same todoPlanId)
 const siblings = getBots(b =>
     b.tags.isUserAskTodo &&
     b.tags.todoPlanId === tags.todoPlanId
 );
-const allComplete = siblings.every(b => b.tags.abTodoComplete);
 
-if (!allComplete) return;
+// Case A: more user-ask todos remain — focus the next one and open its menu.
+const nextTodo = siblings
+    .filter(b => !b.tags.abTodoComplete)
+    .sort((a, b) => (a.tags.todoOrder ?? 0) - (b.tags.todoOrder ?? 0))[0];
+
+if (nextTodo) {
+    await os.focusOn(nextTodo, { duration: nextTodo.tags.todoFocusDuration });
+    whisper(nextTodo, 'abPatchTodoMenuOpen');
+    return;
+}
+
+const parentTodo = getBot('id', tags.todoParentId);
+if (!parentTodo || parentTodo.tags.abTodoComplete || parentTodo.tags.abPatchError) return;
 
 // All complete — assemble result and append to history
 const ordered = siblings
@@ -58,3 +66,7 @@ whisper(thisBot, 'onABPatchApproveClick');
 // Signal the manager that the parent is ready to resume. Using `false` (not null) so the
 // manager can distinguish "ready to resume" from "never paused".
 setTag(parentTodo, 'awaitingUserResponse', false);
+
+// Case B: chain complete — focus the parent todo and open its menu.
+await os.focusOn(parentTodo, { duration: parentTodo.tags.todoFocusDuration });
+whisper(parentTodo, 'abPatchTodoMenuOpen');

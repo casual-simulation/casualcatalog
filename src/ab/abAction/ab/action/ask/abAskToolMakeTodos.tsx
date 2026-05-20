@@ -93,6 +93,7 @@ for (let i = 0; i < todos.length; i++) {
             todoPlanId,
             todoOrder: i,
             todoParentId,
+            todoBaseColor: ab.links.personality.tags.abBaseColor,
             todoShowArrow: true,
             focusMenuType: menuType,
             focusMenuActionData: menuActionData,

@@ -14,6 +14,7 @@ if (tags.todoShowArrow) {
         form: 'mesh',
         formSubtype: 'gltf',
         formAddress: arrowFormAddress,
+        color: tags.todoBaseColor,
         todoBot: getLink(thisBot),
         transformer: thisBot.id,
         dimension: tags.dimension,

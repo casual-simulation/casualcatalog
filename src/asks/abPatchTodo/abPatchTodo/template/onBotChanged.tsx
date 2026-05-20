@@ -15,6 +15,10 @@ for (const tag of that.tags) {
         if (tag === 'todoShowArrow') {
             thisBot.refreshArrow();
         }
+
+        if (tag === 'todoBaseColor') {
+            thisBot.refreshColor();
+        }
     }
 
     if (tag === 'todoReadyForAgent') {

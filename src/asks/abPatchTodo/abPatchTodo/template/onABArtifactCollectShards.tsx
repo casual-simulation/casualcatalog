@@ -14,6 +14,7 @@ const shard: ABArtifactShard = {
         todoPlanId: tags.todoPlanId,
         todoOrder: tags.todoOrder,
         todoParentId: tags.todoParentId,
+        todoBaseColor: tags.todoBaseColor,
         isUserAskTodo: tags.isUserAskTodo,
         isUserApprovalTodo: tags.isUserApprovalTodo,
         todoApprovalForPlanId: tags.todoApprovalForPlanId,

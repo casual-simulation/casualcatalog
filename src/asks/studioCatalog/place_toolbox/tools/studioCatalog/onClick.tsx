@@ -108,7 +108,7 @@ if (tags.studioId) {
         label: 'share',
         formAddress: 'ios_share',
         onClick: `@
-            shout('clearHomePlaceMenu');
+            //shout('clearHomePlaceMenu');
             links.place.onStoreMenu();
         `
     };

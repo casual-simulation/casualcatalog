@@ -4,7 +4,10 @@ if (egg) {
     return;
 }
 
-masks.selected = true;
+if (!masks.selected) {
+    masks.selected = true;
+}
+
 await os.sleep(0);
 
 const dimension = tags.dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;

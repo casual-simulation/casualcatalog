@@ -1,1 +1,3 @@
-masks.selected = null;
+if (masks.selected) {
+    masks.selected = null;
+}

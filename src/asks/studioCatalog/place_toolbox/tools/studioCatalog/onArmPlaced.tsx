@@ -9,5 +9,7 @@ if (!tags.studioId) {
     destroy(links.armBot);
 } else {
     thisBot.handleToolMenu(that);  
-    masks.selected = true;
+    if (!masks.selected) {
+        masks.selected = true;
+    }
 }

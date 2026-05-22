@@ -1,10 +1,6 @@
 const dimension = that?.dimension;
 const position = that?.position;
 
-if (!links.search) {
-    return;
-}
-
 if (thisBot.vars.abBotLastId) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] destroying abBot`);
@@ -35,6 +31,7 @@ const abMod = {
     personality: tags.personality,
     remember: tags.remember,
     learn: tags.learn,
+    search: tags.search,
     spinDurationMS: 2000,
     spinIntervalMS: 2000,
     soundClick: links.remember.tags.abClickSound ?? true,

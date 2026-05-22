@@ -52,6 +52,21 @@ const properties: ABConfiguratorProperty[] = [
                 value: studioConfig['studio_catalog_color']
             }
         ]
+    },
+    {
+        key: 'studio_kit_mesh',
+        type: 'group',
+        label: 'studio kit mesh',
+        description: 'Appearance settings for the studio\'s kit bots.',
+        properties: [
+            {
+                key: 'studio_kit_mesh_url',
+                type: 'text',
+                label: 'studio kit mesh url',
+                description: 'Mesh URL to use for the studio\'s kit bots. Assumes the same animation states as the default kit mesh.',
+                value: studioConfig['studio_kit_mesh_url']
+            }
+        ]
     }
 ]
 

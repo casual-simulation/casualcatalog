@@ -17,7 +17,7 @@ const abMod = {
     [dimension + 'Y']: position.y,
     manager: getLink(thisBot),
     remember: tags.remember,
-    form: 'cube',
+    form: 'nothing',
     label: links.remember.tags.abBaseLabel,
     labelPosition: 'front',
     labelColor: links.personality.tags.abBaseStrokeColor,
@@ -96,6 +96,7 @@ const abMod = {
                 [tags.dimension + 'Z']: -0.5
             }));
 
+            tags.form = 'cube';
             tags.color = links.personality.tags.abBaseColor;
             tags.scale = 0.9;
             tags.strokeWidth = 1;

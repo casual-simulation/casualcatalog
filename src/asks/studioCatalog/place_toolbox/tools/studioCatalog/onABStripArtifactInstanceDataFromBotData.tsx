@@ -28,4 +28,4 @@ delete data.tags.currentFormAnimation;
 delete data.tags.meshPositioningMode;
 delete data.tags.scaleMode;
 delete data.tags.formAnimation;
-delete data.tags.visualBot;
+delete data.tags.defaultVisualBot;

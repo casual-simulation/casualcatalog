@@ -1,7 +1,7 @@
 const formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/book_catalog_icon.glb');
 
-if (links.visualBot) {
-    destroy(links.visualBot);
+if (links.defaultVisualBot) {
+    destroy(links.defaultVisualBot);
 }
 
 const book = {

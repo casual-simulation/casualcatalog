@@ -39,7 +39,7 @@ if (!hasCustomMesh) {
     tags.scaleZ = 1.1;
     tags.form = null;
 
-    tags.visualBot = getLink(await thisBot.generateVisualBot());
+    tags.defaultVisualBot = getLink(await thisBot.generateDefaultVisualBot());
     tags.color = 'clear';
     tags.strokeColor = null;
     // tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/book_catalog_icon.glb');

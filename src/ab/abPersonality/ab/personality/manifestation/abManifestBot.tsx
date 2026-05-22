@@ -37,7 +37,7 @@ const abMod = {
     onCreate: ListenerString(async () => {
         let formAddress;
 
-        const instStudioConfig = await ab.links.search.abInstStudioConfig();
+        const instStudioConfig = await links.search.abInstStudioConfig();
 
         if (instStudioConfig?.studio_ab_mesh_url) {
             formAddress = instStudioConfig.studio_ab_mesh_url;

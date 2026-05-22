@@ -4,11 +4,16 @@ if (!masks.initialized && tags.abArtifactShardReconstituted && masks.abInitializ
     }
 
     masks.initialized = true;
+    masks.formOpacity = 0;
 
     await thisBot.refreshForm();
 
-    if (!tags.animationState) {
-        tags.animationState = 'appear';
+    if (!masks.animationState) {
+        os.sleep(100).then(() => {
+            // Fixes a timing issue where the form briefly plays the incorrect animation when first initializing.
+            masks.formOpacity = null;
+            masks.animationState = 'appear';
+        });
     }
     
     thisBot.determineLineTo();

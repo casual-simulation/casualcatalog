@@ -6,4 +6,10 @@ const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? tags.
 
 masks[dimension] = true;
 masks.pointable = null;
-tags.animationState = 'appear';
+masks.formOpacity = 0;
+
+os.sleep(100).then(() => {
+    // Fixes a a timing issue where the form is briefly visible playing the incorrect animation when the studio catalog is selected.
+    masks.formOpacity = null;
+    masks.animationState = 'appear';
+});

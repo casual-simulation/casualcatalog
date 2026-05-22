@@ -3,4 +3,4 @@ if (that.tags.studioId != tags.studioId || tags.lineTo != getID(that)) {
 }
 
 masks.pointable = false;
-tags.animationState = 'disappear';
+masks.animationState = 'disappear';

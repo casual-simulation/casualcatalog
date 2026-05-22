@@ -94,6 +94,14 @@ const properties: ABConfiguratorProperty[] = [
                 label: 'studio ab mesh url',
                 description: 'Mesh URL to use for ab in insts owned by the studio. Assumes the same animation states as the default ab mesh.',
                 value: studioConfig['studio_ab_mesh_url']
+            },
+            {
+                key: 'studio_ab_mesh_colorize',
+                type: 'boolean',
+                label: 'studio ab mesh colorize',
+                description: 'Whether to tint the studio\'s ab mesh with the ab personality color.',
+                default: true,
+                value: studioConfig['studio_ab_mesh_colorize']
             }
         ]
     }

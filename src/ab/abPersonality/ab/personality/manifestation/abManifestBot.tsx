@@ -57,13 +57,15 @@ const abMod = {
                 debugAnim: tags.debug
             })
 
+            const colorize = instStudioConfig?.studio_ab_mesh_colorize !== false;
+
             // Create the mesh for ab.
             masks.meshBot = getLink(create({
                 space: 'tempLocal',
                 abBot: getLink(thisBot),
                 manager: tags.manager,
                 name: 'abMeshBot',
-                color: links.personality.tags.abBaseColor,
+                color: colorize ? links.personality.tags.abBaseColor : null,
                 form: 'mesh',
                 formSubtype: 'gltf',
                 formAddress,

@@ -79,6 +79,7 @@ const abMod = {
             // Give abBot a reference to the meshBot changeAnimState function.
             thisBot.listeners.changeAnimState = links.meshBot.listeners.changeAnimState;
 
+            tags.form = 'cube';
             tags.color = 'transparent';
             tags.scale = 1;
             tags.spinIntervalMS = 4500;

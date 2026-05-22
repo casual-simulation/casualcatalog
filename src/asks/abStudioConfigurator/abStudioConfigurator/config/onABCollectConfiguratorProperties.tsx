@@ -81,6 +81,21 @@ const properties: ABConfiguratorProperty[] = [
                 value: studioConfig['studio_kit_color']
             }
         ]
+    },
+    {
+        key: 'studio_ab_mesh',
+        type: 'group',
+        label: 'studio ab mesh',
+        description: 'Appearance settings for the studio\'s ab.',
+        properties: [
+            {
+                key: 'studio_ab_mesh_url',
+                type: 'text',
+                label: 'studio ab mesh url',
+                description: 'Mesh URL to use for ab in insts owned by the studio. Assumes the same animation states as the default ab mesh.',
+                value: studioConfig['studio_ab_mesh_url']
+            }
+        ]
     }
 ]
 

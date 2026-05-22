@@ -34,16 +34,22 @@ const abMod = {
     spinDurationMS: 2000,
     spinIntervalMS: 2000,
     soundClick: links.remember.tags.abClickSound ?? true,
-    onCreate: ListenerString(() => { 
-        if (links.remember.tags.abMeshPath) {
-            let formAddress;
+    onCreate: ListenerString(async () => {
+        let formAddress;
 
+        const instStudioConfig = await ab.links.search.abInstStudioConfig();
+
+        if (instStudioConfig?.studio_ab_mesh_url) {
+            formAddress = instStudioConfig.studio_ab_mesh_url;
+        } else if (links.remember.tags.abMeshPath) {
             if (links.remember.tags.abMeshPath.startsWith('https://')) {
                 formAddress = links.remember.tags.abMeshPath;
             } else {
                 formAddress = links.learn.abBuildCasualCatalogURL(links.remember.tags.abMeshPath);
             }
+        }
 
+        if (formAddress) {
             const animationStateMachineMod = links.manager.generateAnimationStateMachineMod({
                 controllerName: 'abBot',
                 gptSourceId: 'abBot',

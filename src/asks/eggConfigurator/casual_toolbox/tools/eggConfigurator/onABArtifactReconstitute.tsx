@@ -47,7 +47,7 @@ if (data.eggParameters) {
     }
 }
 
-const strokeBot = await thisBot.generateStroke();
-tags.strokeBot = getLink(strokeBot);
+// const strokeBot = await thisBot.generateStroke();
+// tags.strokeBot = getLink(strokeBot);
 
 thisBot.determineLineTo();

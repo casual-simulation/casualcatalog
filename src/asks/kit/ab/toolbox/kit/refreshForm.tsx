@@ -1,4 +1,4 @@
-let formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_animated.glb");
+const targetFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_animated.glb");
 
 if (masks.form !== 'mesh') {
     masks.form = 'mesh';

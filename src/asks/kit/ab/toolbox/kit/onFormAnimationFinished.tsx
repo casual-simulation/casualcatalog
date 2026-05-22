@@ -2,17 +2,18 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] animationState: ${tags.animationState}, finished animation: ${that.animation}`);
 }
 
-const onEnterAnim = tags.animationStates[tags.animationState]['onEnter'];
-const onIdleAnim = tags.animationStates[tags.animationState]['onIdle'];
+const stateConfig = tags.animationStates?.[tags.animationState];
+const onEnterAnim = stateConfig?.onEnter;
+const onIdleAnim = stateConfig?.onIdle;
 
-if (masks.formAddressAnimations && that.animation === onEnterAnim && onIdleAnim) {
-    if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] start form animation: ${onIdleAnim}`);
-    }
+if (!onIdleAnim || !masks.formAddressAnimations || that.animation !== onEnterAnim) return;
 
-    os.startFormAnimation(thisBot, onIdleAnim, {
-        crossFadeWarp: true,
-        crossFadeDuration: 200,
-        loop: { mode: 'repeat' },
-    });
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] start form animation: ${onIdleAnim}`);
 }
+
+os.startFormAnimation(thisBot, onIdleAnim, {
+    crossFadeWarp: true,
+    crossFadeDuration: 200,
+    loop: { mode: 'repeat' },
+});

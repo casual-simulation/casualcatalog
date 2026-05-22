@@ -1,3 +1,10 @@
+if (tags.hasCustomMesh) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] invoke but early exit because using custom mesh`);
+    }
+    return;
+}
+
 if (!masks.formAddressAnimations) {
     // Ensure that animations have been loaded.
     if (tags.debug) {

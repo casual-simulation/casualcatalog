@@ -1,0 +1,9 @@
+{
+    "appear": {
+        "onEnter": "enter",
+        "onIdle": "idle"
+    },
+    "disappear": {
+        "onEnter": "exit"
+    }
+}

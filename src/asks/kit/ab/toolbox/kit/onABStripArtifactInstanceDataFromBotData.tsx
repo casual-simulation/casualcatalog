@@ -18,5 +18,8 @@ delete data.tags.armMeshPath;
 delete data.tags.armColor;
 delete data.tags.studioId;
 delete data.tags.lineTo;
+delete data.tags.formAddress;
+delete data.tags.formSubtype;
 
 data.tags.system = `ab.toolbox.kit`;
+data.tags.form = 'nothing';

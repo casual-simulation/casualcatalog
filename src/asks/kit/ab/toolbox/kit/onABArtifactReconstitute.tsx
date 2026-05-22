@@ -2,7 +2,7 @@ let data = that.data;
 
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.label = data.label ?? 'kit';
-tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
+tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'white';
 tags.studioId = data.studioId;
 tags.tool_array = data.tool_array;
@@ -10,8 +10,6 @@ tags.abIgnore = true;
 tags.system = `ab.toolbox.${data.label ?? 'kit'}`;
 tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
 tags.armColor = abPersonality?.tags.abBaseStrokeColor;
-
-tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_filledStroke.glb");
 
 //Place bot correctly
 if (data.dimensionData) {
@@ -31,5 +29,3 @@ if (data.eggParameters) {
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
 }
-
-thisBot.determineLineTo();

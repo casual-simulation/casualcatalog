@@ -18,7 +18,8 @@ if (tags.eggConfigConfirmed) {
     thisBot.moveEgg();
 }
 
-tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/egg.glb");
+tags.form = 'mesh';
+tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/egg_stroke_animated.glb");
 tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/egg_stroke.glb");
 
 if (data.dimensionData) {

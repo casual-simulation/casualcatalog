@@ -21,7 +21,7 @@ tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('inst_' + getID(thisBot)
 tags.studioId = data.studioId;
 tags.originType = data.originType;
 
-tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/cylinder_16_unlit_both.glb");
+tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/cylinder_16_unlit_both_animated.glb");
 
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {

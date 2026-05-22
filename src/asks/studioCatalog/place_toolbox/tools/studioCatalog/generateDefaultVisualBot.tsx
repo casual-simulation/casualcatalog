@@ -18,22 +18,29 @@ const book = {
     abIgnore: true,
     abCatalogBookBot: true,
     color: abPersonality?.tags?.abBaseColor ?? '#00D9CD',
-    baseBot: getLink(thisBot),
+    baseBotId: getID(thisBot),
     scaleZ: .9,
     scaleX: .5,
     scaleY: .33,
-    onFormAnimationFinished: `@
-        if (links.baseBot.tags.hasCustomMesh) {
+    onFormAnimationFinished: ListenerString(() => {
+        const baseBot = getBot('id', tags.baseBotId);
+        if (!baseBot || baseBot.tags.hasCustomMesh) {
             return;
         }
-        if (links.baseBot.tags.currentFormAnimation == 'opening') {
-            links.baseBot.tags.currentFormAnimation = 'idle_open';
+        if (baseBot.tags.currentFormAnimation == 'opening') {
+            baseBot.tags.currentFormAnimation = 'idle_open';
             tags.formAnimation = 'idle_open';
-        } else if (links.baseBot.tags.currentFormAnimation == 'closing') {
-            links.baseBot.tags.currentFormAnimation = 'closed';
+        } else if (baseBot.tags.currentFormAnimation == 'closing') {
+            baseBot.tags.currentFormAnimation = 'closed';
             tags.formAnimation = 'closed';
         }
-    `
+    }),
+    onAnyBotsRemoved: ListenerString(() => {
+        const { botIDs } = that;
+        if (botIDs.includes(tags.baseBotId)) {
+            destroy(thisBot);
+        }
+    }),
 }
 
 const bookBot = create(book);

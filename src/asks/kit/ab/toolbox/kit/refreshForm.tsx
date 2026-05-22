@@ -1,4 +1,8 @@
-const targetFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/kit_icon_animated.glb");
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] invoke`);
+}
+
+const targetFormAddress = ab.abBuildCasualCatalogURL('/asks/meshes/kit_icon_animated.glb');
 
 if (masks.form !== 'mesh') {
     masks.form = 'mesh';

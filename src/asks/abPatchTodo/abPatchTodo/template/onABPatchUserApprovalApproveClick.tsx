@@ -1,5 +1,10 @@
 shout('abPatchTodoMenuReset');
 
+// Already-approved approval bots in the log dimension shouldn't re-run the flow if clicked.
+if (tags.todoApproved) {
+    return;
+}
+
 const chain = thisBot.abCollectApprovalChain();
 if (!chain || chain.plans.length === 0) {
     destroy(thisBot);
@@ -22,6 +27,13 @@ if (chain.topmostTodo) {
 }
 
 const allTodos = thisBot.abExpandToDescendantTodos({ todos: chain.allTodos });
+
+// Archive the approval bot itself alongside the plan todos and stash ab's conversation
+// history on it so the user can revisit this conversation later from the log dimension.
+allTodos.push(thisBot);
+const historyStorageBot = ab.links.remember;
+const archivedHistory = ab.links.ask.abConversationHistoryGet({ historyStorageBot });
+setTag(thisBot, 'abConversationHistory', archivedHistory);
 
 for (const todo of allTodos) {
     shout('onAnyABPatchApprove', { botId: todo.id });
@@ -53,17 +65,9 @@ ab.links.utils.abLog({
     space: 'shared',
 });
 
-// Destroy any sibling approval todos targeting plans in this chain (e.g. an ancestor's
-// approval prompt left over from a plan-mode userRequestTodo completion).
-const chainPlanIds = chain.plans.map(p => p.planId);
-const ancestorApprovals = getBots(b =>
-    b.tags.isUserApprovalTodo &&
-    chainPlanIds.includes(b.tags.todoApprovalForPlanId) &&
-    b.id !== thisBot.id
-);
-
-destroy(ancestorApprovals);
-destroy(thisBot);
+// Clear ab's conversation history now that it has been archived on this approval bot —
+// the next user request starts with a fresh slate.
+ab.links.ask.abConversationHistoryClear({ historyStorageBot });
 
 if (ab.links.manifestation.tags.abAwake && topmostManifestTarget) {
     const newAbBot = await ab.links.manifestation.abManifestBot(topmostManifestTarget);

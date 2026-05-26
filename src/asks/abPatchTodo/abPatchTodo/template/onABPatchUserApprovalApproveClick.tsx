@@ -21,7 +21,9 @@ if (chain.topmostTodo) {
     }
 }
 
-for (const todo of chain.allTodos) {
+const allTodos = thisBot.abExpandToDescendantTodos({ todos: chain.allTodos });
+
+for (const todo of allTodos) {
     shout('onAnyABPatchApprove', { botId: todo.id });
 
     setTag(todo, 'todoApproved', true);

@@ -6,6 +6,8 @@ if (!chain || chain.plans.length === 0) {
     return;
 }
 
+const allTodos = thisBot.abExpandToDescendantTodos({ todos: chain.allTodos });
+
 // Undo applied patches across the whole chain, processing each plan in reverse todoOrder.
 for (const plan of chain.plans) {
     const appliedTodos = plan.todos
@@ -25,7 +27,15 @@ const ancestorApprovals = getBots(b =>
     b.id !== thisBot.id
 );
 
-destroy(chain.allTodos);
+// Clear awaitingUserResponse on parent agent todos so cascading user-ask onDestroy handlers
+// treat this as a deliberate undo rather than the user abandoning a clarification.
+for (const todo of allTodos) {
+    if (todo.tags.awaitingUserResponse === true) {
+        setTag(todo, 'awaitingUserResponse', null);
+    }
+}
+
+destroy(allTodos);
 destroy(ancestorApprovals);
 
 const username = await ab.links.console.getUserName();

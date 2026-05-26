@@ -2,9 +2,10 @@ shout('abPatchTodoMenuReset');
 shout('onAnyABPatchApprove', { botId: thisBot.id });
 
 const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
+const allTodos = thisBot.abExpandToDescendantTodos({ todos: planTodos });
 
-if (planTodos.length > 0) {
-    for (const todo of planTodos) {
+if (allTodos.length > 0) {
+    for (const todo of allTodos) {
         todo.tags.todoApproved = true;
     
         // Remove from previous dimension.

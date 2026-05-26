@@ -60,8 +60,8 @@ const history = ab.links.ask.abConversationHistoryGet({ historyStorageBot });
 history.push({ role: 'user', content: [{ text: userMessage }] });
 ab.links.ask.abConversationHistorySave({ historyStorageBot, history });
 
-// Auto-approve the chain — moves all chain todos to the `log` dimension.
-whisper(thisBot, 'onABPatchApproveClick');
+// User-ask todos stick around like other plan todos — they'll be moved to the log
+// dimension when the parent plan is approved, or destroyed when it's undone.
 
 // Signal the manager that the parent is ready to resume. Using `false` (not null) so the
 // manager can distinguish "ready to resume" from "never paused".

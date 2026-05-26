@@ -5,13 +5,12 @@
 const dimension = tags.dimension ?? 'home';
 const lastX = tags[dimension + 'X'] ?? 0;
 const lastY = tags[dimension + 'Y'] ?? 0;
-const todoSpacing = ab.links.ask.tags.todoSpacing ?? 2;
 
 const shardBots = await ab.links.ask.abAskToolMakeTodos({
     args: { todos: [{ prompt: 'Approve, undo, or restart this plan?', label: 'Plan complete — review' }] },
     askContext: {
         abDimension: dimension,
-        abPosition: { x: lastX, y: lastY + todoSpacing },
+        abPosition: { x: lastX, y: lastY },
         todoBot: thisBot,
     },
     returnType: 'bots',

@@ -16,6 +16,7 @@ tags.form = data.form;
 tags.formSubtype = data.formSubtype;
 tags.modelName = data.modelName;
 tags.modelStates = data.modelStates;
+tags.modelID = data.modelID ?? uuid();
 tags.modelListeners = data.modelListeners;
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModel_' + getID(thisBot));
 

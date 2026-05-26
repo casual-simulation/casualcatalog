@@ -1,8 +1,11 @@
-// if (that.tags.includes("strokeColor")) {
-//     if (links.strokeBot) {
-//         links.strokeBot.tags.color = tags.strokeColor;
-//     }
-// }
+if (that.tags.includes("color") && tags.color != 'clear') {
+    if (links.defaultVisualBot) {
+        links.defaultVisualBot.tags.color = tags.color;
+    }
+
+    tags.labelFloatingBackgroundColor = tags.color;
+    tags.color = 'clear';
+}
 
 if (that.tags.includes("selected")) {
     if (tags.selected) {
@@ -12,9 +15,7 @@ if (that.tags.includes("selected")) {
             tags.currentFormAnimation = 'opening';
             tags.scaleX = 2;
             tags.scaleY = 3;
-            links.defaultVisualBot.tags.scaleX = .5;
-            links.defaultVisualBot.tags.scaleY = .33;
-            links.defaultVisualBot.tags[tags.dimension + 'Y'] = null;
+            links.defaultVisualBot.tags.formAnimation = null;
             links.defaultVisualBot.tags.formAnimation = "opening";
             os.startFormAnimation(links.defaultVisualBot, "opening", {clampWhenFinished: true});
             if (masks.scaleX) {
@@ -28,10 +29,7 @@ if (that.tags.includes("selected")) {
         if (!tags.hasCustomMesh && tags.currentFormAnimation != 'closed' && tags.currentFormAnimation != 'closing') {
             tags.scaleX = 2;
             tags.scaleY = 2;
-            links.defaultVisualBot.tags.scaleX = .5;
-            links.defaultVisualBot.tags.scaleY = .5;
             links.defaultVisualBot.tags.formAnimation = null;
-            links.defaultVisualBot.tags[tags.dimension + 'Y'] = -.3;
             tags.currentFormAnimation = 'closing';
             os.startFormAnimation(links.defaultVisualBot, "closing", {clampWhenFinished: true});
             if (masks.scaleX) {
@@ -39,5 +37,13 @@ if (that.tags.includes("selected")) {
                 thisBot.onPointerEnter();
             }
         }
+    }
+}
+
+if (that.tags.includes("currentFormAnimation")) {
+    if (tags.currentFormAnimation == 'closed') {
+        tags.soundDrop = '/asks/audio-assets/popup_appear.wav'
+    } else {
+        tags.soundDrop = '/asks/audio-assets/drop_block_in_place_03.mp3'
     }
 }

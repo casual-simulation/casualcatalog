@@ -7,7 +7,7 @@
         "artifact": true
     },
     {
-        "name": "scale model wizard",
+        "name": "scale model powerup",
         "studio": "AB",
         "targetAB": "scaleModelWizard",
         "description": "Generate an interactive 3D scale model simulation from a text description. Uses a two-pass AI pipeline: a planner builds a manifest of models and timeline markers, then a builder constructs each model with stats, lifecycle phases, movement behaviors (wander, patrol, follow), spawning/mating logic, and per-tick listeners. Best for visualizing business scenarios, ecosystems, or any simulation where entities change state and move over time.",

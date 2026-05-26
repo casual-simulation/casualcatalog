@@ -30,7 +30,8 @@ const shard: ABArtifactShard = {
         modelName: tags.modelName,
         modelStates: tags.modelStates,
         modelListeners: listeners,
-        abConfiguratorGroup: tags.abConfiguratorGroup
+        abConfiguratorGroup: tags.abConfiguratorGroup,
+        modelID: tags.modelID
 
     },
     dependencies: [

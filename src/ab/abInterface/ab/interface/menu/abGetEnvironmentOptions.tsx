@@ -101,10 +101,10 @@ options.push({
             }),
         },
         {
-            label: `ai auto assign agent to user request todo: ${links.personality.tags.abAutoAssignAgentToUserRequestTodo ? 'yes' : 'no'}`,
+            label: `auto assign todo agents: ${links.personality.tags.abAutoAssignAgentToTodo ? 'yes' : 'no'}`,
             formAddress: 'edit_note',
             onClick: ListenerString(async () => {
-                shout('abPersonalityChange', { abAutoAssignAgentToUserRequestTodo: !links.personality.tags.abAutoAssignAgentToUserRequestTodo });
+                shout('abPersonalityChange', { abAutoAssignAgentToTodo: !links.personality.tags.abAutoAssignAgentToTodo });
                 shout('abMenuRefresh');
             })
         },

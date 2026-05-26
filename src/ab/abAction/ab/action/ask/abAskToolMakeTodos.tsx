@@ -12,6 +12,7 @@ const {
 const todos: ABTodoParameters[] = that.args.todos ?? []; // List of todos to make.
 const returnType: 'none' | 'bots' = that.returnType ?? 'none'; // By default this is an action tool, meaning we dont return any bots to send back to the ai models.
 const autoFocus: boolean = that.autoFocus ?? true; // After creation, focus and open the menu on the first todo. Callers doing tag post-processing (userAsk, userRequest) pass false and handle it themselves.
+const autoAssignAgent: boolean = that.autoAssignAgent ?? ab.links.personality.tags.abAutoAssignAgentToTodo ?? true; // Automatically assign the todo to agents. Callers doing tag post-processing (userAsk, userRequest) pass false and handle it themselves.
 
 const todoPlanId = uuid();
 const todoDir = { x: 0, y: 1, z: 0 };
@@ -129,6 +130,10 @@ for (let i = 0; i < todos.length; i++) {
 if (autoFocus && firstTodoBot) {
     await os.focusOn(firstTodoBot, { duration: firstTodoBot.tags.todoFocusDuration });
     whisper(firstTodoBot, 'abPatchTodoMenuOpen');
+}
+
+if (autoAssignAgent && firstTodoBot) {
+    whisper(firstTodoBot, 'onAssignAgentsClick');
 }
 
 if (returnType === 'bots') {

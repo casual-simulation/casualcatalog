@@ -60,6 +60,7 @@ const questionTodos = await thisBot.abAskToolMakeTodos({
     // Defer auto-focus until isUserAskTodo + userAskData are set below — otherwise the menu
     // would briefly open in the wrong (build) mode.
     autoFocus: false,
+    autoAssignAgent: false, // These todos are not meant to be processed by agents.
 }) ?? [];
 
 for (let i = 0; i < questionTodos.length; i++) {

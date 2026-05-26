@@ -8,10 +8,10 @@ const book = {
     form: 'mesh',
     formSubtype: 'gltf',
     formAddress: formAddress,
-    transformer: getID(thisBot),
     anchorPoint: 'top',
     [tags.dimension]: true,
-    [tags.dimension + 'Z']: -1,
+    [tags.dimension + 'X']: tags[tags.dimension + 'X'],
+    [tags.dimension + 'Y']: tags[tags.dimension + 'Y'],
     scaleMode: 'absolute',
     meshPositioningMode: 'absolute',
     pointable: false,
@@ -19,9 +19,6 @@ const book = {
     abCatalogBookBot: true,
     color: abPersonality?.tags?.abBaseColor ?? '#00D9CD',
     baseBotId: getID(thisBot),
-    scaleZ: .9,
-    scaleX: .5,
-    scaleY: .33,
     onFormAnimationFinished: ListenerString(() => {
         const baseBot = getBot('id', tags.baseBotId);
         if (!baseBot || baseBot.tags.hasCustomMesh) {

@@ -8,7 +8,7 @@ const menuOptions: any = {
 };
 
 menuOptions.menuItems.push({
-    label: tags.todoLabel ?? tags.prompt ?? 'Approve plan',
+    label: tags.todoLabel ?? tags.prompt ?? 'Review plan',
     menuItemType: 'button',
     formAddress: 'verified',
     menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
@@ -16,19 +16,19 @@ menuOptions.menuItems.push({
 });
 
 menuOptions.menuItems.push({
-    label: 'approve plan',
+    label: 'approve',
     formAddress: 'done',
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUserApprovalApproveClick'); }),
 });
 
 menuOptions.menuItems.push({
-    label: 'undo plan',
+    label: 'undo',
     formAddress: 'undo',
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUserApprovalUndoClick'); }),
 });
 
 menuOptions.menuItems.push({
-    label: 'restart plan',
+    label: 'restart',
     formAddress: 'replay',
     onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUserApprovalRestartClick'); }),
 });

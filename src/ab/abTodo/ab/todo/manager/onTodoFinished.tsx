@@ -16,15 +16,26 @@ if (agentBot) {
 const finishedTodo = that?.todoId ? getBot('id', that.todoId) : null;
 const planId = finishedTodo?.tags.todoPlanId;
 
-const isBuildPlanCandidate =
+const isApprovalCandidate =
     finishedTodo &&
     planId &&
     !finishedTodo.tags.isUserAskTodo &&
-    !finishedTodo.tags.isUserApprovalTodo &&
-    finishedTodo.tags.agentMode === 'build';
+    !finishedTodo.tags.isUserApprovalTodo;
+
+const isBuildPlanCandidate = isApprovalCandidate && finishedTodo.tags.agentMode === 'build';
+
+// Plan-mode user request todos that complete without ever spawning child todos (e.g. a
+// simple chat-only response that ends in `completeTodo`) need their own approval so the
+// user can move them to the log dimension. If the agent created build descendants, those
+// will spawn the approval themselves when their plan finishes.
+const isPlanModeUserRequestCandidate =
+    isApprovalCandidate &&
+    finishedTodo.tags.agentMode === 'plan' &&
+    !getBot(b => b.tags.abPatchTodoInstance && b.tags.todoParentId === finishedTodo.id);
 
 let buildPlanCompleted = false;
-if (isBuildPlanCandidate) {
+let userRequestPlanCompleted = false;
+if (isBuildPlanCandidate || isPlanModeUserRequestCandidate) {
     const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === planId)
         .sort((a, b) => (a.tags.todoOrder ?? 0) - (b.tags.todoOrder ?? 0));
 
@@ -34,7 +45,9 @@ if (isBuildPlanCandidate) {
     const isLastTodo = planTodos.at(-1)?.id === finishedTodo.id;
     const approvalExists = !!getBot(b => b.tags.isUserApprovalTodo && b.tags.todoApprovalForPlanId === planId);
 
-    buildPlanCompleted = planFinished && isLastTodo && !approvalExists;
+    const planReadyForApproval = planFinished && isLastTodo && !approvalExists;
+    buildPlanCompleted = isBuildPlanCandidate && planReadyForApproval;
+    userRequestPlanCompleted = isPlanModeUserRequestCandidate && planReadyForApproval;
 }
 
 // Tell listeners whether this completion also ends a build plan, so the per-todo chime can
@@ -43,5 +56,7 @@ ab.links.utils.remoteShout({ name: 'onAnyTodoFinished', arg: { ...that, buildPla
 
 if (buildPlanCompleted) {
     ab.links.utils.remoteShout({ name: 'onAnyABBuildPlanCompleted', arg: { todoId: finishedTodo.id, planId } });
+    whisper(finishedTodo, 'spawnUserApprovalTodo');
+} else if (userRequestPlanCompleted) {
     whisper(finishedTodo, 'spawnUserApprovalTodo');
 }

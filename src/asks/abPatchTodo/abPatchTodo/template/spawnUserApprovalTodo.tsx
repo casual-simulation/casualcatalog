@@ -7,7 +7,7 @@ const lastX = tags[dimension + 'X'] ?? 0;
 const lastY = tags[dimension + 'Y'] ?? 0;
 
 const shardBots = await ab.links.ask.abAskToolMakeTodos({
-    args: { todos: [{ prompt: 'Approve, undo, or restart this plan?', label: 'Plan complete — review' }] },
+    args: { todos: [{ prompt: 'Approve, undo, or restart this plan?', label: 'Ask complete' }] },
     askContext: {
         abDimension: dimension,
         abPosition: { x: lastX, y: lastY },

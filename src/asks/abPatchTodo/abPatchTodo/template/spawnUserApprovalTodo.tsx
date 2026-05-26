@@ -31,6 +31,7 @@ const abArtifactShard: ABArtifactShard = {
         todoPlanId: approvalPlanId,
         todoOrder: 0,
         todoParentId: parentTodoId,
+        todoBaseColor: ab.links.personality.tags.abBaseColor,
         eggParameters: {
             gridInformation: {
                 dimension,

@@ -16,7 +16,7 @@ const autoAssignAgent: boolean = that.autoAssignAgent ?? ab.links.personality.ta
 
 const todoPlanId = uuid();
 const todoDir = { x: 0, y: 1, z: 0 };
-const todoSpacing = 2;
+const todoSpacing = tags.todoSpacing ?? 2;
 
 let todoParentId;
 

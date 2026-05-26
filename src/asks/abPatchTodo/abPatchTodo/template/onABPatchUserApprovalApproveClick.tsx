@@ -5,6 +5,8 @@ if (tags.todoApproved) {
     return;
 }
 
+setTag(thisBot, 'todoShowArrow', false);
+
 const chain = thisBot.abCollectApprovalChain();
 if (!chain || chain.plans.length === 0) {
     destroy(thisBot);
@@ -31,6 +33,8 @@ const allTodos = thisBot.abExpandToDescendantTodos({ todos: chain.allTodos });
 // Archive the approval bot itself alongside the plan todos and stash ab's conversation
 // history on it so the user can revisit this conversation later from the log dimension.
 allTodos.push(thisBot);
+setTag(thisBot, 'abTodoComplete', true);
+setTag(thisBot, 'animationState', 'complete');
 const historyStorageBot = ab.links.remember;
 const archivedHistory = ab.links.ask.abConversationHistoryGet({ historyStorageBot });
 setTag(thisBot, 'abConversationHistory', archivedHistory);

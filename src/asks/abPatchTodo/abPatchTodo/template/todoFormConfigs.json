@@ -19,13 +19,13 @@
         "animInMap": {
             "incomplete": "plan_in",
             "processing": "processing_in",
-            "complete": "complete_in",
+            "complete": "green_plan_in",
             "error": "error_in"
         },
         "animStaticMap": {
             "incomplete": "plan_static",
             "processing": "processing_loop",
-            "complete": "complete_static",
+            "complete": "green_plan_static",
             "error": "error_static"
         }
     },

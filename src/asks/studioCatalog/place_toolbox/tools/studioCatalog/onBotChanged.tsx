@@ -2,6 +2,8 @@ if (that.tags.includes("color") && tags.color != 'clear') {
     if (links.defaultVisualBot) {
         links.defaultVisualBot.tags.color = tags.color;
     }
+
+    tags.labelFloatingBackgroundColor = tags.color;
     tags.color = 'clear';
 }
 
@@ -35,5 +37,13 @@ if (that.tags.includes("selected")) {
                 thisBot.onPointerEnter();
             }
         }
+    }
+}
+
+if (that.tags.includes("currentFormAnimation")) {
+    if (tags.currentFormAnimation == 'closed') {
+        tags.soundDrop = '/asks/audio-assets/popup_appear.wav'
+    } else {
+        tags.soundDrop = '/asks/audio-assets/drop_block_in_place_03.mp3'
     }
 }

@@ -15,7 +15,9 @@ Keep descriptions concise — bullet points and short phrases only. Only include
 
 Create a model for each distinct physical entity (person, location, asset, machine). Do not create models for metrics, derived values, or abstract concepts — those are stats on a parent model.
 
-The **name** is each model's unique identifier and is required. Every model must have a distinct name — even similar entities of the same type must be named individually (e.g. "Barista 1" and "Barista 2", not just "Barista"). Never reuse a name.
+Every model and timeline marker must have a unique **modelID** — this is the primary identifier used to access it via `getBot("modelID", <value>)`. modelIDs should be short, lowercase, and hyphenated (e.g. `coffee-shop`, `barista-1`, `barista-2`). Never reuse a modelID.
+
+The **label** field is optional and human-readable — use it when a visible name adds value. Similar entities of the same type should still be individually labelled if labels are used (e.g. "Barista 1" and "Barista 2").
 
 ---
 
@@ -114,16 +116,16 @@ Place 3–5 markers. Do not place one at step 0. Steps meaningfully spread acros
 
 **Plan:** timeUnit: minute
 
-**Pond** — (20, 0). The model bot is the floor/surface of the pond. Tracks duck_count. No lifecycle.
+**Pond** — modelID: `pond`, (20, 0). The model bot is the floor/surface of the pond. Tracks duck_count. No lifecycle.
 
-**Duck 1** — beside Pond at (27, 0). Lifecycle: alive → aging → elderly → dead. max_age: 200, thresholds: 120, 160. spawn_tick: 0. Terminal: hide. Wanders near Pond. Mates with Duck 2 — maturity 15%, cooldown 40, proximity 1.5m.
+**Duck 1** — modelID: `duck-1`, beside Pond at (27, 0). Lifecycle: alive → aging → elderly → dead. max_age: 200, thresholds: 120, 160. spawn_tick: 0. Terminal: hide. Wanders near Pond. Mates with duck-2 — maturity 15%, cooldown 40, proximity 1.5m.
 - lifecyclealiveOnEnter: restore visibility, color white
 - lifecycleagingOnEnter: color #c8a882
 - lifecycleelderlyOnEnter: color #a0a0a0
 - lifecycledeadOnEnter: hide
 - onDeltaOverwrite: lifecycle transitions, wander, mating check, reset on scrub back
 
-**Duck 2** — beside Pond at (29, 0). Same lifecycle and reactive behavior as Duck 1. spawn_tick: -30. Mates with Duck 1.
+**Duck 2** — modelID: `duck-2`, beside Pond at (29, 0). Same lifecycle and reactive behavior as Duck 1. spawn_tick: -30. Mates with duck-1.
 
 **Timeline manager** — from catalog, position (-3, -20).
 

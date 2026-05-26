@@ -52,6 +52,7 @@ for (const item of parsedJsonData) {
                         label: item.steps[j].timeUnit + ' ' + item.steps[j].step,
                         timeUnit: item.steps[j].timeUnit,
                         timeValue: item.steps[j].step,
+                        modelID: item.steps[j].modelID,
                         markerLocked: true,
                         dimensionData: {
                             dimension: dimensionName,

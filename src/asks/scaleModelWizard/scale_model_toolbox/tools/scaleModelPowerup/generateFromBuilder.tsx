@@ -44,6 +44,7 @@ if (parsedJsonData["type"]) {
                     modelStates: parsedJsonData.states,
                     modelListeners: parsedJsonData.listeners,
                     modelLocked: true,
+                    modelID: parsedJsonData.modelID,
                     form: parsedJsonData.form,
                     dimensionData: {
                         dimension: dimensionName,

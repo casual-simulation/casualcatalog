@@ -78,12 +78,14 @@ function buildUserMessage(message?: string, extra: Record<string, any> = {}): st
 }
 
 if (callDepth === 0 && hasInquiry && agentMode === 'plan' && !todoBot) {
-    await thisBot.abAskHelperCreateUserRequestTodo({ askContext });
+    const createdTodo = await thisBot.abAskHelperCreateUserRequestTodo({ askContext });
 
-    const agentName = thisBot.abAskHelperGetAgentName({ askContext });
-    const agentAvatar = thisBot.abAskHelperGetAgentAvatar({ askContext });
-    const username = await ab.links.console.getUserName();
-    ab.links.utils.abLog({ name: agentName, avatar: agentAvatar, message: `${username} created a user request todo for "${originalUserInquiryLabel}"`, space: 'shared' });
+    if (createdTodo) {
+        const agentName = thisBot.abAskHelperGetAgentName({ askContext });
+        const agentAvatar = thisBot.abAskHelperGetAgentAvatar({ askContext });
+        const username = await ab.links.console.getUserName();
+        ab.links.utils.abLog({ name: agentName, avatar: agentAvatar, message: `${username} created a user request todo for "${originalUserInquiryLabel}"`, space: 'shared' });
+    }
 
     return;
 }

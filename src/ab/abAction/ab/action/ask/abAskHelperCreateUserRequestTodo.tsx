@@ -3,6 +3,35 @@ const inquiry = askContext.originalUserInquiry;
 const inquiryLabel = askContext.originalUserInquiryLabel;
 const attachments = askContext.attachments ?? [];
 
+// Block new requests while prior work is still pending — approvals waiting on the user, or
+// any todos still in progress. Surface the right next action depending on which is blocking.
+const pendingTodos = getBots(b => b.tags.abPatchTodoInstance && !b.tags.todoApproved);
+
+if (pendingTodos.length > 0) {
+    const name = thisBot.abAskHelperGetAgentName({ askContext });
+    const avatar = thisBot.abAskHelperGetAgentAvatar({ askContext });
+
+    const approvalTodo = pendingTodos.find(b => b.tags.isUserApprovalTodo);
+    if (approvalTodo) {
+        await os.focusOn(approvalTodo, { duration: approvalTodo.tags.todoFocusDuration });
+        whisper(approvalTodo, 'abPatchTodoMenuOpen');
+        ab.links.utils.abLog({
+            name,
+            avatar,
+            message: `Please approve, undo, or restart the pending ask before making a new request.`,
+            space: 'shared',
+        });
+    } else {
+        ab.links.utils.abLog({
+            name,
+            avatar,
+            message: `There ${pendingTodos.length === 1 ? 'is' : 'are'} still ${pendingTodos.length} todo${pendingTodos.length === 1 ? '' : 's'} in progress. Wait for the current work to finish (or cancel it) before making a new request.`,
+            space: 'shared',
+        });
+    }
+    return null;
+}
+
 const [userRequestTodo] = await thisBot.abAskToolMakeTodos({
     args: { todos: [{ prompt: inquiry, label: inquiryLabel, budget_credits: 100000, attachments }] },
     askContext,
@@ -19,6 +48,8 @@ if (userRequestTodo) {
         // Automatically assign the todo to agents.
         whisper(userRequestTodo, 'onAssignAgentsClick');
     }
-    
+
     shout('onABUserRequestTodoCreated', { todoBot: userRequestTodo });
 }
+
+return userRequestTodo ?? null;

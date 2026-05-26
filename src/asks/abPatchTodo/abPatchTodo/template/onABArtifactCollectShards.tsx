@@ -18,6 +18,7 @@ const shard: ABArtifactShard = {
         isUserAskTodo: tags.isUserAskTodo,
         isUserApprovalTodo: tags.isUserApprovalTodo,
         todoApprovalForPlanId: tags.todoApprovalForPlanId,
+        abConversationHistory: tags.abConversationHistory,
         todoShowArrow: tags.todoShowArrow,
         focusMenuType: tags.focusMenuType,
         focusMenuActionData: tags.focusMenuActionData,

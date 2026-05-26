@@ -23,6 +23,7 @@ tags.todoBaseColor = data.todoBaseColor;
 tags.isUserAskTodo = data.isUserAskTodo;
 tags.isUserApprovalTodo = data.isUserApprovalTodo;
 tags.todoApprovalForPlanId = data.todoApprovalForPlanId;
+tags.abConversationHistory = data.abConversationHistory;
 tags.todoShowArrow = data.todoShowArrow;
 tags.focusMenuType = data.focusMenuType;
 tags.focusMenuActionData = data.focusMenuActionData;

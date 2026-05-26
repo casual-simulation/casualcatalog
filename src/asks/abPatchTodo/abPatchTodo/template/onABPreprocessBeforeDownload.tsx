@@ -44,6 +44,7 @@ if (sourceEvent === 'download_artifact_pattern') {
     delete thisBotData.tags.isUserAskTodo;
     delete thisBotData.tags.isUserApprovalTodo;
     delete thisBotData.tags.todoApprovalForPlanId;
+    delete thisBotData.tags.abConversationHistory;
 
     thisBotData.tags.form = 'nothing';
     thisBotData.tags.system = 'abPatchTodo.template';

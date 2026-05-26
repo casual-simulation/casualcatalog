@@ -71,7 +71,7 @@ ab.links.utils.abLog({
 
 // Clear ab's conversation history now that it has been archived on this approval bot —
 // the next user request starts with a fresh slate.
-ab.links.ask.abConversationHistoryClear({ historyStorageBot });
+ab.links.ask.abConversationHistoryClear({ historyStorageBot, log: false });
 
 if (ab.links.manifestation.tags.abAwake && topmostManifestTarget) {
     const newAbBot = await ab.links.manifestation.abManifestBot(topmostManifestTarget);

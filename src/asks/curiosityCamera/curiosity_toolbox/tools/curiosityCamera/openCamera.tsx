@@ -38,7 +38,10 @@ try {
 
     let str = "";
     for await (let message of response) {
-        str += message.content;
+
+        if(message.content && message.content != undefined && message.content != "undefined"){
+            str += message.content;
+        }
     }
 
     tags.discoverableURL = str;

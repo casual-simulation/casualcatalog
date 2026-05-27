@@ -6,11 +6,6 @@
         "artifact": true
     },
     {
-        "name": "studio",
-        "studio": "AB",
-        "targetAB": "studioWizard"
-    },
-    {
         "name": "catalog",
         "studio": "AB",
         "targetAB": "studioCatalog",

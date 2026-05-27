@@ -24,16 +24,9 @@ const abArtifactShard = {
         'instURL': newURL.href,
         'studioSetting': that.id,
         'label': that.label,
-        'form': 'sphere',
-        'formAddress': catalogAddress,
-        'color': 'white',
-        'scale': 4,
         eggParameters: {
             gridInformation: tags.gridInformation
         },
-        dimensionData: {
-            [tags.gridInformation?.dimension + 'RotationX']: 1.57
-        }
     },
     dependencies: [
         {

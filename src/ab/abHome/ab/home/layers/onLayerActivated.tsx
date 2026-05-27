@@ -12,3 +12,5 @@ if (!tags.activeInsts.includes(that)) {
 
     thisBot.updateLayersMenuDropdown();
 }
+
+superShout("getLayerLoadStudio", os.getCurrentInst());

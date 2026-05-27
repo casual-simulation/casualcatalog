@@ -20,7 +20,7 @@ try {
     for (var i = 0; i < discoverablesArr.length; i++) {
         arrayString+=("{ Name: "+ discoverablesArr[i].Name + ", Description: " + discoverablesArr[i].Description + ", Link: '" + discoverablesArr[i].GRPMUrl +"'} ")
     }
-    const response = await ai.chat({
+    const response = await ai.stream.chat({
             role: 'user',
             content: [
                 {
@@ -36,7 +36,15 @@ try {
             preferredModel: chosenAIModel
     });
 
-    tags.discoverableURL = response.content;
+    let str = "";
+    for await (let message of response) {
+
+        if(message.content && message.content != undefined && message.content != "undefined"){
+            str += message.content;
+        }
+    }
+
+    tags.discoverableURL = str;
 
     destroy(loadingBar);
     thisBot.openApp();

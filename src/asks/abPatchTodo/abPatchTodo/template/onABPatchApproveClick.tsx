@@ -1,8 +1,16 @@
 shout('abPatchTodoMenuReset');
 shout('onAnyABPatchApprove', { botId: thisBot.id });
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] approve clicked on ${thisBot.id} (planId=${tags.todoPlanId})`);
+}
+
 const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
 const allTodos = thisBot.abExpandToDescendantTodos({ todos: planTodos });
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] approving ${allTodos.length} todo(s) — moving to log dimension`);
+}
 
 if (allTodos.length > 0) {
     for (const todo of allTodos) {

@@ -1,8 +1,15 @@
 if (!tags.abPatchApplied || tags.abPatchApplying) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] skipping — applied=${!!tags.abPatchApplied} applying=${!!tags.abPatchApplying}`);
+    }
     return;
 }
 
 const abPatchResults: ABPatchResult[] = tags.abPatchResults;
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] undoing patch on ${thisBot.id} (planId=${tags.todoPlanId}) — ${abPatchResults?.length ?? 0} result(s)`);
+}
 
 if (abPatchResults && abPatchResults.length > 0) {
     for (let result of abPatchResults) {
@@ -11,9 +18,15 @@ if (abPatchResults && abPatchResults.length > 0) {
         if (patchedBot) {
             if (result.created) {
                 // This patch created the bot, to undo it we destroy it.
+                if (tags.debug) {
+                    console.log(`[${tags.system}.${tagName}] destroying created bot ${patchedBot.id}`);
+                }
                 destroy(patchedBot);
             } else if (result.rollbackDiff) {
                 // This patch modified the bot, to undo it we apply all the the tags and masks in the rollback diff to the bot.
+                if (tags.debug) {
+                    console.log(`[${tags.system}.${tagName}] rolling back tags on bot ${patchedBot.id}`);
+                }
                 const rollbackBotData = result.rollbackDiff[patchedBot.id];
                 const rollbackTags = rollbackBotData.tags;
                 const rollbackMasks = rollbackBotData.masks;

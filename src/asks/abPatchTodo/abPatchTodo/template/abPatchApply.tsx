@@ -1,9 +1,15 @@
 if (tags.abPatchApplied || tags.abPatchApplying) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] skipping — applied=${!!tags.abPatchApplied} applying=${!!tags.abPatchApplying}`);
+    }
     return;
 }
 
 if (typeof thisBot.abPatchCode === 'function') {
     try {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] applying patch on ${thisBot.id} (planId=${tags.todoPlanId})`);
+        }
         tags.abPatchApplying = true;
         const abPatchResults: ABPatchResult[] = await thisBot.abPatchCode();
 
@@ -36,6 +42,9 @@ if (typeof thisBot.abPatchCode === 'function') {
     } catch (e) {
         tags.animationState = 'error';
         const errorMessage = `Something went wrong applying patch — ${ab.links.utils.getErrorMessage(e)}`;
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] patch threw on ${thisBot.id}: ${errorMessage}`);
+        }
         ab.links.utils.abLogAndToast({ name: tags.patchLabel, message: errorMessage, logType: 'error', space: 'shared' });
         tags.abPatchError = errorMessage;
     } finally {
@@ -43,11 +52,14 @@ if (typeof thisBot.abPatchCode === 'function') {
 
         if (!tags.abPatchResults || !tags.abPatchApplied) {
             // If patch is not applied or results are not successfully recorded, then we mark this patch as invalid.
+            if (tags.debug) {
+                console.log(`[${tags.system}.${tagName}] marking patch invalid on ${thisBot.id}`);
+            }
             tags.abPatchInvalid = true;
 
             tags.animationState = 'error';
 
-            shout('onAnyABPatchFailed', { 
+            shout('onAnyABPatchFailed', {
                 botId: thisBot.id,
                 abPatchCode: tags.abPatchCode
             });

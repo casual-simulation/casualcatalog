@@ -1,9 +1,20 @@
 shout('abPatchTodoMenuReset');
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] approval-restart clicked on ${thisBot.id} (approvalForPlanId=${tags.todoApprovalForPlanId})`);
+}
+
 const chain = thisBot.abCollectApprovalChain();
 if (!chain || chain.plans.length === 0) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] no chain found — destroying self`);
+    }
     destroy(thisBot);
     return;
+}
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] chain spans ${chain.plans.length} plan(s) — topmost=${chain.topmostTodo?.id}`);
 }
 
 const topmost = chain.topmostTodo;

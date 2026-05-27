@@ -1,7 +1,14 @@
 shout('abPatchTodoMenuReset');
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] approval-approve clicked on ${thisBot.id} (approvalForPlanId=${tags.todoApprovalForPlanId})`);
+}
+
 // Already-approved approval bots in the log dimension shouldn't re-run the flow if clicked.
 if (tags.todoApproved) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] already approved — skipping`);
+    }
     return;
 }
 
@@ -9,8 +16,15 @@ setTag(thisBot, 'todoShowArrow', false);
 
 const chain = thisBot.abCollectApprovalChain();
 if (!chain || chain.plans.length === 0) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] no chain found — destroying self`);
+    }
     destroy(thisBot);
     return;
+}
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] chain spans ${chain.plans.length} plan(s): [${chain.plans.map(p => p.planId).join(', ')}]`);
 }
 
 // Capture the topmost todo's location before the approval loop moves it to the log dimension.

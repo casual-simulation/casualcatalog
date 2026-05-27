@@ -21,5 +21,10 @@ const descendants = thisBot.abExpandToDescendantTodos({ todos: planTodos });
 // abExpandToDescendantTodos seeds with the input and walks via todoParentId. Strip the seed
 // plan's own todos — those are evaluated by the caller's existing planFinished check.
 const externalDescendants = descendants.filter(b => !planTodoIds.has(b.id));
+const pending = externalDescendants.filter(b => !b.tags.abTodoComplete && !b.tags.abPatchError);
 
-return externalDescendants.some(b => !b.tags.abTodoComplete && !b.tags.abPatchError);
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] plan ${planId}: ${externalDescendants.length} external descendant(s), ${pending.length} still pending` + (pending.length > 0 ? ` — [${pending.map(b => b.id).join(', ')}]` : ''));
+}
+
+return pending.length > 0;

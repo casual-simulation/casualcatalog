@@ -2,6 +2,10 @@
 // The approval todo has its own todoPlanId (a single-bot plan) and points its
 // todoParentId at this bot so refreshConnections draws a connection line back.
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] spawning approval for plan ${tags.todoPlanId} from todo ${thisBot.id}`);
+}
+
 const dimension = tags.dimension ?? 'home';
 const lastX = tags[dimension + 'X'] ?? 0;
 const lastY = tags[dimension + 'Y'] ?? 0;
@@ -18,8 +22,17 @@ const shardBots = await ab.links.ask.abAskToolMakeTodos({
 }) ?? [];
 
 const approvalBot = shardBots.find(b => b.tags.abPatchTodoInstance);
-if (!approvalBot) return;
+if (!approvalBot) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] approval spawn returned no patch-todo instance — aborting`);
+    }
+    return;
+}
 
 setTag(approvalBot, 'isUserApprovalTodo', true);
 setTag(approvalBot, 'todoApprovalForPlanId', tags.todoPlanId);
 setTag(approvalBot, 'todoReadyForAgent', false);
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] spawned approval bot ${approvalBot.id} for plan ${tags.todoPlanId}`);
+}

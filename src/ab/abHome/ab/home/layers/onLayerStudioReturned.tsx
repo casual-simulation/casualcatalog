@@ -1,5 +1,3 @@
-os.toast(`onLayerStudioReturned, ${os.getCurrentInst()}, ${that}`);
-
 if (os.getCurrentInst() != that.inst) {
     return;
 }

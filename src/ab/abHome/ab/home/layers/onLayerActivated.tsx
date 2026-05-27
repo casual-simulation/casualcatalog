@@ -1,5 +1,3 @@
-os.toast(`onLayerActivated, ${JSON.stringify(that)}, ${os.getCurrentInst()}, ${links.learn.abIsPrimary()}`);
-
 if (links.learn.abIsPrimary()) {
     if (!tags.activeInsts) {
         setTagMask(thisBot, "activeInsts", []);

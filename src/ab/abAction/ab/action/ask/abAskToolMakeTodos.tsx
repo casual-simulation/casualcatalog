@@ -108,7 +108,11 @@ for (let i = 0; i < todos.length; i++) {
                         z: computedPosition.z,
                     }
                 }
-            }
+            },
+            // Bake any caller-supplied extra fields into the shard so reconstitute sees them
+            // before initialize runs — avoids a refreshForm race when (for example)
+            // spawnUserApprovalTodo needs the bot to come up already marked as an approval.
+            ...(todo.extraShardData ?? {}),
         },
         dependencies: [{ askID: 'abPatchTodo' }]
     };

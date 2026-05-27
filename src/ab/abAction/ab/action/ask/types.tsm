@@ -260,4 +260,11 @@ interface ABTodoParameters {
 
     /** Files attached to this todo. Forwarded to the agent's askGPT call so the model receives them with the prompt. */
     attachments?: ABAttachment[];
+
+    /**
+     * Optional extra fields merged into the artifact shard data. Use this when the caller
+     * needs the spawned todo bot to come up with specific tags already set (e.g. `isUserApprovalTodo`
+     * for approval bots), avoiding races between initialize-time refreshForm and post-spawn setTag.
+     */
+    extraShardData?: Record<string, any>;
 }

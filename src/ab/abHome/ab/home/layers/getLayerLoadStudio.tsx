@@ -1,4 +1,4 @@
-superShout("superLog", `getLayerLoadStudio, ${tags.currLayerStudio}, ${os.getCurrentInst()}, ${that}`);
+os.toast(`getLayerLoadStudio, ${tags.currLayerStudio}, ${os.getCurrentInst()}, ${that}`);
 
 if (!links.learn.abIsPrimary()) {
     return;

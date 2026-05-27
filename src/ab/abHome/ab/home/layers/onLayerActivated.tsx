@@ -12,3 +12,6 @@ if (!tags.activeInsts.includes(that)) {
 
     thisBot.updateLayersMenuDropdown();
 }
+
+const studioId = await superShout("getLayerLoadStudio");
+await ab.links.search.onLookupABEggs({ recordKey: studioId, abID: "home", autoHatch: true, sourceEvent: 'ask', });

@@ -31,14 +31,8 @@ if (instLoaded) {
 else {
     console.log("loading", instName)
 
-    configBot.tags.ask = null;
-
     await os.loadInst({
         inst: instName,
         owner: 'public'
     });
-
-    await superShout("sideloadEgg", {ask: 'home', inst: instName, record: that.studioId});
-
-    configBot.tags.ask = 'home';
 }

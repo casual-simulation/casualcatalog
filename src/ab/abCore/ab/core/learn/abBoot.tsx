@@ -124,6 +124,8 @@ else if (channel && links.remember.tags.allowChannels) {
     if (initialBoot && ask) {
         if (ask == "eggCarton" || ask == "casualTutorial") {
             await thisBot.abAdapt(ask);
+        } else if (ask == "home" && !thisBot.abIsPrimary()) {
+            //do nothing
         }
         else {
             await thisBot.abAdapt("abAction");

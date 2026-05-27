@@ -1,6 +1,7 @@
 [
     {
         "name": "blank bot",
-        "targetAB": "blankBot"
+        "targetAB": "blankBot",
+        "formAddress": "cube"
     }
 ]

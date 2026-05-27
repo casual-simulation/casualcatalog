@@ -5,4 +5,4 @@ if (!links.learn.abIsPrimary()) {
 const studioId = tags.currLayerStudio;
 masks.currLayerStudio = null;
 
-return studioId;
+superShout("onLayerStudioReturned", {studioId: studioId, inst: that});

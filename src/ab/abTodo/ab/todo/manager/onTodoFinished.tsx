@@ -70,7 +70,13 @@ if (buildPlanCompleted) {
 // descendants and no existing approval, spawn its approval now. Only build-plan ancestors
 // matter here: plan-mode user request todos with descendants (which any ancestor of ours has,
 // by definition) never spawn their own approval — the descendant build plans cover them.
-if (finishedTodo) {
+//
+// Skip the walk entirely when we just whispered a spawn at the immediate plan. That spawn is
+// async (it awaits abAskToolMakeTodos), so the descendant approval bot doesn't exist yet —
+// the walk would race past spawnUserApprovalTodo's superseding-approval check and spawn a
+// redundant ancestor approval. The descendant approval's abCollectApprovalChain walks up to
+// the root anyway, so all ancestors are covered by that single deepest spawn.
+if (finishedTodo && !buildPlanCompleted && !userRequestPlanCompleted) {
     const seenPlans = new Set<string>([planId]);
     const seedPlanTodos = getBots(b =>
         b.tags.abPatchTodoInstance &&

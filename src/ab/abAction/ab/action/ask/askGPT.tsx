@@ -136,7 +136,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     // Fresh start — include catalog so agents can reason about available tools immediately.
     // abAskToolGetCatalog auto-spawns a user-studio catalog when the grid is empty, so this
     // may block briefly on artifact reconstitution on the very first turn.
-    const catalog = await thisBot.abAskToolGetCatalog();
+    const catalog = await thisBot.abAskToolGetCatalog({ askContext });
     aiChatMessages = [
         { role: 'system', content: [{ text: tags.prompt_system }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },

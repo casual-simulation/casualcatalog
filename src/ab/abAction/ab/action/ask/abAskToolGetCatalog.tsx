@@ -1,3 +1,5 @@
+const askContext: ABAskContext | undefined = that?.askContext;
+
 const catalogArr = [];
 
 // Ensure at least one studioCatalog exists in the grid. If none, auto-spawn
@@ -47,6 +49,20 @@ if (studioCatalogs.length === 0) {
                     },
                     dependencies: [{ askID: 'studioCatalog' }],
                 },
+            });
+
+            const name = askContext
+                ? thisBot.abAskHelperGetAgentName({ askContext })
+                : ab.links.personality.tags.abBuilderIdentity;
+            const avatar = askContext
+                ? thisBot.abAskHelperGetAgentAvatar({ askContext })
+                : undefined;
+
+            ab.links.utils.abLog({
+                name,
+                avatar,
+                message: `No studio catalog was loaded — spawned a user studio catalog.`,
+                space: 'shared',
             });
         } catch (e) {
             console.error(`[${tags.system}.${tagName}] failed to auto-spawn studioCatalog. Error:`, ab.links.utils.getErrorMessage(e));

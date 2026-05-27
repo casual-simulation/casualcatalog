@@ -63,7 +63,7 @@ if (type === 'kit') {
 
         shout("abMenuRefresh");
 
-        const catalogResult = await thisBot.abAskToolGetCatalog();
+        const catalogResult = await thisBot.abAskToolGetCatalog({ askContext: that?.askContext });
         return { success: true, type, id, alreadyLoaded: loadResult?.alreadyLoaded ?? false, catalog: catalogResult };
     } catch (e) {
         const errorMessage = ab.links.utils.getErrorMessage(e);

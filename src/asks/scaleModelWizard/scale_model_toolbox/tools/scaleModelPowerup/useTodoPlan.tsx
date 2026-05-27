@@ -11,4 +11,4 @@ const params: ABAskGPTParameters = {
     abPosition: { x: tags.homeX ?? 0, y: tags.homeY ?? 0 },
 };
 
-ab.links.ask.askGPT(params);
+await ab.links.ask.askGPT(params);

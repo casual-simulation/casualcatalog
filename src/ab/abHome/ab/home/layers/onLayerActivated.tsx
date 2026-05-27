@@ -1,4 +1,5 @@
 if (!links.learn.abIsPrimary()) {
+    superShout("getLayerLoadStudio", os.getCurrentInst());
     return;
 }
 
@@ -12,5 +13,3 @@ if (!tags.activeInsts.includes(that)) {
 
     thisBot.updateLayersMenuDropdown();
 }
-
-superShout("getLayerLoadStudio", os.getCurrentInst());

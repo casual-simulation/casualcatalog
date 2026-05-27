@@ -67,6 +67,22 @@ if (!approvalBot) {
 
 setTag(approvalBot, 'todoReadyForAgent', false);
 
+// Archive ab's conversation history onto the approval bot and clear it now (at creation),
+// not on user approve-click. The cleared history lets the next todo the manager assigns —
+// often a descendant plan todo spawned by an agent tool like scaleModelWizard's
+// useTodoPlan — start with a fresh storedHistory instead of inheriting the parent's
+// completed conversation (which makes the AI think the task is already done and short-
+// circuit with `completeTodo`).
+const historyStorageBot = ab.links.remember;
+if (historyStorageBot) {
+    const archivedHistory = ab.links.ask.abConversationHistoryGet({ historyStorageBot });
+    setTag(approvalBot, 'abConversationHistory', archivedHistory);
+    ab.links.ask.abConversationHistoryClear({ historyStorageBot, log: false });
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] archived ${archivedHistory?.length ?? 0} message(s) onto approval bot ${approvalBot.id} and cleared ab conversation history`);
+    }
+}
+
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] spawned approval bot ${approvalBot.id} for plan ${tags.todoPlanId}`);
 }

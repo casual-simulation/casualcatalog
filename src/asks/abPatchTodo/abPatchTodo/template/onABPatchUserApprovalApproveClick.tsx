@@ -44,14 +44,10 @@ if (chain.topmostTodo) {
 
 const allTodos = thisBot.abExpandToDescendantTodos({ todos: chain.allTodos });
 
-// Archive the approval bot itself alongside the plan todos and stash ab's conversation
-// history on it so the user can revisit this conversation later from the log dimension.
+// Archive the approval bot itself alongside the plan todos.
 allTodos.push(thisBot);
 setTag(thisBot, 'abTodoComplete', true);
 setTag(thisBot, 'animationState', 'complete');
-const historyStorageBot = ab.links.remember;
-const archivedHistory = ab.links.ask.abConversationHistoryGet({ historyStorageBot });
-setTag(thisBot, 'abConversationHistory', archivedHistory);
 
 for (const todo of allTodos) {
     shout('onAnyABPatchApprove', { botId: todo.id });
@@ -82,10 +78,6 @@ ab.links.utils.abLog({
     message: `Todo plan(s) ${planIds} have been approved by ${username}. Moved todo bots to the "log" dimension.`,
     space: 'shared',
 });
-
-// Clear ab's conversation history now that it has been archived on this approval bot —
-// the next user request starts with a fresh slate.
-ab.links.ask.abConversationHistoryClear({ historyStorageBot, log: false });
 
 if (ab.links.manifestation.tags.abAwake && topmostManifestTarget) {
     const newAbBot = await ab.links.manifestation.abManifestBot(topmostManifestTarget);

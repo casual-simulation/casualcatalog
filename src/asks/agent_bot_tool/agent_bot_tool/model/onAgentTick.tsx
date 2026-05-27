@@ -2,7 +2,22 @@
 
 const { tickIntervalMS, deltaTime } = that ?? {};
 
+const dbg = (msg: string, data?: any) => {
+    if (tags.debug) {
+        if (data !== undefined) {
+            console.log(`[${tags.system}.${tagName}] ${msg}`, data);
+        } else {
+            console.log(`[${tags.system}.${tagName}] ${msg}`);
+        }
+    }
+};
+
 if (!links.todoBot || tags.todoInProgress || masks.moving) {
+    dbg('skip tick', {
+        hasTodoBot: !!links.todoBot,
+        todoInProgress: tags.todoInProgress,
+        moving: masks.moving,
+    });
     return;
 }
 
@@ -11,6 +26,7 @@ if (!links.todoBot || tags.todoInProgress || masks.moving) {
 // onABTodoExecutorChanged and we'd re-fire agentOnRequest, duplicating the questions.
 // The manager triggers the actual resume by re-assigning the todo once the user answers.
 if (links.todoBot.tags.awaitingUserResponse === true) {
+    dbg('skip tick — awaitingUserResponse', { todoBotId: links.todoBot.id });
     return;
 }
 
@@ -28,11 +44,25 @@ const dy = agentY - todoY;
 const dist = Math.sqrt(dx * dx + dy * dy);
 const targetDist = tags.targetDistance ?? 2;
 
+dbg('tick', {
+    tickIntervalMS,
+    deltaTime,
+    todoBotId: todoBot.id,
+    dim,
+    agent: { x: agentX, y: agentY },
+    todo: { x: todoX, y: todoY },
+    dist,
+    targetDist,
+    hasArmBot: !!links.armBot,
+});
+
 if (dist > targetDist) {
     // stepsPerTick = how many tiles to walk this tick at moveSpeed tiles/sec.
     // stepIntervalMS = time to wait between steps so they spread evenly across the tick.
     const stepsPerTick = Math.max(1, Math.round((tags.moveSpeed ?? 2) * tickIntervalMS / 1000));
     const stepIntervalMS = tickIntervalMS / stepsPerTick;
+
+    dbg('moving toward todo', { stepsPerTick, stepIntervalMS });
 
     masks.moving = true;
 
@@ -48,7 +78,10 @@ if (dist > targetDist) {
         const curDy = curY - todoY;
         const curDist = Math.sqrt(curDx * curDx + curDy * curDy);
 
-        if (curDist <= targetDist) break;
+        if (curDist <= targetDist) {
+            dbg('arrived mid-step', { step: i, curDist });
+            break;
+        }
 
         // If right on top of the todo, default to +x side.
         const nx = curDist > 0 ? curDx / curDist : 1;
@@ -64,12 +97,15 @@ if (dist > targetDist) {
     }
 
     masks.moving = false;
-    
+
+    dbg('movement tick complete', { x: tags[dim + 'X'], y: tags[dim + 'Y'] });
+
     return;
 }
 
 //check for arm extended
 if (!links.armBot) {
+    dbg('creating arm', { dim, position: { x: todoX, y: todoY } });
     links.arm_tool.abCreateArm({
         originBot: thisBot,
         dimension: dim,
@@ -84,6 +120,14 @@ if (!links.armBot) {
 }
 
 //work on todo
+dbg('starting agentOnRequest', {
+    todoBotId: todoBot.id,
+    promptPreview: typeof todoBot.tags.prompt === 'string'
+        ? todoBot.tags.prompt.slice(0, 80)
+        : todoBot.tags.prompt,
+    menuType: todoBot.tags.focusMenuType ?? 'grid',
+});
+
 setTag(todoBot, 'animationState', 'processing');
 
 const armBot = links.armBot;
@@ -102,3 +146,5 @@ thisBot.agentOnRequest({
 });
 
 tags.todoInProgress = true;
+
+dbg('agentOnRequest dispatched, todoInProgress=true');

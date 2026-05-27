@@ -101,6 +101,7 @@ humeSocket.addEventListener('message', async (event) => {
                 menuActionData: null,
                 sourceId: "abBot",
                 historyStorageBot: ab.links.remember,
+                userInitiated: true,
             })
             
             thisBot.sendSessionSettings();

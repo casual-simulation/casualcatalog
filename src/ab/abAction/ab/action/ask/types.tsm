@@ -135,6 +135,15 @@ interface ABAskGPTParameters {
      * Useful for displaying in-progress output before the full response is available.
      */
     onPartialResponse?: (message: AIChatMessage) => void;
+
+    /**
+     * Marks this call as a direct user submission (chat send, voice input, etc.) as opposed
+     * to a re-entrant askGPT call spawned from inside an agent tool's execution. Used by
+     * `abAskHelperCreateUserRequestTodo` to decide whether to apply the pending-work gate —
+     * the gate fires only when this is `true`, so agent-driven tools that internally create
+     * plan todos are not blocked by the user's own in-flight work. Default `false`.
+     */
+    userInitiated?: boolean;
 }
 
 /**
@@ -211,6 +220,13 @@ interface ABAskContext {
     useStreaming: boolean;
 
     onPartialResponse?: (message: AIChatMessage) => void;
+
+    /**
+     * Whether this turn was initiated directly by a user (chat send, voice input). `false`
+     * for re-entrant calls spawned by agent tool execution. Consulted by
+     * `abAskHelperCreateUserRequestTodo` to gate pile-up protection.
+     */
+    userInitiated: boolean;
 }
 
 /**

@@ -44,6 +44,7 @@ const recordName: string | undefined = askThat.recordName ?? todoBot?.tags.budge
 const menuType = askThat.menuType;
 const menuActionData = askThat.menuActionData;
 const attachments: ABAttachment[] = askThat.attachments ?? [];
+const userInitiated: boolean = askThat.userInitiated ?? false;
 
 /**
  * askContext bundles all derived parameters for this turn into a single object.
@@ -71,6 +72,7 @@ const askContext: ABAskContext = {
     recordName,
     useStreaming,
     onPartialResponse,
+    userInitiated,
 };
 
 function buildUserMessage(message?: string, extra: Record<string, any> = {}): string {

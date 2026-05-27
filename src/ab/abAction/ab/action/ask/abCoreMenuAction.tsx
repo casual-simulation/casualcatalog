@@ -126,6 +126,7 @@ else if (!inquiryHasSpace) {
             sourceId: 'abBot',
             historyStorageBot: ab.links.remember,
             useStreaming: tags.abChatStreaming,
+            userInitiated: true,
         };
 
         // Clear the staged attachments now that the request owns them; the next prompt starts empty.

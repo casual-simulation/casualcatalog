@@ -5,9 +5,13 @@ const attachments = askContext.attachments ?? [];
 
 // Block new requests while prior work is still pending — approvals waiting on the user, or
 // any todos still in progress. Surface the right next action depending on which is blocking.
+//
+// This gate only applies to direct user submissions (chat send, voice input). Re-entrant
+// calls from agent tools that spawn new plan todos (e.g. scaleModelPowerup's useTodoPlan)
+// must be allowed through, otherwise the agent's own work would block itself.
 const pendingTodos = getBots(b => b.tags.abPatchTodoInstance && !b.tags.todoApproved);
 
-if (pendingTodos.length > 0) {
+if (askContext.userInitiated && pendingTodos.length > 0) {
     const name = thisBot.abAskHelperGetAgentName({ askContext });
     const avatar = thisBot.abAskHelperGetAgentAvatar({ askContext });
 

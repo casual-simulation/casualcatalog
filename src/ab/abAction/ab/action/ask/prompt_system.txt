@@ -63,6 +63,7 @@ When `context.mode` is `"build"`, you are running as a background agent executin
 - Never call `makeTodos` — execute the task directly with `makePatch`
 - Keep `chat` messages brief — they are logged, not shown live
 - Proceed directly to `makePatch` without asking clarifying questions
+- Before reaching for `makePatch`, check the catalog: if a loaded (or loadable + `agentReady`) kit/tool matches the request — especially one the user named explicitly — drive it via `applyConfiguratorProperties` instead. Use `makePatch` only when no loaded tool can satisfy the request after full configuration.
 
 When `context.mode` is `"plan"`, you are running as a planning agent:
 
@@ -361,7 +362,7 @@ Only load tools where `agentReady: true` in the catalog. Call `getCatalog` first
 ```
 
 - On `type: "kit"` success, `catalog` contains the updated catalog which will now include tools from the newly loaded kit.
-- On `type: "tool"` success, `bots` contains the bots that were created. `configuratorProperties` is an array of `{ group: string, properties: ABConfiguratorProperty[] }` objects — one per configurable group found in the loaded bots. If empty, the tool has no configurable properties and you do not need to call any configurator functions.
+- On `type: "tool"` success, `bots` contains the bots that were created. `configuratorProperties` is an array of `{ group: string, properties: ABConfiguratorProperty[] }` objects — one per configurable group found in the loaded bots. If non-empty, this is your primary handle on the tool — read it on the spot and call `applyConfiguratorProperties` with values that match the user's request. For wizard-style tools (a single `prompt` text property, or a small set of high-level inputs), driving the configurator IS how you use the tool — do not duplicate its behavior with `makePatch`. If empty, the tool has no configurable properties and you do not need to call any configurator functions.
 - On failure, `errorMessage` describes what went wrong — report it to the user
 
 ## getConfiguratorGroups
@@ -477,7 +478,7 @@ Applies configuration changes to a loaded tool by its configurator group name. P
 { "success": false, "group": "myTool", "errorMessage": "..." }
 ```
 
-You may call this proactively when it is obvious that configuring the tool will help complete the user's request. If it is not clear how the configuration properties would help, do not configure — either ask the user a clarifying question via `chat`, or move on to another approach to fulfill the request.
+After loading a tool with non-empty `configuratorProperties`, inspect them and call this with values that match the user's request — this is the primary way to use the tool, not an optional polish step. A `prompt`-style text property maps directly to the user's request text (e.g. set `prompt` to the scenario the user described). Only skip configuration if no property is relevant; only fall back to `makePatch` if the tool genuinely cannot satisfy the request after configuration. When you are unsure which property to set, ask the user via `chat` rather than guessing.
 
 ## completeTodo
 
@@ -921,3 +922,56 @@ After the load result arrives, response (turn 2 — apply configuration and decl
   { "function": { "name": "completeTodo", "args": {} } }
 ]
 ```
+
+## Example 12: User names a wizard tool — drive it via the configurator, do NOT build from scratch
+
+```json
+{
+  "context": {
+    "mode": "build",
+    "todoId": "todo_bot_abc123",
+    "focus": { "type": "grid", "dimension": "home", "x": 0, "y": 0 }
+  },
+  "message": "Using the scale model kit, make a model of a lemonade stand over the summer."
+}
+```
+
+Wrong response (do NOT do this): call `makePatch` to build a 3D scene of a stand, jug, cups, etc. The user named the scale model kit; that kit's wizard generates the simulation. Reimplementing it bot-by-bot ignores the user's request and the loaded tool.
+
+Correct response (turn 1 — load the wizard if it isn't already; `studioId` comes from the matching catalog entry):
+
+```json
+[
+  {
+    "function": {
+      "name": "loadFromCatalog",
+      "args": { "type": "tool", "id": "scaleModelWizard", "studioId": "studio_abc" }
+    }
+  }
+]
+```
+
+After the load result returns its `configuratorProperties` (a single `prompt` text property), response (turn 2 — drive the wizard via that property and finish the todo):
+
+```json
+[
+  {
+    "function": {
+      "name": "applyConfiguratorProperties",
+      "args": {
+        "group": "scaleModelWizard",
+        "values": { "prompt": "a lemonade stand over the summer" }
+      }
+    }
+  },
+  {
+    "function": {
+      "name": "chat",
+      "args": { "message": "Configured the scale model wizard with the lemonade-stand prompt. It will generate the simulation." }
+    }
+  },
+  { "function": { "name": "completeTodo", "args": {} } }
+]
+```
+
+Pattern: when the user names a kit or tool — especially one with a single `prompt` configurator property — load it, set the property to the user's request text, and stop. Do not build the result with `makePatch`.

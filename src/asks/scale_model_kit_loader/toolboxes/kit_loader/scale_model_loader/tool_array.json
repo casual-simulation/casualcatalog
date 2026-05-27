@@ -10,7 +10,7 @@
         "name": "scale model powerup",
         "studio": "AB",
         "targetAB": "scaleModelWizard",
-        "description": "Generate an interactive 3D scale model simulation from a text description. Uses a two-pass AI pipeline: a planner builds a manifest of models and timeline markers, then a builder constructs each model with stats, lifecycle phases, movement behaviors (wander, patrol, follow), spawning/mating logic, and per-tick listeners. Best for visualizing business scenarios, ecosystems, or any simulation where entities change state and move over time.",
+        "description": "Generates a behavior-driven simulation (entities with stats, lifecycle states, movement, spawning, per-tick listeners) from a single text prompt — not a literal 3D scene. USAGE: call applyConfiguratorProperties on this tool with { prompt: '<scenario>' } (e.g. 'a lemonade stand over the summer'). A two-pass AI pipeline (planner + builder) does the rest. Do not build the scene manually with makePatch.",
         "artifact": true,
         "agentReady": true
     },

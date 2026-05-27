@@ -11,7 +11,9 @@ const menuOptions = {};
 menuOptions.dimension = activeMenu;
 menuOptions[activeMenu] = true;
 menuOptions.abMenuRefresh = "@ destroy(thisBot);";
-menuOptions.toolbox = getLink(toolbox);
+if (toolbox) {
+    menuOptions.toolbox = getLink(toolbox);
+}
 menuOptions.gridInformation = gridInformation;
 menuOptions.search = tags.search;
 menuOptions.artifact = tags.artifact;
@@ -33,11 +35,17 @@ for (let tool of toolboxTools) {
         targetAB: tool.targetAB,
         isArtifact: tool.artifact || false,
         onClick: ListenerString(() => {
+            let toolboxBot = tags.toolbox;
+            if (!toolboxBot) {
+                const foundToolbox = getBot(byTag("tool_array", arr => Array.isArray(arr) && arr.find(t => t.targetAB == tags.targetAB)));
+                toolboxBot = foundToolbox ? getLink(foundToolbox) : null;
+            }
+
             if (tags.isArtifact) {
                 const abArtifactShard = {
                     data: {
                         eggParameters: {
-                            toolboxBot: tags.toolbox,
+                            toolboxBot,
                             gridInformation: tags.gridInformation
                         }
                     },
@@ -57,14 +65,20 @@ for (let tool of toolboxTools) {
                     askID: tags.targetAB,
                     sourceEvent: 'tool',
                     eggParameters: {
-                        toolboxBot: tags.toolbox,
+                        toolboxBot,
                         gridInformation: tags.gridInformation
                     },
                 });
             }
-            
+
             shout('abMenuRefresh');
-            whisper(links.toolbox, 'onToolboxDropdownOptionClick', { toolbox: links.toolbox, tool: tags.tool });
+            if (links.toolbox) {
+                whisper(links.toolbox, 'onToolboxDropdownOptionClick', { toolbox: links.toolbox, tool: tags.tool });
+            }
+
+            if (ab.links.recent_tools) {
+                ab.links.recent_tools.pushRecentTool({ tool: tags.tool });
+            }
         })
     };
 

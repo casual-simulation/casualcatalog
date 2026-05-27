@@ -17,7 +17,7 @@ if (askContext.userInitiated && pendingTodos.length > 0) {
 
     const approvalTodo = pendingTodos.find(b => b.tags.isUserApprovalTodo);
     if (approvalTodo) {
-        await os.focusOn(approvalTodo, { duration: approvalTodo.tags.todoFocusDuration });
+        os.focusOn(approvalTodo, { duration: approvalTodo.tags.todoFocusDuration }).catch(() => {});
         whisper(approvalTodo, 'abPatchTodoMenuOpen');
         ab.links.utils.abLog({
             name,

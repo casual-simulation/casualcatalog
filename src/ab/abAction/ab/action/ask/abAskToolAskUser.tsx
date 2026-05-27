@@ -89,6 +89,6 @@ setTag(parentTodo, 'awaitingUserResponse', true);
 setTag(parentTodo, 'animationState', 'incomplete');
 
 if (questionTodos[0]) {
-    await os.focusOn(questionTodos[0], { duration: questionTodos[0].tags.todoFocusDuration });
+    os.focusOn(questionTodos[0], { duration: questionTodos[0].tags.todoFocusDuration }).catch(() => {});
     whisper(questionTodos[0], 'abPatchTodoMenuOpen');
 }

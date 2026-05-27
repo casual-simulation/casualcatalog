@@ -91,6 +91,6 @@ if (ab.links.manifestation.tags.abAwake && topmostManifestTarget) {
     const newAbBot = await ab.links.manifestation.abManifestBot(topmostManifestTarget);
     ab.links.manifestation.abClick();
     if (newAbBot) {
-        os.focusOn(newAbBot, { duration: tags.todoFocusDuration });
+        os.focusOn(newAbBot, { duration: tags.todoFocusDuration }).catch(() => {});
     }
 }

@@ -188,6 +188,22 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] parsed function calls:`, functionCalls);
 }
 
+// ── Empty array response ────────────────────────────────────────────────
+// An explicit "[]" means the AI parsed the format but returned no operations.
+// Without this guard the dispatch loop runs zero times and the function returns
+// silently — leaving any in-progress todoBot stuck in its working state.
+
+if (functionCalls.length === 0) {
+    if (todoBot) {
+        todoBot.tags.animationState = 'error';
+        todoBot.tags.abPatchError = 'AI returned an empty function call array';
+    }
+    const name = thisBot.abAskHelperGetAgentName({ askContext });
+    const avatar = thisBot.abAskHelperGetAgentAvatar({ askContext });
+    ab.links.utils.abLog({ name, avatar, message: 'AI returned an empty function call array', logType: 'error', space: 'local' });
+    return;
+}
+
 // ── Dispatch function calls ─────────────────────────────────────────────
 // Each abAskTool* tag is called with { args, askContext }.
 // Tools that return a value are query functions — their results are injected

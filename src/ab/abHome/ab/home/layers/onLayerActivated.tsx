@@ -1,4 +1,4 @@
-console.log("onLayerActivated", JSON.stringify(that), os.getCurrentInst(), links.learn.abIsPrimary())
+superShout("superLog", `onLayerActivated, ${JSON.stringify(that)}, ${os.getCurrentInst()}, ${links.learn.abIsPrimary()}`);
 
 if (!links.learn.abIsPrimary()) {
     superShout("getLayerLoadStudio", os.getCurrentInst());

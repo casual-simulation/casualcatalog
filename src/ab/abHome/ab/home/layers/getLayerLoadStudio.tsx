@@ -1,5 +1,3 @@
-os.toast(`getLayerLoadStudio, ${tags.currLayerStudio}, ${os.getCurrentInst()}, ${that}`);
-
 if (!links.learn.abIsPrimary()) {
     return;
 }

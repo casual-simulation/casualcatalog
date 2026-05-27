@@ -49,6 +49,8 @@ for (const property of flatProperties) {
             propertyValues[property.key] = values
                 .map((v) => thisBot.abResolveSelectOption({ options: property.options, value: v }))
                 .filter((o) => o != null);
+        } else if (property.type === 'list') {
+            propertyValues[property.key] = Array.isArray(resolvedValue) ? resolvedValue : [resolvedValue];
         } else {
             propertyValues[property.key] = resolvedValue;
         }

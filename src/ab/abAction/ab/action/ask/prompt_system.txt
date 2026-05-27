@@ -465,6 +465,7 @@ Applies configuration changes to a loaded tool by its configurator group name. P
   - `text` / `color` properties: a string
   - `select` properties: the plain scalar value (e.g. `"dark"`, not `{ "value": "dark" }`)
   - `multiselect` properties: an array of plain scalar values
+  - `list` properties: an array of items matching the property's `itemSchema`.
 
 **Response (success):**
 

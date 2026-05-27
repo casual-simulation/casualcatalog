@@ -13,8 +13,19 @@ if (studioCatalogs.length === 0) {
     if (authBot) {
         const gridFocus = ab.links.remember.tags.abGridFocus;
         const dimension = gridFocus?.dimension ?? 'home';
-        const positionX = gridFocus?.position?.x ?? 0;
-        const positionY = gridFocus?.position?.y ?? 0;
+        const centerX = gridFocus?.position?.x ?? 0;
+        const centerY = gridFocus?.position?.y ?? 0;
+
+        // Find an open spot near the focus so the catalog doesn't intersect
+        // ab itself or anything else already at the focus point.
+        const isMap = configBot.tags.mapPortal ? true : false;
+        const openPos = ab.links.utils.findOpenPositionAround({
+            center: new Vector2(centerX, centerY),
+            dimension: dimension,
+            innerRadius: isMap ? 0.0001 : 3,
+            radius: isMap ? 0.0005 : 5,
+            spacing: isMap ? 0.0005 : 1,
+        });
 
         try {
             // abCreateArtifactPromiseBot awaits reconstitution internally.
@@ -30,7 +41,7 @@ if (studioCatalogs.length === 0) {
                             toolboxBot: null,
                             gridInformation: {
                                 dimension: dimension,
-                                position: { x: positionX, y: positionY },
+                                position: { x: openPos.x, y: openPos.y },
                             },
                         },
                     },

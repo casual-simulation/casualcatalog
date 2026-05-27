@@ -1,3 +1,5 @@
+console.log("onLayerStudioReturned", that, os.getCurrentInst());
+
 if (os.getCurrentInst() != that.inst) {
     return;
 }

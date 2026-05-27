@@ -13,19 +13,28 @@ if (studioCatalogs.length === 0) {
     }
 
     if (authBot) {
-        const gridFocus = ab.links.remember.tags.abGridFocus;
-        const dimension = gridFocus?.dimension ?? 'home';
-        const centerX = gridFocus?.position?.x ?? 0;
-        const centerY = gridFocus?.position?.y ?? 0;
-
-        // Find an open spot near the focus so the catalog doesn't intersect
-        // ab itself or anything else already at the focus point.
+        // Anchor placement around ab itself so the new catalog appears near
+        // the agent doing the work. Fall back to the grid focus if ab can't
+        // be located.
+        const abBot = ab.links.manifestation?.links?.abBot;
         const isMap = configBot.tags.mapPortal ? true : false;
+        const dimension = abBot
+            ? (configBot.tags.gridPortal ?? configBot.tags.mapPortal ?? 'home')
+            : (ab.links.remember.tags.abGridFocus?.dimension ?? 'home');
+        const centerX = abBot
+            ? (abBot.tags[dimension + 'X'] ?? 0)
+            : (ab.links.remember.tags.abGridFocus?.position?.x ?? 0);
+        const centerY = abBot
+            ? (abBot.tags[dimension + 'Y'] ?? 0)
+            : (ab.links.remember.tags.abGridFocus?.position?.y ?? 0);
+
+        // Catalog mesh is 2x3 — bump radii to give it breathing room beyond
+        // the default 3/5 used by smaller bots.
         const openPos = ab.links.utils.findOpenPositionAround({
             center: new Vector2(centerX, centerY),
             dimension: dimension,
-            innerRadius: isMap ? 0.0001 : 3,
-            radius: isMap ? 0.0005 : 5,
+            innerRadius: isMap ? 0.0001 : 5,
+            radius: isMap ? 0.0005 : 8,
             spacing: isMap ? 0.0005 : 1,
         });
 

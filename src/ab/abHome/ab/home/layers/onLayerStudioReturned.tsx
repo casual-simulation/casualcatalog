@@ -1,4 +1,4 @@
-superShout("superLog", `onLayerStudioReturned, ${os.getCurrentInst()}, ${that}`);
+os.toast(`onLayerStudioReturned, ${os.getCurrentInst()}, ${that}`);
 
 if (os.getCurrentInst() != that.inst) {
     return;

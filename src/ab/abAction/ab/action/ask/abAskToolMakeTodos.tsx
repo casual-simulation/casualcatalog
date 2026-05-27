@@ -90,6 +90,7 @@ for (let i = 0; i < todos.length; i++) {
             attachments: todo.attachments,
             budgetCredits: todo.budget_credits,
             budgetRecordName: recordName,
+            debug: tags.debug,
             aiModel: effectiveModel,
             todoPlanId,
             todoOrder: i,

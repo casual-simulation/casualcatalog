@@ -36,9 +36,24 @@ if (askContext.userInitiated && pendingTodos.length > 0) {
     return null;
 }
 
+// For agent-initiated re-entrant calls (a tool like scaleModelPowerup's useTodoPlan spawning
+// its own plan), link the new plan back to whatever todo the todo manager is currently
+// processing — abAskToolMakeTodos writes askContext.todoBot into todoParentId on the new
+// todos, which feeds the existing abCollectApprovalChain walk. Without this the new plan
+// shows up as an orphan sibling instead of nesting under the work that derived it.
+let makeTodosAskContext = askContext;
+
+if (!askContext.userInitiated) {
+    const activeTodoId = ab.links.todoManager?.tags.activeTodoId;
+    const activeTodo = activeTodoId ? getBot('id', activeTodoId) : null;
+    if (activeTodo) {
+        makeTodosAskContext = { ...askContext, todoBot: activeTodo };
+    }
+}
+
 const [userRequestTodo] = await thisBot.abAskToolMakeTodos({
     args: { todos: [{ prompt: inquiry, label: inquiryLabel, budget_credits: 100000, attachments }] },
-    askContext,
+    askContext: makeTodosAskContext,
     returnType: 'bots',
     autoAssignAgent: false, // We will handle auto-assigning after creation so that it happens after any post-processing steps.
 }) ?? [];

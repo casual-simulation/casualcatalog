@@ -14,4 +14,7 @@ if (!tags.activeInsts.includes(that)) {
 }
 
 const studioId = await superShout("getLayerLoadStudio");
-await ab.links.search.onLookupABEggs({ recordKey: studioId, abID: "home", autoHatch: true, sourceEvent: 'ask', });
+console.log("requestedStudioId", studioId);
+if (studioId) {
+    await ab.links.search.onLookupABEggs({ recordKey: studioId, abID: "home", autoHatch: true, sourceEvent: 'ask', });
+}

@@ -30,6 +30,7 @@ if (instLoaded) {
 //if unloaded, sideload it
 else {
     console.log("loading", instName)
+    masks.currLayerStudio = that.studioId;
 
     await os.loadInst({
         inst: instName,

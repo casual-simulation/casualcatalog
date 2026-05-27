@@ -52,30 +52,6 @@ if (type === 'kit') {
         return { success: false, type, id, errorMessage };
     }
 
-    const expectedLabel = toolboxData.title ?? toolboxData.name;
-
-    // Wait for the kit's reconstitute before reading the catalog, otherwise
-    // the kit's tool_array won't be populated yet. Listen before triggering
-    // the load to avoid missing the event. Timeouts are soft-handled.
-    const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
-        matchSuccess: (e) => {
-            return e?.abArtifactName === 'kit' && e?.shardBots?.some((b) => {
-                return b?.tags?.label === expectedLabel &&
-                    b?.tags?.studioId === argStudioId;
-            });
-        },
-        matchFailure: (e) => {
-            return e?.abArtifactName === 'kit';
-        },
-        timeoutMs: 15000,
-    }).catch(e => {
-        if (e?.timedOut) {
-            console.warn(`[${tags.system}.${tagName}] kit ${id} reconstitute did not arrive within timeout; returning catalog as-is.`);
-            return null;
-        }
-        throw e;
-    });
-
     try {
         const loadResult = await catalog.loadKit({ id, gridInformation: gridData });
 
@@ -83,13 +59,6 @@ if (type === 'kit') {
             const errorMessage = loadResult.errorMessage ?? 'kit load failed';
             console.error(`[${tags.system}.${tagName}] failed to load kit ${id}. Error: ${errorMessage}`);
             return { success: false, type, id, errorMessage };
-        }
-
-        // If the kit was already loaded, loadKit short-circuited without
-        // triggering reconstitution — skip the wait or we'd hang for the
-        // full timeout for no reason.
-        if (!loadResult?.alreadyLoaded) {
-            await reconstitutionPromise;
         }
 
         shout("abMenuRefresh");

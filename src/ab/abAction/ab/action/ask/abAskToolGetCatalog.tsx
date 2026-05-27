@@ -16,23 +16,8 @@ if (studioCatalogs.length === 0) {
         const positionX = gridFocus?.position?.x ?? 0;
         const positionY = gridFocus?.position?.y ?? 0;
 
-        const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
-            matchSuccess: (e) => {
-                return e?.abArtifactName === 'studioCatalog' && e?.shardBots?.some((b) => {
-                    return b?.tags?.studioId === authBot.id;
-                });
-            },
-            matchFailure: (e) => e?.abArtifactName === 'studioCatalog',
-            timeoutMs: 15000,
-        }).catch(e => {
-            if (e?.timedOut) {
-                console.warn(`[${tags.system}.${tagName}] studioCatalog auto-spawn reconstitute timed out; returning catalog as-is.`);
-                return null;
-            }
-            throw e;
-        });
-
         try {
+            // abCreateArtifactPromiseBot awaits reconstitution internally.
             await ab.links.artifact.abCreateArtifactPromiseBot({
                 abArtifactName: 'studioCatalog',
                 abArtifactInstanceID: uuid(),
@@ -52,8 +37,6 @@ if (studioCatalogs.length === 0) {
                     dependencies: [{ askID: 'studioCatalog' }],
                 },
             });
-
-            await reconstitutionPromise;
         } catch (e) {
             console.error(`[${tags.system}.${tagName}] failed to auto-spawn studioCatalog. Error:`, ab.links.utils.getErrorMessage(e));
         }

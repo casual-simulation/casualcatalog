@@ -53,6 +53,8 @@ if (type === 'kit') {
     }
 
     try {
+        // loadKit internally awaits the kit's reconstitute, so when this
+        // resolves the kit's tool_array is already populated.
         const loadResult = await catalog.loadKit({ id, gridInformation: gridData });
 
         if (loadResult && loadResult.success === false) {

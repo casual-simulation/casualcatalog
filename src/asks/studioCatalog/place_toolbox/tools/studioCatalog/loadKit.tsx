@@ -47,6 +47,27 @@ if (!gridInformation) {
     };
 }
 
+// onLookupAskID hatches the kit *loader*, which then asynchronously hatches
+// the actual kit artifact. Listen for that second-stage reconstitute before
+// resolving so callers can read tool_array immediately on resolution. Set up
+// the listener before triggering the load to avoid missing the event.
+const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
+    matchSuccess: (e) => {
+        return e?.abArtifactName === 'kit' && e?.shardBots?.some((b) => {
+            return b?.tags?.label === expectedLabel &&
+                b?.tags?.studioId === tags.studioId;
+        });
+    },
+    matchFailure: (e) => e?.abArtifactName === 'kit',
+    timeoutMs: 15000,
+}).catch(e => {
+    if (e?.timedOut) {
+        console.warn(`[${tags.system}.${tagName}] kit ${toolbox.name} reconstitute did not arrive within timeout.`);
+        return { timedOut: true };
+    }
+    throw e;
+});
+
 try {
     await ab.links.search.onLookupAskID({
         askID: toolbox.name,
@@ -57,7 +78,9 @@ try {
         },
     });
 
-    return { success: true };
+    const reconstituteResult = await reconstitutionPromise;
+
+    return { success: true, timedOut: reconstituteResult?.timedOut ?? false };
 } catch (e) {
     return { success: false, errorMessage: ab.links.utils.getErrorMessage(e) };
 }

@@ -22,7 +22,7 @@ const nextTodo = siblings
     .sort((a, b) => (a.tags.todoOrder ?? 0) - (b.tags.todoOrder ?? 0))[0];
 
 if (nextTodo) {
-    await os.focusOn(nextTodo, { duration: nextTodo.tags.todoFocusDuration });
+    os.focusOn(nextTodo, { duration: nextTodo.tags.todoFocusDuration }).catch(() => {});
     whisper(nextTodo, 'abPatchTodoMenuOpen');
     return;
 }
@@ -68,5 +68,5 @@ ab.links.ask.abConversationHistorySave({ historyStorageBot, history });
 setTag(parentTodo, 'awaitingUserResponse', false);
 
 // Case B: chain complete — focus the parent todo and open its menu.
-await os.focusOn(parentTodo, { duration: parentTodo.tags.todoFocusDuration });
+os.focusOn(parentTodo, { duration: parentTodo.tags.todoFocusDuration }).catch(() => {});
 whisper(parentTodo, 'abPatchTodoMenuOpen');

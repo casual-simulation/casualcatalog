@@ -133,7 +133,7 @@ for (let i = 0; i < todos.length; i++) {
 }
 
 if (autoFocus && firstTodoBot) {
-    await os.focusOn(firstTodoBot, { duration: firstTodoBot.tags.todoFocusDuration });
+    os.focusOn(firstTodoBot, { duration: firstTodoBot.tags.todoFocusDuration }).catch(() => {});
     whisper(firstTodoBot, 'abPatchTodoMenuOpen');
 }
 

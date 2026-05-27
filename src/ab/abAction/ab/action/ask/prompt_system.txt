@@ -309,7 +309,7 @@ The result will be delivered in the next message as `context.functionResults[0].
 
 _Modes: all_
 
-Returns the catalog of available kits and tools. Kits are containers that must be loaded to access their tools. Tools provide specific functionality once they are loaded.
+Returns the catalog of available kits and tools. Catalogs, kits, and tools all live in the grid as bots: a `studioCatalog` bot is bound to a studio and lists that studio's kits; loading a kit spawns a `kit` bot that lists its tools; loading a tool spawns the tool's bots.
 
 On the first turn of a new conversation, `context.catalog` is already present in the message — read from there and do not call `getCatalog` on turn 1. Call `getCatalog` only when you need a refreshed catalog and don't have a recent `loadFromCatalog` response available (loading a kit via `loadFromCatalog` already returns the updated catalog).
 
@@ -317,12 +317,14 @@ On the first turn of a new conversation, `context.catalog` is already present in
 { "function": { "name": "getCatalog", "args": {} } }
 ```
 
+If no `studioCatalog` bot is loaded in the grid yet, the system auto-spawns one bound to the user's studio before returning — so an empty grid won't produce an empty catalog.
+
 Each entry has the following shape:
 
 - `type`: `"kit"` or `"tool"`
 - `name`: display name
 - `id`: identifier used to load it
-- `studioId`: the studio this entry is sourced from. For kits, two studios may list a kit with the same `name` but different contents. For tools, this is inherited from the kit they live in, so the same tool from two different studios appears as two distinct entries. Pass this back to `loadFromCatalog` so the entry is loaded from the right studio.
+- `studioId`: the studio this entry is sourced from. Pass this back to `loadFromCatalog` so the entry is loaded through the matching studioCatalog bot.
 - `description`: human-readable description of what it does
 - `agentReady` _(tools only)_: `true` if the tool is configured for agent use — only invoke tools where this is `true`
 
@@ -342,7 +344,7 @@ Load a kit or tool from the catalog into the current inst.
 
 - `type` _(required)_: `"kit"` to load a kit (toolbox container); `"tool"` to load an individual tool
 - `id` _(required)_: the `id` value from the `getCatalog` result
-- `studioId` _(optional)_: pass through the exact `studioId` field from the catalog entry. When the entry has a `studioId`, the load is scoped to that studio's catalog. When the entry's `studioId` is absent or `null`, omit this arg — the load is scoped to the global remember catalog. There is no fallback between the two; the arg must match the entry.
+- `studioId` _(required)_: pass through the exact `studioId` field from the catalog entry. The load goes through any studioCatalog bot in the grid bound to that studio.
 - `gridDimension` _(optional)_: dimension to place the loaded content in — defaults to the user's active dimension
 - `gridPositionX` / `gridPositionY` _(optional)_: grid coordinates — default to `0, 0`
 
@@ -882,14 +884,14 @@ Response:
 }
 ```
 
-Response (turn 1 — load the tool; its response contains the updated catalog and configurator groups for the next turn):
+Response (turn 1 — load the tool; its response contains the updated catalog and configurator groups for the next turn). `studioId` is pulled from the matching entry in `context.catalog` (delivered on turn 1 of the conversation):
 
 ```json
 [
   {
     "function": {
       "name": "loadFromCatalog",
-      "args": { "type": "kit", "id": "agent_bot_tool" }
+      "args": { "type": "kit", "id": "agent_bot_tool", "studioId": "studio_abc" }
     }
   }
 ]

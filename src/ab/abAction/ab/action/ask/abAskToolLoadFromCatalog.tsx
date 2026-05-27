@@ -1,12 +1,12 @@
 const type: 'kit' | 'tool' = that?.args?.type;
 const id: string = that?.args?.id;
-const argStudioId: string | null = that?.args?.studioId ?? null;
+const argStudioId: string = that?.args?.studioId;
 const gridDimension: string = that?.args?.gridDimension ?? ab.links.remember.tags.abActiveDimension ?? 'home';
 const gridPositionX: number = that?.args?.gridPositionX ?? 0;
 const gridPositionY: number = that?.args?.gridPositionY ?? 0;
 
-if (!type || !id) {
-    const errorMessage = `missing required args: type='${type}', id='${id}'`;
+if (!type || !id || !argStudioId) {
+    const errorMessage = `missing required args: type='${type}', id='${id}', studioId='${argStudioId}'`;
     console.error(`[${tags.system}.${tagName}] ${errorMessage}`);
     return { success: false, type, id, errorMessage };
 }
@@ -34,33 +34,34 @@ async function collectConfiguratorProperties(bots: Bot[]): Promise<ABConfigurato
 }
 
 if (type === 'kit') {
-    // Find the toolbox in the catalog. studioId present → that studio's
-    // studioCatalog bot. studioId absent → the global remember catalog.
-    let toolboxData;
-    if (argStudioId) {
-        const catalog = getBot(byTag("abArtifactName", "studioCatalog"), byTag("studioId", argStudioId));
-        toolboxData = catalog?.tags.toolbox_array?.find(toolBox => toolBox.name == id);
-    } else {
-        toolboxData = ab.links.remember.tags.toolbox_array?.find(toolBox => toolBox.name == id);
-    }
+    // Find any studioCatalog bot bound to the requested studio. Multiple
+    // copies of the same studio are interchangeable — pick the first.
+    const catalog = getBot(byTag("abArtifactName", "studioCatalog"), byTag("studioId", argStudioId));
 
-    if (!toolboxData) {
-        const errorMessage = `kit '${id}' not found in catalog`;
+    if (!catalog) {
+        const errorMessage = `no studioCatalog loaded for studio '${argStudioId}'. Call getCatalog first.`;
         console.error(`[${tags.system}.${tagName}] ${errorMessage}`);
         return { success: false, type, id, errorMessage };
     }
 
-    const studioId = argStudioId;
+    const toolboxData = catalog.tags.toolbox_array?.find(toolBox => toolBox.name == id || toolBox.title == id);
+
+    if (!toolboxData) {
+        const errorMessage = `kit '${id}' not found in catalog for studio '${argStudioId}'`;
+        console.error(`[${tags.system}.${tagName}] ${errorMessage}`);
+        return { success: false, type, id, errorMessage };
+    }
+
     const expectedLabel = toolboxData.title ?? toolboxData.name;
 
     // Wait for the kit's reconstitute before reading the catalog, otherwise
     // the kit's tool_array won't be populated yet. Listen before triggering
-    // the lookup to avoid missing the event. Timeouts are soft-handled.
+    // the load to avoid missing the event. Timeouts are soft-handled.
     const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
         matchSuccess: (e) => {
             return e?.abArtifactName === 'kit' && e?.shardBots?.some((b) => {
                 return b?.tags?.label === expectedLabel &&
-                    (b?.tags?.studioId ?? null) === (studioId ?? null);
+                    b?.tags?.studioId === argStudioId;
             });
         },
         matchFailure: (e) => {
@@ -76,29 +77,25 @@ if (type === 'kit') {
     });
 
     try {
-        const lookupResult: ABLookupAskIDResult = await ab.links.search.onLookupAskID({
-            askID: id,
-            eggParameters: {
-                studioId,
-                gridInformation: {
-                    toolbox_name: expectedLabel,
-                    ...gridData,
-                },
-            },
-        });
+        const loadResult = await catalog.loadKit({ id, gridInformation: gridData });
 
-        if (lookupResult && lookupResult.success === false) {
-            const errorMessage = lookupResult.errorMessage ?? 'kit lookup failed';
+        if (loadResult && loadResult.success === false) {
+            const errorMessage = loadResult.errorMessage ?? 'kit load failed';
             console.error(`[${tags.system}.${tagName}] failed to load kit ${id}. Error: ${errorMessage}`);
             return { success: false, type, id, errorMessage };
         }
 
-        await reconstitutionPromise;
+        // If the kit was already loaded, loadKit short-circuited without
+        // triggering reconstitution — skip the wait or we'd hang for the
+        // full timeout for no reason.
+        if (!loadResult?.alreadyLoaded) {
+            await reconstitutionPromise;
+        }
 
         shout("abMenuRefresh");
 
-        const catalog = thisBot.abAskToolGetCatalog();
-        return { success: true, type, id, catalog };
+        const catalogResult = await thisBot.abAskToolGetCatalog();
+        return { success: true, type, id, alreadyLoaded: loadResult?.alreadyLoaded ?? false, catalog: catalogResult };
     } catch (e) {
         const errorMessage = ab.links.utils.getErrorMessage(e);
         console.error(`[${tags.system}.${tagName}] failed to load kit ${id}. Error: ${errorMessage}`);
@@ -107,12 +104,10 @@ if (type === 'kit') {
 } else if (type === 'tool') {
     let isArtifact = false;
 
-    // Find a kit in the scene containing this tool. Scope by studioId: when
-    // given, restrict to kits from that studio; when omitted, restrict to kits
-    // with no studioId (sourced from the global remember catalog).
+    // Find a loaded kit bot for this studio that contains the requested tool.
     const toolbox = getBot(
         byTag("tool_array", tool_arr => Array.isArray(tool_arr) && tool_arr.find(tool => tool.targetAB == id)),
-        argStudioId ? byTag("studioId", argStudioId) : bot => !bot.tags.studioId,
+        byTag("studioId", argStudioId),
     );
 
     if (toolbox) {

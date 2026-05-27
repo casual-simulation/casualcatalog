@@ -50,16 +50,10 @@ if (toolboxes.length > 0) {
             formAddress: 'home_repair_service',
             targetAB: toolbox.name,
             onClick: ListenerString(async () => {
-                await ab.links.search.onLookupAskID({
-                    askID: tags.targetAB,
-                    eggParameters: {
-                        studioId: tags.studioId,
-                        toolbox_name: tags.toolboxTitle,
-                        gridInformation: {
-                            ...tags.gridInformation
-                        }
-                    }
-                })
+                await links.toolbox.loadKit({
+                    id: tags.targetAB,
+                    gridInformation: { ...tags.gridInformation },
+                });
 
                 if (links.toolbox.links.armBot) {
                     destroy(links.toolbox.links.armBot);

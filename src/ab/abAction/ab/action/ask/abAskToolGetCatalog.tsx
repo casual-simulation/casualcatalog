@@ -1,79 +1,138 @@
 const catalogArr = [];
 
-// Possible kits come from every studioCatalog bot's `toolbox_array`, plus the
-// global default in `ab.links.remember.tags.toolbox_array`. Two studios may
-// list a toolbox with the same `name` but different contents, so dedupe by
-// (studioId, name) — same name from different studios is kept as distinct.
-const studioCatalogs = getBots(byTag("abArtifactName", "studioCatalog"));
-const possibleToolboxes = [];
-const seenToolboxKeys = new Set();
-
-const collectToolboxes = (arr, studioId) => {
-    if (!arr) return;
-    for (const tb of arr) {
-        if (!tb || !tb.name) continue;
-        const key = `${studioId ?? ''}::${tb.name}`;
-        if (seenToolboxKeys.has(key)) continue;
-        seenToolboxKeys.add(key);
-        possibleToolboxes.push({ toolbox: tb, studioId: studioId ?? null });
+// Ensure at least one studioCatalog exists in the grid. If none, auto-spawn
+// a user-studio catalog bound to authBot (mirrors handleCatalogSetup's
+// first-run behavior). Agents work strictly through studioCatalog bots —
+// no direct access to ab.links.remember.tags.toolbox_array.
+let studioCatalogs = getBots(byTag("abArtifactName", "studioCatalog"));
+if (studioCatalogs.length === 0) {
+    if (!authBot) {
+        await os.requestAuthBotInBackground();
     }
-};
 
-for (const catalog of studioCatalogs) {
-    collectToolboxes(catalog.tags.toolbox_array, catalog.tags.studioId);
+    if (authBot) {
+        const gridFocus = ab.links.remember.tags.abGridFocus;
+        const dimension = gridFocus?.dimension ?? 'home';
+        const positionX = gridFocus?.position?.x ?? 0;
+        const positionY = gridFocus?.position?.y ?? 0;
+
+        const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
+            matchSuccess: (e) => {
+                return e?.abArtifactName === 'studioCatalog' && e?.shardBots?.some((b) => {
+                    return b?.tags?.studioId === authBot.id;
+                });
+            },
+            matchFailure: (e) => e?.abArtifactName === 'studioCatalog',
+            timeoutMs: 15000,
+        }).catch(e => {
+            if (e?.timedOut) {
+                console.warn(`[${tags.system}.${tagName}] studioCatalog auto-spawn reconstitute timed out; returning catalog as-is.`);
+                return null;
+            }
+            throw e;
+        });
+
+        try {
+            await ab.links.artifact.abCreateArtifactPromiseBot({
+                abArtifactName: 'studioCatalog',
+                abArtifactInstanceID: uuid(),
+                abArtifactShard: {
+                    data: {
+                        studioId: authBot.id,
+                        label: 'user studio catalog',
+                        autoLoadCasualKit: true,
+                        eggParameters: {
+                            toolboxBot: null,
+                            gridInformation: {
+                                dimension: dimension,
+                                position: { x: positionX, y: positionY },
+                            },
+                        },
+                    },
+                    dependencies: [{ askID: 'studioCatalog' }],
+                },
+            });
+
+            await reconstitutionPromise;
+        } catch (e) {
+            console.error(`[${tags.system}.${tagName}] failed to auto-spawn studioCatalog. Error:`, ab.links.utils.getErrorMessage(e));
+        }
+
+        studioCatalogs = getBots(byTag("abArtifactName", "studioCatalog"));
+    }
 }
-collectToolboxes(ab.links.remember.tags.toolbox_array, null);
 
-// Kits in the scene are bots from the `kit` artifact. Their `label` matches the
-// toolbox `title` they were spawned from, and `studioId` matches the catalog
-// they were spawned from. Match on the (studioId, label) pair.
+// Track studioIds backed by a studioCatalog bot in the grid. Kits/tools
+// whose studioId isn't in this set were loaded outside the catalog flow
+// and should be hidden from the agent.
+const knownStudioIds = new Set();
+for (const catalog of studioCatalogs) {
+    if (catalog.tags.studioId) knownStudioIds.add(catalog.tags.studioId);
+}
+
+// Loaded kit bots — their `label` matches the toolbox `title` they were
+// spawned from. Used to skip already-loaded kits in the catalog response.
 const loadedKits = getBots(byTag("abArtifactName", "kit"));
 const loadedKitKeys = new Set();
 for (const kitBot of loadedKits) {
-    if (kitBot.tags.label) {
-        loadedKitKeys.add(`${kitBot.tags.studioId ?? ''}::${kitBot.tags.label}`);
+    if (kitBot.tags.label && kitBot.tags.studioId) {
+        loadedKitKeys.add(`${kitBot.tags.studioId}::${kitBot.tags.label}`);
     }
 }
 
-for (let i = 0; i < possibleToolboxes.length; i++) {
-    const { toolbox: activeToolbox, studioId } = possibleToolboxes[i];
-    const displayName = activeToolbox.title ?? activeToolbox.name;
+// Kit entries. Multiple studioCatalog bots can carry the same studio —
+// their toolbox_arrays are equivalent, so dedupe by (studioId, kitName).
+const seenKitKeys = new Set();
+for (const catalog of studioCatalogs) {
+    const studioId = catalog.tags.studioId;
+    if (!studioId) continue;
 
-    if (loadedKitKeys.has(`${studioId ?? ''}::${displayName}`)) continue;
+    const toolboxes = catalog.tags.toolbox_array ?? [];
+    for (const tb of toolboxes) {
+        if (!tb || !tb.name) continue;
 
-    const obj = {
-        "type": "kit",
-        "name": displayName,
-        "id": activeToolbox.name,
-        "studioId": studioId,
-        "description": activeToolbox.description ?? displayName
+        const kitKey = `${studioId}::${tb.name}`;
+        if (seenKitKeys.has(kitKey)) continue;
+        seenKitKeys.add(kitKey);
+
+        const displayName = tb.title ?? tb.name;
+        if (loadedKitKeys.has(`${studioId}::${displayName}`)) continue;
+
+        catalogArr.push({
+            type: 'kit',
+            name: displayName,
+            id: tb.name,
+            studioId: studioId,
+            description: tb.description ?? displayName,
+        });
     }
-    catalogArr.push(obj);
 }
 
-// Tools inherit their `studioId` from the kit bot they live in. Same tool from
-// two different studios is kept as distinct entries — dedupe on (studioId, id).
+// Tool entries. Same dedupe by (studioId, toolId). Tools from kits whose
+// studio isn't loaded as a studioCatalog are excluded.
 const seenToolKeys = new Set();
-for (let j = 0; j < loadedKits.length; ++j) {
-    const kitBot = loadedKits[j];
-    const kitStudioId = kitBot.tags.studioId ?? null;
-    const arr = kitBot.tags.tool_array ?? [];
-    for (let k = 0; k < arr.length; ++k) {
-        const id = arr[k].targetAB;
-        const key = `${kitStudioId ?? ''}::${id}`;
-        if (seenToolKeys.has(key)) continue;
-        seenToolKeys.add(key);
+for (const kitBot of loadedKits) {
+    const studioId = kitBot.tags.studioId;
+    if (!studioId || !knownStudioIds.has(studioId)) continue;
 
-        const toolName = arr[k].name ?? arr[k].targetAB;
-        const obj = {
-            "type": "tool",
-            "name": toolName,
-            "id": id,
-            "studioId": kitStudioId,
-            "description": arr[k].description ?? toolName,
-            "agentReady": arr[k].agentReady ?? false
-        }
-        catalogArr.push(obj);
+    const arr = kitBot.tags.tool_array ?? [];
+    for (const tool of arr) {
+        const id = tool.targetAB;
+        if (!id) continue;
+
+        const toolKey = `${studioId}::${id}`;
+        if (seenToolKeys.has(toolKey)) continue;
+        seenToolKeys.add(toolKey);
+
+        const toolName = tool.name ?? id;
+        catalogArr.push({
+            type: 'tool',
+            name: toolName,
+            id: id,
+            studioId: studioId,
+            description: tool.description ?? toolName,
+            agentReady: tool.agentReady ?? false,
+        });
     }
 }
 

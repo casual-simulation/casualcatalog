@@ -1,4 +1,4 @@
-console.log("getLayerLoadStudio", tags.currLayerStudio, that);
+superShout("superLog", `getLayerLoadStudio, ${tags.currLayerStudio}, ${os.getCurrentInst()}, ${that}`);
 
 if (!links.learn.abIsPrimary()) {
     return;

@@ -485,11 +485,13 @@ After loading a tool with non-empty `configuratorProperties`, inspect them and c
 
 _Modes: all_
 
-Signal that the current todo is finished. Emit as the final entry in the response that finishes a todo — whether the work used `makePatch`, `makeTodos`, tool calls, or any combination. Without it the todo stays active indefinitely.
+Signal that a todo is finished. Emit as the final entry in the response that finishes the todo — whether the work used `makePatch`, `makeTodos`, tool calls, or any combination. Without it the todo stays active indefinitely.
 
 ```json
-{ "function": { "name": "completeTodo", "args": {} } }
+{ "function": { "name": "completeTodo", "args": { "todoBotId": "<string>" } } }
 ```
+
+- `todoBotId` _(required)_: the bot ID of the todo to mark complete. Pass the exact value of `context.todoId` from the message you are responding to.
 
 Only call when `context.todoId` is present and the work is done. Skip it on turns that use query tools (`getInst`, `getCatalog`, `getConfiguratorProperties`) or where you are awaiting a user reply — those continue the conversation.
 
@@ -541,7 +543,7 @@ Response:
       "args": { "message": "Made bot_abc green and doubled its scale." }
     }
   },
-  { "function": { "name": "completeTodo", "args": {} } }
+  { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 
@@ -576,7 +578,7 @@ After getInst result arrives, response (turn 2):
       }
     }
   },
-  { "function": { "name": "completeTodo", "args": {} } }
+  { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 
@@ -613,7 +615,7 @@ Response:
       }
     }
   },
-  { "function": { "name": "completeTodo", "args": {} } }
+  { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 
@@ -650,7 +652,7 @@ Response:
       }
     }
   },
-  { "function": { "name": "completeTodo", "args": {} } }
+  { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 
@@ -733,7 +735,7 @@ Response:
       }
     }
   },
-  { "function": { "name": "completeTodo", "args": {} } }
+  { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 
@@ -920,7 +922,7 @@ After the load result arrives, response (turn 2 — apply configuration and decl
       }
     }
   },
-  { "function": { "name": "completeTodo", "args": {} } }
+  { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 
@@ -971,7 +973,7 @@ After the load result returns its `configuratorProperties` (a single `prompt` te
       "args": { "message": "Configured the scale model wizard with the lemonade-stand prompt. It will generate the simulation." }
     }
   },
-  { "function": { "name": "completeTodo", "args": {} } }
+  { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 

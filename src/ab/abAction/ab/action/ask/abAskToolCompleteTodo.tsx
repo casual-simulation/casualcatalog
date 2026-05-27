@@ -1,4 +1,10 @@
-const todoBot = that?.askContext?.todoBot;
+const todoBotId = that?.args?.todoBotId;
+
+if (!todoBotId) {
+    return;
+}
+
+const todoBot = getBot('id', todoBotId);
 
 if (!todoBot) {
     return;

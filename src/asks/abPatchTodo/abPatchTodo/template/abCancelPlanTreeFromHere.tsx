@@ -118,6 +118,17 @@ if (tags.debug) {
 destroy(allTodos);
 destroy(treeApprovals);
 
+// Reset ab's conversation history — the cancelled work is gone, the next user request
+// should start with a clean slate (parallels the archive+clear that approval does, minus
+// the archive since there's nothing left to attach it to).
+const historyStorageBot = ab.links.remember;
+if (historyStorageBot) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] clearing ab conversation history`);
+    }
+    ab.links.ask.abConversationHistoryClear({ historyStorageBot, log: false });
+}
+
 const username = await ab.links.console.getUserName();
 ab.links.utils.abLog({
     message: `Todo plan(s) ${allPlanIds.join(', ')} have been cancelled by ${username}.`,

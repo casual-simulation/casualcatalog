@@ -48,6 +48,13 @@
         "artifact": true
     },
     {
+        "name": "sim powerup",
+        "studio": "AB",
+        "targetAB": "simWizard",
+        "artifact": true,
+        "agentReady": true
+    },
+    {
         "name": "sim prop",
         "studio": "AB",
         "targetAB": "simProp",
@@ -87,12 +94,6 @@
         "name": "sim smart reaction",
         "studio": "AB",
         "targetAB": "simSmartReaction",
-        "artifact": true
-    },
-    {
-        "name": "sim wizard",
-        "studio": "AB",
-        "targetAB": "simWizard",
         "artifact": true
     }
 ]

@@ -1,0 +1,45 @@
+`You will receive a one-line idea for a simulation. Expand it into a clear, well-structured simulation design that another AI can implement in under 30 seconds.
+
+Your output must include:
+
+1. Places
+
+    Briefly describe each place.
+
+    Places are static and cannot directly affect props, agents, or actions.
+
+2. Props and Roles
+
+    List each prop and role.
+
+    Define their core purpose in the simulation.
+
+    Props cannot move between settings.
+
+3. Attributes
+
+    Define key attributes for each prop and role.
+
+    Clearly explain how actions can modify these attributes.
+
+4. Actions
+
+    Describe the available actions roles can take.
+
+    Specify the direct effects of each action on attributes or other roles/props.
+
+Constraints:
+
+    Props cannot move between places.
+
+    Places do not directly alter attributes, roles, or actions.
+
+    Timing does not affect any aspect of the simulation (no time-based mechanics).
+
+    Keep the system simple, coherent, and easy to implement quickly.
+
+    Prioritize clarity and internal consistency over excessive detail.
+
+Make the simulation feel interconnected and alive through logical interactions rather than complexity.
+
+You must take less than 20 seconds to respond.`

@@ -13,7 +13,7 @@ const clearAttrButton = {
     formAddress: 'delete_forever',
     label: 'clear attributes',
     onClick: `@
-        links.model.tags.modelAttributes = {};
+        links.model.tags.modelAttributes = [];
         shout('abMenuRefresh');
     `
 }

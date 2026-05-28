@@ -7,7 +7,7 @@
         "artifact": true
     },
     {
-        "name": "scale model powerup",
+        "name": "scale model guide",
         "studio": "AB",
         "targetAB": "scaleModelWizard",
         "description": "Generates a behavior-driven simulation (entities with stats, lifecycle states, movement, spawning, per-tick listeners) from a single text prompt — not a literal 3D scene. USAGE: call applyConfiguratorProperties on this tool with { prompt: '<scenario>' } (e.g. 'a lemonade stand over the summer'). A two-pass AI pipeline (planner + builder) does the rest. Do not build the scene manually with makePatch.",

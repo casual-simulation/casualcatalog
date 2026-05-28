@@ -1,9 +1,9 @@
 const data = that.data;
-tags.label = data.label ?? 'scale model powerup';
+tags.label = data.label ?? 'scale model guide';
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? 'white';
-tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModelWizard_' + getID(thisBot));
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModelGuide_' + getID(thisBot));
 
 //Place bot correctly
 if (data.dimensionData) {

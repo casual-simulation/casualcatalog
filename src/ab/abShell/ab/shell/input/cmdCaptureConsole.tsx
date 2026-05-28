@@ -45,8 +45,6 @@ const startCapture = () => {
         return;
     }
 
-    console.log('startCapture 1');
-
     const buffer = [];
     const originals = {};
 
@@ -57,8 +55,6 @@ const startCapture = () => {
         } catch (e) {}
     };
 
-    console.log('startCapture 2');
-
     for (const method of CONSOLE_METHODS) {
         originals[method] = console[method];
         console[method] = function (...callArgs) {
@@ -66,7 +62,6 @@ const startCapture = () => {
             return originals[method].apply(console, callArgs);
         };
     }
-    console.log('startCapture 3');
 
     let errorHandler;
     let rejectionHandler;
@@ -75,7 +70,6 @@ const startCapture = () => {
             const message = event && (event.message || (event.error && (event.error.message || String(event.error))));
             buffer.push(`[${nowString()}] UNCAUGHT: ${stripStack(String(message || 'Unknown error'))}`);
         };
-        console.log('startCapture 4');
         rejectionHandler = (event) => {
             const reason = event && event.reason;
             let message;
@@ -84,14 +78,11 @@ const startCapture = () => {
             else { try { message = JSON.stringify(reason); } catch (e) { message = String(reason); } }
             buffer.push(`[${nowString()}] UNHANDLED REJECTION: ${stripStack(String(message))}`);
         };
-        console.log('startCapture 5');
         globalThis.document.addEventListener('error', errorHandler);
         globalThis.document.addEventListener('unhandledrejection', rejectionHandler);
-        console.log('startCapture 6');
     }
 
     thisBot.vars.captureConsole = { active: true, buffer, originals, errorHandler, rejectionHandler };
-    console.log('startCapture 7');
     os.toast('Console capture started.');
 };
 

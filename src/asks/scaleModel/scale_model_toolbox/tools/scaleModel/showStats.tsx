@@ -19,9 +19,9 @@ const seeAttributesButton = {
 }
 
 seeAttributesButton.dropdownOptions = [];
-for (const item in tags.modelAttributes) {
-    let val = tags.modelAttributes[item].start;
-    let name = tags.modelAttributes[item].name;
+for (const item of tags.modelAttributes) {
+    let val = item.start;
+    let name = item.name;
 
     if (tags[name] || tags[name] == 0) {
         val = tags[name];
@@ -35,8 +35,8 @@ for (const item in tags.modelAttributes) {
 }
 
 for (const item in tags.modelStates) {
-    let val = tags.modelStates[item].start;
-    let name = tags.modelStates[item].name;
+    let val = item.start;
+    let name = item.name;
     if (tags[name]) {
         val = tags[name];
     }
@@ -52,7 +52,7 @@ if (tags.statsButton) {
     destroy(links?.statsButton);
 }
 
-if (tags.modelAttributes && Object.keys(tags.modelAttributes).length != 0) {
+if (tags.modelAttributes && tags.modelAttributes.length != 0) {
     const stats = await ab.links.menu.abCreateMenuDropdown(seeAttributesButton);
     tags.statsButton = getLink(stats);
 }

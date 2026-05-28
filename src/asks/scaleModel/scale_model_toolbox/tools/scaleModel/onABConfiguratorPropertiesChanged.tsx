@@ -6,8 +6,8 @@ if ('scaleModelName' in propertyValues) {
 }
 
 if ('scaleModelStats' in propertyValues) {
-    const attrs = {...tags.modelAttributes};
-    for (const attr in attrs) {
+    const attrs = [...tags.modelAttributes];
+    for (const attr of attrs) {
         tags[attr] = null;
     }
 
@@ -15,8 +15,8 @@ if ('scaleModelStats' in propertyValues) {
 }
 
 if ('scaleModelStates' in propertyValues) {
-    const states = {...tags.modelStates};
-    for (const state in states) {
+    const states = [...tags.modelStates];
+    for (const state of states) {
         tags[state] = null;
     }
 
@@ -24,8 +24,8 @@ if ('scaleModelStates' in propertyValues) {
 }
 
 if ('scaleModelListeners' in propertyValues) {
-    const listeners = {...tags.modelListeners};
-    for (const listener in listeners) {
+    const listeners = [...tags.modelListeners];
+    for (const listener of listeners) {
         tags[listener] = null;
     }
 

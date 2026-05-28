@@ -10,9 +10,9 @@ const struc = {
     }
 };
 
-for (const item in tags.modelAttributes) {
-    let val = tags.modelAttributes[item].start;
-    let name = tags.modelAttributes[item].name;
+for (const item of tags.modelAttributes) {
+    let val = item.start;
+    let name = item.name;
 
     if (tags[name]) {
         val = tags[name];
@@ -20,9 +20,9 @@ for (const item in tags.modelAttributes) {
     struc.stats[name] = val;
 }
 
-for (const item in tags.modelStates) {
-    let val = tags.modelStates[item].start;
-    let name = tags.modelStates[item].name;
+for (const item of tags.modelStates) {
+    let val = item.start;
+    let name = item.name;
 
     if (tags[name]) {
         val = tags[name];
@@ -30,8 +30,8 @@ for (const item in tags.modelStates) {
     struc.states[name] = val;
 }
 
-for (const item in tags.modelListeners) {
-    let name = tags.modelListeners[item].name;
+for (const item of tags.modelListeners) {
+    let name = item.name;
 
     let val = raw[name];
     struc.listeners[name] = val;

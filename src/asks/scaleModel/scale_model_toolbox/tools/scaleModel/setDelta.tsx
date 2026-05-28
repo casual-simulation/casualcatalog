@@ -5,22 +5,22 @@ if (tags.onDeltaOverwrite) {
     return;
 }
 
-for (const attr in tags.modelAttributes) {
+for (const attr of tags.modelAttributes) {
 
-    const deltaMod = tags.modelAttributes[attr].deltaModifier;
+    const deltaMod = attr.deltaModifier;
     let endValue;   
 
-    let amount = (tags.modelAttributes[attr].delta * value);
+    let amount = (attr.delta * value);
     
     if (deltaMod == '+') {
-        endValue = tags.modelAttributes[attr].start + amount;
+        endValue = attr.start + amount;
     } else if (deltaMod == '-') {
-        endValue = tags.modelAttributes[attr].start - amount;
+        endValue = attr.start - amount;
     } else if (deltaMod == '/') {
-        endValue = tags.modelAttributes[attr].start / amount;
+        endValue = attr.start / amount;
     } else if (deltaMod == '*') {
-        endValue = tags.modelAttributes[attr].start * amount;
+        endValue = attr.start * amount;
     }
 
-    thisBot.editAttribute({attributeName: tags.modelAttributes[attr].name, value: endValue});
+    thisBot.editAttribute({attributeName: attr.name, value: endValue});
 }

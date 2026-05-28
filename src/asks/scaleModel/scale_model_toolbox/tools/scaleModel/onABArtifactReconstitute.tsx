@@ -20,31 +20,31 @@ tags.modelID = data.modelID ?? uuid();
 tags.modelListeners = data.modelListeners;
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModel_' + getID(thisBot));
 
-const listeners = {...data.modelListeners};
-for (const listener in listeners) {
-    tags[listeners[listener].name] = listeners[listener].code;
+const listeners = [...data.modelListeners];
+for (const listener of listeners) {
+    tags[listener.name] = listener.code;
 }
 
-const stats = {...data.modelAttributes};
-for (const stat in stats) {
-    tags[stats[stat].name] = stats[stat].start;
+const stats = [...data.modelAttributes];
+for (const stat of stats) {
+    tags[stat.name] = stat.start;
 }
 
-const states = {...data.modelStates};
-for (const state in states) {
-    tags[states[state].name] = states[state].start;
+const states = [...data.modelStates];
+for (const state of states) {
+    tags[state.name] = state.start;
 }
 
 if (!data.modelAttributes) {
-    tags.modelAttributes = {};
+    tags.modelAttributes = [];
 }
 
 if (!data.modelStates) {
-    tags.modelStates = {};
+    tags.modelStates = [];
 }
 
 if (!data.modelListeners) {
-    tags.modelListeners = {};
+    tags.modelListeners = [];
 }
 
 //Place bot correctly

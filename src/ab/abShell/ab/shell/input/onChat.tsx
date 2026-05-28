@@ -78,6 +78,8 @@ if (that.message[0] == ".") {
         cmd = commandPart.substring(0, spaceIndex);
     }
 
+    cmd = cmd.toLowerCase();
+
     // Get command args.
     if (abCommands && abCommands.hasCommand(cmd)) {
         let args;

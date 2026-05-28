@@ -241,10 +241,6 @@ for (const fc of functionCalls) {
 
 const todoCompletedThisTurn = functionCalls.some(fc => fc.function?.name === 'completeTodo');
 
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] todo mark completed same turn as query functions: ${todoCompletedThisTurn}`);
-}
-
 if (queryResults.length > 0) {
     const resultUserMessage = buildUserMessage(undefined, { functionResults: queryResults });
 

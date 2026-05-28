@@ -231,6 +231,12 @@ for (const fc of functionCalls) {
     }
 }
 
+const todoCompletedThisTurn = functionCalls.some(fc => fc.function?.name === 'completeTodo');
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] post-dispatch: queryResults=[${queryResults.map(q => q.name).join(',')}] completedThisTurn=${todoCompletedThisTurn} callDepth=${callDepth}`);
+}
+
 if (queryResults.length > 0) {
     const resultUserMessage = buildUserMessage(undefined, { functionResults: queryResults });
 
@@ -243,6 +249,14 @@ if (queryResults.length > 0) {
                 { role: 'user', content: [{ text: resultUserMessage }] },
             ]
         });
+    }
+
+    // If the agent already declared the todo done in this same response, do not recurse.
+    if (todoCompletedThisTurn) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] skipping recursive askGPT — completeTodo was emitted this turn`);
+        }
+        return;
     }
 
     await thisBot.askGPT({

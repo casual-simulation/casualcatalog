@@ -14,37 +14,25 @@ tags.modelLocked = data.modelLocked;
 tags.formAddress = data.formAddress;
 tags.form = data.form;
 tags.formSubtype = data.formSubtype;
-tags.modelName = data.modelName;
-tags.modelStates = data.modelStates;
+tags.modelName = data.modelName ?? [];
+tags.modelStates = data.modelStates ?? [];
 tags.modelID = data.modelID ?? uuid();
-tags.modelListeners = data.modelListeners;
+tags.modelListeners = data.modelListeners ?? [];
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModel_' + getID(thisBot));
 
-const listeners = [...data.modelListeners];
+const listeners = [...(data.modelListeners ?? [])];
 for (const listener of listeners) {
     tags[listener.name] = listener.code;
 }
 
-const stats = [...data.modelAttributes];
+const stats = [...(data.modelAttributes ?? [])];
 for (const stat of stats) {
     tags[stat.name] = stat.start;
 }
 
-const states = [...data.modelStates];
+const states = [...(data.modelStates ?? [])];
 for (const state of states) {
     tags[state.name] = state.start;
-}
-
-if (!data.modelAttributes) {
-    tags.modelAttributes = [];
-}
-
-if (!data.modelStates) {
-    tags.modelStates = [];
-}
-
-if (!data.modelListeners) {
-    tags.modelListeners = [];
 }
 
 //Place bot correctly

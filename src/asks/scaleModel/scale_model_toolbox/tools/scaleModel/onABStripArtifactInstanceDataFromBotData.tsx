@@ -25,21 +25,21 @@ delete data.tags.modelName;
 delete data.tags.modelID;
 delete data.tags.abConfiguratorGroup;
 
-const attrs = [...data.tags.modelAttributes];
+const attrs = [...(data.tags.modelAttributes ?? [])];
 for (const attr of attrs) {
     delete data.tags[attr];
 }
 
 delete data.tags.modelAttributes;
 
-const states = [...data.tags.modelStates];
+const states = [...(data.tags.modelStates ?? [])];
 for (const state of states) {
     delete data.tags[state];
 }
 
 delete data.tags.modelStates;
 
-const listeners = [...data.tags.modelListeners];
+const listeners = [...(data.tags.modelListeners ?? [])];
 for (const listener of listeners) {
     delete data.tags[listener];
 }

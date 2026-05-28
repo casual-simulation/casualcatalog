@@ -39,7 +39,7 @@ assert(group, `[${tags.system}.${tagName}] abConfiguratorGroup is a required par
 assert(flatProperties, `[${tags.system}.${tagName}] properties or data is a required parameter.`);
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] incoming source properties for group '${group}':`, self.structuredClone(sourceProperties));
+    console.log(`[${tags.system}.${tagName}] incoming source properties for group '${group}':`, sourceProperties);
 }
 
 const propertyValues = {};
@@ -72,7 +72,7 @@ if (incomingBots) {
 }
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] applying property values for '${group}' to bots: ${bots.map((b) => b.id).join(', ')}`, self.structuredClone(propertyValues));
+    console.log(`[${tags.system}.${tagName}] applying property values for '${group}' to bots: ${bots.map((b) => b.id).join(', ')}`, propertyValues);
 }
 
 for (const bot of bots) {

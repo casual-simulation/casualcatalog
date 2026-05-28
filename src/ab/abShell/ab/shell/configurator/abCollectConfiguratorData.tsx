@@ -96,7 +96,7 @@ for (const bot of bots) {
 data.properties.sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] collected configurator data for group '${abConfiguratorGroup}' from bots: ${bots.map((b) => b.id).join(', ')}`, self.structuredClone(data));
+    console.log(`[${tags.system}.${tagName}] collected configurator data for group '${abConfiguratorGroup}' from bots: ${bots.map((b) => b.id).join(', ')}`, data);
 }
 
 return data;

@@ -94,6 +94,7 @@ if (!target) {
     tags.chosenDimension = dimension;
 }
 
+let aiResponse2;
 if (tags.useCache) {
     destroy(loadingBar);
     loadingBar = ab.links.menu.abCreateMenuBusyIndicator({
@@ -138,7 +139,7 @@ if (tags.useCache) {
     };
     await processNext(chatStream2[Symbol.asyncIterator]());
 
-    let aiResponse2 = {
+    aiResponse2 = {
         role: streamRole ?? 'assistant',
         content: contentChunks2.join('')
     };
@@ -157,7 +158,7 @@ if (tags.useCache) {
 
 const skybox = create({
         form: 'skybox',
-        formAddress: tags.useCache ? tags.cachedSkyboxes[aiResponse2.content ?? 'clear_blue_sky'] : null,
+        formAddress: tags.useCache ? tags.cachedSkyboxes[aiResponse2?.content ?? 'clear_blue_sky'] : null,
         pointable: false,
         scale: 200,
         [dimension + 'X']: 0,

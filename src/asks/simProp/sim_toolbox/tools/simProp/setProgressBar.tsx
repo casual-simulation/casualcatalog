@@ -10,6 +10,5 @@ if (tags.trackedStat) {
             progressBarValue = currentValue / tags.trackedStatEndingValue;
         }
         tags.progressBar = progressBarValue;
-        console.log("prog", progressBarValue, tags.trackedStatStartingValue, tags.trackedStatEndingValue, currentValue);
     }
 }

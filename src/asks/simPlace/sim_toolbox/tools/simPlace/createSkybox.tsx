@@ -29,7 +29,7 @@ tags.skyboxGenerating = true;
 let response;
 
 if (!target) {
-    const chatStream = await ai.stream.chat({
+    const chatStream1 = await ai.stream.chat({
         role: 'user',
         content: [
             {
@@ -63,7 +63,7 @@ if (!target) {
         }
         await processNext(iter);
     };
-    await processNext(chatStream[Symbol.asyncIterator]());
+    await processNext(chatStream1[Symbol.asyncIterator]());
 
     let aiResponse = {
         role: streamRole ?? 'assistant',
@@ -101,7 +101,7 @@ if (tags.useCache) {
         storyPlaceLoading: true
     });
 
-    response = await ai.chat({
+     const chatStream2 = await ai.stream.chat({
         role: 'user',
         content: [
             {
@@ -116,11 +116,38 @@ if (tags.useCache) {
         preferredModel: abPersonality.tags.abPreferredAIModel
     });
 
-    console.log("[simPlace]: chosen cached skybox (" + response.content + ")");
+    const contentChunks: string[] = [];
+    let streamRole: string;
 
-    if (response.content) {
+    const processNext = async (iter: AsyncIterator<any>): Promise<void> => {
+        const { value: message, done } = await iter.next();
+        if (done) return;
+        if (message.role) {
+            streamRole = message.role;
+        }
+        if (message.content) {
+            contentChunks.push(message.content);
+            if (tags.debug) {
+                console.log(`[${tags.system}.${tagName}] response chunk received...`);
+            }
+            if (typeof onPartialResponse === 'function') {
+                onPartialResponse(message);
+            }
+        }
+        await processNext(iter);
+    };
+    await processNext(chatStream2[Symbol.asyncIterator]());
+
+    let aiResponse = {
+        role: streamRole ?? 'assistant',
+        content: contentChunks.join('')
+    };
+
+    console.log("[simPlace]: chosen cached skybox (" + aiResponse.content + ")");
+
+    if (aiResponse.content) {
         tags.color = null;
-        tags.formAddress = tags.cachedSkyboxes[response.content]
+        tags.formAddress = tags.cachedSkyboxes[aiResponse.content]
     }
     
     tags.skyboxGenerating = false;
@@ -130,7 +157,7 @@ if (tags.useCache) {
 
 const skybox = create({
         form: 'skybox',
-        formAddress: tags.useCache ? tags.cachedSkyboxes[response.content ?? 'clear_blue_sky'] : null,
+        formAddress: tags.useCache ? tags.cachedSkyboxes[aiResponse.content ?? 'clear_blue_sky'] : null,
         pointable: false,
         scale: 200,
         [dimension + 'X']: 0,

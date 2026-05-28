@@ -70,7 +70,7 @@ if (!target) {
         content: contentChunks.join('')
     };
 
-    if (aiResponse.content) {
+    if (aiResponse?.content) {
         tags.label = aiResponse.content;
         target = aiResponse.content;
         dimension = aiResponse.content;
@@ -116,7 +116,7 @@ if (tags.useCache) {
         preferredModel: abPersonality.tags.abPreferredAIModel
     });
 
-    const contentChunks: string[] = [];
+    const contentChunks2: string[] = [];
     let streamRole: string;
 
     const processNext = async (iter: AsyncIterator<any>): Promise<void> => {
@@ -126,7 +126,7 @@ if (tags.useCache) {
             streamRole = message.role;
         }
         if (message.content) {
-            contentChunks.push(message.content);
+            contentChunks2.push(message.content);
             if (tags.debug) {
                 console.log(`[${tags.system}.${tagName}] response chunk received...`);
             }
@@ -138,16 +138,16 @@ if (tags.useCache) {
     };
     await processNext(chatStream2[Symbol.asyncIterator]());
 
-    let aiResponse = {
+    let aiResponse2 = {
         role: streamRole ?? 'assistant',
-        content: contentChunks.join('')
+        content: contentChunks2.join('')
     };
 
-    console.log("[simPlace]: chosen cached skybox (" + aiResponse.content + ")");
+    console.log("[simPlace]: chosen cached skybox (" + aiResponse2.content + ")");
 
-    if (aiResponse.content) {
+    if (aiResponse2?.content) {
         tags.color = null;
-        tags.formAddress = tags.cachedSkyboxes[aiResponse.content]
+        tags.formAddress = tags.cachedSkyboxes[aiResponse2.content]
     }
     
     tags.skyboxGenerating = false;
@@ -157,7 +157,7 @@ if (tags.useCache) {
 
 const skybox = create({
         form: 'skybox',
-        formAddress: tags.useCache ? tags.cachedSkyboxes[aiResponse.content ?? 'clear_blue_sky'] : null,
+        formAddress: tags.useCache ? tags.cachedSkyboxes[aiResponse2.content ?? 'clear_blue_sky'] : null,
         pointable: false,
         scale: 200,
         [dimension + 'X']: 0,

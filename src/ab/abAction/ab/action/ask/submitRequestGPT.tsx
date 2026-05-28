@@ -107,7 +107,7 @@ try {
             if (message.content) {
                 contentChunks.push(message.content);
                 if (tags.debug) {
-                    console.log(`[${tags.system}.${tagName}] partial response:`, message);
+                    console.log(`[${tags.system}.${tagName}] response chunk received...`);
                 }
                 if (typeof onPartialResponse === 'function') {
                     onPartialResponse(message);

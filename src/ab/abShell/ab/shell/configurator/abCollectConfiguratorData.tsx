@@ -7,9 +7,15 @@ const { abConfiguratorGroup, bots: incomingBots } = that as ABCollectConfigurato
 
 assert(abConfiguratorGroup, `[${tags.system}.${tagName}] abConfiguratorGroup is a required parameter.`);
 
-const bots = incomingBots ?? getBots((b) => {
-    return b.tags.abConfiguratorGroup === abConfiguratorGroup;
-});
+let bots;
+
+if (incomingBots) {
+    bots = incomingBots.filter((b) => b.tags.abConfiguratorGroup === abConfiguratorGroup);
+} else {
+    bots = getBots((b) => {
+        return b.tags.abConfiguratorGroup === abConfiguratorGroup;
+    });
+}
 
 const data: ABConfiguratorData = {
     group: abConfiguratorGroup,
@@ -77,10 +83,6 @@ function processProperties(properties, bot) {
 }
 
 for (const bot of bots) {
-    if (bot.tags.abConfiguratorGroup !== abConfiguratorGroup) {
-        continue;
-    }
-
     let results = whisper(bot, 'onABCollectConfiguratorProperties')[0];
 
     if (results instanceof Promise) {
@@ -92,5 +94,9 @@ for (const bot of bots) {
 }
 
 data.properties.sort((a, b) => (a.order ?? Infinity) - (b.order ?? Infinity));
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] collected configurator data for group '${abConfiguratorGroup}' from bots: ${bots.map((b) => b.id).join(', ')}`, self.structuredClone(data));
+}
 
 return data;

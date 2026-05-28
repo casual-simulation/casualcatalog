@@ -38,6 +38,10 @@ const flatProperties: ABConfiguratorProperty[] = thisBot.abFlattenConfiguratorPr
 assert(group, `[${tags.system}.${tagName}] abConfiguratorGroup is a required parameter.`);
 assert(flatProperties, `[${tags.system}.${tagName}] properties or data is a required parameter.`);
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] incoming source properties for group '${group}':`, self.structuredClone(sourceProperties));
+}
+
 const propertyValues = {};
 for (const property of flatProperties) {
     const resolvedValue = property.value !== undefined ? property.value : property.default;
@@ -57,15 +61,21 @@ for (const property of flatProperties) {
     }
 }
 
-const bots = incomingBots ?? getBots((b) => {
-    return b.tags.abConfiguratorGroup === group;
-});
+let bots;
+
+if (incomingBots) {
+    bots = incomingBots.filter((b) => b.tags.abConfiguratorGroup === group);
+} else {
+    bots = getBots((b) => {
+        return b.tags.abConfiguratorGroup === group;
+    });
+}
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] applying property values for '${group}' to bots: ${bots.map((b) => b.id).join(', ')}`, self.structuredClone(propertyValues));
+}
 
 for (const bot of bots) {
-    if (bot.tags.abConfiguratorGroup !== group) {
-        continue;
-    }
-
     let result = whisper(bot, 'onABConfiguratorPropertiesChanged', { propertyValues })[0];
 
     if (result instanceof Promise) {

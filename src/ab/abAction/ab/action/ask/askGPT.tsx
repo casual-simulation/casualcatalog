@@ -223,8 +223,16 @@ for (const fc of functionCalls) {
         ab.links.utils.abLog({ name, avatar, message: `Unknown function call from AI: ${name}`, logType: 'error', space: 'local' });
         continue;
     }
+    
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] dispatching tool '${toolTagName}' with args:`, self.structuredClone(args));
+    }
 
     const result = await toolHost[toolTagName]({ args, askContext });
+
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] tool '${toolTagName}' returned:`, result);
+    }
 
     if (result !== undefined) {
         queryResults.push({ name, result });
@@ -234,7 +242,7 @@ for (const fc of functionCalls) {
 const todoCompletedThisTurn = functionCalls.some(fc => fc.function?.name === 'completeTodo');
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] post-dispatch: queryResults=[${queryResults.map(q => q.name).join(',')}] completedThisTurn=${todoCompletedThisTurn} callDepth=${callDepth}`);
+    console.log(`[${tags.system}.${tagName}] todo mark completed same turn as query functions: ${todoCompletedThisTurn}`);
 }
 
 if (queryResults.length > 0) {
@@ -254,7 +262,7 @@ if (queryResults.length > 0) {
     // If the agent already declared the todo done in this same response, do not recurse.
     if (todoCompletedThisTurn) {
         if (tags.debug) {
-            console.log(`[${tags.system}.${tagName}] skipping recursive askGPT — completeTodo was emitted this turn`);
+            console.log(`[${tags.system}.${tagName}] skipping recursive askGPT because completeTodo was emitted this turn`);
         }
         return;
     }

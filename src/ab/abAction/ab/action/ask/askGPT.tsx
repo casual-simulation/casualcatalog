@@ -177,7 +177,7 @@ const functionCalls = thisBot.abAskHelperParseFunctionCalls({ response, askConte
 if (functionCalls === null) {
     // Response did not contain detectable function calls. Attempting to extract code from response for patch bot.
     if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] Response did not contain detectable function calls. Attempting to extract code from response for patch bot. Response:`, ab.links.utils.abDebugFormatChatMessages(response));
+        console.log(`[${tags.system}.${tagName}] Response did not contain detectable function calls. Attempting to extract code from response for patch bot. Response:`, response);
     }
     const extractedCode = thisBot.abAskHelperExtractCode({ response, askContext });
     await thisBot['abAskToolMakePatch']({ args: { code: extractedCode }, askContext });

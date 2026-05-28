@@ -16,7 +16,7 @@ abCommands.addCommand('printconversationhistory', (args) => {
     }
 
     const history = historyStorageBot.tags.abConversationHistory ?? [];
-    console.log(`[${tags.system}.${tagName}] conversation history (${source}):`, ab.links.utils.abDebugFormatChatMessages(history));
+    console.log(`[${tags.system}.${tagName}] conversation history (${source}):`, history);
 }, {
     shortDescription: 'Log the conversation history stored on the ab remember bot, or on a specified bot.',
     longDescription: `Log the conversation history stored on the ab remember bot by default. If a bot id is provided, the command will look up the abConversationHistory tag on that bot and log it instead.`,

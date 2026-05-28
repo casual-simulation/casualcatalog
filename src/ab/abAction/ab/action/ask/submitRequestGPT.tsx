@@ -86,7 +86,7 @@ if (!ab.links.menu) {
 }
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] sending to ai:`, { useStreaming, aiChatMessages: ab.links.utils.abDebugFormatChatMessages(aiChatMessages), aiChatOptions });
+    console.log(`[${tags.system}.${tagName}] sending to ai:`, { useStreaming, aiChatMessages, aiChatOptions });
 }
 
 let aiResponse: AIChatMessage;
@@ -126,7 +126,7 @@ try {
     }
 
     if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] ai response:`, ab.links.utils.abDebugFormatChatMessages(aiResponse));
+        console.log(`[${tags.system}.${tagName}] ai response:`, aiResponse);
     }
 
     assert(typeof aiResponse.content === 'string', `[${tags.system}.${tagName}] Unable to extract string response from AI response.`);

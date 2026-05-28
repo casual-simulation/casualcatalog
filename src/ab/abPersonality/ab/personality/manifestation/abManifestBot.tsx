@@ -40,6 +40,10 @@ const abMod = {
 
         const instStudioConfig = await links.search.abInstStudioConfig();
 
+        if (thisBot.vars.destroyed) {
+            return;
+        }
+
         if (instStudioConfig?.studio_ab_mesh_url) {
             formAddress = instStudioConfig.studio_ab_mesh_url;
         } else if (links.remember.tags.abMeshPath) {
@@ -292,7 +296,18 @@ const abMod = {
         shout('abMenuRefresh');
     }),
     onDestroy: ListenerString(() => {
+        thisBot.vars.destroyed = true;
+
         clearInterval(tags.interval);
+
+        if(links.meshBot) {
+            destroy(links.meshBot);
+        }
+
+        if(links.coreBot) {
+            destroy(links.coreBot);
+        }
+
         shout('abMenuRefresh');
     }),
 };

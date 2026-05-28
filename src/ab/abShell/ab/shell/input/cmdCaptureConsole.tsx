@@ -48,10 +48,24 @@ const startCapture = () => {
     const buffer = [];
     const originals = {};
 
+    // Merge consecutive identical messages (same level + text) into one entry
+    // with a count + first/last timestamps, so tick-based sims that log the same
+    // line every frame collapse instead of flooding the buffer.
+    const pushEntry = (level, text) => {
+        const time = nowString();
+        const last = buffer[buffer.length - 1];
+        if (last && last.level === level && last.text === text) {
+            last.count++;
+            last.lastTime = time;
+        } else {
+            buffer.push({ level, text, firstTime: time, lastTime: time, count: 1 });
+        }
+    };
+
     const record = (level, callArgs) => {
         try {
             const text = Array.from(callArgs).map(simplifyArg).join(' ');
-            buffer.push(`[${nowString()}] ${level.toUpperCase()}: ${text}`);
+            pushEntry(level.toUpperCase(), text);
         } catch (e) {}
     };
 
@@ -68,7 +82,7 @@ const startCapture = () => {
     if (typeof globalThis !== 'undefined' && globalThis.document?.addEventListener) {
         errorHandler = (event) => {
             const message = event && (event.message || (event.error && (event.error.message || String(event.error))));
-            buffer.push(`[${nowString()}] UNCAUGHT: ${stripStack(String(message || 'Unknown error'))}`);
+            pushEntry('UNCAUGHT', stripStack(String(message || 'Unknown error')));
         };
         rejectionHandler = (event) => {
             const reason = event && event.reason;
@@ -76,7 +90,7 @@ const startCapture = () => {
             if (reason instanceof Error) message = `${reason.name}: ${reason.message}`;
             else if (typeof reason === 'string') message = reason;
             else { try { message = JSON.stringify(reason); } catch (e) { message = String(reason); } }
-            buffer.push(`[${nowString()}] UNHANDLED REJECTION: ${stripStack(String(message))}`);
+            pushEntry('UNHANDLED REJECTION', stripStack(String(message)));
         };
         globalThis.document.addEventListener('error', errorHandler);
         globalThis.document.addEventListener('unhandledrejection', rejectionHandler);
@@ -104,18 +118,28 @@ const stopCapture = async () => {
     }
     state.active = false;
 
+    const hasEntries = state.buffer.length > 0;
     const entryCount = state.buffer.length;
-    const traceText = entryCount > 0 ? state.buffer.join('\n') : '(no console output captured)';
 
-    const classifyLine = (entry) => {
-        const match = /^\[[^\]]*\]\s+([A-Z ]+):/.exec(entry);
-        const level = match ? match[1].trim() : '';
+    const classifyLevel = (level) => {
         if (level === 'ERROR' || level === 'UNCAUGHT' || level === 'UNHANDLED REJECTION') return 'cc-error';
         if (level === 'WARN') return 'cc-warn';
         return '';
     };
 
-    const lines = (entryCount > 0 ? state.buffer : [traceText]).map(entry => ({ text: entry, cls: classifyLine(entry) }));
+    const formatEntry = (entry) => {
+        const time = entry.count > 1 && entry.lastTime !== entry.firstTime
+            ? `${entry.firstTime}-${entry.lastTime}`
+            : entry.firstTime;
+        const countPrefix = entry.count > 1 ? `(repeated x${entry.count}) ` : '';
+        return `[${time}] ${countPrefix}${entry.level}: ${entry.text}`;
+    };
+
+    const traceText = hasEntries ? state.buffer.map(formatEntry).join('\n') : '(no console output captured)';
+
+    const lines = hasEntries
+        ? state.buffer.map(entry => ({ text: formatEntry(entry), cls: classifyLevel(entry.level) }))
+        : [{ text: traceText, cls: '' }];
 
     const styleCss = `
         #cc-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; z-index: 10; }

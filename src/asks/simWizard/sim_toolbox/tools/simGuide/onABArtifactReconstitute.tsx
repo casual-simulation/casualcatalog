@@ -1,10 +1,10 @@
 const data = that.data;
-tags.label = data.label ?? 'sim powerup';
+tags.label = data.label ?? 'sim guide';
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? 'white';
 tags.simID = data.simID ?? uuid();
-tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('simPowerup_' + getID(thisBot));
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('simGuide_' + getID(thisBot));
 
 //Place bot correctly
 if (data.dimensionData) {

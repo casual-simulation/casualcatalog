@@ -10,7 +10,7 @@ const loadingBar = ab.links.menu.abCreateMenuBusyIndicator({
     simPlaceLoading: true
 });
 
-const response = await ai.chat({
+const chatStream = await ai.stream.chat({
     role: 'user',
     content: [
         {
@@ -44,9 +44,36 @@ const response = await ai.chat({
     preferredModel: ab.links.personality.tags.abPreferredAIModel
 });
 
+const contentChunks: string[] = [];
+let streamRole: string;
+
+const processNext = async (iter: AsyncIterator<any>): Promise<void> => {
+    const { value: message, done } = await iter.next();
+    if (done) return;
+    if (message.role) {
+        streamRole = message.role;
+    }
+    if (message.content) {
+        contentChunks.push(message.content);
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] response chunk received...`);
+        }
+        if (typeof onPartialResponse === 'function') {
+            onPartialResponse(message);
+        }
+    }
+    await processNext(iter);
+};
+await processNext(chatStream[Symbol.asyncIterator]());
+
+let aiResponse = {
+    role: streamRole ?? 'assistant',
+    content: contentChunks.join('')
+};
+
 destroy(loadingBar);
 
-let promptResponse = response.content?.replaceAll('`', '');
+let promptResponse = aiResponse.content?.replaceAll('`', '');
 promptResponse = promptResponse.replaceAll('\n', '');
 if (promptResponse.indexOf('json') == 0) {
     promptResponse = promptResponse.replace('json', '');

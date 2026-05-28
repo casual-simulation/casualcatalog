@@ -2,7 +2,7 @@ const properties: ABConfiguratorProperty[] = [
     {
         key: 'prompt',
         type: 'text',
-        description: 'The prompt for the powerup to use to create the scale model',
+        description: 'The prompt for the guide to use to create the simulation',
         default: "",
         value: tags.wizardPrompt,
     },

@@ -29,7 +29,7 @@ tags.skyboxGenerating = true;
 let response;
 
 if (!target) {
-    response = await ai.chat({
+    const chatStream = await ai.stream.chat({
         role: 'user',
         content: [
             {
@@ -43,10 +43,37 @@ if (!target) {
         preferredModel: abPersonality.tags.abPreferredAIModel
     });
 
-    if (response.content) {
-        tags.label = response.content;
-        target = response.content;
-        dimension = response.content;
+    const contentChunks: string[] = [];
+    let streamRole: string;
+
+    const processNext = async (iter: AsyncIterator<any>): Promise<void> => {
+        const { value: message, done } = await iter.next();
+        if (done) return;
+        if (message.role) {
+            streamRole = message.role;
+        }
+        if (message.content) {
+            contentChunks.push(message.content);
+            if (tags.debug) {
+                console.log(`[${tags.system}.${tagName}] response chunk received...`);
+            }
+            if (typeof onPartialResponse === 'function') {
+                onPartialResponse(message);
+            }
+        }
+        await processNext(iter);
+    };
+    await processNext(chatStream[Symbol.asyncIterator]());
+
+    let aiResponse = {
+        role: streamRole ?? 'assistant',
+        content: contentChunks.join('')
+    };
+
+    if (aiResponse.content) {
+        tags.label = aiResponse.content;
+        target = aiResponse.content;
+        dimension = aiResponse.content;
         dimension = dimension.replace(/[^a-zA-Z0-9]/g, '');
         dimension = dimension.toLowerCase();
         tags.chosenDimension = dimension;

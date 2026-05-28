@@ -1,4 +1,4 @@
-if (tags.remoteID != getID(configBot) || tags.usingGPS) {
+if (tags.remoteID != getID(configBot)) {
     return;
 }
 
@@ -11,7 +11,7 @@ if (that) {
 }
 
 thisBot.moveAvatar({
-        dimension: configBot.tags.mapPortal ?? "home",
+        dimension: that.dimension ?? "home",
         position: {
             x: that.position.x,
             y: that.position.y

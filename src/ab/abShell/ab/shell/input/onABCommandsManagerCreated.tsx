@@ -113,6 +113,22 @@ abCommands.addCommand('logclear', (args) => {
     usage: '.logclear'
 })
 
+abCommands.addCommand('captureconsole', args => thisBot.cmdCaptureConsole(args), {
+    shortDescription: 'Capture browser console output as plain text for sharing.',
+    longDescription: `Capture browser console output (log/info/warn/error/debug plus uncaught errors) as simplified plain text, with stack-trace frames stripped out for easy sharing.
+
+    > .captureconsole start
+    Begins capturing all console output.
+
+    > .captureconsole stop
+    Stops capturing and opens a window showing the captured text with a button to copy it all to the clipboard.
+    `,
+    usage: [
+        '.captureconsole start',
+        '.captureconsole stop'
+    ]
+})
+
 abCommands.addCommand('sheet', args => thisBot.cmdSheet(args), {
     shortDescription: 'Open the sheet portal for specified bot or an entire dimension.',
     usage: [

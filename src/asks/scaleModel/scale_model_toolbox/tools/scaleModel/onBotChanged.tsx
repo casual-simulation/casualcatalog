@@ -1,3 +1,13 @@
+if (!tags.modelAttributes) {
+    tags.modelAttributes = [];
+}
+if (!tags.modelListeners) {
+    tags.modelListeners = [];
+}
+if (!tags.modelStates) {
+    tags.modelStates = [];
+}
+
 for (const listener of tags.modelListeners) {
     if (listener.type == 'stat') {
         const stat = listener.stat;

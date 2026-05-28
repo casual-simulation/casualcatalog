@@ -1,0 +1,179 @@
+`You will be given a prompt for a simulation. You must return a csv with the simulation items that you decide should be created based on the content of the prompt. Your csv must have two fields: type and configuration. You must provide location information for each item you wish to create. Place these items with these rules in mind: 
+    PLACEMENT RULES: 
+        - place items in ways that make visual sense in a 3d world
+        - units are in feet, they should be integers
+        - leave space between items
+
+    You must answer quickly, less than 30 seconds. Favor speed over extra detail. If you do not answer within 30 seconds the program will fail.
+    a trigger_type can be an action or reaction or prop reaction or prop actions or smart reactions.
+    Always use a prop action when the user should click on a prop.
+    
+    Your options for simulation items are:
+        - SIM_ACTION: 
+            description: an action for a user to take or complete. These will typically be in action/reaction chains, starting with a "startingAction" or a prop reaction (triggered by a user interacting with a prop), this chain is indicated using triggers.
+            configuration: {
+                label: the text that should appear on the action (keep it brief, less than 10 words)
+                simID: a unique id used to determine triggers
+                triggers: an array of trigger_types that this action should follow. This can be an empty array.
+                triggerFilter: an array of trigger_types that must be completed in order for this action to be unlocked and able to follow a trigger.
+                roles: an array of the names of roles and/or the names of props (case sensitive, do NOT use simIDs) that this action should appear for (example: a 'doctor' role can 'check test results', but a 'patient' role cannot, a 'notepad' prop can be written in).  
+                startingAction: a true or false value representing whether or not this action is one of the first actions a user sees.
+                groups: an array of group ids. If two actions have the same group id only one action in the group can be completed.
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+        - SIM_ROLE: 
+            description: a role that a user can take on (example: doctor, patient).
+            configuration: {
+                name: the name of the role.
+                attributes: a json object of attribute name keys and attribute values.
+                numUsers: an integer number representing how many users can occupy this role at one time.
+                place: the simID of the sim place that a user should be sent to upon choosing this role.
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+        - SIM_REACTION: 
+            description: an effect that can happen in response to an action, that changes a stat of a chosen role or prop.
+            configuration: {
+                label: A brief description of the reaction (less than 5 words).
+                affectedAttribute: the attribute of a prop or role that should be affected.
+                effect: the way that the attribute is affected. This value can be +, -, or =.
+                value: The amount that the attribute should be changed by (example 2).
+                roles: an array of the names of roles and/or the names of props (case sensitive, do NOT use simIDs) that this reaction should affect (example: a patient role can have it's health attribute reduced).
+                simID: a unique id used to determine triggers.
+                triggers: an array of trigger_types that this action should follow. This can be an empty array.
+                triggerFilter: an array of trigger_types that must be completed in order for this reaction to be unlocked and able to follow a trigger.
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+        - SIM_PROP:
+            description: a prop in the simulation that is not a player but has stats.
+            configuration: {
+                name: The name of the prop.
+                visualDescription: a short (10 words max) description of what the prop looks like.
+                trackedAttribute: The main attribute that should be visually represented for this prop. This value can be left empty.
+                lowestValue: The lowest value allowed for the tracked attribute.
+                highestValue: The highest value allowed for the tracked attribute.
+                attributes: a json object of attribute name keys and attribute values, make sure the tracked attribute is included.
+                place: the simID of the place where this prop should be located.
+                simID: a unique id used to determine triggers.
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+        - SIM_PROP_ACTION: 
+            description: a type of action, exactly like a sim action, except these are hidden by a prop reaction trigger and completed by the completion of different action, reaction, or prop reaction triggers. The hideTriggers and completionsTriggers should almost never be the same. CompletionTriggers are generally the trigger_types that follow the prop reaction that is in the hideTriggers. This is so that the user gets prompted to do this action again to complete all actions.
+            configuration: {
+                label: the text that should appear on the prop action (keep it brief, less than 10 words, EXAMPLE: "click on the trash can")
+                simID: a unique id used to determine triggers
+                triggers: an array of trigger_types that this action should follow. This can be an empty array.
+                triggerFilter: an array of trigger_types that must be completed in order for this action to be unlocked and able to follow a trigger.
+                completionTriggers: an array of trigger_types that should cause this prop action to complete.
+                hideTriggers: an array of prop reactions that should cause this prop action to hide.
+                roles: an array of the names of roles (case sensitive, do NOT use simIDs) that this action should appear for (example: a 'Doctor' role can 'check test results', but a 'Patient' role cannot).  
+                startingAction: a true or false value representing whether or not this prop action is one of the first actions a user sees.
+                groups: an array of group ids. If two actions have the same group id only one action in the group can be completed.
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+        - SIM_PLACE:
+            description: a location in the simulation that a player can move to and items can be placed in.
+            configuration: {
+                prompt: A prompt describing the location that should be displayed.
+                name: the name of the location (keep it brief, less than 4 words).
+                simID: a unique id for sim doors and props to reference.
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+        - SIM_DOOR: 
+            description: a door that can be placed in a sim place that leads to a different sim place.
+            configuration: {
+                label: the name of the place that this door should lead to.
+                destination: the simID of the place that this door should lead to.
+                place: the simID of the place where this door should be located.
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+        - SIM_PROP_REACTION: 
+            description: a trigger for other actions/reactions that is activated by a physical interaction with a prop. There are two possible types, onClick and onDrag
+            configuration: {
+                simID: a unique id used to determine triggers.
+                reactionType: can be either "onClick" or "onDrag"
+                roles: an array of the names of roles (case sensitive, no NOT use simIDs)  that this reaction should happen for (example: a janitor clicking on a trash can triggers new actions such as taking out the trash to appear).
+                props: an array of simIDs of props that this reaction will watch for user reactions. This cannot be an empty array.
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+        - SIM_PLAYER:
+            description: a player slot for a user to occupy, if no sim players are provided, users will not be able to accept a role. There should be the same number of simPlayers as the number of roles in most cases.
+            configuration: {
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+        
+        - SIM_SMART_REACTION: 
+            description: a listener that watches for its triggers to be completed, or added to the queue of available actions, depending on the configuration.
+            configuration: {
+                label: A brief description of the reaction (less than 5 words).
+                simID: a unique id used to determine triggers.
+                triggers: an array of trigger_types that this action should listen for, no duplicates.
+                triggerFilter: an array of trigger_types that must be completed in order for this reaction to be unlocked and able to follow a trigger.
+                useQueue: if true the smart reaction will look in the queue of available actions for its triggers, if false, it will look in the log of completed actions.
+                orderMatters: if true the triggers must be in order (example: triggers:[a, b, c], log: [a, b, d, c] would complete this smart action, log: [a, c, b] would not).
+                sequentialMatters: if true the triggers must not be interupted by a different action in the queue/log (example: triggers:[a, b, c], log: [a, b, d, c] would not complete this action, log: [a, c, b] would).
+                location: {
+                    x: integer,
+                    y: integer
+                }
+            }
+
+    EXAMPLE:
+        prompt: "a patient who has the flu and a doctor who must run tests and diagnose them"
+
+        response: ""csv
+            type,configuration
+            SIM_ACTION,"{""label"": ""Run cold test"", ""simID"": ""cold_test"", ""triggers"": [""click_cart""], ""triggerFilter"": [], ""roles"": [""Doctor""], ""startingAction"": false, ""groups"": [], ""location"": {""x"": 35, ""y"":  15}}"
+            SIM_PLACE,"{""prompt"": ""A medical examination room with equipment and seating"", ""name"": ""Exam Room"", ""simID"": ""exam_room"", ""location"": {""x"": -11, ""y"": 4}}"
+            SIM_ROLE,"{""name"": ""Doctor"", ""attributes"": {""knowledge"": 100}, ""numUsers"": 1, ""place"": ""exam_room"", ""location"": {""x"": 0, ""y"": 5}}"
+            SIM_PROP_REACTION,"{""simID"": ""click_cart"", ""reactionType"": ""onClick"", ""roles"": [""Doctor""], ""props"": [""med_cart""], ""location"": {""x"": 14, ""y"":  5}}"
+            SIM_ACTION,"{""label"": ""Run Flu test"", ""simID"": ""flu_test"", ""triggers"": [""click_cart""], ""triggerFilter"": [], ""roles"": [""Doctor""], ""startingAction"": false, ""groups"": [], ""location"": {""x"": 35, ""y"":  10}}"
+            SIM_PLAYER,"{""location"": {""x"": 15, ""y"": 5}}"
+            SIM_ACTION,"{""label"": ""Greet patient"", ""simID"": ""greet"", ""triggers"": [], ""triggerFilter"": [], ""roles"": [""Doctor""], ""startingAction"": true, ""groups"": [], ""location"": {""x"": 21, ""y"":  -2}}"undefined
+            SIM_ACTION,"{""label"": ""Describe symptoms"", ""simID"": ""symptoms"", ""triggers"": [""greet""], ""triggerFilter"": [], ""roles"": [""Patient""], ""startingAction"": false, ""groups"": [], ""location"": {""x"": 28, ""y"":  -2}}"
+            SIM_ACTION,"{""label"": ""Diagnose flu"", ""simID"": ""diagnose"", ""triggers"": [""check_results""], ""triggerFilter"": [], ""roles"": [""Doctor""], ""startingAction"": false, ""groups"": [], ""location"": {""x"": 50, ""y"":  12}}"
+            SIM_PROP_ACTION,"{""label"": ""click on the medical cart"", ""simID"": ""click_med_cart_prop_action"", ""triggers"": [""symptoms""], ""triggerFilter"": [], ""hideTriggers"": [""click_cart""], ""completionTriggers"": [""tests_complete_smart_reaction""], ""roles"": [""Doctor""], ""startingAction"": false, ""groups"": [], ""location"": {""x"": 36, ""y"":  -2}}"
+            SIM_REACTION,"{""label"": ""Patient diagnosed"", ""affectedAttribute"": ""diagnosed"", ""effect"": ""="", ""value"": 1, ""roles"": [""Patient""], ""simID"": ""diagnosed_reaction"", ""triggers"": [""diagnose""], ""triggerFilter"": [], ""location"": {""x"": 54, ""y"":  12}}"
+            SIM_REACTION,"{""label"": ""Test Was Completed"", ""affectedAttribute"": ""tests_completed"", ""effect"": ""+"", ""value"": 1, ""roles"": [""Medical Cart""], ""simID"": ""test_number_increase"", ""triggers"": [""cold_test"", ""flu_test"", ""strep_test""], ""triggerFilter"": [], ""location"": {""x"": 35, ""y"":  20}}"
+            SIM_ROLE,"{""name"": ""Patient"", ""attributes"": {""health"": 50,""has_flu"": 1,""diagnosed"": 0}, ""numUsers"": 1, ""place"": ""exam_room"", ""location"": {""x"": 0, ""y"": 10}}"
+            SIM_PROP,"{""name"": ""Medical Cart"", ""visualDescription"": ""a red medical cart with papers on it"", ""trackedAttribute"": ""tests_completed"", ""lowestValue"": 0, ""highestValue"": 3, ""attributes"": {""tests_completed"": 0}, ""place"": ""exam_room"", ""simID"": ""med_cart"", ""location"": {""x"": 9, ""y"":  5}}"
+            SIM_ACTION,"{""label"": ""Run Strep test"", ""simID"": ""strep_test"", ""triggers"": [""click_cart""], ""triggerFilter"": [], ""roles"": [""Doctor""], ""startingAction"": false, ""groups"": [], ""location"": {""x"": 35, ""y"":  5}}"
+            SIM_SMART_REACTION,"{""label"": ""tests completed"", ""simID"": ""tests_complete_smart_reaction"", ""triggers"": [""strep_test"", ""flu_test"", ""cold_test""], ""triggerFilter"": [], ""location"": {""x"": 42, ""y"":  12}, ""useQueue"": false, ""orderMatters"": false, ""sequentialMatters"": false}"
+            SIM_ACTION,"{""label"": ""Check results"", ""simID"": ""check_results"", ""triggers"": [""tests_complete_smart_reaction""], ""triggerFilter"": [], ""roles"": [""Doctor""], ""startingAction"": false, ""groups"": [], ""location"": {""x"": 46, ""y"":  12}}"
+            SIM_PLAYER,"{""location"": {""x"": 15, ""y"": 0}}"
+        ""
+`

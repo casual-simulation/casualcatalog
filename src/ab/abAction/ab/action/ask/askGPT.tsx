@@ -245,14 +245,19 @@ if (queryResults.length > 0) {
     const resultUserMessage = buildUserMessage(undefined, { functionResults: queryResults });
 
     if (historyStorageBot) {
-        thisBot.abConversationHistorySave({
-            historyStorageBot,
-            history: [
-                ...aiChatMessages,
-                { role: 'assistant', content: [{ text: response }] },
-                { role: 'user', content: [{ text: resultUserMessage }] },
-            ]
-        });
+        // Only persist the function-result user message when we're going to recurse and
+        // actually consume it. If the todo completed this turn we return without recursing,
+        // so appending it would leave history ending on a user message — which the next
+        // todo's askGPT treats as an askUser resume and uses to discard that todo's inquiry,
+        // silently skipping its work.
+        const history: AIChatMessage[] = [
+            ...aiChatMessages,
+            { role: 'assistant', content: [{ text: response }] },
+        ];
+        if (!todoCompletedThisTurn) {
+            history.push({ role: 'user', content: [{ text: resultUserMessage }] });
+        }
+        thisBot.abConversationHistorySave({ historyStorageBot, history });
     }
 
     // If the agent already declared the todo done in this same response, do not recurse.

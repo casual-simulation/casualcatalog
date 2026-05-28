@@ -34,7 +34,7 @@ for (const item of tags.modelAttributes) {
     seeAttributesButton.dropdownOptions.push(tempDropdownItem);
 }
 
-for (const item in tags.modelStates) {
+for (const item of tags.modelStates) {
     let val = item.start;
     let name = item.name;
     if (tags[name]) {

@@ -76,8 +76,8 @@ for (let tool of toolboxTools) {
                 whisper(links.toolbox, 'onToolboxDropdownOptionClick', { toolbox: links.toolbox, tool: tags.tool });
             }
 
-            if (ab.links.recent_tools) {
-                ab.links.recent_tools.pushRecentTool({ tool: tags.tool });
+            if (ab.links.toolbox) {
+                ab.links.toolbox.pushRecentTool({ tool: tags.tool });
             }
         })
     };

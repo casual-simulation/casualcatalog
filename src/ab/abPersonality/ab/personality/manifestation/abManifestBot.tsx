@@ -34,6 +34,10 @@ const abMod = {
     search: tags.search,
     spinDurationMS: 2000,
     spinIntervalMS: 2000,
+    // --- Movement knobs (tile-stepping toward a target, matched to the agent bots) ---
+    abMoveSpeed: 4,                 // tiles per second
+    abMoveTickIntervalMS: 1000,     // tick cadence — matches the agent's agentCycleIntervalMS
+    abMoveFollowArriveDistance: 2,  // tiles to stop short of a followed bot (matches agent targetDistance)
     soundClick: links.remember.tags.abClickSound ?? true,
     onCreate: ListenerString(async () => {
         let formAddress;
@@ -216,6 +220,148 @@ const abMod = {
             duration: tags.spinDurationMS / 1000,
         }).catch(e => {});
     }),
+    abMoveTo: ListenerString(() => {
+        // Public entry point. Provide a grid position { x, y } to walk to, or a
+        // bot via { bot } to walk to its tile. Pass { followBot: true } to keep
+        // chasing the bot as it moves. Calling again mid-move just redirects —
+        // the target is re-resolved every tick, so movement is freely interruptable.
+        const { x, y, bot, followBot = false } = that ?? {};
+
+        if (bot && followBot) {
+            // Continuous follow: store a link so the tick re-reads its position.
+            tags.abMoveTargetBot = typeof bot === 'string'
+                ? (bot.startsWith('🔗') ? bot : '🔗' + bot)
+                : getLink(bot);
+            thisBot.vars.abMovePosition = null;
+        } else if (bot) {
+            // One-shot: snapshot the bot's current tile and walk there once.
+            const b = typeof bot === 'string'
+                ? getBot('id', bot.startsWith('🔗') ? bot.slice('🔗'.length) : bot)
+                : bot;
+            const dim = tags.dimension;
+            tags.abMoveTargetBot = null;
+            thisBot.vars.abMovePosition = b ? { x: b.tags[dim + 'X'] ?? 0, y: b.tags[dim + 'Y'] ?? 0 } : null;
+        } else {
+            // Explicit grid position.
+            tags.abMoveTargetBot = null;
+            thisBot.vars.abMovePosition = { x: x ?? 0, y: y ?? 0 };
+        }
+
+        // Reuse the running loop if there is one; otherwise kick one off.
+        if (!tags.abMoveIntervalId) {
+            thisBot.abMoveTick();
+            masks.abMoveIntervalId = setInterval(() => thisBot.abMoveTick(), tags.abMoveTickIntervalMS ?? 1000);
+        }
+    }),
+    abStopMove: ListenerString(() => {
+        if (tags.abMoveIntervalId) {
+            clearInterval(tags.abMoveIntervalId);
+            masks.abMoveIntervalId = null;
+        }
+        masks.abMoving = false;
+        tags.abMoveTargetBot = null;
+        thisBot.vars.abMovePosition = null;
+    }),
+    abMoveTick: ListenerString(async () => {
+        // Skip if a previous tick is still stepping, or ab is gone.
+        if (masks.abMoving || thisBot.vars.destroyed) {
+            return;
+        }
+
+        const dim = tags.dimension;
+        if (!dim) {
+            return;
+        }
+
+        const followingBot = !!links.abMoveTargetBot;
+
+        // Resolve the target tile. A bot target is re-read every tick so ab
+        // keeps following it as it moves; a position target is fixed. Coords are
+        // rounded so movement stays on whole tiles. No target left → stop.
+        let targetX;
+        let targetY;
+        if (followingBot) {
+            targetX = Math.round(links.abMoveTargetBot.tags[dim + 'X'] ?? 0);
+            targetY = Math.round(links.abMoveTargetBot.tags[dim + 'Y'] ?? 0);
+        } else if (thisBot.vars.abMovePosition) {
+            targetX = Math.round(thisBot.vars.abMovePosition.x);
+            targetY = Math.round(thisBot.vars.abMovePosition.y);
+        } else {
+            thisBot.abStopMove();
+            return;
+        }
+
+        // Follow targets stop short so ab doesn't overlap them (matches the
+        // agent's targetDistance); fixed positions land exactly.
+        const arriveDist = followingBot ? (tags.abMoveFollowArriveDistance ?? 2) : 0;
+
+        const curX = tags[dim + 'X'] ?? 0;
+        const curY = tags[dim + 'Y'] ?? 0;
+        const dx = curX - targetX;
+        const dy = curY - targetY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist <= arriveDist) {
+            // Following: idle here but keep ticking so we catch up when the
+            // target moves. Fixed position: done — stop and announce arrival.
+            if (followingBot) {
+                return;
+            }
+            thisBot.abStopMove();
+            shout('onABMoveArrived', { dimension: dim, x: curX, y: curY });
+            return;
+        }
+
+        // stepsPerTick = tiles to walk this tick at moveSpeed tiles/sec;
+        // stepIntervalMS spreads them evenly across the tick.
+        const tickIntervalMS = tags.abMoveTickIntervalMS ?? 1000;
+        const stepsPerTick = Math.max(1, Math.round((tags.abMoveSpeed ?? 4) * tickIntervalMS / 1000));
+        const stepIntervalMS = tickIntervalMS / stepsPerTick;
+
+        masks.abMoving = true;
+
+        for (let i = 0; i < stepsPerTick; i++) {
+            // Sleep before steps 2..N so they spread across the tick; step 1
+            // runs immediately so the listener finishes before the next tick.
+            if (i > 0) await os.sleep(stepIntervalMS);
+
+            if (thisBot.vars.destroyed) {
+                break;
+            }
+
+            // Re-resolve each step so a redirect or a moving follow-target is
+            // picked up immediately.
+            let tX;
+            let tY;
+            if (links.abMoveTargetBot) {
+                tX = Math.round(links.abMoveTargetBot.tags[dim + 'X'] ?? 0);
+                tY = Math.round(links.abMoveTargetBot.tags[dim + 'Y'] ?? 0);
+            } else if (thisBot.vars.abMovePosition) {
+                tX = Math.round(thisBot.vars.abMovePosition.x);
+                tY = Math.round(thisBot.vars.abMovePosition.y);
+            } else {
+                break;
+            }
+
+            const cX = tags[dim + 'X'] ?? 0;
+            const cY = tags[dim + 'Y'] ?? 0;
+            const sdx = cX - tX;
+            const sdy = cY - tY;
+
+            if (Math.sqrt(sdx * sdx + sdy * sdy) <= arriveDist) {
+                break;
+            }
+
+            // One tile along the dominant axis (direct port of the agent step).
+            if (Math.abs(tX - cX) >= Math.abs(tY - cY)) {
+                tags[dim + 'X'] = cX + Math.sign(tX - cX);
+            } else {
+                tags[dim + 'Y'] = cY + Math.sign(tY - cY);
+            }
+        }
+
+        masks.abMoving = false;
+    }),
     onABXPEPaidOut: ListenerString(() => {
         const { payAmount, sourceId } = that;
 
@@ -299,6 +445,7 @@ const abMod = {
         thisBot.vars.destroyed = true;
 
         clearInterval(tags.interval);
+        clearInterval(tags.abMoveIntervalId);
 
         if(links.meshBot) {
             destroy(links.meshBot);

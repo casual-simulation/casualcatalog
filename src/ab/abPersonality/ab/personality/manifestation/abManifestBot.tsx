@@ -37,7 +37,7 @@ const abMod = {
     // --- Movement knobs (tile-stepping toward a target, matched to the agent bots) ---
     abMoveSpeed: 4,                 // tiles per second
     abMoveTickIntervalMS: 1000,     // tick cadence — matches the agent's agentCycleIntervalMS
-    abMoveFollowArriveDistance: 2,  // tiles to stop short of a followed bot (matches agent targetDistance)
+    abMoveBotArriveDistance: 2,     // tiles to stop short of a bot target (matches agent targetDistance)
     soundClick: links.remember.tags.abClickSound ?? true,
     onCreate: ListenerString(async () => {
         let formAddress;
@@ -227,25 +227,37 @@ const abMod = {
         // the target is re-resolved every tick, so movement is freely interruptable.
         const { x, y, bot, followBot = false } = that ?? {};
 
-        if (bot && followBot) {
-            // Continuous follow: store a link so the tick re-reads its position.
-            tags.abMoveTargetBot = typeof bot === 'string'
-                ? (bot.startsWith('🔗') ? bot : '🔗' + bot)
-                : getLink(bot);
-            thisBot.vars.abMovePosition = null;
-        } else if (bot) {
-            // One-shot: snapshot the bot's current tile and walk there once.
+        if (bot) {
+            const dim = tags.dimension;
             const b = typeof bot === 'string'
                 ? getBot('id', bot.startsWith('🔗') ? bot.slice('🔗'.length) : bot)
                 : bot;
-            const dim = tags.dimension;
-            tags.abMoveTargetBot = null;
-            thisBot.vars.abMovePosition = b ? { x: b.tags[dim + 'X'] ?? 0, y: b.tags[dim + 'Y'] ?? 0 } : null;
+
+            // ab can only walk within its own dimension. A missing bot, or one in
+            // another dimension, is a no-op rather than a walk toward (0,0).
+            if (!b || !b.tags[dim]) {
+                console.warn(`[${tagName}] target bot is missing or not in ab's dimension '${dim}' — ignoring move; ab can only walk within its current dimension.`);
+                return;
+            }
+
+            if (followBot) {
+                // Continuous follow: store a link so the tick re-reads its position.
+                tags.abMoveTargetBot = getLink(b);
+                thisBot.vars.abMovePosition = null;
+            } else {
+                // One-shot: snapshot the bot's current tile and walk there once.
+                tags.abMoveTargetBot = null;
+                thisBot.vars.abMovePosition = { x: b.tags[dim + 'X'] ?? 0, y: b.tags[dim + 'Y'] ?? 0 };
+            }
         } else {
             // Explicit grid position.
             tags.abMoveTargetBot = null;
             thisBot.vars.abMovePosition = { x: x ?? 0, y: y ?? 0 };
         }
+
+        // A bot target (follow or one-shot) stops short of the bot; an explicit
+        // position lands exactly on the tile.
+        thisBot.vars.abMoveArriveDist = bot ? (tags.abMoveBotArriveDistance ?? 2) : 0;
 
         // Reuse the running loop if there is one; otherwise kick one off.
         if (!tags.abMoveIntervalId) {
@@ -261,6 +273,7 @@ const abMod = {
         masks.abMoving = false;
         tags.abMoveTargetBot = null;
         thisBot.vars.abMovePosition = null;
+        thisBot.vars.abMoveArriveDist = null;
     }),
     abMoveTick: ListenerString(async () => {
         // Skip if a previous tick is still stepping, or ab is gone.
@@ -281,6 +294,11 @@ const abMod = {
         let targetX;
         let targetY;
         if (followingBot) {
+            // If the followed bot left ab's dimension, idle (keep ticking) so we
+            // resume when it returns — never chase a phantom (0,0).
+            if (!links.abMoveTargetBot.tags[dim]) {
+                return;
+            }
             targetX = Math.round(links.abMoveTargetBot.tags[dim + 'X'] ?? 0);
             targetY = Math.round(links.abMoveTargetBot.tags[dim + 'Y'] ?? 0);
         } else if (thisBot.vars.abMovePosition) {
@@ -291,9 +309,9 @@ const abMod = {
             return;
         }
 
-        // Follow targets stop short so ab doesn't overlap them (matches the
-        // agent's targetDistance); fixed positions land exactly.
-        const arriveDist = followingBot ? (tags.abMoveFollowArriveDistance ?? 2) : 0;
+        // Stop distance is fixed when the move is issued (see abMoveTo): a bot
+        // target stops short of the bot, an explicit position lands exactly.
+        const arriveDist = thisBot.vars.abMoveArriveDist ?? 0;
 
         const curX = tags[dim + 'X'] ?? 0;
         const curY = tags[dim + 'Y'] ?? 0;
@@ -334,6 +352,10 @@ const abMod = {
             let tX;
             let tY;
             if (links.abMoveTargetBot) {
+                // Bail if the followed bot left ab's dimension mid-tick.
+                if (!links.abMoveTargetBot.tags[dim]) {
+                    break;
+                }
                 tX = Math.round(links.abMoveTargetBot.tags[dim + 'X'] ?? 0);
                 tY = Math.round(links.abMoveTargetBot.tags[dim + 'Y'] ?? 0);
             } else if (thisBot.vars.abMovePosition) {

@@ -252,7 +252,13 @@ To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
 
 **System tag:** Always set `system` on every bot you create — it assigns the bot to a named organizational group visible in the systemPortal. Format: `appName.area.botName` (three dot-separated parts). For AI-created bots, use the `ask` prefix: e.g. `ask.ui.counter`, `ask.game.spawner`, `ask.util.timer`. Users can then open the systemPortal and browse all bots created by the AI agent under the `ask` namespace.
 
-**Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite image or mesh file; for GLTF/GLB models also set `formSubtype: 'gltf'`), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelFontSize` (default 1 is large), `labelPosition` (top/front/left/right/floating/floatingBillboard), `labelWordWrapMode` (breakCharacters/breakWords/none) `progressBar`, `progressBarColor`, `lineTo` (bot ID or array of bot IDs to draw a line to), `lineStyle`, `lineWidth`, `lineColor`
+**Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite image or mesh file; for GLTF/GLB models also set `formSubtype: 'gltf'`), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelFontSize`, `labelPosition` (top/front/back/left/right/floating/floatingBillboard), `labelWordWrapMode` (breakCharacters/breakWords/none), `labelFloatingBackgroundColor`, `progressBar`, `progressBarColor`, `lineTo` (bot ID or array of bot IDs to draw a line to), `lineStyle`, `lineWidth`, `lineColor`
+
+**Label styling:** When these tags are unset, CasualOS renders labels in black (`labelColor`) on the bot's top face (`labelPosition` `top`), auto-fitting and wrapping the text by character (`labelWordWrapMode` `breakCharacters`). That default is fine for short labels/symbols on cube bots, but usually unattractive for longer text or non-cube shapes. For cleaner, consistent labels:
+
+- Name tags or any human-readable text → `labelPosition: 'floatingBillboard'` — always faces the camera and looks cleanest. `floating`/`floatingBillboard` labels render on a card that is white unless set; give it a color that suits the scene via `labelFloatingBackgroundColor` (e.g. `'#222'`).
+- For floating labels, prefer `labelWordWrapMode: 'breakWords'` with `labelFontSize: 0.75` for clean wrapping at a medium size.
+- `labelFontSize` auto-fits when unset; for an explicit size, `1` ≈ large, `0.75` ≈ medium, `0.5` ≈ small.
 
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
 
@@ -662,7 +668,7 @@ Response:
     "function": {
       "name": "makePatch",
       "args": {
-        "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  system: 'ask.ping.receiver',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  system: 'ask.ping.broadcaster',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];"
+        "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  system: 'ask.ping.receiver',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  system: 'ask.ping.broadcaster',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];"
       }
     }
   },
@@ -753,7 +759,7 @@ Turn 2 response — decompose into todos, proportion the 1,000,000-credit budget
       "args": {
         "todos": [
           {
-            "prompt": "Create a character bot in dimension 'home' at grid position (2, -3). Tags: color: 'blue', label: 'Player', form: 'cube', system: 'ask.player.character'. No behavior yet — just the bot.",
+            "prompt": "Create a character bot in dimension 'home' at grid position (2, -3). Tags: color: 'blue', label: 'Player', labelPosition: 'floatingBillboard', labelFontSize: 0.75, form: 'cube', system: 'ask.player.character'. No behavior yet — just the bot.",
             "label": "Character bot",
             "budget_credits": 200000
           },

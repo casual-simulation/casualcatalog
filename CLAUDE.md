@@ -185,7 +185,7 @@ This is a condensed reference of commonly used APIs. For the full API, consult `
 - `shared` (default) — Synced across all users, persisted
 - `tempLocal` — Local only, destroyed on reload. Use for effects, animations, UI-only bots.
 
-**Common bot tags:** `color`, `label`, `labelColor`, `labelSize`, `labelPosition` (top/front/floating/left/right), `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite/mesh; set `formSubtype: 'gltf'` for GLTF/GLB), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `progressBar`, `progressBarColor`, `lineTo` (bot ID or array), `lineStyle`, `lineWidth`, `lineColor`
+**Common bot tags:** `color`, `label`, `labelColor`, `labelFontSize`, `labelPosition` (top/front/back/left/right/floating/floatingBillboard), `labelWordWrapMode` (breakCharacters/breakWords/none), `labelFloatingBackgroundColor`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite/mesh; set `formSubtype: 'gltf'` for GLTF/GLB), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `progressBar`, `progressBarColor`, `lineTo` (bot ID or array), `lineStyle`, `lineWidth`, `lineColor`
 
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/Y/Z` sets rotation, `[dim]SortOrder` for menu ordering
 

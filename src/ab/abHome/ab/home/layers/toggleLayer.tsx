@@ -21,9 +21,7 @@ if (tags.activeInsts.find(item => item.includes(idString))) {
 //if loaded, unload
 if (instLoaded) {
     os.unloadInst({
-        inst: tags.activeInsts.find(item => item.includes(idString)),
-        record: that.studioId,
-        owner: 'public'
+        staticInst: tags.activeInsts.find(item => item.includes(idString)),
     });
     console.log("unloading", tags.activeInsts.find(item => item.includes(idString)))
 }

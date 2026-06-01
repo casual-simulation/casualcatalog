@@ -251,12 +251,15 @@ patchResults.push({
 
 **Label styling:** Unset, a label is black (`labelColor`) on the top face (`labelPosition` `top`), auto-fit and wrapped per-character (`labelWordWrapMode` `breakCharacters`) — fine for short labels/symbols on cubes, poor for longer text or non-cube shapes. Guidelines:
 
-- Label width = the bot's scale on its face: `top`/`front`/`back`/`floating`/`floatingBillboard` use `scaleX`; `left`/`right` use `scaleY` (default 1). A tiny bot (e.g. `scale: 0.1`) crams the per-character wrap to ~one char/line — widen that axis or set `labelWordWrapMode: 'none'` (no auto-wrap; only embedded newlines `\n` break lines).
+- `labelPosition` picks which face the label sits on (axes are world-fixed; see **Axes**): `top` (`+z`), `front`/`back` (`−y` / `+y`). `left`/`right` are the bot's **own** left/right — mirrored from the viewer, like a person facing you (their right is on your left): `'right'` → the `−x` (on-screen left) face, `'left'` → the `+x` (on-screen right) face. Label width = that face's in-plane scale: `top`/`front`/`back`/`floating`/`floatingBillboard` → `scaleX`; `left`/`right` → `scaleY` (default 1). A tiny bot (e.g. `scale: 0.1`) crams the per-character wrap to ~one char/line — widen that axis or set `labelWordWrapMode: 'none'` (no auto-wrap; only embedded newlines `\n` break lines).
+- Sign/placard: make the facing axis thin, the width axis wide. Facing the viewer (`−y`) → `scaleX 2, scaleY 0.25, labelPosition 'front'`; readable from the on-screen left → `scaleY 2, scaleX 0.25, labelPosition 'right'`; from the on-screen right → `scaleY 2, scaleX 0.25, labelPosition 'left'` (note the `left`/`right` swap).
 - Name tags / readable text → `labelPosition: 'floatingBillboard'` (faces the camera, cleanest). `floating`/`floatingBillboard` sit on a white card; recolor via `labelFloatingBackgroundColor` (e.g. `'#222'`).
 - Floating labels: prefer `labelWordWrapMode: 'breakWords'` + `labelFontSize: 0.75`.
 - `labelFontSize`: auto when unset; explicit `1` large, `0.75` medium, `0.5` small.
 
 **Draggability:** Bots are draggable by default (`draggable` unset), so in multi-bot scenes users can drag bots out of place by accident. Set `draggable: false` on anything not meant to be moved by hand — scenery, backgrounds, labels, and click- or code-driven bots (buttons, counters, programmatically-moved characters); this only blocks CasualOS repositioning, so `onClick`/`onDrag` and other events still fire. Leave it draggable only when pickup is the point — game pieces, tokens, cards, inventory items.
+
+**Axes** (as seen in the default view — an angled top-down orthographic camera; governs `[dim]X/Y/Z` and label faces): `+x` on-screen right, `−x` on-screen left, `−y` forward (toward viewer), `+y` backward (away from viewer), `+z` up, `−z` down. A label's `left`/`right` `labelPosition` does **not** follow these — it uses the bot's own left/right (mirrored), see Label styling.
 
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
 

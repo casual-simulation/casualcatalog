@@ -1,4 +1,11 @@
 [
+    
+    {
+        "name": "artifact journal",
+        "studio": "AB",
+        "targetAB": "artifactJournal",
+        "artifact": true
+    },
     {
         "name": "curiosity camera",
         "studio": "AB",
@@ -6,9 +13,9 @@
         "artifact": true
     },
     {
-        "name": "artifact journal",
+        "name": "public avatar",
         "studio": "AB",
-        "targetAB": "artifactJournal",
+        "targetAB": "mapAvatar",
         "artifact": true
     }
 ]

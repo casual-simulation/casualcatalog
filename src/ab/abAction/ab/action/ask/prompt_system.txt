@@ -254,13 +254,14 @@ To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
 
 **Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite image or mesh file; for GLTF/GLB models also set `formSubtype: 'gltf'`), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelFontSize`, `labelPosition` (top/front/back/left/right/floating/floatingBillboard), `labelWordWrapMode` (breakCharacters/breakWords/none), `labelFloatingBackgroundColor`, `progressBar`, `progressBarColor`, `lineTo` (bot ID or array of bot IDs to draw a line to), `lineStyle`, `lineWidth`, `lineColor`
 
-**Label styling:** When these tags are unset, CasualOS renders labels in black (`labelColor`) on the bot's top face (`labelPosition` `top`), auto-fitting and wrapping the text by character (`labelWordWrapMode` `breakCharacters`). That default is fine for short labels/symbols on cube bots, but usually unattractive for longer text or non-cube shapes. For cleaner, consistent labels:
+**Label styling:** Unset, a label is black (`labelColor`) on the top face (`labelPosition` `top`), auto-fit and wrapped per-character (`labelWordWrapMode` `breakCharacters`) — fine for short labels/symbols on cubes, poor for longer text or non-cube shapes. Guidelines:
 
-- Name tags or any human-readable text → `labelPosition: 'floatingBillboard'` — always faces the camera and looks cleanest. `floating`/`floatingBillboard` labels render on a card that is white unless set; give it a color that suits the scene via `labelFloatingBackgroundColor` (e.g. `'#222'`).
-- For floating labels, prefer `labelWordWrapMode: 'breakWords'` with `labelFontSize: 0.75` for clean wrapping at a medium size.
-- `labelFontSize` auto-fits when unset; for an explicit size, `1` ≈ large, `0.75` ≈ medium, `0.5` ≈ small.
+- Label width = the bot's scale on its face: `top`/`front`/`back`/`floating`/`floatingBillboard` use `scaleX`; `left`/`right` use `scaleY` (default 1). A tiny bot (e.g. `scale: 0.1`) crams the per-character wrap to ~one char/line — widen that axis or set `labelWordWrapMode: 'none'` (no auto-wrap; only embedded newlines `\n` break lines).
+- Name tags / readable text → `labelPosition: 'floatingBillboard'` (faces the camera, cleanest). `floating`/`floatingBillboard` sit on a white card; recolor via `labelFloatingBackgroundColor` (e.g. `'#222'`).
+- Floating labels: prefer `labelWordWrapMode: 'breakWords'` + `labelFontSize: 0.75`.
+- `labelFontSize`: auto when unset; explicit `1` large, `0.75` medium, `0.5` small.
 
-**Draggability:** Bots are user-draggable by default (`draggable` unset). In a multi-bot scene this lets the user accidentally drag bots out of place. Set `draggable: false` on any bot that is not meant to be moved by hand — scenery/decorative bots, backgrounds, labels, and interactive bots driven by clicks or code (buttons, counters, characters moved programmatically). This only stops CasualOS from repositioning the bot; `onClick`, `onDrag`, and other events still fire. Leave it unset (draggable) only when picking the bot up is the point — e.g. game pieces, tokens, cards, or inventory items the user repositions.
+**Draggability:** Bots are draggable by default (`draggable` unset), so in multi-bot scenes users can drag bots out of place by accident. Set `draggable: false` on anything not meant to be moved by hand — scenery, backgrounds, labels, and click- or code-driven bots (buttons, counters, programmatically-moved characters); this only blocks CasualOS repositioning, so `onClick`/`onDrag` and other events still fire. Leave it draggable only when pickup is the point — game pieces, tokens, cards, inventory items.
 
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
 
@@ -296,11 +297,9 @@ Each todo becomes a visible bot in the inst that agent bots will pick up and exe
 
 ### Credit Budgets
 
-Every todo requires a `budget_credits` field (always a `number`). Credits are a compute cost unit — 100,000,000 credits is roughly $2.00, so a typical task budget is in the range of 100,000–10,000,000 credits.
+Every todo needs a `budget_credits` field (a `number`). Credits are a compute-cost unit — 100,000,000 ≈ $2.00, so a typical task runs 100,000–10,000,000.
 
-When the user specifies a credit budget for their request (e.g. "build this with 1,000,000 credits"), distribute the total across todos in proportion to their estimated complexity — more complex todos receive more credits. The sum across all todos must equal the user-specified budget.
-
-If no budget is mentioned, assume a total budget of 100,000 credits for the request and distribute it across todos by complexity, exactly as you would for an explicit budget. Users can adjust individual todo budgets after creation.
+Split the total across todos by estimated complexity (more complex → more credits); the sum must equal the total. Use the user's stated budget (e.g. "build this with 1,000,000 credits"), or 100,000 if none is given. Users can adjust per-todo budgets afterward.
 
 ## getInst
 

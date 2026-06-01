@@ -1,3 +1,4 @@
+//if this isnt the users own avatar, dont respond
 if (tags.remoteID != getID(configBot)) {
     return;
 }
@@ -5,13 +6,7 @@ if (tags.remoteID != getID(configBot)) {
 shout('abMenuRefresh');
 shout("clearMapAvatarMenu");
 
-const journal = getBot("artifactJournal", true);
-
-if (journal.tags.currentRegisteredApp) {
-    os.unregisterApp(journal.tags.currentRegisteredApp);
-    journal.tags.currentRegisteredApp = null;
-} 
-
+//handle right click
 if (that) {
     if (that.modality == 'mouse' && that.buttonId == 'right') { 
         return;
@@ -29,25 +24,11 @@ const menuOptions = {
 
 const leaveGPSButton = {
     ...menuOptions,
-    label: (journal.tags.continueLocationPull ? 'disable' : 'enable') + ' gps tracking',
+    label: (tags.continueLocationPull ? 'disable' : 'enable') + ' gps tracking',
     mapAvatar_menuSortOrder: -1,
-    formAddress: journal.tags.continueLocationPull ? 'near_me_disabled' : 'near_me',
+    formAddress: tags.continueLocationPull ? 'near_me_disabled' : 'near_me',
     onClick: `@
-        const journal = getBot("artifactJournal", true);
-        journal.toggleLocationPull(!journal.tags.continueLocationPull);
-
-        shout("clearMapAvatarMenu");
-    `,
-}
-
-const viewCollectionsButton = {
-    ...menuOptions,
-    label: 'artifact journal',
-    formAddress: 'menu_book',
-    mapAvatar_menuSortOrder: -31,
-    onClick: `@
-        const journal = getBot("artifactJournal", true);
-        journal.onClick();
+        links.avatar.toggleLocationPull(!links.avatar.tags.continueLocationPull);
 
         shout("clearMapAvatarMenu");
     `,
@@ -71,9 +52,25 @@ if (camBot) {
     ab.links.menu.abCreateMenuButton(cameraButton);
 }
 
-ab.links.menu.abCreateMenuButton(leaveGPSButton);
-ab.links.menu.abCreateMenuButton(viewCollectionsButton);
+if (journal) {
+    const viewCollectionsButton = {
+        ...menuOptions,
+        label: 'artifact journal',
+        formAddress: 'menu_book',
+        mapAvatar_menuSortOrder: -31,
+        onClick: `@
+            const journal = getBot("artifactJournal", true);
+            journal.onClick();
 
-if (!journal.tags.continueLocationPull) {
+            shout("clearMapAvatarMenu");
+        `,
+    }
+
+    ab.links.menu.abCreateMenuButton(viewCollectionsButton);
+}
+
+ab.links.menu.abCreateMenuButton(leaveGPSButton);
+
+if (!tags.continueLocationPull) {
     thisBot.showPlaceNavMenu();
 }

@@ -16,10 +16,10 @@ const App = () => {
                 <span>Would you like to enable location?</span>
             </div>
             <div class="locationR-btn-container">
-                <button className="nb-btn locationR-btn" onClick={() => journal.toggleLocationPull(true)}>
+                <button className="nb-btn locationR-btn" onClick={() => journal.useGPS(true)}>
                     <span>Allow</span>
                 </button>
-                <button className="nb-btn locationR-btn" onClick={() => journal.toggleLocationPull(false)}>
+                <button className="nb-btn locationR-btn" onClick={() => journal.useGPS(false)}>
                     <span>Deny</span>
                 </button>
             </div>

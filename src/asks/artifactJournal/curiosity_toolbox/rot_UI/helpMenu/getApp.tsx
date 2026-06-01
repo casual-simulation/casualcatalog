@@ -1,6 +1,6 @@
 let locationBot = getBot(byTag("name", "locationRequest"));
 let playerBot = getBot(byTag("artifactJournal", true))
-let locationToggled= playerBot.tags.continueLocationPull ?? false;
+let locationToggled= playerBot.tags.usingGPS ?? false;
 const App = () => {
     return (<>
         <style>{tags["App.css"]}</style>

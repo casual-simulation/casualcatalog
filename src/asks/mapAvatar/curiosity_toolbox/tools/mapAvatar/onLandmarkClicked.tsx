@@ -4,6 +4,10 @@ if (tags.remoteID != getID(configBot) || tags.usingGPS) {
 
 const landmark = getBot("landmarkID", that);
 
+if (!landmark) {
+    return;
+}
+
 let xPos;
 let yPos;
 

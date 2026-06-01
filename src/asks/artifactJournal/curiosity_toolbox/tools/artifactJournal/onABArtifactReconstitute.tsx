@@ -2,7 +2,13 @@ const data = that.data;
 
 tags.journalURL = data.url ?? undefined;
 tags.userData = data.userData;
-tags.continueLocationPull = true;
+
+const playerBot = getBot(byTag("mapAvatar", true), byTag("remoteID", getID(configBot)));
+if (playerBot) {
+    tags.usingGPS = playerBot.tags.continueLocationPull;
+} else {
+    tags.usingGPS = true;
+}
 
 if (!data.userData) {
     thisBot.getUserData();
@@ -33,6 +39,5 @@ if (data.eggParameters) {
 }
 
 thisBot.spawnPlayer();
-thisBot.updateLocation();
 await thisBot.getDataFromStrapi();
 thisBot.showRoT();

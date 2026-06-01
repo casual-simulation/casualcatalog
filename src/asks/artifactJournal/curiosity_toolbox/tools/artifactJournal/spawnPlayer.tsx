@@ -1,14 +1,27 @@
 const avatarBot = getBot(byTag("mapAvatar", true), byTag("remoteID", configBot.tags.id));
 
 if (!avatarBot) {
+    //get user location if applicable
+    let posX = -85.6733605741107;
+    let posY = 42.965495495495496;
+
+    if (tags.usingGPS) {
+        let loc = await os.getGeolocation()
+        if (loc.success) {
+            posX = loc.latitude;
+            posY = loc.longitude;
+        }
+    }
+
     const abArtifactShard = {
         data: {
             eggParameters: {
+                usingGPS: tags.usingGPS,
                 gridInformation: {
                     dimension: 'home',
                     position: {
-                        x: -85.6733605741107,
-                        y: 42.965495495495496
+                        x: posX,
+                        y: posY
                     }
                 }
             }
@@ -19,15 +32,9 @@ if (!avatarBot) {
             }
         ]
     };
-    const avatar = await ab.links.artifact.abCreateArtifactPromiseBot({
+    await ab.links.artifact.abCreateArtifactPromiseBot({
         abArtifactName: 'mapAvatar',
         abArtifactInstanceID: uuid(),
         abArtifactShard,
     });
-
-    tags.avatar = getLink(avatar);
-    if (tags.continueLocationPull) {
-        await os.sleep(500);
-        avatar.useGPS(true);
-    }
 }

@@ -312,13 +312,11 @@ _Modes: all_
 
 Returns the catalog of available kits and tools. Catalogs, kits, and tools all live in the grid as bots: a `studioCatalog` bot is bound to a studio and lists that studio's kits; loading a kit spawns a `kit` bot that lists its tools; loading a tool spawns the tool's bots.
 
-On the first turn of a new conversation, `context.catalog` is already present in the message — read from there and do not call `getCatalog` on turn 1. Call `getCatalog` only when you need a refreshed catalog and don't have a recent `loadFromCatalog` response available (loading a kit via `loadFromCatalog` already returns the updated catalog).
+`context.catalog` may already present in a message on the first turn — read from there and do not call `getCatalog` on turn 1. Call `getCatalog` only when you need a refreshed catalog and don't have a recent `loadFromCatalog` response available.
 
 ```json
 { "function": { "name": "getCatalog", "args": {} } }
 ```
-
-If no `studioCatalog` bot is loaded in the grid yet, the system auto-spawns one bound to the user's studio before returning — so an empty grid won't produce an empty catalog.
 
 Each entry has the following shape:
 
@@ -340,7 +338,19 @@ Load a kit or tool from the catalog into the current inst.
 **Only call this function when the user explicitly asks you to load or install a specific kit or tool by name.** Do not call it speculatively, as a convenience, or because you think it might be useful — wait for a clear direct instruction from the user.
 
 ```json
-{ "function": { "name": "loadFromCatalog", "args": { "type": "kit" | "tool", "id": "<string>", "studioId": "<string>", "gridDimension": "<string>", "gridPositionX": <number>, "gridPositionY": <number> } } }
+{ 
+  "function": { 
+    "name": "loadFromCatalog", 
+    "args": { 
+      "type": "kit" | "tool", 
+      "id": "<string>", 
+      "studioId": "<string>", 
+      "gridDimension": "<string>", 
+      "gridPositionX": <number>, 
+      "gridPositionY": <number> 
+    }
+  } 
+}
 ```
 
 - `type` _(required)_: `"kit"` to load a kit (toolbox container); `"tool"` to load an individual tool
@@ -351,19 +361,47 @@ Load a kit or tool from the catalog into the current inst.
 
 Only load tools where `agentReady: true` in the catalog. Call `getCatalog` first if you don't already have the catalog.
 
-**Response shape:**
+**Response (kit success):**
 
-```typescript
-// Success
-{ success: true, type: "kit" | "tool", id: string, catalog?: any, bots?: Bot[], configuratorProperties?: ABConfiguratorData[] }
-
-// Failure
-{ success: false, type: "kit" | "tool", id: string, errorMessage: string }
+```json
+{
+  "success": true,
+  "type": "kit",
+  "id": "myKit",
+  "catalog": [...]
+}
 ```
 
-- On `type: "kit"` success, `catalog` contains the updated catalog which will now include tools from the newly loaded kit.
-- On `type: "tool"` success, `bots` contains the bots that were created. `configuratorProperties` is an array of `{ group: string, properties: ABConfiguratorProperty[] }` objects — one per configurable group found in the loaded bots. If non-empty, this is your primary handle on the tool — read it on the spot and call `applyConfiguratorProperties` with values that match the user's request. For wizard-style tools (a single `prompt` text property, or a small set of high-level inputs), driving the configurator IS how you use the tool — do not duplicate its behavior with `makePatch`. If empty, the tool has no configurable properties and you do not need to call any configurator functions.
-- On failure, `errorMessage` describes what went wrong — report it to the user
+**Response (tool success):**
+
+```json
+{
+  "success": true,
+  "type": "tool",
+  "id": "myTool",
+  "bots": [...],
+  "configuratorProperties": [{ "group": "myTool", "properties": [...] }]
+}
+```
+
+**Response (failure):**
+
+```json
+{
+  "success": false,
+  "type": "kit",
+  "id": "myKit",
+  "errorMessage": "..."
+}
+```
+
+- On `type: "kit"` success:
+  - `catalog` contains the updated catalog which will now include tools from the newly loaded kit.
+- On `type: "tool"` success:
+  - `bots` contains the bots that were created. 
+  - `configuratorProperties` is an array of `{ group: string, properties: ABConfiguratorProperty[] }` objects — one per configurable group found in the loaded bots. If non-empty, this is your primary handle on the tool — read it on the spot and call `applyConfiguratorProperties` with values that match the user's request. For wizard-style tools (a single text property, or a small set of high-level inputs), driving the configurator IS how you use the tool — do not duplicate its behavior with `makePatch`. If empty, the tool has no configurable properties and you do not need to call any configurator functions.
+- On failure:
+  - `errorMessage` describes what went wrong — report it to the user
 
 ## getConfiguratorGroups
 

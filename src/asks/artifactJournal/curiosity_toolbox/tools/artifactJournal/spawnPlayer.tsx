@@ -16,7 +16,7 @@ if (!avatarBot) {
     const abArtifactShard = {
         data: {
             eggParameters: {
-                usingGPS: tags.usingGPS,
+                disableGPS: !tags.usingGPS,
                 gridInformation: {
                     dimension: 'home',
                     position: {

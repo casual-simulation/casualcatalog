@@ -39,5 +39,5 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 }
 
-thisBot.useGPS(data.usingGPS == false ? false : true);
-thisBot.toggleLocationPull(data.usingGPS == false ? false : true);
+thisBot.useGPS(data.disableGPS ? data.disableGPS : true);
+thisBot.toggleLocationPull(data.disableGPS ? data.disableGPS : true);

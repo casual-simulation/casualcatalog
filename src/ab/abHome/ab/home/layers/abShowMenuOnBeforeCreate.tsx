@@ -31,6 +31,12 @@ if (studioData.success) {
         
         const isLoaded = tags.activeInsts.find(item => item.includes(idString));
 
+        if (abRemember.tags.allowedLayers && abRemember.tags.allowedLayers.length != 0) {
+            if (!abRemember.tags.allowedLayers?.includes(studios[i].studioId)) {
+                continue;
+            }
+        }
+
         dropdownOptions.push( {
             ...menuOptions,
             label: studios[i].displayName.toLocaleLowerCase(),

@@ -52,6 +52,7 @@ if (camBot) {
     ab.links.menu.abCreateMenuButton(cameraButton);
 }
 
+const journal = getBot("artifactJournal", true);
 if (journal) {
     const viewCollectionsButton = {
         ...menuOptions,

@@ -33,7 +33,6 @@ else {
     masks.currLayerStudio = that.studioId;
 
     await os.loadInst({
-        inst: instName,
-        owner: 'public'
+        staticInst: instName
     });
 }

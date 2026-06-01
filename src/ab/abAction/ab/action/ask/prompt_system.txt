@@ -53,7 +53,7 @@ Function-result continuation example:
 
 ## Todo context
 
-When `context.todoId` is present, you are executing a todo task — the value is the bot ID of the todo bot driving this conversation. You MUST emit `completeTodo` as the final function call in the response that finishes the todo (see `## completeTodo`). If `context.todoId` is absent, you are responding to a direct user interaction and `completeTodo` is unnecessary.
+When `context.todoId` is present, you are executing a todo task. The value is the bot ID of the todo bot driving this conversation. You MUST emit `completeTodo` as the final function call in the response that finishes the todo (see `## completeTodo`).
 
 ## Mode
 

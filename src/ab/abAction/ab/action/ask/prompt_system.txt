@@ -260,6 +260,8 @@ To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
 - For floating labels, prefer `labelWordWrapMode: 'breakWords'` with `labelFontSize: 0.75` for clean wrapping at a medium size.
 - `labelFontSize` auto-fits when unset; for an explicit size, `1` ≈ large, `0.75` ≈ medium, `0.5` ≈ small.
 
+**Draggability:** Bots are user-draggable by default (`draggable` unset). In a multi-bot scene this lets the user accidentally drag bots out of place. Set `draggable: false` on any bot that is not meant to be moved by hand — scenery/decorative bots, backgrounds, labels, and interactive bots driven by clicks or code (buttons, counters, characters moved programmatically). This only stops CasualOS from repositioning the bot; `onClick`, `onDrag`, and other events still fire. Leave it unset (draggable) only when picking the bot up is the point — e.g. game pieces, tokens, cards, or inventory items the user repositions.
+
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
 
 **Common listener tags:** `onClick`, `onDrop`, `onDrag`, `onCreate`, `onDestroy`, `onPointerEnter`, `onPointerExit`, `onPointerDown`, `onPointerUp`, `onKeyDown`, `onKeyUp`, `onKeyRepeat`, `onGridClick` (shouted when the user clicks on empty grid space), `onBotAdded` (whispered when bot is added to local inst — fires after scripts finish, unlike `onCreate` which fires immediately), `onBotChanged` (whispered when any tag on the bot is updated — fires once after scripts finish even if multiple tags changed), `onInstJoined` (shouted when inst is fully loaded — all bots in all spaces are available, safe to query the entire inst). You can also define custom listener tags with any name (e.g. `onPing`) and trigger them via `shout('onPing')` or `whisper(bot, 'onPing')`.
@@ -631,7 +633,7 @@ Response:
     "function": {
       "name": "makePatch",
       "args": {
-        "code": "const dim = 'home';\nconst x = 0;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'blue',\n  label: '0',\n  count: 0,\n  maxCount: 5,\n  system: 'ask.counter.counter',\n  onClick: ListenerString(() => {\n    const next = (thisBot.tags.count ?? 0) + 1;\n    if (next >= thisBot.tags.maxCount) {\n      destroy(thisBot);\n    } else {\n      setTag(thisBot, 'count', next);\n      setTag(thisBot, 'label', String(next));\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];"
+        "code": "const dim = 'home';\nconst x = 0;\nconst y = 0;\n\nconst bot = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  color: 'blue',\n  label: '0',\n  draggable: false,\n  count: 0,\n  maxCount: 5,\n  system: 'ask.counter.counter',\n  onClick: ListenerString(() => {\n    const next = (thisBot.tags.count ?? 0) + 1;\n    if (next >= thisBot.tags.maxCount) {\n      destroy(thisBot);\n    } else {\n      setTag(thisBot, 'count', next);\n      setTag(thisBot, 'label', String(next));\n    }\n  })\n});\n\nreturn [{ botId: bot.id, created: true, rollbackDiff: null }];"
       }
     }
   },
@@ -668,7 +670,7 @@ Response:
     "function": {
       "name": "makePatch",
       "args": {
-        "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  system: 'ask.ping.receiver',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  system: 'ask.ping.broadcaster',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];"
+        "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  draggable: false,\n  system: 'ask.ping.receiver',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  draggable: false,\n  system: 'ask.ping.broadcaster',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];"
       }
     }
   },
@@ -759,7 +761,7 @@ Turn 2 response — decompose into todos, proportion the 1,000,000-credit budget
       "args": {
         "todos": [
           {
-            "prompt": "Create a character bot in dimension 'home' at grid position (2, -3). Tags: color: 'blue', label: 'Player', labelPosition: 'floatingBillboard', labelFontSize: 0.75, form: 'cube', system: 'ask.player.character'. No behavior yet — just the bot.",
+            "prompt": "Create a character bot in dimension 'home' at grid position (2, -3). Tags: color: 'blue', label: 'Player', labelPosition: 'floatingBillboard', labelFontSize: 0.75, draggable: false, form: 'cube', system: 'ask.player.character'. No behavior yet — just the bot.",
             "label": "Character bot",
             "budget_credits": 200000
           },

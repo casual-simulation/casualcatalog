@@ -252,7 +252,7 @@ To create a `tempLocal` bot: `create({ space: 'tempLocal', ... })`
 
 **System tag:** Always set `system` on every bot you create — it assigns the bot to a named organizational group visible in the systemPortal. Format: `appName.area.botName` (three dot-separated parts). For AI-created bots, use the `ask` prefix: e.g. `ask.ui.counter`, `ask.game.spawner`, `ask.util.timer`. Users can then open the systemPortal and browse all bots created by the AI agent under the `ask` namespace.
 
-**Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite image or mesh file; for GLTF/GLB models also set `formSubtype: 'gltf'`), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelSize`, `labelPosition` (top/front/floating/left/right), `progressBar`, `progressBarColor`, `lineTo` (bot ID or array of bot IDs to draw a line to), `lineStyle`, `lineWidth`, `lineColor`
+**Common bot tags:** `color`, `label`, `scale`, `scaleX/Y/Z`, `form` (cube/sphere/sprite/mesh/frustum), `formAddress` (URL for sprite image or mesh file; for GLTF/GLB models also set `formSubtype: 'gltf'`), `formOpacity`, `cursor`, `draggable`, `pointable`, `focusable`, `strokeColor`, `strokeWidth`, `labelColor`, `labelFontSize` (default 1 is large), `labelPosition` (top/front/left/right/floating/floatingBillboard), `labelWordWrapMode` (breakCharacters/breakWords/none) `progressBar`, `progressBarColor`, `lineTo` (bot ID or array of bot IDs to draw a line to), `lineStyle`, `lineWidth`, `lineColor`
 
 **Dimension tags:** `[dim]: true` places bot in dimension, `[dim]X/Y/Z` sets position, `[dim]RotationX/RotationY/RotationZ` sets rotation, `[dim]SortOrder` for menu ordering
 

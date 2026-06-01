@@ -39,5 +39,6 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 }
 
+console.log("playerSpawned: useGPS ", data.disableGPS ? false : true)
 thisBot.useGPS(data.disableGPS ? false : true);
 thisBot.toggleLocationPull(data.disableGPS ? false : true);

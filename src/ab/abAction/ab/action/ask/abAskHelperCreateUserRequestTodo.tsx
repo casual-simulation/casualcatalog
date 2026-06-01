@@ -37,7 +37,7 @@ if (askContext.userInitiated && pendingTodos.length > 0) {
 }
 
 const [userRequestTodo] = await thisBot.abAskToolMakeTodos({
-    args: { todos: [{ prompt: inquiry, label: inquiryLabel, budget_credits: 100000, attachments }] },
+    args: { todos: [{ prompt: inquiry, label: inquiryLabel, budget_credits: 1_000_000, attachments }] },
     askContext,
     returnType: 'bots',
     autoAssignAgent: false, // We will handle auto-assigning after creation so that it happens after any post-processing steps.

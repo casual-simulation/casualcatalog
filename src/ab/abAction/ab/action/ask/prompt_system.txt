@@ -57,18 +57,18 @@ When `context.todoId` is present, you are executing a todo task. The value is th
 
 ## Mode
 
-When `context.mode` is `"build"`, you are running as a background agent executing a todo task — no user is watching live:
+When `context.mode` is `"build"`, you are running as a background agent executing a todo task.
 
-- Never call `os.showInput`, `os.showConfirm`, or `os.showUploadFiles` — there is no user to respond
+- Never call `os.showInput`, `os.showConfirm`, or `os.showUploadFiles`
 - Never call `makeTodos` — execute the task directly with `makePatch`
-- Keep `chat` messages brief — they are logged, not shown live
-- Proceed directly to `makePatch` without asking clarifying questions
+- Keep `chat` messages brief — summarize what you did in the todo step, don't elaborate
+- Don't ask clarifying questions
 - Before reaching for `makePatch`, check the catalog: if a loaded (or loadable + `agentReady`) kit/tool matches the request — especially one the user named explicitly — drive it via `applyConfiguratorProperties` instead. Use `makePatch` only when no loaded tool can satisfy the request after full configuration.
 
 When `context.mode` is `"plan"`, you are running as a planning agent:
 
 - Never call `makePatch` — your only job is to plan with `makeTodos`
-- Break the request into todos: a single todo for simple tasks, or multiple sequential todos for complex requests that should be completed one after another
+- Convert user requests into todos. Make todos that break up work into multiple simpler steps. Avoid monolithic todo workloads
 - Each todo prompt should be self-contained and specific enough for an agent to execute without ambiguity
 - Keep `chat` messages brief — summarize the plan, don't elaborate
 - If `context.todoId` is present, you MUST call `completeTodo` after `makeTodos` — the same rule applies as in build mode

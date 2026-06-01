@@ -51,7 +51,7 @@ const homeWorldButton = {
     `
 };
 
-if (!getBot("isHomeWorldCore", true) && authBot) {
+if (os.getCurrentInst() != 'home' && authBot) {
     dropdownOptions.push(homeWorldButton);
 }
 

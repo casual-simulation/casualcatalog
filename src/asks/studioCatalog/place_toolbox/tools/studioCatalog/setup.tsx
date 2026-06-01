@@ -34,9 +34,9 @@ if (tags.studioId) {
 
 if (!hasCustomMesh) {
     // tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_unlit.glb');
-    tags.scaleX = 2;
-    tags.scaleY = 3;
-    tags.scaleZ = 1.1;
+    tags.scaleX = 1.5;
+    tags.scaleY = 2;
+    tags.scaleZ = 1;
     tags.form = null;
 
     tags.defaultVisualBot = getLink(await thisBot.generateDefaultVisualBot());

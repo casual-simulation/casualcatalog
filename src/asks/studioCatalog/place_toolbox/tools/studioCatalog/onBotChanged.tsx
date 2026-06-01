@@ -13,8 +13,8 @@ if (that.tags.includes("selected")) {
         thisBot.lockStudio();
         if (!tags.hasCustomMesh && links.defaultVisualBot && tags.currentFormAnimation != 'idle_open' && tags.currentFormAnimation != 'opening') {
             tags.currentFormAnimation = 'opening';
-            tags.scaleX = 2;
-            tags.scaleY = 3;
+            tags.scaleX = 1.5;
+            tags.scaleY = 2;
             links.defaultVisualBot.tags.formAnimation = null;
             links.defaultVisualBot.tags.formAnimation = "opening";
             os.startFormAnimation(links.defaultVisualBot, "opening", {clampWhenFinished: true});
@@ -27,8 +27,8 @@ if (that.tags.includes("selected")) {
         shout("onStudioCatalogDeselected", thisBot);
         thisBot.moveStudio();
         if (!tags.hasCustomMesh && tags.currentFormAnimation != 'closed' && tags.currentFormAnimation != 'closing') {
-            tags.scaleX = 2;
-            tags.scaleY = 2;
+            tags.scaleX = 1.5;
+            tags.scaleY = 1;
             links.defaultVisualBot.tags.formAnimation = null;
             tags.currentFormAnimation = 'closing';
             os.startFormAnimation(links.defaultVisualBot, "closing", {clampWhenFinished: true});

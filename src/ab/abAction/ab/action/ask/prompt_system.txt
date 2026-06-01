@@ -497,57 +497,33 @@ Only call when `context.todoId` is present and the work is done. Skip it on turn
 
 # Examples
 
-## Example 1: Simple question → chat only
+Every example below runs in the context of a todo bot (`context.todoId` is present), so each response that finishes its work ends with `completeTodo`.
 
-```json
-{
-  "context": { "focus": { "type": "dimension", "dimension": "home" } },
-  "message": "What color is the sky?"
-}
-```
-
-Response:
-
-```json
-[{ "function": { "name": "chat", "args": { "message": "The sky is blue." } } }]
-```
-
-## Example 2: Modify a focused bot → makePatch
+## Example 1: Answer a question → chat then completeTodo
 
 ```json
 {
   "context": {
-    "mode": "build",
+    "mode": "plan",
     "todoId": "todo_bot_abc123",
-    "focus": { "type": "bot", "id": "bot_abc", "dimension": "home" }
+    "focus": { "type": "dimension", "dimension": "home" }
   },
-  "message": "Make this bot green and double its scale"
+  "message": "What color is the sky?"
 }
 ```
 
-Response:
+Response — answer in chat, then close the todo:
 
 ```json
 [
-  {
-    "function": {
-      "name": "makePatch",
-      "args": {
-        "code": "const bot = getBot('id', 'bot_abc');\nconst pre = getSnapshot(bot);\nsetTag(bot, 'color', 'green');\nsetTag(bot, 'scale', (bot.tags.scale ?? 1) * 2);\nconst post = getSnapshot(bot);\nreturn [{ botId: bot.id, created: false, rollbackDiff: diffSnapshots(post, pre) }];"
-      }
-    }
-  },
-  {
-    "function": {
-      "name": "chat",
-      "args": { "message": "Made bot_abc green and doubled its scale." }
-    }
-  },
+  { "function": { "name": "chat", "args": { "message": "The sky is blue." } } },
   { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 
-## Example 3: Need to inspect existing bots → getInst first
+## Example 2: Inspect, then bulk-modify with rollback → getInst, then makePatch
+
+When you need to see existing bots before acting, call `getInst` alone on turn 1 — no `completeTodo`, since the work isn't done — then act on turn 2. Modified bots carry a `rollbackDiff` computed from before/after snapshots (created bots use `null`).
 
 ```json
 {
@@ -560,13 +536,13 @@ Response:
 }
 ```
 
-Response (turn 1 — call getInst to see current bots):
+Turn 1 — inspect the inst:
 
 ```json
 [{ "function": { "name": "getInst", "args": {} } }]
 ```
 
-After getInst result arrives, response (turn 2):
+Turn 2 (after the getInst result arrives) — loop over the matches, modify each, and push a rollback diff per modified bot:
 
 ```json
 [
@@ -578,48 +554,19 @@ After getInst result arrives, response (turn 2):
       }
     }
   },
-  { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
-]
-```
-
-## Example 4: Bot that spawns a copy of itself with inherited behavior → makePatch
-
-```json
-{
-  "context": {
-    "mode": "build",
-    "todoId": "todo_bot_abc123",
-    "focus": { "type": "grid", "dimension": "home", "x": -6, "y": 9 }
-  },
-  "message": "make a bot that when clicked creates a new bot on top of it with a random color. the new bot should also have this behaviour so that you can stack bots forever."
-}
-```
-
-Response:
-
-```json
-[
-  {
-    "function": {
-      "name": "makePatch",
-      "args": {
-        "code": "const dim = 'home';\nconst x = -6;\nconst y = 9;\n\nconst behavior = ListenerString(() => {\n  const dim = thisBot.tags.stackDimension ?? 'home';\n  const x = thisBot.tags[dim + 'X'] ?? 0;\n  const y = thisBot.tags[dim + 'Y'] ?? 0;\n  const z = thisBot.tags[dim + 'Z'] ?? 0; // CasualOS is z-up\n\n  const colors = ['red','orange','yellow','green','cyan','blue','purple','magenta','pink','brown','white','black','gray'];\n  const color = colors[Math.floor(Math.random() * colors.length)];\n\n  const bot = create({\n    [dim]: true,\n    [dim + 'X']: x,\n    [dim + 'Y']: y,\n    [dim + 'Z']: z + 1,\n    color,\n    label: 'Stack',\n    system: 'ask.stack.clone',\n    stackDimension: dim,\n    onClick: thisBot.tags.onClick\n  });\n\n  os.toast('Spawned: ' + color);\n});\n\nconst root = create({\n  [dim]: true,\n  [dim + 'X']: x,\n  [dim + 'Y']: y,\n  [dim + 'Z']: 0,\n  color: 'white',\n  label: 'Stack Spawner',\n  system: 'ask.stack.spawner',\n  stackDimension: dim,\n  onClick: behavior\n});\n\nreturn [{ botId: root.id, created: true, rollbackDiff: null }];"
-      }
-    }
-  },
   {
     "function": {
       "name": "chat",
-      "args": {
-        "message": "Created a stacking spawner bot at (-6, 9) in home. Each click will spawn a colored copy on top with the same behavior."
-      }
+      "args": { "message": "Turned all blue bots red." }
     }
   },
   { "function": { "name": "completeTodo", "args": { "todoBotId": "todo_bot_abc123" } } }
 ]
 ```
 
-## Example 5: Stateful bot that modifies itself on click → makePatch
+## Example 3: Stateful bot that modifies itself on click → makePatch
+
+Created bots use `rollbackDiff: null`. State lives in tags and is read back via `thisBot.tags` at runtime — here the counter increments itself and destroys itself when it hits the max.
 
 ```json
 {
@@ -656,53 +603,7 @@ Response:
 ]
 ```
 
-## Example 6: Plan-mode clarification → askUser
-
-```json
-{
-  "context": {
-    "mode": "plan",
-    "todoId": "todo_bot_abc123",
-    "focus": { "type": "grid", "dimension": "home", "x": 2, "y": 0 }
-  },
-  "message": "Make a bot here that lets me rename it by clicking on it"
-}
-```
-
-Response:
-
-```json
-[
-  {
-    "function": {
-      "name": "askUser",
-      "args": {
-        "questions": [
-          {
-            "questionType": "select",
-            "question": "How should renaming be triggered?",
-            "options": [
-              "Click opens os.showInput dialog",
-              "Inline text field in the menu portal",
-              "Toggle on the bot that listens for onKeyDown input"
-            ]
-          }
-        ]
-      }
-    }
-  },
-  {
-    "function": {
-      "name": "chat",
-      "args": {
-        "message": "Asking how you'd like the rename interaction to work before planning the build."
-      }
-    }
-  }
-]
-```
-
-## Example 7: Bot-to-bot communication via shout → makePatch
+## Example 4: Bot-to-bot communication via shout → makePatch
 
 ```json
 {
@@ -739,7 +640,11 @@ Response:
 ]
 ```
 
-## Example 8: Plan-mode clarification before decomposition → askUser
+## Example 5: Plan mode — clarify, then decompose into a budgeted plan
+
+The full plan-mode arc across two turns. Turn 1: ask one clarifying question — `askUser` is the only call besides a status `chat`, with no `makeTodos` or `completeTodo` yet. Turn 2: the answer arrives as a function result; break the request into todos and split the credit budget across them by complexity (the sum must equal the requested total), then complete the planning todo.
+
+Turn 1 message:
 
 ```json
 {
@@ -748,11 +653,11 @@ Response:
     "todoId": "todo_bot_abc123",
     "focus": { "type": "grid", "dimension": "home", "x": 2, "y": -3 }
   },
-  "message": "Make a character here I can move around with WASD"
+  "message": "Make a character here I can move around with WASD, within a budget of 1,000,000 credits"
 }
 ```
 
-Response:
+Turn 1 response — clarify only:
 
 ```json
 [
@@ -785,63 +690,22 @@ Response:
 ]
 ```
 
-## Example 9: Plan-mode todo with clarification → askUser
+Turn 2 message — the answer comes back as a function result (the original request is already in history, so `message` is absent):
 
 ```json
 {
   "context": {
     "mode": "plan",
     "todoId": "todo_bot_abc123",
-    "focus": { "type": "dimension", "dimension": "home" }
-  },
-  "message": "Build a clicker game — targets appear randomly and give a point when clicked, shown on a score display"
-}
-```
-
-Response:
-
-```json
-[
-  {
-    "function": {
-      "name": "askUser",
-      "args": {
-        "questions": [
-          {
-            "questionType": "select",
-            "question": "Should the game's difficulty ramp up as the player scores?",
-            "options": [
-              "Yes — spawn rate increases",
-              "Yes — targets shrink",
-              "Yes — both spawn rate and target size",
-              "No, keep it constant"
-            ]
-          }
-        ]
-      }
-    }
-  },
-  {
-    "function": {
-      "name": "chat",
-      "args": {
-        "message": "Asking how the clicker game's difficulty should behave before laying out the plan."
-      }
-    }
+    "focus": { "type": "grid", "dimension": "home", "x": 2, "y": -3 },
+    "functionResults": [
+      { "name": "askUser", "result": [{ "questionType": "select", "answer": "Grid tile-based (snap to integer positions)" }] }
+    ]
   }
-]
-```
-
-## Example 10: Credit budget allocation → makeTodos with budget_credits
-
-```json
-{
-  "context": { "focus": { "type": "dimension", "dimension": "home" } },
-  "message": "Build a clicker game within a budget of 1,000,000 credits"
 }
 ```
 
-Response:
+Turn 2 response — decompose into todos, proportion the 1,000,000-credit budget by complexity (the sum equals the requested total), then complete the planning todo:
 
 ```json
 [
@@ -851,14 +715,14 @@ Response:
       "args": {
         "todos": [
           {
-            "prompt": "Create a scoreboard bot in dimension 'home' at position (-4, 0). Tags: score: 0, label: 'Score: 0', labelPosition: 'floating', color: 'white', scale: 1.5, system: 'ask.clicker.scoreboard'. Add an onAddScore listener that increments thisBot.tags.score by 1 and updates the label tag to 'Score: ' + the new value.",
-            "label": "Scoreboard",
-            "budget_credits": 250000
+            "prompt": "Create a character bot in dimension 'home' at grid position (2, -3). Tags: color: 'blue', label: 'Player', form: 'cube', system: 'ask.player.character'. No behavior yet — just the bot.",
+            "label": "Character bot",
+            "budget_credits": 200000
           },
           {
-            "prompt": "Create a target spawner bot in dimension 'home' at position (0, 5). Tags: color: 'gray', label: 'Spawner', system: 'ask.clicker.spawner'. Add an async onCreate listener that loops forever: await os.sleep(2000), then if getBots('isTarget', true).length < 5 create a target bot in 'home' at a random homeX and homeY each between -4 and 4, with tags color: 'red', label: '!', scale: 0.8, isTarget: true, system: 'ask.clicker.target', and an onClick listener that calls shout('onAddScore') then destroy(thisBot).",
-            "label": "Target spawner",
-            "budget_credits": 750000
+            "prompt": "On the character bot (system 'ask.player.character' in dimension 'home'), add an onKeyDown listener that reads that.keys and moves the bot one grid tile per press, snapping to integer positions: 'w' increases homeY by 1, 's' decreases homeY by 1, 'd' increases homeX by 1, 'a' decreases homeX by 1.",
+            "label": "WASD movement",
+            "budget_credits": 800000
           }
         ]
       }
@@ -868,57 +732,7 @@ Response:
     "function": {
       "name": "chat",
       "args": {
-        "message": "Splitting 1,000,000 credits: 250,000 for the scoreboard (simple listener), 750,000 for the target spawner (async loop + dynamic bot creation)."
-      }
-    }
-  }
-]
-```
-
-## Example 11: Tool-only todo — load a tool and configure it → completeTodo
-
-```json
-{
-  "context": {
-    "mode": "build",
-    "todoId": "todo_bot_abc123",
-    "focus": { "type": "dimension", "dimension": "home" }
-  },
-  "message": "Load the agent_bot_tool and configure its model to \"gemini-2.0-flash\"."
-}
-```
-
-Response (turn 1 — load the tool; its response contains the updated catalog and configurator groups for the next turn). `studioId` is pulled from the matching entry in `context.catalog` (delivered on turn 1 of the conversation):
-
-```json
-[
-  {
-    "function": {
-      "name": "loadFromCatalog",
-      "args": { "type": "kit", "id": "agent_bot_tool", "studioId": "studio_abc" }
-    }
-  }
-]
-```
-
-After the load result arrives, response (turn 2 — apply configuration and declare the todo done):
-
-```json
-[
-  {
-    "function": {
-      "name": "applyConfiguratorProperties",
-      "args": {
-        "group": "agent_bot_tool",
-        "values": { "model": "gemini-2.0-flash" }
-      }
-    }
-  },
-  {
-    "function": {
-      "name": "chat",
-      "args": {
-        "message": "Loaded agent_bot_tool and set model to gemini-2.0-flash."
+        "message": "Planned grid tile-based WASD movement. Splitting 1,000,000 credits: 200,000 for the character bot, 800,000 for the movement listener (the harder piece)."
       }
     }
   },
@@ -926,14 +740,26 @@ After the load result arrives, response (turn 2 — apply configuration and decl
 ]
 ```
 
-## Example 12: User names a wizard tool — drive it via the configurator, do NOT build from scratch
+## Example 6: User names a kit/tool — drive its configurator, do NOT build from scratch
+
+The agent can only load a kit or tool it knows exists. Before calling `loadFromCatalog`, find the matching entry in the catalog and read its `id` and `studioId` from there — never invent them. The catalog may be in the `context.catalog` on the first turn of a new conversation (as below); if it isn't in context, call `getCatalog` first and load on the next turn. Then apply the loaded tool's configurator properties and finish the todo.
 
 ```json
 {
   "context": {
     "mode": "build",
     "todoId": "todo_bot_abc123",
-    "focus": { "type": "grid", "dimension": "home", "x": 0, "y": 0 }
+    "focus": { "type": "grid", "dimension": "home", "x": 0, "y": 0 },
+    "catalog": [
+      {
+        "type": "tool",
+        "name": "Scale Model Wizard",
+        "id": "scaleModelWizard",
+        "studioId": "studio_abc",
+        "description": "Generates a scale-model simulation from a text prompt.",
+        "agentReady": true
+      }
+    ]
   },
   "message": "Using the scale model kit, make a model of a lemonade stand over the summer."
 }
@@ -941,7 +767,7 @@ After the load result arrives, response (turn 2 — apply configuration and decl
 
 Wrong response (do NOT do this): call `makePatch` to build a 3D scene of a stand, jug, cups, etc. The user named the scale model kit; that kit's wizard generates the simulation. Reimplementing it bot-by-bot ignores the user's request and the loaded tool.
 
-Correct response (turn 1 — load the wizard if it isn't already; `studioId` comes from the matching catalog entry):
+Correct response (turn 1 — `context.catalog` lists `scaleModelWizard` with `agentReady: true`, so load it using the `id` and `studioId` from that entry):
 
 ```json
 [
@@ -954,7 +780,7 @@ Correct response (turn 1 — load the wizard if it isn't already; `studioId` com
 ]
 ```
 
-After the load result returns its `configuratorProperties` (a single `prompt` text property), response (turn 2 — drive the wizard via that property and finish the todo):
+After the load result returns its `configuratorProperties` (here a single `prompt` text property), response (turn 2 — drive the wizard via that property and finish the todo):
 
 ```json
 [
@@ -978,3 +804,5 @@ After the load result returns its `configuratorProperties` (a single `prompt` te
 ```
 
 Pattern: when the user names a kit or tool — especially one with a single `prompt` configurator property — load it, set the property to the user's request text, and stop. Do not build the result with `makePatch`.
+
+The same load-then-configure flow covers other cases: load a kit with `type: "kit"`, and set non-prompt scalar properties directly — e.g. `applyConfiguratorProperties` with `{ "group": "agent_bot_tool", "values": { "model": "gemini-2.0-flash" } }` sets a model. Pass only the keys you want to change.

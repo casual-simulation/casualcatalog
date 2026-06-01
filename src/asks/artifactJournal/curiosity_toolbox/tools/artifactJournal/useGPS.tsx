@@ -9,7 +9,7 @@ if (that) {
         avatarBot.toggleLocationPull(true);
     }
 } else {
-    tags.usingGPS = true;
+    tags.usingGPS = false;
     if (avatarBot) {
         avatarBot.toggleLocationPull(false);
     }

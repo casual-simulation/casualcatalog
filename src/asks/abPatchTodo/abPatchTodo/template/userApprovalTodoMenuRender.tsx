@@ -1,7 +1,12 @@
+// Generation token set by abPatchTodoMenuOpen — see the comment there. Stamp our bots with it
+// and drop them at the end if a newer render has superseded us.
+const renderToken = masks.menuRenderToken;
+
 const menuOptions: any = {
     abPatchTodoMenu: true,
     abPatchTodoMenuSortOrder: 0,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
+    menuRenderToken: renderToken,
     patchBot: getLink(thisBot),
     groupSortOrder: 100,
     menuItems: [],
@@ -43,4 +48,8 @@ if (tags.todoApproved) {
     });
 }
 
-ab.links.menu.abCreateMenuGroup(menuOptions);
+await ab.links.menu.abCreateMenuGroup(menuOptions);
+
+if (masks.menuRenderToken !== renderToken) {
+    destroy(getBots('menuRenderToken', renderToken));
+}

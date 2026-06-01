@@ -1,3 +1,11 @@
+// Generation token for this render. Renders overlap (onBotChanged auto-retriggers this on
+// tag changes, and several click/lifecycle listeners whisper it too), so build-then-keep is
+// not atomic. Every bot this render creates is stamped with renderToken; if a newer render
+// supersedes us while we're awaiting bot creation, we drop our own bots at the end instead of
+// leaving duplicates behind. masks.menuRenderToken always holds the latest render's token.
+const renderToken = uuid();
+masks.menuRenderToken = renderToken;
+
 shout('abPatchTodoMenuReset');
 configBot.masks.menuPortal = 'abPatchTodoMenu';
 
@@ -20,14 +28,14 @@ masks.menuOpen = true;
 // User-ask question todos render a distinct menu (question + answer UI). The standard plan
 // menu below doesn't apply — return early after rendering.
 if (tags.isUserAskTodo) {
-    thisBot.userAskTodoMenuRender();
+    await thisBot.userAskTodoMenuRender();
     return;
 }
 
 // User-approval todos render approve / undo / restart buttons that act on the entire
 // related plan chain. Return early — the standard plan menu doesn't apply.
 if (tags.isUserApprovalTodo) {
-    thisBot.userApprovalTodoMenuRender();
+    await thisBot.userApprovalTodoMenuRender();
     return;
 }
 
@@ -43,6 +51,7 @@ const menuOptions = {
     abPatchTodoMenu: true,
     abPatchTodoMenuSortOrder: 0,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
+    menuRenderToken: renderToken,
     patchBot: getLink(thisBot),
     groupSortOrder: 100,
     menuItems: [],
@@ -127,10 +136,11 @@ if (isApproved) {
         onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
     });
 } else if (isBusy) {
-    ab.links.menu.abCreateMenuBusyIndicator({
+    await ab.links.menu.abCreateMenuBusyIndicator({
         abPatchTodoMenu: true,
         abPatchTodoMenuReset: `@destroy(thisBot)`,
         abPatchTodoMenuSortOrder: 999,
+        menuRenderToken: renderToken,
         label: 'agents working',
     });
     menuOptions.menuItems.push({
@@ -163,4 +173,10 @@ if (isApproved) {
     });
 }
 
-ab.links.menu.abCreateMenuGroup(menuOptions);
+await ab.links.menu.abCreateMenuGroup(menuOptions);
+
+// If a newer render superseded this one while we were awaiting bot creation, drop the bots we
+// created so the latest render's menu is the only one left standing.
+if (masks.menuRenderToken !== renderToken) {
+    destroy(getBots('menuRenderToken', renderToken));
+}

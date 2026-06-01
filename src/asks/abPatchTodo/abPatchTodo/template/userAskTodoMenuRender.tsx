@@ -1,6 +1,10 @@
 const data = tags.userAskData;
 if (!data) return;
 
+// Generation token set by abPatchTodoMenuOpen — see the comment there. Stamp our bots with it
+// and drop them at the end if a newer render has superseded us.
+const renderToken = masks.menuRenderToken;
+
 const questionType: string = data.questionType;
 const question: string = data.question;
 const options: string[] = Array.isArray(data.options) ? data.options : [];
@@ -15,6 +19,7 @@ const menuOptions: any = {
     abPatchTodoMenu: true,
     abPatchTodoMenuSortOrder: 0,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
+    menuRenderToken: renderToken,
     patchBot: getLink(thisBot),
     groupSortOrder: 100,
     menuItems: [],
@@ -171,4 +176,8 @@ if (chainComplete) {
     });
 }
 
-ab.links.menu.abCreateMenuGroup(menuOptions);
+await ab.links.menu.abCreateMenuGroup(menuOptions);
+
+if (masks.menuRenderToken !== renderToken) {
+    destroy(getBots('menuRenderToken', renderToken));
+}

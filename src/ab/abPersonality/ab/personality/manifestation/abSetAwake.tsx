@@ -48,11 +48,20 @@ if (tags.abAwake !== awake) {
                 shout("showConsole");
 
                 if (Array.isArray(links.remember.tags.abInitialMessage)) {
-                    for (let i = 0; i < links.remember.tags.abInitialMessage.length; i++) {
-                        ab.log({ name: links.personality.tags.abBuilderIdentity, avatar: links.personality.tags.abBuilderAvatar, message: links.remember.tags.abInitialMessage[i], space: "shared" });
+                    const name = links.personality.tags.abBuilderIdentity;
+                    const avatar = links.personality.tags.abBuilderAvatar;
 
-                        await os.sleep(2000);
-                    }
+                    // Fold the messages into one promise chain: each step logs a message
+                    // and returns os.sleep(2000), so the next step waits 2s before running.
+                    // The chain isn't awaited, so abSetAwake resolves immediately while the
+                    // messages keep logging in the background.
+                    links.remember.tags.abInitialMessage.reduce(
+                        (chain, message) => chain.then(() => {
+                            ab.log({ name, avatar, message, space: "shared" });
+                            return os.sleep(2000);
+                        }),
+                        Promise.resolve()
+                    );
                 }
                 else {
                     ab.log({ name: links.personality.tags.abBuilderIdentity, avatar: links.personality.tags.abBuilderAvatar, message: links.remember.tags.abInitialMessage, space: "shared" });

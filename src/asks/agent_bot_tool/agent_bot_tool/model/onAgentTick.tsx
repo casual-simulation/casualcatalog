@@ -55,6 +55,8 @@ if (standX == null || standY == null) {
         radius: targetDist + 3,
         spacing: 1,
         direction: 'outward',
+        // Bias the search toward the side we're approaching from for a natural shortest path.
+        preferToward: new Vector2(agentX, agentY),
     });
 
     if (open) {

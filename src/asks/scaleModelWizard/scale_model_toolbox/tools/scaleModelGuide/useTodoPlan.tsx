@@ -13,4 +13,6 @@ const params: ABAskGPTParameters = {
 
 await ab.links.ask.askGPT(params);
 
-destroy(thisBot);
+if (tags.destroyAfterUse) {
+    destroy(thisBot);
+}

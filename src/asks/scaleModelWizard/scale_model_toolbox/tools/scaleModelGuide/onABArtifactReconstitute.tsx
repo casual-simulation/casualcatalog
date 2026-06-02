@@ -5,14 +5,20 @@ tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPerso
 tags.labelColor = data.labelColor ?? 'white';
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('scaleModelGuide_' + getID(thisBot));
 
-//Place bot correctly
+// Form
+tags.form = 'mesh';
+tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/guidebook_icon.glb');
+tags.formSubtype = 'gltf';
+tags.formAnimation = 'idle';
+
+// Place bot correctly
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
         tags[tagName] = data.dimensionData[tagName];
     }
 }
 
-//If new action
+// If new action
 if (data.eggParameters) {
     const dimension = data.eggParameters.gridInformation?.dimension ?? 'home';
     const dimensionX = data.eggParameters.gridInformation?.position?.x ?? 0;

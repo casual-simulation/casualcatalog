@@ -18,3 +18,8 @@ delete data.tags.generatedModelData;
 delete data.tags.parsedOriginalResponse;
 delete data.tags.originalPrompt;
 delete data.tags.abConfiguratorGroup;
+delete data.tags.formSubtype;
+delete data.tags.formAddress;
+delete data.tags.formAnimation;
+
+data.tags.form = 'nothing';

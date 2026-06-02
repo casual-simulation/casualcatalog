@@ -109,17 +109,69 @@ options.push({
             })
         },
         {
-            menuItemType: 'input',
-            label: 'personalization prompt',
+            label: 'ai personalization prompt',
             formAddress: "edit_note",
-            placeholder: 'how should I personalize my behavior for you?',
-            formInputMultiline: true,
-            menuItemShowSubmitWhenEmpty: true,
-            onCreate: ListenerString(() => {
-                masks.menuItemText = ab.links.personality.tags.abPersonalizationPrompt ?? '';
-            }),
-            onSubmit: ListenerString(() => {
-                shout('abPersonalityChange', { abPersonalizationPrompt: that.text ?? '' });
+            onClick: ListenerString(() => {
+                // Open a sub-portal with a title card, input field, and back button to edit
+                // the personalization prompt (mirrors the configurator text-property pattern).
+                const promptPortal = 'abPersonalizationPromptMenu';
+                const clearEvent = 'clearAbPersonalizationPromptMenu';
+                const returnPortal = configBot.tags.menuPortal;
+
+                configBot.masks.menuPortal = promptPortal;
+
+                // Tags shared by every bot in the sub-portal: the portal dimension, the return
+                // portal, and the three cleanup paths (clearEvent, menu refresh, ab bot click).
+                const BASE_MENU_BOT = {
+                    space: 'tempLocal',
+                    [promptPortal]: true,
+                    clearEvent,
+                    returnPortal,
+                    [clearEvent]: ListenerString(() => { destroy(thisBot); }),
+                    abMenuRefresh: ListenerString(() => { destroy(thisBot); }),
+                    onABClick: ListenerString(() => {
+                        if (configBot.tags.menuPortal !== 'abPersonalizationPromptMenu') destroy(thisBot);
+                    }),
+                };
+
+                // Title card
+                ab.links.menu.abCreateMenuText({
+                    ...BASE_MENU_BOT,
+                    [promptPortal + 'SortOrder']: Number.MIN_SAFE_INTEGER,
+                    label: 'ai personalization prompt',
+                    labelAlignment: 'center',
+                    menuItemStyle: {},
+                    menuItemLabelStyle: { 'font-weight': 'bold' },
+                });
+
+                // Input field
+                ab.links.menu.abCreateMenuInput({
+                    ...BASE_MENU_BOT,
+                    [promptPortal + 'SortOrder']: 1,
+                    formInputMultiline: true,
+                    menuItemShowSubmitWhenEmpty: true,
+                    label: 'how should I personalize my behavior for you?',
+                    onCreate: ListenerString(() => {
+                        masks.menuItemText = ab.links.personality.tags.abPersonalizationPrompt ?? '';
+                    }),
+                    onSubmit: ListenerString(() => {
+                        shout('abPersonalityChange', { abPersonalizationPrompt: that.text ?? '' });
+                        shout(tags.clearEvent);
+                        configBot.masks.menuPortal = tags.returnPortal;
+                    }),
+                });
+
+                // Back button
+                ab.links.menu.abCreateMenuButton({
+                    ...BASE_MENU_BOT,
+                    [promptPortal + 'SortOrder']: Number.MAX_SAFE_INTEGER,
+                    label: 'back',
+                    formAddress: 'arrow_back',
+                    onClick: ListenerString(() => {
+                        shout(tags.clearEvent);
+                        configBot.masks.menuPortal = tags.returnPortal;
+                    }),
+                });
             }),
         },
         {

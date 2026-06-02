@@ -25,6 +25,22 @@ const properties: ABConfiguratorProperty[] = [
         value: studioConfig['studio_bootstrap_egg_name']
     },
     {
+        key: 'studio_label_color',
+        type: 'color',
+        label: 'studio label color',
+        description: 'Color to apply to the studio\'s bot labels (ie catalog and kit).',
+        default: 'black',
+        value: studioConfig['studio_label_color']
+    },
+    {
+        key: 'studio_label_background_color',
+        type: 'color',
+        label: 'studio label background color',
+        description: 'Color to apply to the studio\'s bot floating label backgrounds (ie catalog and kit).',
+        default: 'white',
+        value: studioConfig['studio_label_background_color']
+    },
+    {
         key: 'studio_catalog_mesh',
         type: 'group',
         label: 'studio catalog mesh',
@@ -50,22 +66,6 @@ const properties: ABConfiguratorProperty[] = [
                 label: 'studio catalog color',
                 description: 'Color to apply to the studio\'s catalog mesh.',
                 value: studioConfig['studio_catalog_color']
-            },
-            {
-                key: 'studio_catalog_label_color',
-                type: 'color',
-                label: 'studio catalog label color',
-                description: 'Color to apply to the studio\'s catalog bot label.',
-                default: 'black',
-                value: studioConfig['studio_catalog_label_color']
-            },
-            {
-                key: 'studio_catalog_label_background_color',
-                type: 'color',
-                label: 'studio catalog label background color',
-                description: 'Color to apply to the studio\'s catalog bot floating label background.',
-                default: 'white',
-                value: studioConfig['studio_catalog_label_background_color']
             }
         ]
     },

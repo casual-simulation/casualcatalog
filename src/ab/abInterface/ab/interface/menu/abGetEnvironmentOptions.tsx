@@ -109,6 +109,20 @@ options.push({
             })
         },
         {
+            menuItemType: 'input',
+            label: 'personalization prompt',
+            formAddress: "edit_note",
+            placeholder: 'how should I personalize my behavior for you?',
+            formInputMultiline: true,
+            menuItemShowSubmitWhenEmpty: true,
+            onCreate: ListenerString(() => {
+                masks.menuItemText = ab.links.personality.tags.abPersonalizationPrompt ?? '';
+            }),
+            onSubmit: ListenerString(() => {
+                shout('abPersonalityChange', { abPersonalizationPrompt: that.text ?? '' });
+            }),
+        },
+        {
             label: `color: ${links.personality.tags.abBaseColor}`,
             formAddress: "edit_note",
             onClick: ListenerString(async () => {

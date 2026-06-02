@@ -12,5 +12,6 @@
     "abPreferredAIModel",
     "abCatalogName",
     "abMapPortalBase",
-    "abAutoAssignAgentToTodo"
+    "abAutoAssignAgentToTodo",
+    "abPersonalizationPrompt"
 ]

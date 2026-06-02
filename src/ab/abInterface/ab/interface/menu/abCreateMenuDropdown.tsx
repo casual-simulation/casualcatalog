@@ -78,6 +78,8 @@ async function generateMenuOptions (options, sortOrder) {
     const menuBots = [];
     for (let i = 0; i < options.length; ++i) {
 
+        const menuItemType = options[i].menuItemType;
+
         let newMenuButton = {
             ...options[i],
             abDropdownOption: true,
@@ -85,6 +87,8 @@ async function generateMenuOptions (options, sortOrder) {
                 destroy(thisBot);
             `
         };
+
+        delete newMenuButton.menuItemType;
 
         newMenuButton[configBot.tags.menuPortal + "SortOrder"] = Number(sortOrder) + ((i + 1) / 100000);
         newMenuButton[configBot.tags.menuPortal] = true;
@@ -112,7 +116,18 @@ async function generateMenuOptions (options, sortOrder) {
         newMenuButton["menuItemStyle"]["marginTop"] = "0";
         newMenuButton["menuItemStyle"]["paddingLeft"] = "35px";
 
-        const newMenuBot = await thisBot.abCreateMenuButton(newMenuButton);
+        let newMenuBot;
+        switch (menuItemType) {
+            case "input":
+                newMenuBot = await thisBot.abCreateMenuInput(newMenuButton);
+                break;
+            case "text":
+                newMenuBot = await thisBot.abCreateMenuText(newMenuButton);
+                break;
+            default:
+                newMenuBot = await thisBot.abCreateMenuButton(newMenuButton);
+                break;
+        }
         menuBots.push(newMenuBot);
     }
 

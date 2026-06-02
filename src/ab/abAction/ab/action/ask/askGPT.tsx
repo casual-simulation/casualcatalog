@@ -139,8 +139,17 @@ if (!hasInquiry && storedHistory.length > 0) {
     // abAskToolGetCatalog auto-spawns a user-studio catalog when the grid is empty, so this
     // may block briefly on artifact reconstitution on the very first turn.
     const catalog = await thisBot.abAskToolGetCatalog({ askContext });
+
+    // Replace the {{personalization_prompt}} placeholder in the system prompt with the user's
+    // personalization prompt (if any), prefixed with a header. When unset/empty the placeholder
+    // is removed entirely.
+    // split/join (not String.replace) so $-sequences in the user's prompt aren't interpreted.
+    const rawPersonalizationPrompt = ab.links.personality?.tags.abPersonalizationPrompt;
+    const personalizationPrompt = rawPersonalizationPrompt ? `# User Personalization\n\n${rawPersonalizationPrompt}` : '';
+    const systemPrompt = tags.prompt_system.split('{{personalization_prompt}}').join(personalizationPrompt);
+
     aiChatMessages = [
-        { role: 'system', content: [{ text: tags.prompt_system }] },
+        { role: 'system', content: [{ text: systemPrompt }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
         { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry, { catalog }) }, ...attachmentBlocks] },
     ];

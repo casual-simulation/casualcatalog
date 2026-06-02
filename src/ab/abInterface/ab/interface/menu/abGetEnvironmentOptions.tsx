@@ -150,7 +150,7 @@ options.push({
                     [promptPortal + 'SortOrder']: 1,
                     formInputMultiline: true,
                     menuItemShowSubmitWhenEmpty: true,
-                    label: 'how should I personalize my behavior for you?',
+                    label: `about you & ${ab.links.personality.tags.abBuilderIdentity}'s behavior`,
                     onCreate: ListenerString(() => {
                         masks.menuItemText = ab.links.personality.tags.abPersonalizationPrompt ?? '';
                     }),

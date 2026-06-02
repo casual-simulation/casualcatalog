@@ -3,8 +3,10 @@ if (that.tags.includes("color") && tags.color != 'clear') {
         links.defaultVisualBot.tags.color = tags.color;
     }
 
-    tags.labelFloatingBackgroundColor = tags.color;
-    tags.color = 'clear';
+    if (!tags.hasCustomMesh) {
+        tags.labelFloatingBackgroundColor = tags.color;
+        tags.color = 'clear';
+    }
 }
 
 if (that.tags.includes("selected")) {

@@ -39,10 +39,47 @@ const todoY = todoBot.tags[dim + 'Y'] ?? 0;
 const agentX = tags[dim + 'X'] ?? 0;
 const agentY = tags[dim + 'Y'] ?? 0;
 
-const dx = agentX - todoX;
-const dy = agentY - todoY;
-const dist = Math.sqrt(dx * dx + dy * dy);
 const targetDist = tags.targetDistance ?? 2;
+
+// Pick (and cache) an open standing tile adjacent to the todo bot so the agent
+// doesn't end up standing on top of neighbouring todo bots. Computed once per todo
+// assignment (assignTodo clears standX/standY), then we commit to that fixed tile —
+// recomputing each tick would make the target jump as occupancy changes while moving.
+let standX = tags.standX;
+let standY = tags.standY;
+if (standX == null || standY == null) {
+    const open = await ab.links.utils.findOpenPositionAround({
+        center: new Vector2(todoX, todoY),
+        dimension: dim,
+        innerRadius: Math.max(0, targetDist - 1),
+        radius: targetDist + 3,
+        spacing: 1,
+        direction: 'outward',
+    });
+
+    if (open) {
+        standX = open.x;
+        standY = open.y;
+    } else {
+        // No open tile found nearby — fall back to a point targetDist away along the
+        // direction from the todo toward the agent's current position (+x if on top).
+        const fdx = agentX - todoX;
+        const fdy = agentY - todoY;
+        const fdist = Math.sqrt(fdx * fdx + fdy * fdy);
+        const fnx = fdist > 0 ? fdx / fdist : 1;
+        const fny = fdist > 0 ? fdy / fdist : 0;
+        standX = Math.round(todoX + fnx * targetDist);
+        standY = Math.round(todoY + fny * targetDist);
+    }
+
+    tags.standX = standX;
+    tags.standY = standY;
+    dbg('picked standing position', { standX, standY, fellBack: !open });
+}
+
+const sdx = standX - agentX;
+const sdy = standY - agentY;
+const standDist = Math.sqrt(sdx * sdx + sdy * sdy);
 
 dbg('tick', {
     tickIntervalMS,
@@ -51,18 +88,19 @@ dbg('tick', {
     dim,
     agent: { x: agentX, y: agentY },
     todo: { x: todoX, y: todoY },
-    dist,
+    stand: { x: standX, y: standY },
+    standDist,
     targetDist,
     hasArmBot: !!links.armBot,
 });
 
-if (dist > targetDist) {
+if (standDist > 0.5) {
     // stepsPerTick = how many tiles to walk this tick at moveSpeed tiles/sec.
     // stepIntervalMS = time to wait between steps so they spread evenly across the tick.
     const stepsPerTick = Math.max(1, Math.round((tags.moveSpeed ?? 2) * tickIntervalMS / 1000));
     const stepIntervalMS = tickIntervalMS / stepsPerTick;
 
-    dbg('moving toward todo', { stepsPerTick, stepIntervalMS });
+    dbg('moving toward standing position', { stepsPerTick, stepIntervalMS, standX, standY });
 
     masks.moving = true;
 
@@ -74,25 +112,18 @@ if (dist > targetDist) {
 
         const curX = tags[dim + 'X'] ?? 0;
         const curY = tags[dim + 'Y'] ?? 0;
-        const curDx = curX - todoX;
-        const curDy = curY - todoY;
-        const curDist = Math.sqrt(curDx * curDx + curDy * curDy);
 
-        if (curDist <= targetDist) {
-            dbg('arrived mid-step', { step: i, curDist });
+        if (curX === standX && curY === standY) {
+            dbg('arrived mid-step', { step: i });
             break;
         }
 
-        // If right on top of the todo, default to +x side.
-        const nx = curDist > 0 ? curDx / curDist : 1;
-        const ny = curDist > 0 ? curDy / curDist : 0;
-        const targetX = todoX + nx * targetDist;
-        const targetY = todoY + ny * targetDist;
-
-        if (Math.abs(targetX - curX) >= Math.abs(targetY - curY)) {
-            tags[dim + 'X'] = curX + Math.sign(targetX - curX);
+        // Step one tile toward the cached standing tile, moving along the axis with the
+        // greater remaining distance first.
+        if (Math.abs(standX - curX) >= Math.abs(standY - curY)) {
+            tags[dim + 'X'] = curX + Math.sign(standX - curX);
         } else {
-            tags[dim + 'Y'] = curY + Math.sign(targetY - curY);
+            tags[dim + 'Y'] = curY + Math.sign(standY - curY);
         }
     }
 

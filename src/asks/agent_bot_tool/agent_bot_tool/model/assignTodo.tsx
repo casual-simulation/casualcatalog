@@ -14,3 +14,6 @@ if (!ab.links.utils.isBot(todoBot) || !todoBot.tags.abPatchTodoInstance) {
 tags.todoBot = getLink(todoBot);
 tags.todoInProgress = null;
 tags.agentArm = null;
+// Clear the cached standing tile so onAgentTick recomputes an open spot for the new todo.
+tags.standX = null;
+tags.standY = null;

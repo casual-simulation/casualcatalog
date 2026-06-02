@@ -2,9 +2,10 @@ if (tags.remoteID != getID(configBot) || tags.continueLocationPull) {
     return;
 }
 
-const place = getBot("system", that);
+// const place = getBot("system", that);
 
-if (!place) {
+console.log("thatt", that)
+if (!that) {
     return;
 }
 
@@ -12,18 +13,18 @@ clearAnimations(thisBot);
 
 let xPos;
 let yPos;
-const dimension = place.tags.dimension ?? "home";
+const dimension = that.dimension ?? "home";
 
-if (tags[dimension + 'X'] > place.tags[dimension + 'X']) {
-    xPos = place.tags[dimension + 'X'] + .0005;
+if (tags[dimension + 'X'] > that.x) {
+    xPos = that.x + .0005;
 } else {
-    xPos = place.tags[dimension + 'X'] - .0005;
+    xPos = that.x - .0005;
 }
 
-if (tags[dimension + 'Y'] > place.tags[dimension + 'Y']) {
-    yPos = place.tags[dimension + 'Y'] + .0005;
+if (tags[dimension + 'Y'] > that.y) {
+    yPos = that.y + .0005;
 } else {
-    yPos = place.tags[dimension + 'Y'] - .0005;
+    yPos = that.y - .0005;
 }
 
 thisBot.moveAvatar({

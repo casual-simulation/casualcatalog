@@ -3,6 +3,19 @@ if (data.config) {
     data = data.config;
 }
 
+const existingAvatarBot = getBot(byTag("mapAvatar", true), byTag("remoteID", configBot.tags.id));
+if (existingAvatarBot) {
+    if (!data.disableGPS) {
+        if (existingAvatarBot.tags.continueLocationPull) {
+            data.disableGPS = false;
+        } else {
+            data.disableGPS = true;
+        }
+    }
+    destroy(existingAvatarBot);
+}
+
+await os.sleep(0);
 tags.remoteID = configBot.tags.id;
 
 let label = data.label ?? 'player';

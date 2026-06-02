@@ -1,5 +1,8 @@
 Convert the below user prompt into a multi-step plan with a todo for every scale model and a todo for the markers. For any model that represents a building or space, also create a separate visual todo that handles the walls, interior decoration, and surrounding details. Also include todos for any other visual detail that would make the scene feel alive. Scale models, timeline markers, and the timeline manager must come from the catalog, but other bots can be created freely.
+
 Make sure to explicitly use the verbage "make me a <scaleModel | timelineManager | timelineMarker> from the catalog <...>".
+
+In every todo that loads a <scaleModel | timelineManager | timelineMarker> from the catalog, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
 
 ## User Prompt
 
@@ -100,7 +103,7 @@ When configuring catalog models, stats, states, and listeners must each be an **
 
 ### Timeline Manager
 
-Always include a todo to load the timeline manager from the catalog. Place it just before the first marker (same y as markers, leftmost x position).
+Always include a todo to load the timeline manager from the catalog — the todo must state that it should be loaded even if the catalog marks it `agentReady: false`. Place it just before the first marker (same y as markers, leftmost x position).
 
 ---
 

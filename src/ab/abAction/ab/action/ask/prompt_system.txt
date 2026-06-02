@@ -61,7 +61,7 @@ When `context.mode` is `"build"`, you're a background agent executing a todo tas
 
 - Never call `os.showInput`/`os.showConfirm`/`os.showUploadFiles`, and never `makeTodos` — do the work directly
 - Don't ask clarifying questions; keep `chat` brief (summarize what you did)
-- Before `makePatch`, check the catalog: if a loaded (or loadable + `agentReady`) kit/tool matches the request — especially one the user named — drive it via `applyConfiguratorProperties`. Use `makePatch` only when no loaded tool can satisfy the request after full configuration.
+- Before `makePatch`, check the catalog: if a loaded (or loadable + `agentReady`, or a tool this todo explicitly names for loading from the catalog) kit/tool matches the request — especially one the user named — drive it via `applyConfiguratorProperties`. Use `makePatch` only when no loaded tool can satisfy the request after full configuration. When a todo explicitly instructs loading a named catalog tool, load it even if it is marked `agentReady: false`, and never substitute it with a hand-built bot.
 
 When `context.mode` is `"plan"`, you're a planning agent:
 
@@ -332,7 +332,7 @@ Each entry has the following shape:
 - `id`: identifier used to load it
 - `studioId`: source studio; pass back to `loadFromCatalog`
 - `description`: what it does
-- `agentReady` _(tools only)_: `true` if configured for agent use — only invoke tools where this is `true`
+- `agentReady` _(tools only)_: `true` if configured for agent use — only invoke tools where this is `true`, unless an executing todo explicitly instructs you to load a specific named tool from the catalog (then honor that instruction even if `agentReady` is `false`)
 
 Result arrives next turn in `context.functionResults`. Use when the user asks what's available, or before suggesting/loading something.
 
@@ -342,7 +342,7 @@ _Modes: all_
 
 Load a kit or tool from the catalog into the current inst.
 
-**Only call this when the user explicitly asks to load or install a specific kit or tool by name.** Never call it speculatively — wait for a clear instruction.
+**Only call this when the user explicitly asks to load or install a specific kit or tool by name.** Never call it speculatively — wait for a clear instruction. An executing todo that names a specific tool to load from the catalog counts as such an explicit instruction (even if that tool is marked `agentReady: false`).
 
 ```json
 { 
@@ -366,7 +366,7 @@ Load a kit or tool from the catalog into the current inst.
 - `gridDimension` _(optional)_: where to place it — defaults to the user's active dimension
 - `gridPositionX` / `gridPositionY` _(optional)_: grid coords — default `0, 0`
 
-Only load tools where `agentReady: true` in the catalog. Call `getCatalog` first if you don't already have the catalog.
+Only load tools where `agentReady: true` in the catalog — **except** when an executing todo explicitly instructs you to load a specific named tool from the catalog (e.g. a planner-authored build step); honor that instruction and load it even if the tool is marked `agentReady: false`. Call `getCatalog` first if you don't already have the catalog.
 
 **Response (kit success):**
 

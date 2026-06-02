@@ -1,1 +1,1 @@
-thisBot.onStoreMenu();
+thisBot.onStoreMenu(that);

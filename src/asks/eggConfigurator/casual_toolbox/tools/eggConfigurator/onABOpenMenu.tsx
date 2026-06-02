@@ -32,6 +32,17 @@ if (tags.draggable == false) {
     });  
 }
 
+//EDIT
+const editButton = {
+    ...menuOptions,
+    label: 'edit',
+    scaleModel_menuSortOrder: 0,
+    formAddress: 'edit',
+    onClick: `@
+        ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: links.egg.tags.abConfiguratorGroup});
+    `
+}
+
 const currentURL = new URL(configBot.tags.url);
 const host = currentURL.host;
 
@@ -57,7 +68,6 @@ const pubButton = {
 }
 
 if (tags.eggConfigConfirmed) {
+    ab.links.menu.abCreateMenuButton(editButton);
     ab.links.menu.abCreateMenuButton(pubButton);
 }
-
-ab.links.menu.abCreateMenuGroup(menuGroup);

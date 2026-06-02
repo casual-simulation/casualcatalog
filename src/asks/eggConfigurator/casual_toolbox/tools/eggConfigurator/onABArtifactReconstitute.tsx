@@ -11,6 +11,7 @@ tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'b
 tags.prevBotID = data.prevBotID;
 tags.studioId = data.studioId;
 tags.strokeBot = null;
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('egg_' + getID(thisBot));
 
 if (tags.eggConfigConfirmed) {
     thisBot.lockEgg();

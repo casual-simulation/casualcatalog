@@ -4,7 +4,6 @@ if (tags.remoteID != getID(configBot) || tags.continueLocationPull) {
 
 // const place = getBot("system", that);
 
-console.log("thatt", that)
 if (!that) {
     return;
 }

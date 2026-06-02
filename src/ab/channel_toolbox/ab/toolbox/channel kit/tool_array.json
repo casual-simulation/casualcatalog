@@ -1,8 +1,0 @@
-[
-    {
-        "name": "create a channel",
-        "studio": "AB",
-        "targetAB": "channelConfigurator",
-        "artifact": true
-    }
-]

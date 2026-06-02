@@ -1,4 +1,4 @@
-if (tags.remoteID != getID(configBot) || tags.usingGPS) {
+if (tags.remoteID != getID(configBot) || tags.continueLocationPull) {
     return;
 }
 
@@ -8,23 +8,26 @@ if (!place) {
     return;
 }
 
+clearAnimations(thisBot);
+
 let xPos;
 let yPos;
+const dimension = place.tags.dimension ?? "home";
 
-if (tags[place.tags.dimension + 'X'] > place.tags[place.tags.dimension + 'X']) {
-    xPos = place.tags[place.tags.dimension + 'X'] + .0002;
+if (tags[dimension + 'X'] > place.tags[dimension + 'X']) {
+    xPos = place.tags[dimension + 'X'] + .0005;
 } else {
-    xPos = place.tags[place.tags.dimension + 'X'] - .0002;
+    xPos = place.tags[dimension + 'X'] - .0005;
 }
 
-if (tags[place.tags.dimension + 'Y'] > place.tags[place.tags.dimension + 'Y']) {
-    yPos = place.tags[place.tags.dimension + 'Y'] + .0002;
+if (tags[dimension + 'Y'] > place.tags[dimension + 'Y']) {
+    yPos = place.tags[dimension + 'Y'] + .0005;
 } else {
-    yPos = place.tags[place.tags.dimension + 'Y'] - .0002;
+    yPos = place.tags[dimension + 'Y'] - .0005;
 }
 
 thisBot.moveAvatar({
-        dimension: place.tags.dimension ?? "home",
+        dimension: dimension,
         position: {
             x: xPos,
             y: yPos

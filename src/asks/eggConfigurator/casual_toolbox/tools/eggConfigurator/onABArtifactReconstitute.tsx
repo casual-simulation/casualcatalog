@@ -45,7 +45,7 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 
     if (!tags.eggConfigConfirmed) {
-        thisBot.showEggSetupMenu();
+        thisBot.onClick();
     }
 }
 

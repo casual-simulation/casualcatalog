@@ -14,4 +14,5 @@ if ('name' in propertyValues) {
 
 if (tags.chosenEggName && tags.chosenStudio) {
     tags.eggConfigConfirmed = true;
+    thisBot.lockEgg();
 }

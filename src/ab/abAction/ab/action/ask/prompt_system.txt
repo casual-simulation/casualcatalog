@@ -257,7 +257,11 @@ patchResults.push({
 - Floating labels: prefer `labelWordWrapMode: 'breakWords'` + `labelFontSize: 0.75`.
 - `labelFontSize`: auto when unset; explicit `1` large, `0.75` medium, `0.5` small.
 
-**Draggability:** Bots are draggable by default (`draggable` unset), so in multi-bot scenes users can drag bots out of place by accident. Set `draggable: false` on anything not meant to be moved by hand — scenery, backgrounds, labels, and click- or code-driven bots (buttons, counters, programmatically-moved characters); this only blocks CasualOS repositioning, so `onClick`/`onDrag` and other events still fire. Leave it draggable only when pickup is the point — game pieces, tokens, cards, inventory items.
+**Draggability & pointability:** Two independent blockers. `draggable: false` stops hand-repositioning but the bot stays *pointable* — it still catches the cursor, so it intercepts clicks and blocks click-drag camera movement (`onClick`/`onDrag` etc. still fire). `pointable: false` makes the bot ignore the cursor entirely: clicks pass *through* to whatever bot or grid is behind it and click-dragging on it moves the camera — but it can no longer be clicked, hovered, or dragged (`onClick`/`onPointer*` won't fire). `pointable` only gates *pointer* events — keyboard (`onKeyDown`), `shout`/`whisper`, and code-driven movement still fire on a non-pointable bot. Choose by whether the user points at the bot:
+
+- Clicked / hovered / drag-handled but shouldn't be hand-repositioned → `draggable: false` (stays pointable): buttons, counters, clickable bots.
+- Never pointed at → `pointable: false`: scenery, backgrounds, non-interactive labels, passive displays, and keyboard- or code-driven characters (they keep moving via key/code events). Users click and drag the camera straight through them (this also makes them undraggable; only use it where that click-through is wanted).
+- Meant to be picked up by hand → leave both default: game pieces, tokens, cards, inventory items.
 
 **Axes** (as seen in the default view — an angled top-down orthographic camera; governs `[dim]X/Y/Z` and label faces): `+x` on-screen right, `−x` on-screen left, `−y` forward (toward viewer), `+y` backward (away from viewer), `+z` up, `−z` down. A label's `left`/`right` `labelPosition` does **not** follow these — it uses the bot's own left/right (mirrored), see Label styling.
 
@@ -660,7 +664,7 @@ Response:
     "function": {
       "name": "makePatch",
       "args": {
-        "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  draggable: false,\n  system: 'ask.ping.receiver',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  draggable: false,\n  system: 'ask.ping.broadcaster',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];"
+        "code": "const dim = 'home';\n\nconst receiver = create({\n  [dim]: true,\n  [dim + 'X']: 2,\n  [dim + 'Y']: 0,\n  color: 'gray',\n  label: 'Waiting...',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  pointable: false,\n  system: 'ask.ping.receiver',\n  onPing: ListenerString(() => {\n    setTag(thisBot, 'color', 'green');\n    setTag(thisBot, 'label', 'Pinged!');\n  })\n});\n\nconst broadcaster = create({\n  [dim]: true,\n  [dim + 'X']: 0,\n  [dim + 'Y']: 0,\n  color: 'red',\n  label: 'Ping',\n  labelPosition: 'floatingBillboard',\n  labelFontSize: 0.75,\n  draggable: false,\n  system: 'ask.ping.broadcaster',\n  onClick: ListenerString(() => {\n    shout('onPing');\n  })\n});\n\nreturn [\n  { botId: receiver.id, created: true, rollbackDiff: null },\n  { botId: broadcaster.id, created: true, rollbackDiff: null }\n];"
       }
     }
   },
@@ -751,7 +755,7 @@ Turn 2 response — todos with the 1,000,000-credit budget split by complexity, 
       "args": {
         "todos": [
           {
-            "prompt": "Create a character bot in dimension 'home' at grid position (2, -3). Tags: color: 'blue', label: 'Player', labelPosition: 'floatingBillboard', labelFontSize: 0.75, draggable: false, form: 'cube', system: 'ask.player.character'. No behavior yet — just the bot.",
+            "prompt": "Create a character bot in dimension 'home' at grid position (2, -3). Tags: color: 'blue', label: 'Player', labelPosition: 'floatingBillboard', labelFontSize: 0.75, pointable: false, form: 'cube', system: 'ask.player.character'. No behavior yet — just the bot.",
             "label": "Character bot",
             "budget_credits": 200000
           },

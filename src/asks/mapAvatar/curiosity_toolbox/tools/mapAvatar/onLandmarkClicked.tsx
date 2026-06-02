@@ -8,23 +8,27 @@ if (!landmark) {
     return;
 }
 
+clearAnimations(thisBot);
+
 let xPos;
 let yPos;
 
-if (tags[landmark.tags.dimension + 'X'] > landmark.tags[landmark.tags.dimension + 'X']) {
-    xPos = landmark.tags[landmark.tags.dimension + 'X'] + .0002;
+const dimension = landmark.tags.dimension ?? "home";
+
+if (tags[dimension + 'X'] > landmark.tags[dimension + 'X']) {
+    xPos = landmark.tags[dimension + 'X'] + .0002;
 } else {
-    xPos = landmark.tags[landmark.tags.dimension + 'X'] - .0002;
+    xPos = landmark.tags[dimension + 'X'] - .0002;
 }
 
-if (tags[landmark.tags.dimension + 'Y'] > landmark.tags[landmark.tags.dimension + 'Y']) {
-    yPos = landmark.tags[landmark.tags.dimension + 'Y'] + .0002;
+if (tags[dimension + 'Y'] > landmark.tags[dimension + 'Y']) {
+    yPos = landmark.tags[dimension + 'Y'] + .0002;
 } else {
-    yPos = landmark.tags[landmark.tags.dimension + 'Y'] - .0002;
+    yPos = landmark.tags[dimension + 'Y'] - .0002;
 }
 
 thisBot.moveAvatar({
-        dimension: landmark.tags.dimension ?? "home",
+        dimension: dimension,
         position: {
             x: xPos,
             y: yPos

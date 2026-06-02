@@ -19,8 +19,12 @@ if (tags.studioId) {
     if (studioConfig?.studio_kit_color) {
         tags.color = studioConfig.studio_kit_color;
     }
-    tags.labelColor = studioConfig?.studio_label_color ?? 'black';
-    tags.labelFloatingBackgroundColor = studioConfig?.studio_label_background_color ?? 'white';
+    if (studioConfig?.studio_label_color) {
+        tags.labelColor = studioConfig?.studio_label_color;
+    }
+    if (studioConfig?.studio_label_background_color) {
+        tags.labelFloatingBackgroundColor = studioConfig?.studio_label_background_color;
+    }
 }
 
 if (masks.form !== 'mesh') {

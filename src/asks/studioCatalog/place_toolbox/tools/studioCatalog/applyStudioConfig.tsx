@@ -34,7 +34,12 @@ if (instStudioConfig?.studio_catalog_color) {
     tags.color = instStudioConfig.studio_catalog_color;
 }
 
-tags.labelColor = instStudioConfig?.studio_label_color ?? 'black';
-tags.labelFloatingBackgroundColor = instStudioConfig?.studio_label_background_color ?? 'white';
+if (instStudioConfig?.studio_label_color) {
+    tags.labelColor = instStudioConfig.studio_label_color;
+}
+
+if (instStudioConfig?.studio_label_background_color) {
+    tags.labelFloatingBackgroundColor = instStudioConfig.studio_label_background_color;
+}
 
 return hasCustomMesh;

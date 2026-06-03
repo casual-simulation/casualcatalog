@@ -6,7 +6,9 @@ if (!humeSocket) {
 
 const name = abPersonality.tags.abBuilderIdentity;
 
-const personalization_prompt = abPersonality.tags.abPersonalizationPrompt || 'None specified.';
+// abUnsetValue is the sentinel for an intentionally-empty personalization prompt — treat it as none.
+const rawPersonalizationPrompt = abPersonality.tags.abPersonalizationPrompt;
+const personalization_prompt = (rawPersonalizationPrompt && rawPersonalizationPrompt !== abPersonality.tags.abUnsetValue) ? rawPersonalizationPrompt : 'None specified.';
 
 const user_focus = ab.links.remember.links.abMultipleBotFocus ??
                    ab.links.remember.links.abBotFocus ??

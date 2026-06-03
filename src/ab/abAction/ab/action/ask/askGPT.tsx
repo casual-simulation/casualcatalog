@@ -145,7 +145,9 @@ if (!hasInquiry && storedHistory.length > 0) {
     // is removed entirely.
     // split/join (not String.replace) so $-sequences in the user's prompt aren't interpreted.
     const rawPersonalizationPrompt = ab.links.personality?.tags.abPersonalizationPrompt;
-    const personalizationPrompt = rawPersonalizationPrompt ? `# User Personalization\n\n${rawPersonalizationPrompt}` : '';
+    // abUnsetValue is the sentinel for an intentionally-empty personalization prompt — treat it as none.
+    const hasPersonalization = rawPersonalizationPrompt && rawPersonalizationPrompt !== ab.links.personality?.tags.abUnsetValue;
+    const personalizationPrompt = hasPersonalization ? `# User Personalization\n\n${rawPersonalizationPrompt}` : '';
     const systemPrompt = tags.prompt_system.split('{{personalization_prompt}}').join(personalizationPrompt);
 
     aiChatMessages = [

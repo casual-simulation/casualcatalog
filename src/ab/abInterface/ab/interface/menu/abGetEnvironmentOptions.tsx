@@ -152,10 +152,16 @@ options.push({
                     menuItemShowSubmitWhenEmpty: true,
                     label: `about you & ${ab.links.personality.tags.abBuilderIdentity}'s behavior`,
                     onCreate: ListenerString(() => {
-                        masks.menuItemText = ab.links.personality.tags.abPersonalizationPrompt ?? '';
+                        // abUnsetValue is the sentinel for an intentionally-empty tag (CasualOS coerces
+                        // empty-string tag values to null, so we can't store ''). Show it as blank.
+                        const savedPrompt = ab.links.personality.tags.abPersonalizationPrompt;
+                        const unset = ab.links.personality.tags.abUnsetValue;
+                        masks.menuItemText = (savedPrompt && savedPrompt !== unset) ? savedPrompt : '';
                     }),
                     onSubmit: ListenerString(() => {
-                        shout('abPersonalityChange', { abPersonalizationPrompt: that.text ?? '' });
+                        // Store the sentinel when the field is cleared so the empty choice persists
+                        // instead of falling back to the abConfig default on reload.
+                        shout('abPersonalityChange', { abPersonalizationPrompt: that.text || ab.links.personality.tags.abUnsetValue });
                         shout(tags.clearEvent);
                         configBot.masks.menuPortal = tags.returnPortal;
                     }),

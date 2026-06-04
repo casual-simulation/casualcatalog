@@ -140,23 +140,24 @@ if (!hasInquiry && storedHistory.length > 0) {
     // may block briefly on artifact reconstitution on the very first turn.
     const catalog = await thisBot.abAskToolGetCatalog({ askContext });
 
-    // Replace the {{personalization_prompt}} and {{prime_directive_prompt}} placeholders in the
-    // system prompt with the user's prompts (if any), each prefixed with a header and a one-line
-    // framing of how to weight it. When unset/empty the placeholder is removed entirely.
-    // split/join (not String.replace) so $-sequences in the user's prompt aren't interpreted.
-    const unsetValue = ab.links.personality?.tags.abUnsetValue; // abUnsetValue is the sentinel for an intentionally-empty prompt — treat it as none.
+    // The user's prime-directive and personalization sections live in prompt_system.txt, wrapped in
+    // <<name>> ... <</name>> markers (see ab.links.utils.applyOptionalPromptSection). When set, the
+    // section renders with the user's text; when unset it's stripped so it costs no tokens.
+    // abUnsetValue is the sentinel for an intentionally-empty prompt — normalize it to null so the
+    // section drops out.
+    const normalize = (raw) => (raw && raw !== ab.links.personality?.tags.abUnsetValue) ? raw : null;
 
-    const rawPersonalizationPrompt = ab.links.personality?.tags.abPersonalizationPrompt;
-    const hasPersonalization = rawPersonalizationPrompt && rawPersonalizationPrompt !== unsetValue;
-    const personalizationPrompt = hasPersonalization ? `# User's Personalization\n\nThe user's present state and preferences. Let it color your tone in \`chat\` messages — not your goals or what you build.\n\n${rawPersonalizationPrompt}` : '';
-
-    const rawPrimeDirectivePrompt = ab.links.personality?.tags.abPrimeDirectivePrompt;
-    const hasPrimeDirective = rawPrimeDirectivePrompt && rawPrimeDirectivePrompt !== unsetValue;
-    const primeDirectivePrompt = hasPrimeDirective ? `# User's Prime Directive\n\nThe user's standing goals, rules, and identity. Honor it in what you build, what you prioritize, and how you delegate.\n\n${rawPrimeDirectivePrompt}` : '';
-
-    const systemPrompt = tags.prompt_system
-        .split('{{personalization_prompt}}').join(personalizationPrompt)
-        .split('{{prime_directive_prompt}}').join(primeDirectivePrompt);
+    let systemPrompt = tags.prompt_system;
+    systemPrompt = ab.links.utils.applyOptionalPromptSection({
+        template: systemPrompt, 
+        name: 'user_prime_directive', 
+        value: normalize(ab.links.personality?.tags.abPrimeDirectivePrompt)
+    });
+    systemPrompt = ab.links.utils.applyOptionalPromptSection({
+        template: systemPrompt,
+        name: 'user_personalization',
+        value: normalize(ab.links.personality?.tags.abPersonalizationPrompt)
+    });
 
     aiChatMessages = [
         { role: 'system', content: [{ text: systemPrompt }] },

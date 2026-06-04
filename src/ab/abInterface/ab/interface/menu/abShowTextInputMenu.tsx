@@ -46,6 +46,17 @@ const inputBot = ab.links.menu.abCreateMenuInput({
     menuItemShowSubmitWhenEmpty: true,
     label: placeholder,
     menuItemText: currentValue ?? '',
+    onCreate: ListenerString(() => {
+        thisBot.refreshDisplay();
+    }),
+    onBotChanged: ListenerString(() => {
+        if (that.tags.includes('menuItemText')) {
+            thisBot.refreshDisplay();
+        }
+    }),
+    refreshDisplay: ListenerString(() => {
+        // masks.labelColor = tags.menuItemText != null ? null : 'red';
+    }),
     onSubmit: ListenerString(() => {
         shout(tags.clearEvent);
         configBot.masks.menuPortal = tags.returnPortal;

@@ -14,6 +14,7 @@ const editOnUUABButton = {
     formAddress: 'edit',
     onClick: `@
         configBot.tags.tagPortal = links.uuabConfigurator.id + ".uuab_onUUABLoaded";
+        shout('clearUUABSetupMenu');
     `,
     uuabSetupMenuSortOrder: 2
 }
@@ -55,7 +56,7 @@ const pubButton = {
         }
         links.uuabConfigurator.showUUABSetupMenu();
     `,
-    uuabSetupMenuSortOrder: 3,
+    uuabSetupMenuSortOrder: 5,
 }
 
 //TEST
@@ -73,7 +74,41 @@ const testButton = {
         links.uuabConfigurator.createTest();
         shout("clearUUABSetupMenu");
     `,
-    uuabSetupMenuSortOrder: 4,
+    uuabSetupMenuSortOrder: 6,
+}
+
+if (tags.unsavedChanges) {
+    //UNSAVED
+    const unsavedButton = {
+        ...menuTags,
+        color:'#A4DD00',
+        label: "save on load function changes",
+        formAddress: 'upload',
+        onClick: `@
+            links.uuabConfigurator.createUUAB();
+            shout("clearUUABSetupMenu");
+        `,
+        uuabSetupMenuSortOrder: 3,
+    }
+
+    ab.links.menu.abCreateMenuButton(unsavedButton);
+
+    if (tags.savedUUABOnLoad) {
+        //UNSAVED2
+        const unsaved2Button = {
+            ...menuTags,
+            color:'red',
+            label: "discard on load function changes",
+            formAddress: 'delete',
+            onClick: `@
+                links.uuabConfigurator.tags.uuab_onUUABLoaded = links.uuabConfigurator.tags.savedUUABOnLoad;
+                shout("clearUUABSetupMenu");
+            `,
+            uuabSetupMenuSortOrder: 4,
+        }
+
+        ab.links.menu.abCreateMenuButton(unsaved2Button);
+    }
 }
 
 ab.links.menu.abCreateMenuButton(editButton);

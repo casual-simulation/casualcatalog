@@ -17,6 +17,8 @@ if (data.dimensionData) {
     }
 }
 
+setTagMask(thisBot, "savedUUABOnLoad", tags.uuab_onUUABLoaded, "shared");
+
 if (data.eggParameters) {
     const dimension = data.eggParameters.gridInformation?.dimension ?? 'home';
     const dimensionX = data.eggParameters.gridInformation?.position?.x ?? 0;

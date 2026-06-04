@@ -1,4 +1,14 @@
+if (!tags.chosenUUABName || !tags.chosenBIOS) {
+    return;
+}
+
 shout('clearUUABSetupMenu');
+
+if (tags.unsavedChanges) {
+    setTagMask(thisBot, 'unsavedChanges', null, "shared");
+}
+
+setTagMask(thisBot, "savedUUABOnLoad", tags.uuab_onUUABLoaded, "shared");
 
 //Publish to studio
 if (!authBot) {
@@ -60,36 +70,42 @@ if (!authBot) {
 const studio = configBot.tags.studio ?? authBot.id;
 configBot.tags.selected_studioID = studio;
 
-const publishAttempt = await ab.links.store.abPublishAB({ab: uuabName, target: uuabEgg, sourceEvent: 'uuab_egg_publish', studio: studio, publicFacing: true});
-
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] saveData publishAttempt 1:`, publishAttempt);
-}
-
-if (!publishAttempt.success) {
-    const permissions = await os.grantInstAdminPermission(studio);
+try {
+    const publishAttempt = await ab.links.store.abPublishAB({ab: uuabName, target: uuabEgg, sourceEvent: 'uuab_egg_publish', studio: studio, publicFacing: true});
 
     if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] saveData permissions:`, permissions);
+        console.log(`[${tags.system}.${tagName}] saveData publishAttempt 1:`, publishAttempt);
     }
 
-    const secondPublishAttempt = await ab.links.store.abPublishAB({ab: uuabName, target: uuabEgg, sourceEvent: 'uuab_egg_publish', studio: studio, publicFacing: true});
-        
-    if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}]  saveData publishAttempt 2`, secondPublishAttempt);
-    }
+    if (!publishAttempt.success) {
+        const permissions = await os.grantInstAdminPermission(studio);
 
-    if (!secondPublishAttempt.success){
         if (tags.debug) {
-            console.log(`[${tags.system}.${tagName}] Could not publish`, secondPublishAttempt);
+            console.log(`[${tags.system}.${tagName}] saveData permissions:`, permissions);
         }
-        os.toast("could not publish");
+
+        const secondPublishAttempt = await ab.links.store.abPublishAB({ab: uuabName, target: uuabEgg, sourceEvent: 'uuab_egg_publish', studio: studio, publicFacing: true});
+            
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}]  saveData publishAttempt 2`, secondPublishAttempt);
+        }
+
+        if (!secondPublishAttempt.success){
+            if (tags.debug) {
+                console.log(`[${tags.system}.${tagName}] Could not publish`, secondPublishAttempt);
+            }
+            os.toast("could not publish");
+        } else {
+            os.toast("Publishing successful");
+            ab.links.manifestation.abSetAwake({ awake: true });
+        }
     } else {
         os.toast("Publishing successful");
-        ab.links.manifestation.abSetAwake({ awake: true });
     }
-} else {
-    os.toast("Publishing successful");
+} catch (e) {
+    console.log("[uuabConfigurator:createUUAB]: issue publishing uuab", e);
+    //delete egg
+    destroy(uuabEgg);
 }
 
 //delete egg

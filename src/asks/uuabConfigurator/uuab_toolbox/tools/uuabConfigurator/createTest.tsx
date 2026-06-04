@@ -1,3 +1,7 @@
+if (!tags.chosenUUABName || !tags.chosenBIOS) {
+    return;
+}
+
 const dimension = that?.dimension ?? tags.dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;
 const isMap = configBot.tags.mapPortal ? true : false;
 

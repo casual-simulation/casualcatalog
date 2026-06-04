@@ -101,14 +101,6 @@ options.push({
             }),
         },
         {
-            label: `auto assign todo agents: ${links.personality.tags.abAutoAssignAgentToTodo ? 'yes' : 'no'}`,
-            formAddress: 'edit_note',
-            onClick: ListenerString(async () => {
-                shout('abPersonalityChange', { abAutoAssignAgentToTodo: !links.personality.tags.abAutoAssignAgentToTodo });
-                shout('abMenuRefresh');
-            })
-        },
-        {
             label: 'ai prime directive prompt',
             formAddress: "edit_note",
             onClick: ListenerString(() => {
@@ -141,6 +133,14 @@ options.push({
                     }
                 })
             }),
+        },
+        {
+            label: `auto assign todo agents: ${links.personality.tags.abAutoAssignAgentToTodo ? 'yes' : 'no'}`,
+            formAddress: 'edit_note',
+            onClick: ListenerString(async () => {
+                shout('abPersonalityChange', { abAutoAssignAgentToTodo: !links.personality.tags.abAutoAssignAgentToTodo });
+                shout('abMenuRefresh');
+            })
         },
         {
             label: `color: ${links.personality.tags.abBaseColor}`,

@@ -32,6 +32,10 @@ const abArtifactShard = {
         urlVariables: [{
             variable: 'uuab',
             value: tags.chosenUUABName
+        },
+        {
+            variable: 'auxlink',
+            value: 'uuab'
         }],
         eggParameters: {
             gridInformation: gridInfo

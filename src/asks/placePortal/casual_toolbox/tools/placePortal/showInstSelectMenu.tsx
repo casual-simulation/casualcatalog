@@ -1,9 +1,3 @@
-if (that) {
-    if (that.modality == 'mouse' && that.buttonId == 'right') {
-        return;
-    }
-}
-
 shout('abMenuRefresh');
 
 configBot.masks.menuPortal = null;
@@ -44,7 +38,4 @@ if (instList.success) {
     }
 }
 
-
-const inny = await ab.links.menu.abCreateMenuGroup(instGroup);
-
-console.log(configBot.tags.menuPortal, instGroup, inny)
+ab.links.menu.abCreateMenuGroup(instGroup);

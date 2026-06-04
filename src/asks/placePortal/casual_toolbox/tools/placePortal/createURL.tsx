@@ -6,6 +6,9 @@ let instName = tags.instSetting ?? null;
 let ask = '';
 const studio = tags.studioId;
 
+instName = instName.replace(/[^a-zA-Z0-9]/g, '');
+tags.instSetting = instName;
+
 //url variables
 const abAwake = true;
 const comId = configBot.tags.comId;
@@ -33,7 +36,8 @@ if (ask) {
     newURL.searchParams.append("ask", ask);
 }
 
-if (studio) {
+const ownerStudio = tags.studioId ?? authBot.id;
+if (studio && studio != ownerStudio) {
     newURL.searchParams.append("studio", studio);
 }
 
@@ -43,7 +47,7 @@ if (abAwake) {
 
 if (bios == 'studio') {
     if (instName) {
-        newURL.searchParams.append("owner", studio ?? authBot.id);
+        newURL.searchParams.append("owner", tags.studioId ?? authBot.id);
         newURL.searchParams.append("inst", instName);
         newURL.searchParams.append("gridPortal", 'home');
     } else {
@@ -51,10 +55,8 @@ if (bios == 'studio') {
     }
 }
 
-if (!tags.label) {
-    if(instName) {
-        tags.label = instName;
-    }
+if(instName) {
+    tags.label = instName;
 }
 
 tags.instURL = newURL.href;

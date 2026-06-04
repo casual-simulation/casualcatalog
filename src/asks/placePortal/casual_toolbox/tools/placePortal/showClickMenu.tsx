@@ -23,8 +23,7 @@ const newButton = {
     formAddress: 'add',
     place_portal_menuSortOrder: 1,
     onClick: `@
-        links.place.createURL();
-        shout("clearPlacePortalMenu");
+        links.place.showNewInstMenu();
     `
 }
 

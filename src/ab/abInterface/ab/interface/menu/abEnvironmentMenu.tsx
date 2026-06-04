@@ -6,6 +6,7 @@ const abMenuItem = {
     abMenu: true,
     abMenuRefresh: "@destroy(thisBot);",
     manifestation: tags.manifestation,
+    menu: getLink(thisBot),
     remember: tags.remember,
     personality: tags.personality,
     learn: tags.learn,

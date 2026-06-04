@@ -112,72 +112,17 @@ options.push({
             label: 'ai personalization prompt',
             formAddress: "edit_note",
             onClick: ListenerString(() => {
-                // Open a sub-portal with a title card, input field, and back button to edit
-                // the personalization prompt (mirrors the configurator text-property pattern).
-                const promptPortal = 'abPersonalizationPromptMenu';
-                const clearEvent = 'clearAbPersonalizationPromptMenu';
-                const returnPortal = configBot.tags.menuPortal;
-
-                configBot.masks.menuPortal = promptPortal;
-
-                // Tags shared by every bot in the sub-portal: the portal dimension, the return
-                // portal, and the three cleanup paths (clearEvent, menu refresh, ab bot click).
-                const BASE_MENU_BOT = {
-                    space: 'tempLocal',
-                    [promptPortal]: true,
-                    clearEvent,
-                    returnPortal,
-                    [clearEvent]: ListenerString(() => { destroy(thisBot); }),
-                    abMenuRefresh: ListenerString(() => { destroy(thisBot); }),
-                    onABClick: ListenerString(() => {
-                        if (configBot.tags.menuPortal !== 'abPersonalizationPromptMenu') destroy(thisBot);
-                    }),
-                };
-
-                // Title card
-                ab.links.menu.abCreateMenuText({
-                    ...BASE_MENU_BOT,
-                    [promptPortal + 'SortOrder']: Number.MIN_SAFE_INTEGER,
-                    label: 'ai personalization prompt',
-                    labelAlignment: 'center',
-                    menuItemStyle: {},
-                    menuItemLabelStyle: { 'font-weight': 'bold' },
-                });
-
-                // Input field
-                ab.links.menu.abCreateMenuInput({
-                    ...BASE_MENU_BOT,
-                    [promptPortal + 'SortOrder']: 1,
-                    formInputMultiline: true,
-                    menuItemShowSubmitWhenEmpty: true,
-                    label: `about you & ${ab.links.personality.tags.abBuilderIdentity}'s behavior`,
-                    onCreate: ListenerString(() => {
-                        // abUnsetValue is the sentinel for an intentionally-empty tag (CasualOS coerces
-                        // empty-string tag values to null, so we can't store ''). Show it as blank.
-                        const savedPrompt = ab.links.personality.tags.abPersonalizationPrompt;
-                        const unset = ab.links.personality.tags.abUnsetValue;
-                        masks.menuItemText = (savedPrompt && savedPrompt !== unset) ? savedPrompt : '';
-                    }),
-                    onSubmit: ListenerString(() => {
-                        // Store the sentinel when the field is cleared so the empty choice persists
-                        // instead of falling back to the abConfig default on reload.
-                        shout('abPersonalityChange', { abPersonalizationPrompt: that.text || ab.links.personality.tags.abUnsetValue });
-                        shout(tags.clearEvent);
-                        configBot.masks.menuPortal = tags.returnPortal;
-                    }),
-                });
-
-                // Back button
-                ab.links.menu.abCreateMenuButton({
-                    ...BASE_MENU_BOT,
-                    [promptPortal + 'SortOrder']: Number.MAX_SAFE_INTEGER,
-                    label: 'back',
-                    formAddress: 'arrow_back',
-                    onClick: ListenerString(() => {
-                        shout(tags.clearEvent);
-                        configBot.masks.menuPortal = tags.returnPortal;
-                    }),
-                });
+                const currentValue = ab.links.personality.tags.abPersonalizationPrompt;
+                const unsetValue = ab.links.personality.tags.abUnsetValue;
+                
+                links.menu.abShowTextInputMenu({ 
+                    title: 'ai personalization prompt',
+                    placeholder: 'how are you doing?',
+                    currentValue: (currentValue && currentValue != unsetValue) ? currentValue : null,
+                    onSubmitCallback: (listenerThat) => {
+                        shout('abPersonalityChange', { abPersonalizationPrompt: listenerThat.text || unsetValue });
+                    }
+                })
             }),
         },
         {

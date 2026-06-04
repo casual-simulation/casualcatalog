@@ -1,0 +1,1 @@
+configBot.tags.abInstDirectiveBeforeUpdate = tags.abInstDirective;

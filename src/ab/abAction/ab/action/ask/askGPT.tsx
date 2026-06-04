@@ -141,18 +141,18 @@ if (!hasInquiry && storedHistory.length > 0) {
     const catalog = await thisBot.abAskToolGetCatalog({ askContext });
 
     // Replace the {{personalization_prompt}} and {{prime_directive_prompt}} placeholders in the
-    // system prompt with the user's prompts (if any), each prefixed with a header. When unset/empty
-    // the placeholder is removed entirely.
+    // system prompt with the user's prompts (if any), each prefixed with a header and a one-line
+    // framing of how to weight it. When unset/empty the placeholder is removed entirely.
     // split/join (not String.replace) so $-sequences in the user's prompt aren't interpreted.
+    const unsetValue = ab.links.personality?.tags.abUnsetValue; // abUnsetValue is the sentinel for an intentionally-empty prompt — treat it as none.
+
     const rawPersonalizationPrompt = ab.links.personality?.tags.abPersonalizationPrompt;
-    // abUnsetValue is the sentinel for an intentionally-empty personalization prompt — treat it as none.
-    const hasPersonalization = rawPersonalizationPrompt && rawPersonalizationPrompt !== ab.links.personality?.tags.abUnsetValue;
-    const personalizationPrompt = hasPersonalization ? `# User's Personalization\n\n${rawPersonalizationPrompt}` : '';
+    const hasPersonalization = rawPersonalizationPrompt && rawPersonalizationPrompt !== unsetValue;
+    const personalizationPrompt = hasPersonalization ? `# User's Personalization\n\nThe user's present state and preferences. Let it color your tone in \`chat\` messages — not your goals or what you build.\n\n${rawPersonalizationPrompt}` : '';
 
     const rawPrimeDirectivePrompt = ab.links.personality?.tags.abPrimeDirectivePrompt;
-    // abUnsetValue is the sentinel for an intentionally-empty prime directive prompt — treat it as none.
-    const hasPrimeDirective = rawPrimeDirectivePrompt && rawPrimeDirectivePrompt !== ab.links.personality?.tags.abUnsetValue;
-    const primeDirectivePrompt = hasPrimeDirective ? `# User's Prime Directive\n\n${rawPrimeDirectivePrompt}` : '';
+    const hasPrimeDirective = rawPrimeDirectivePrompt && rawPrimeDirectivePrompt !== unsetValue;
+    const primeDirectivePrompt = hasPrimeDirective ? `# User's Prime Directive\n\nThe user's standing goals, rules, and identity. Honor it in what you build, what you prioritize, and how you delegate.\n\n${rawPrimeDirectivePrompt}` : '';
 
     const systemPrompt = tags.prompt_system
         .split('{{personalization_prompt}}').join(personalizationPrompt)

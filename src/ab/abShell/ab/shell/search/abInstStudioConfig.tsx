@@ -1,4 +1,4 @@
-if (ab.links.utils.isInstOwnedByStudio()) {
+if (links.utils.isInstOwnedByStudio()) {
     return await thisBot.abStudioConfig({ studioId: configBot.tags.owner });
 }
 

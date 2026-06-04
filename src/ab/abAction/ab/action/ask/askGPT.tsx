@@ -149,8 +149,13 @@ if (!hasInquiry && storedHistory.length > 0) {
 
     let systemPrompt = tags.prompt_system;
     systemPrompt = ab.links.utils.applyOptionalPromptSection({
-        template: systemPrompt, 
-        name: 'user_prime_directive', 
+        template: systemPrompt,
+        name: 'inst_directive',
+        value: tags.abInstDirective || null
+    });
+    systemPrompt = ab.links.utils.applyOptionalPromptSection({
+        template: systemPrompt,
+        name: 'user_prime_directive',
         value: normalize(ab.links.personality?.tags.abPrimeDirectivePrompt)
     });
     systemPrompt = ab.links.utils.applyOptionalPromptSection({

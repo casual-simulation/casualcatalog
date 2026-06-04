@@ -845,6 +845,14 @@ The load returns `configuratorProperties` (here a single `prompt` text property)
 
 Pattern: when the user names a kit/tool — especially one with a single `prompt` property — load it, set the property to the request text, and stop; don't rebuild it with `makePatch`. The same flow covers kits (`type: "kit"`) and non-prompt scalars — e.g. `{ "group": "agent_bot_tool", "values": { "model": "gemini-2.0-flash" } }` sets a model. Pass only the keys you want to change.
 
+<<inst_directive>>
+# Inst Directive
+
+The reason this inst exists — its overall purpose, shared by everyone working in it. Derived from the first request made in this inst. Let it anchor what every todo and build is ultimately serving.
+
+{{inst_directive}}
+<</inst_directive>>
+
 <<user_prime_directive>>
 # User's Prime Directive
 

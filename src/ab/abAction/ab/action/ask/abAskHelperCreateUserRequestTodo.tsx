@@ -56,4 +56,9 @@ if (userRequestTodo) {
     shout('onABUserRequestTodoCreated', { todoBot: userRequestTodo });
 }
 
+// First user ask in this inst becomes the inst directive — the inst's reason to exist.
+if (!tags.abInstDirective) {
+    setTagMask(thisBot, 'abInstDirective', inquiry, 'shared');
+}
+
 return userRequestTodo ?? null;

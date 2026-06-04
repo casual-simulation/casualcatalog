@@ -19,6 +19,13 @@
         "artifact": true
     },
     {
+        "name": "place",
+        "studio": "AB",
+        "targetAB": "placePortal",
+        "formAddress": "circle",
+        "artifact": true
+    },
+    {
         "name": "aux importer",
         "targetAB": "abAuxImporter",
         "formAddress": "download"

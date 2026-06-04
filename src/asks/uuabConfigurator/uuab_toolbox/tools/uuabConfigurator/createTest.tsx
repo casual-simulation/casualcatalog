@@ -1,42 +1,50 @@
-const dimension = configBot.tags.mapPortal ? "map" : "grid";
+const dimension = that?.dimension ?? tags.dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+const isMap = configBot.tags.mapPortal ? true : false;
 
 let gridInfo;
-if (dimension == "map") {
-    gridInfo = {    
-        "dimension":tags.dimension,
-        "position":
-            {
-                "x":tags[tags.dimension + "X"] + ((Math.floor(Math.random() * 5) + 2) / 10000),
-                "y":tags[tags.dimension + "Y"] + ((Math.floor(Math.random() * 5) + 2) / 10000)
-            }
-    }
-} else {
-    gridInfo = {
-        "dimension":tags.dimension,
-        "position":
-            {
-                "x":tags[tags.dimension + "X"] + Math.floor(Math.random() * 5) + 2,
-                "y":tags[tags.dimension + "Y"] + Math.floor(Math.random() * 5) + 2
-            }
-    }
+
+const inRad = isMap ? .0001 : 3;
+const rad = isMap ? .0005 : 5;
+const space = isMap ? .0005 : 1;
+
+const pos = ab.links.utils.findOpenPositionAround({center: new Vector2(tags[dimension + 'X'], tags[dimension + 'Y']), dimension: dimension, innerRadius: inRad, radius: rad, spacing: space})
+
+gridInfo = {    
+    "dimension": dimension,
+    "position":
+        {
+            "x": that?.x ?? pos.x,
+            "y": that?.y ?? pos.y
+        }
 }
 
-ab.links.search.onLookupAskID({
-    askID: "instCreatorWizard",
-    sourceEvent: 'tool',
-    eggParameters: {
-        gridInformation: gridInfo,
-        initializationInfo: {
-            pattern: null,
-            studio: null,
-            linkTo: thisBot.id,
-            bios: 'local',
-            instName: 'uuab-redirect',
-            label: tags.chosenUUABName,
-            urlVariables: {
-                uuab: tags.chosenUUABName
-            },
-            completeOnLoad: true
+const abArtifactShard = {
+    data: {
+        patternSetting: null,
+        studioSetting: null,
+        originType: 'uuabConfigurator',
+        abAwakeSetting: null,
+        labelSetting: tags.chosenUUABName,
+        label: tags.chosenUUABName,
+        instSetting: 'uuab-redirect',
+        biosSetting: 'local',
+        studioId: tags.studioId,
+        urlVariables: [{
+            variable: 'uuab',
+            value: tags.chosenUUABName
+        }],
+        eggParameters: {
+            gridInformation: gridInfo
         }
     },
+    dependencies: [
+        {
+            askID: 'instBot'
+        }
+    ]
+};
+ab.links.artifact.abCreateArtifactPromiseBot({
+    abArtifactName: 'instBot',
+    abArtifactInstanceID: uuid(),
+    abArtifactShard,
 });

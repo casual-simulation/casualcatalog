@@ -27,9 +27,10 @@ const abArtifactShard = {
         abAwakeSetting: true,
         labelSetting: tags.chosenEggName + " v" + (tags.chosenVersionNumber ?? tags.maxEggVersion),
         label: tags.chosenEggName + " v" + (tags.chosenVersionNumber ?? tags.maxEggVersion),
-        urlVariables: {
-            version: tags.chosenVersionNumber == tags.maxEggVersion ? null : tags.chosenVersionNumber
-        },
+        urlVariables: [{
+            variable: 'version',
+            value: tags.chosenVersionNumber == tags.maxEggVersion ? null : tags.chosenVersionNumber
+        }],
         eggParameters: {
             gridInformation: gridInfo
         }

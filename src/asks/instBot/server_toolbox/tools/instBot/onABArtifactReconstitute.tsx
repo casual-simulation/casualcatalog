@@ -12,6 +12,7 @@ tags.studioSetting = data.studioSetting ?? null;
 tags.versionSetting = data.versionSetting ?? null;
 tags.channelSetting = data.channelSetting ?? null;
 tags.abAwakeSetting = data.abAwakeSetting ?? null;
+tags.urlVariables = data.urlVariables ?? [];
 tags.scale = data.scale ?? null;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#0000FF';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#0000FF'; 

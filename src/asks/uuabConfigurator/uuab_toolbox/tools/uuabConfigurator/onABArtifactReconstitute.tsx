@@ -6,8 +6,10 @@ tags.chosenPattern = data.defaultPattern;
 tags.chosenPatternStudio = data.defaultPatternStudio;
 tags.chosenUUABName = data.uuabName;
 tags.uuab_onUUABLoaded = data.onUUABLoaded ?? tags.template_onUUABLoaded;
-tags.uuabSetupLabel = data.uuabSetupLabel ?? "configure uuab";
+tags.label = data.label ?? "configure uuab";
 tags.prevBotID = data.prevBotID;
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('uuab_' + getID(thisBot));
+tags.studioId = data.studioId;
 
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
@@ -27,8 +29,6 @@ if (data.eggParameters) {
 
     tags.chosenBIOS = 'free';
     tags.uuab_onUUABLoaded = tags.template_onUUABLoaded;
-    tags.uuabSetupLabel = "configure uuab";
+    tags.label = "configure uuab";
     thisBot.showUUABSetupMenu();
 }
-
-thisBot.updateBillboardLabel();

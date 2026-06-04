@@ -55,17 +55,17 @@ if (abAwake) {
     newURL.searchParams.append("abStayAwake", abAwake);
 }
 
-for (const uVar in urlVariables) {
-    if (urlVariables[uVar].variable == "version" || urlVariables[uVar].variable == "patternVersion") {
-        if (urlVariables[uVar].value != "current") {
-            newURL.searchParams.append("patternVersion", urlVariables[uVar].value);
+for (const uVar of urlVariables) {
+    if (uVar.variable == "version" || uVar.variable == "patternVersion") {
+        if (uVar.value != "current") {
+            newURL.searchParams.append("patternVersion", uVar.value);
         }
-    } else if (urlVariables[uVar].variable == "channel") {
+    } else if (uVar.variable == "channel") {
         if (abRemember.tags.allowChannels) {
-            newURL.searchParams.append(urlVariables[uVar].variable, urlVariables[uVar].value);
+            newURL.searchParams.append(uVar.variable, uVar.value);
         }
     } else {
-        newURL.searchParams.append(urlVariables[uVar].variable, urlVariables[uVar].value);
+        newURL.searchParams.append(uVar.variable, uVar.value);
     }
 }
 

@@ -6,8 +6,9 @@ const shard: ABArtifactShard = {
         defaultPatternStudio: tags.chosenPatternStudio,
         uuabName: tags.chosenUUABName,
         onUUABLoaded: tags.uuab_onUUABLoaded,
-        uuabSetupLabel: tags.uuabSetupLabel,
+        label: tags.label,
         prevBotID: thisBot.id,
+        studioId: tags.studioId,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

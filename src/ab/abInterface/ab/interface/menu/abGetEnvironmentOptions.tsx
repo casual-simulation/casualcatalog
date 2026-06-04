@@ -109,13 +109,30 @@ options.push({
             })
         },
         {
+            label: 'ai prime directive prompt',
+            formAddress: "edit_note",
+            onClick: ListenerString(() => {
+                const currentValue = ab.links.personality.tags.abPrimeDirectivePrompt;
+                const unsetValue = ab.links.personality.tags.abUnsetValue;
+
+                links.menu.abShowTextInputMenu({
+                    title: 'ai prime directive prompt',
+                    placeholder: 'who you are, what matters most right now, and how i should operate?',
+                    currentValue: (currentValue && currentValue != unsetValue) ? currentValue : null,
+                    onSubmitCallback: (listenerThat) => {
+                        shout('abPersonalityChange', { abPrimeDirectivePrompt: listenerThat.text || unsetValue });
+                    }
+                })
+            }),
+        },
+        {
             label: 'ai personalization prompt',
             formAddress: "edit_note",
             onClick: ListenerString(() => {
                 const currentValue = ab.links.personality.tags.abPersonalizationPrompt;
                 const unsetValue = ab.links.personality.tags.abUnsetValue;
-                
-                links.menu.abShowTextInputMenu({ 
+
+                links.menu.abShowTextInputMenu({
                     title: 'ai personalization prompt',
                     placeholder: 'how are you doing?',
                     currentValue: (currentValue && currentValue != unsetValue) ? currentValue : null,

@@ -13,5 +13,6 @@
     "abCatalogName",
     "abMapPortalBase",
     "abAutoAssignAgentToTodo",
-    "abPersonalizationPrompt"
+    "abPersonalizationPrompt",
+    "abPrimeDirectivePrompt"
 ]

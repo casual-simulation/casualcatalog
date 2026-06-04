@@ -845,4 +845,6 @@ The load returns `configuratorProperties` (here a single `prompt` text property)
 
 Pattern: when the user names a kit/tool — especially one with a single `prompt` property — load it, set the property to the request text, and stop; don't rebuild it with `makePatch`. The same flow covers kits (`type: "kit"`) and non-prompt scalars — e.g. `{ "group": "agent_bot_tool", "values": { "model": "gemini-2.0-flash" } }` sets a model. Pass only the keys you want to change.
 
+{{prime_directive_prompt}}
+
 {{personalization_prompt}}

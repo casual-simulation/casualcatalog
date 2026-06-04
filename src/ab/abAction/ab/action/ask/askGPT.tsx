@@ -140,15 +140,23 @@ if (!hasInquiry && storedHistory.length > 0) {
     // may block briefly on artifact reconstitution on the very first turn.
     const catalog = await thisBot.abAskToolGetCatalog({ askContext });
 
-    // Replace the {{personalization_prompt}} placeholder in the system prompt with the user's
-    // personalization prompt (if any), prefixed with a header. When unset/empty the placeholder
-    // is removed entirely.
+    // Replace the {{personalization_prompt}} and {{prime_directive_prompt}} placeholders in the
+    // system prompt with the user's prompts (if any), each prefixed with a header. When unset/empty
+    // the placeholder is removed entirely.
     // split/join (not String.replace) so $-sequences in the user's prompt aren't interpreted.
     const rawPersonalizationPrompt = ab.links.personality?.tags.abPersonalizationPrompt;
     // abUnsetValue is the sentinel for an intentionally-empty personalization prompt — treat it as none.
     const hasPersonalization = rawPersonalizationPrompt && rawPersonalizationPrompt !== ab.links.personality?.tags.abUnsetValue;
-    const personalizationPrompt = hasPersonalization ? `# User Personalization\n\n${rawPersonalizationPrompt}` : '';
-    const systemPrompt = tags.prompt_system.split('{{personalization_prompt}}').join(personalizationPrompt);
+    const personalizationPrompt = hasPersonalization ? `# User's Personalization\n\n${rawPersonalizationPrompt}` : '';
+
+    const rawPrimeDirectivePrompt = ab.links.personality?.tags.abPrimeDirectivePrompt;
+    // abUnsetValue is the sentinel for an intentionally-empty prime directive prompt — treat it as none.
+    const hasPrimeDirective = rawPrimeDirectivePrompt && rawPrimeDirectivePrompt !== ab.links.personality?.tags.abUnsetValue;
+    const primeDirectivePrompt = hasPrimeDirective ? `# User's Prime Directive\n\n${rawPrimeDirectivePrompt}` : '';
+
+    const systemPrompt = tags.prompt_system
+        .split('{{personalization_prompt}}').join(personalizationPrompt)
+        .split('{{prime_directive_prompt}}').join(primeDirectivePrompt);
 
     aiChatMessages = [
         { role: 'system', content: [{ text: systemPrompt }] },

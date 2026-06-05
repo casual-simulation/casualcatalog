@@ -1,4 +1,6 @@
 // superShout("instCheckin", configBot.tags);
+configBot.tags.abStayAwake = null;
+os.syncConfigBotTagsToURL(["abStayAwake"]);
 
 if (links.learn.abIsPrimary()) {
     setTagMask(links.remember, "mapPreventFocus", true);

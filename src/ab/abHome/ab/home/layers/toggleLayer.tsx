@@ -30,12 +30,6 @@ if (instLoaded) {
 //if unloaded, sideload it
 else {
     console.log("loading", instName)
-    let abWasAwake = false;
-    if (configBot.tags.abStayAwake) {
-        abWasAwake = true;
-        configBot.tags.abStayAwake = false;
-        await os.syncConfigBotTagsToURL(["abStayAwake"]);
-    }
     masks.currLayerStudio = that.studioId;
 
     await os.sleep(0);
@@ -43,9 +37,4 @@ else {
     await os.loadInst({
         staticInst: instName
     });
-
-    if (abWasAwake) {
-        configBot.tags.abStayAwake = true;
-        await os.syncConfigBotTagsToURL(["abStayAwake"]);
-    }
 }

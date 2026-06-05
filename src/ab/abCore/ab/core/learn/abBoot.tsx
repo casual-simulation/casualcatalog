@@ -157,7 +157,9 @@ if (configBot.tags.artifact && initialBoot && !ask && !bootFlag) {
 
 // Check if we can wake up ab, and then do so.
 if (!configBot.tags.abSleep) {
-    if ((initialBoot && !bootFlag && !ask) || links.remember.tags.abAlwaysStartAwake || configBot.tags.abStayAwake) {
+    if ((initialBoot && !bootFlag && !ask) || configBot.tags.abStayAwake) {
+        await links.manifestation.abSetAwake({ awake: true, initial: initialBoot });
+    } else if (links.remember.tags.abAlwaysStartAwake && thisBot.abIsPrimary()) {
         await links.manifestation.abSetAwake({ awake: true, initial: initialBoot });
     }
 }

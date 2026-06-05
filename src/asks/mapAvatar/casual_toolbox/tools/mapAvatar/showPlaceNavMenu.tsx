@@ -16,7 +16,8 @@ const placeNav = {
     ...menuOptions,
     label: 'places',
     dropdownSortOrder: 1,
-    [activeMenu + "SortOrder"]: 1
+    [activeMenu + "SortOrder"]: 1,
+    avatar: getLink(thisBot)
 }
 
 if (currentPortal == 'map') {
@@ -31,6 +32,12 @@ if (currentPortal == 'map') {
             onClick: `@
                 const homeBot = getBot("respawnPoint", true);
                 if (homeBot) {
+                    const dimension = homeBot.tags.dimension ? 'home';
+                    links.avatar.onPlaceClicked({
+                        dimension: dimension,
+                        x: homeBot.tags[dimension + 'X'],
+                        y: homeBot.tags[dimension + 'Y']
+                    })
                     os.focusOn(homeBot, { zoom: 2000 }).catch(() => {});
                 }
                 shout("abMenuRefresh");
@@ -57,6 +64,12 @@ if (currentPortal == 'map') {
             onClick: `@
                 if (links.place) {
                     os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
+                    const dimension = links.place.tags.dimension ? 'home';
+                    links.avatar.onPlaceClicked({
+                        dimension: dimension,
+                        x: links.place.tags[dimension + 'X'],
+                        y: links.place.tags[dimension + 'Y']
+                    })
                     shout("clearMapAvatarMenu");
                 }
                 `

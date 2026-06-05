@@ -26,6 +26,12 @@
         "artifact": true
     },
     {
+        "name": "public avatar",
+        "studio": "AB",
+        "targetAB": "mapAvatar",
+        "artifact": true
+    },
+    {
         "name": "aux importer",
         "targetAB": "abAuxImporter",
         "formAddress": "download"

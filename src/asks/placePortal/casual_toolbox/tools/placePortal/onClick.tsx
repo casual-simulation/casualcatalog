@@ -10,4 +10,6 @@ if (!tags.instURL) {
 }
 
 //circle wipe
-os.goToURL(tags.instURL); 
+//move avatar
+
+thisBot.showConfirmationMenu();

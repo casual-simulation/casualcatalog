@@ -11,11 +11,5 @@
         "studio": "AB",
         "targetAB": "curiosityCamera",
         "artifact": true
-    },
-    {
-        "name": "public avatar",
-        "studio": "AB",
-        "targetAB": "mapAvatar",
-        "artifact": true
     }
 ]

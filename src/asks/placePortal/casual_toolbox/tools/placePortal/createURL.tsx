@@ -3,7 +3,7 @@ shout('clearInstCreatorMenu');
 //chosen
 let bios = 'studio';
 let instName = tags.instSetting ?? null;
-let ask = '';
+let ask = 'placePortalInitializer';
 const studio = tags.studioId;
 
 instName = instName.replace(/[^a-zA-Z0-9]/g, '');
@@ -57,6 +57,7 @@ if (bios == 'studio') {
 
 if(instName) {
     tags.label = instName;
+    tags.placeLabel = instName;
 }
 
 tags.instURL = newURL.href;

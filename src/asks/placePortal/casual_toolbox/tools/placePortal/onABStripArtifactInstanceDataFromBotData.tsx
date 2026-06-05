@@ -1,6 +1,7 @@
 const { data } = that;
 
 delete data.tags.label;
+delete data.tags.placeLabel;
 delete data.tags.instURL;
 delete data.tags.instSetting;
 delete data.tags.lineTo;

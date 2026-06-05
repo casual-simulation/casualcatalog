@@ -1,6 +1,7 @@
 const data = that.data;
 
 tags.label = data.label ?? null;
+tags.placeLabel = tags.label;
 tags.instURL = data.instURL ?? null;
 tags.scale = data.scale ?? null;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#0000FF';

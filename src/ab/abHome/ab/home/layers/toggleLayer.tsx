@@ -37,6 +37,8 @@ else {
     }
     masks.currLayerStudio = that.studioId;
 
+    await os.sleep(0);
+
     await os.loadInst({
         staticInst: instName
     });

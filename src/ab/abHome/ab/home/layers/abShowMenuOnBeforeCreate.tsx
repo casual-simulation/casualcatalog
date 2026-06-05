@@ -52,6 +52,33 @@ if (studioData.success) {
     }
 }
 
+if (abRemember.tags.allowedLayers && abRemember.tags.allowedLayers.length != 0) {
+    for (let i = 0; i < abRemember.tags.allowedLayers.length; ++i) {
+        if (abRemember.tags.allowedLayers[i].Enabled) {
+            if (dropdownOptions.find(layer => layer.studioData?.studioId == abRemember.tags.allowedLayers[i].StudioId)) {
+                continue;
+            } else {
+                let idString = abRemember.tags.allowedLayers[i].StudioId;
+                idString = idString.slice(0, 4);
+                const isLoaded = tags.activeInsts.find(item => item.includes(idString));
+                
+                dropdownOptions.push( {
+                    ...menuOptions,
+                    label: abRemember.tags.allowedLayers[i].DisplayName ?? abRemember.tags.allowedLayers[i].StudioId,
+                    studioData: {
+                        studioId: abRemember.tags.allowedLayers[i].StudioId
+                    },
+                    formAddress: isLoaded ? 'radio_button_checked' : 'radio_button_unchecked',
+                    onClick: `@
+                        links.skillBot.toggleLayer(tags.studioData);
+                        shout('abMenuRefresh');
+                    `
+                })
+            }
+        }
+    }
+}
+
 if (dropdownOptions.length == 0) {
     thisBot.masks.abShowMenuHide = true;
 } else {

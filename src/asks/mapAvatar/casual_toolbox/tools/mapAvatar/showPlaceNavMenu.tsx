@@ -59,7 +59,7 @@ if (currentPortal == 'map') {
         const placeObj = {
             ...menuOptions,
             label: hPlace.tags.placeLabel,
-            formAddress: 'location_on',
+            formAddress: hPlace.tags.placeLabelIcon ?? 'location_on',
             place: getLink(hPlace),
             onClick: `@
                 if (links.place) {

@@ -2,6 +2,9 @@ const data = that.data;
 
 tags.label = data.label ?? null;
 tags.placeLabel = tags.label;
+if (tags.label) {
+    tags.homePlace = true;
+}
 tags.instURL = data.instURL ?? null;
 tags.scale = data.scale ?? null;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#0000FF';

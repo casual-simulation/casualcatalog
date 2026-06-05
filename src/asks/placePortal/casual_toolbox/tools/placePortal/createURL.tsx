@@ -58,6 +58,7 @@ if (bios == 'studio') {
 if(instName) {
     tags.label = instName;
     tags.placeLabel = instName;
+    tags.homePlace = true;
 }
 
 tags.instURL = newURL.href;

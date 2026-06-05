@@ -53,16 +53,27 @@ if (os.getCurrentInst() != 'home' && authBot) {
 
 if (currentPortal == 'map') {
 
-    const homeBaseBot = getBot("homeBase", true);
+    const homeBaseBot = getBot("respawnPoint", true);
 
     if (homeBaseBot) {
         const homeButton = {
             ...menuOptions,
-            label: homeBaseBot.tags.placeLabel,
+            label: 'home',
             formAddress: 'https://auth-aux-dev-filesbucket-682397690660.s3.amazonaws.com/318c04f1-1391-4c10-8d43-aaebc5170265/cd38affc0604beaa588da21aa1be750bb3e73b3b3cae23eb30307c34494459f3.png',
             onClick: `@
-                const homeBot = getBot("homeBase", true);
+                const homeBot = getBot("respawnPoint", true);
                 if (homeBot) {
+                    const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+                    if (avatarBot) {
+                        avatarBot.links.homeworld?.toggleGPS(false);
+                        const dimension = homeBot.tags.dimension ?? 'home';
+                        avatarBot.onPlaceClicked({
+                            dimension: dimension,
+                            x: homeBot.tags[dimension + 'X'],
+                            y: homeBot.tags[dimension + 'Y']
+                        })
+                    }
+
                     os.focusOn(homeBot, { zoom: 2000 }).catch(() => {});
                 }
                 shout("abMenuRefresh");
@@ -85,9 +96,21 @@ if (currentPortal == 'map') {
             place: getLink(hPlace),
             onClick: `@
                 if (links.place) {
+                    const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+                    if (avatarBot) {
+                        avatarBot.links.homeworld?.toggleGPS(false);
+                        
+                        const dimension = links.place.tags.dimension ?? 'home';
+                        avatarBot.onPlaceClicked({
+                            dimension: dimension,
+                            x: links.place.tags[dimension + 'X'],
+                            y: links.place.tags[dimension + 'Y']
+                        })
+                    }
+
                     os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
+                    shout("clearMapAvatarMenu");
                 }
-                shout("abMenuRefresh");
                 `
         }
 
@@ -117,6 +140,20 @@ if (currentPortal == 'map') {
         label: 'current location',
         formAddress: 'near_me',
         onClick: `@
+            const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+            if (avatarBot) {
+                const location = await os.getGeolocation();
+                if (!location.success) {
+                    os.toast("Could not access current location.");
+                    return;
+                }
+                const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
+                avatarBot.onPlaceClicked({
+                    dimension: dimension,
+                    x: location.longitude,
+                    y: location.latitude
+                })
+            }
             links.skillBot.goToCurrentLocation();
             shout("abMenuRefresh");
         `

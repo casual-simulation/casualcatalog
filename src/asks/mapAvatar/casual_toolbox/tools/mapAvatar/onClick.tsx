@@ -72,6 +72,4 @@ if (journal) {
 
 ab.links.menu.abCreateMenuButton(leaveGPSButton);
 
-if (!links.homeworld?.tags.usingGPS) {
-    thisBot.showPlaceNavMenu();
-}
+thisBot.showPlaceNavMenu();

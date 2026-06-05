@@ -10,14 +10,13 @@ menuOptions.dimension = activeMenu;
 menuOptions[activeMenu] = true;
 menuOptions.clearMapAvatarMenu = "@ destroy(thisBot);";
 menuOptions.abMenuRefresh = "@ destroy(thisBot);";
-menuOptions.nav = tags.nav;
+menuOptions.avatar = getLink(thisBot);
 
 const placeNav = {
     ...menuOptions,
     label: 'places',
     dropdownSortOrder: 1,
-    [activeMenu + "SortOrder"]: 1,
-    avatar: getLink(thisBot)
+    [activeMenu + "SortOrder"]: 1
 }
 
 if (currentPortal == 'map') {
@@ -32,7 +31,8 @@ if (currentPortal == 'map') {
             onClick: `@
                 const homeBot = getBot("respawnPoint", true);
                 if (homeBot) {
-                    const dimension = homeBot.tags.dimension ? 'home';
+                    links.avatar.links.homeworld?.toggleGPS(false);
+                    const dimension = homeBot.tags.dimension ?? 'home';
                     links.avatar.onPlaceClicked({
                         dimension: dimension,
                         x: homeBot.tags[dimension + 'X'],
@@ -63,8 +63,9 @@ if (currentPortal == 'map') {
             place: getLink(hPlace),
             onClick: `@
                 if (links.place) {
+                    links.avatar.links.homeworld?.toggleGPS(false);
                     os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
-                    const dimension = links.place.tags.dimension ? 'home';
+                    const dimension = links.place.tags.dimension ?? 'home';
                     links.avatar.onPlaceClicked({
                         dimension: dimension,
                         x: links.place.tags[dimension + 'X'],
@@ -100,7 +101,18 @@ if (currentPortal == 'map') {
         label: 'current location',
         formAddress: 'near_me',
         onClick: `@
-            links.nav.goToCurrentLocation();
+            const location = await os.getGeolocation();
+            if (!location.success) {
+                os.toast("Could not access current location.");
+                return;
+            }
+            const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
+            links.avatar.onPlaceClicked({
+                dimension: dimension,
+                x: location.longitude,
+                y: location.latitude
+            })
+            links.avatar.links.navigation.goToCurrentLocation();
             shout("abMenuRefresh");
         `
     }

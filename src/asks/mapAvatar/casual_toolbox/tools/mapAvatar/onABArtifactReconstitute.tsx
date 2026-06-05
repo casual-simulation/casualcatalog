@@ -4,7 +4,7 @@ if (data.config) {
 }
 
 const existingAvatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-if (existingAvatarBot) {
+if (existingAvatarBot && existingAvatarBot != thisBot) {
     destroy(existingAvatarBot);
 }
 

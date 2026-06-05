@@ -1,4 +1,4 @@
-if (tags.remoteID != getID(configBot) || tags.continueLocationPull) {
+if (tags.ownerID !=  authBot?.id || links.homeworld?.tags.usingGPS) {
     return;
 }
 

@@ -1,4 +1,4 @@
-if (tags.remoteID != getID(configBot) || tags.usingGPS) {
+if (tags.ownerID !=  authBot?.id || tags.usingGPS) {
     return;
 }
 

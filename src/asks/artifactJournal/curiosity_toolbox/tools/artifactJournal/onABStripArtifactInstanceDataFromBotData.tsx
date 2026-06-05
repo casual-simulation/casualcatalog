@@ -21,4 +21,3 @@ delete data.tags.collectionsInfo;
 delete data.tags.discoverableData;
 delete data.tags.landmarkData;
 delete data.tags.userData;
-delete data.tags.usingGPS;

@@ -1,18 +1,3 @@
-// const currentURL = new URL(configBot.tags.url);
-// const origin = currentURL.origin;
-
-// let newURL = new URL(origin);
-
-// if (configBot.tags.comId) {
-//     newURL.searchParams.append("comId", comId);
-// }
-
-// newURL.searchParams.append("bios", 'free');
-
-// newURL.searchParams.append("ask", 'rot-launcher');
-
-// os.openURL(newURL.href);
-
 if (that) {
     if (that.modality == 'mouse' && that.buttonId == 'right') {
         return;

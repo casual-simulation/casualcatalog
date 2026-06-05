@@ -1,12 +1,12 @@
 // only runs this if the user is re-iniatalizing location access
-if (!tags.continueLocationPull) {
+if (!links.homeworld?.tags.usingGPS) {
     return;
 }
 // grabs location without changing GUI
 let loc = await os.getGeolocation()
 if (loc.success) {
 
-    shout("onAvatarGPSSuccess", thisBot);
+    shout("onGPSSuccess", thisBot);
 
     // find map dimension
     const mapDimension = configBot.tags.mapPortal ?? "map"
@@ -39,5 +39,5 @@ else {
     // ends the location loop and allows gridclick moving
     os.toast("Could Not Find Location...Make sure location Permissions are enabled")
     shout("onLocationLost")
-    tags.continueLocationPull = false
+    links.homeworld?.toggleGPS(false);
 }

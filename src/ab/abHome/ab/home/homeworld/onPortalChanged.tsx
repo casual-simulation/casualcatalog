@@ -36,26 +36,33 @@ if (that.portal == "mapPortal") {
             await os.focusOn(abPosition, { duration: 0, portal: 'map', zoom: 999999999 });
 
             // Show home intro menu.
-            shout('resetHomeIntroMenu');
+            // shout('resetHomeIntroMenu');
 
-            configBot.tags.menuPortal = 'homeIntroMenu';
+            // configBot.tags.menuPortal = 'homeIntroMenu';
 
-            links.menu.abCreateMenuButton({
-                space: 'tempLocal',
-                homeIntroMenu: true,
-                label: 'go to home',
-                homeworldBot: getLink(thisBot),
-                resetHomeIntroMenu: `@
-                    destroy(thisBot);
-                `,
-                onClick: `@
-                    setTagMask(ab.links.remember, "mapPreventFocus", null);
+            // links.menu.abCreateMenuButton({
+            //     space: 'tempLocal',
+            //     homeIntroMenu: true,
+            //     label: 'go to home',
+            //     homeworldBot: getLink(thisBot),
+            //     resetHomeIntroMenu: `@
+            //         destroy(thisBot);
+            //     `,
+            //     onClick: `@
+            //         setTagMask(ab.links.remember, "mapPreventFocus", null);
                     
-                    links.homeworldBot.playIntro();
+            //         links.homeworldBot.playIntro();
                     
-                    shout('resetHomeIntroMenu');
-                `
-            })
+            //         shout('resetHomeIntroMenu');
+            //     `
+            // })
+            const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+            if (avatarBot) {
+                avatarBot.onClick();
+            } else {
+                //spawn avatar
+                thisBot.spawnPlayer();
+            }
         }
     } else {
         setTagMask(links.remember, "mapPreventFocus", null);

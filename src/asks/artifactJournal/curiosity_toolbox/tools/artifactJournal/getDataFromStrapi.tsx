@@ -1,8 +1,6 @@
 tags.collectableAmounts = [];
 tags.collectableIDs = [[], [], []];
 
-
-
 try {
     //collectables
     const collectablesResponse = await web.hook({

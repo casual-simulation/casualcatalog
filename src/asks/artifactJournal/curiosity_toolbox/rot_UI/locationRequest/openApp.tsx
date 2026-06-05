@@ -5,9 +5,9 @@ journal.tags.currentRegisteredApp = "locationApp";
 os.registerApp("locationApp", thisBot);
 
 console.log("[RoT] Opening App: " + that)
-const playerBot = getBot(byTag("mapAvatar", true), byTag("remoteID", configBot.tags.id));
-if (playerBot) {
-    os.focusOn(playerBot, {
+const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+if (avatarBot) {
+    os.focusOn(avatarBot, {
         portal: 'map',
         duration: .5 * 3,
         easing: {

@@ -97,7 +97,7 @@ const visitButton = {
     `
 }
 
-const playerAvatar = getBot(byTag("mapAvatar", true), byTag("remoteID", getID(configBot)));
+const playerAvatar = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
 
 if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(nameButton);

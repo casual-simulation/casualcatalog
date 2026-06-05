@@ -192,7 +192,7 @@ if (!tags.artifactLocked) {
     //    ab.links.menu.abCreateMenuButton(visitLinkButton); 
     // }
     const journal = getBot("artifactJournal", true);
-    if (journal.tags.continueLocationPulling == true) {
+    if (journal?.links?.homeworld?.tags.usingGPS == true) {
         ab.links.menu.abCreateMenuButton(collectButton);
     }
     else {

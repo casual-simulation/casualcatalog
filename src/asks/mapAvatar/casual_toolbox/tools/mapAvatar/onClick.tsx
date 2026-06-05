@@ -1,5 +1,5 @@
 //if this isnt the users own avatar, dont respond
-if (tags.remoteID != getID(configBot)) {
+if (tags.ownerID !=  authBot?.id) {
     return;
 }
 
@@ -24,11 +24,11 @@ const menuOptions = {
 
 const leaveGPSButton = {
     ...menuOptions,
-    label: (tags.continueLocationPull ? 'disable' : 'enable') + ' gps tracking',
+    label: (links.homeworld?.tags.usingGPS ? 'disable' : 'enable') + ' gps tracking',
     mapAvatar_menuSortOrder: -1,
-    formAddress: tags.continueLocationPull ? 'near_me_disabled' : 'near_me',
+    formAddress: links.homeworld?.tags.usingGPS ? 'near_me_disabled' : 'near_me',
     onClick: `@
-        links.avatar.toggleLocationPull(!links.avatar.tags.continueLocationPull);
+        links.avatar.links.homeworld?.toggleGPS(!links.avatar.links.homeworld?.tags.usingGPS);
 
         shout("clearMapAvatarMenu");
     `,
@@ -72,6 +72,6 @@ if (journal) {
 
 ab.links.menu.abCreateMenuButton(leaveGPSButton);
 
-if (!tags.continueLocationPull) {
+if (!links.homeworld?.tags.usingGPS) {
     thisBot.showPlaceNavMenu();
 }

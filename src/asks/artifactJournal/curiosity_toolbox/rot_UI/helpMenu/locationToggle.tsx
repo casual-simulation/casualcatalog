@@ -1,9 +1,9 @@
 let journal = getBot(byTag("artifactJournal", true));
 if (that == true)
 {
-    journal.useGPS(true);
+    journal.links.homeworld?.toggleGPS(true);
 }
 else
 {
-    journal.useGPS(false);
+   journal.links.homeworld?.toggleGPS(false);
 }

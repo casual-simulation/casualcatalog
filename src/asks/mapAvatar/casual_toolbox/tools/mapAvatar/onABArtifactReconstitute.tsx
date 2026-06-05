@@ -3,20 +3,13 @@ if (data.config) {
     data = data.config;
 }
 
-const existingAvatarBot = getBot(byTag("mapAvatar", true), byTag("remoteID", configBot.tags.id));
+const existingAvatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
 if (existingAvatarBot) {
-    if (!data.disableGPS) {
-        if (existingAvatarBot.tags.continueLocationPull) {
-            data.disableGPS = false;
-        } else {
-            data.disableGPS = true;
-        }
-    }
     destroy(existingAvatarBot);
 }
 
 await os.sleep(0);
-tags.remoteID = configBot.tags.id;
+tags.ownerID = authBot?.id;
 
 let label = data.label ?? 'player';
 if (!data.label && authBot && authBot.tags.name) {
@@ -52,11 +45,13 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 }
 
-if (configBot.tags.mapPortal) {
-    thisBot.useGPS(data.disableGPS ? false : true);
-    thisBot.toggleLocationPull(data.disableGPS ? false : true);
+if (configBot.tags.mapPortal && links.homeworld?.tags.usingGPS) {
+    thisBot.onGPSEnabled();
 } else {
-    thisBot.useGPS(false);
-    thisBot.toggleLocationPull(false);
+    thisBot.onGPSDisabled();
 }
 
+
+if (data.clickOnLoad) {
+    thisBot.onClick();
+}

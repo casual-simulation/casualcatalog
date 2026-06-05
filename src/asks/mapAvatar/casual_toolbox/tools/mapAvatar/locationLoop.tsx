@@ -1,5 +1,5 @@
 // begins the loop of location updating
-if(!tags.continueLocationPull){
+if(!links.homeworld?.tags.usingGPS){
     return;
 }
 

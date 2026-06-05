@@ -4,12 +4,6 @@ const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 const activeMenu = configBot.tags.menuPortal;
 
-// if (currentPortal != 'map') {
-//     thisBot.masks.abCoreMenuHide = true;
-// } else {
-//     thisBot.masks.abCoreMenuHide = false;
-// }
-
 const menuOptions = {};
 
 menuOptions.dimension = activeMenu;
@@ -27,15 +21,15 @@ const placeNav = {
 
 if (currentPortal == 'map') {
 
-    const homeBaseBot = getBot("homeBase", true);
+    const homeBaseBot = getBot("respawnPoint", true);
 
     if (homeBaseBot) {
         const homeButton = {
             ...menuOptions,
-            label: homeBaseBot.tags.placeLabel,
+            label: 'home',
             formAddress: 'https://auth-aux-dev-filesbucket-682397690660.s3.amazonaws.com/318c04f1-1391-4c10-8d43-aaebc5170265/cd38affc0604beaa588da21aa1be750bb3e73b3b3cae23eb30307c34494459f3.png',
             onClick: `@
-                const homeBot = getBot("homeBase", true);
+                const homeBot = getBot("respawnPoint", true);
                 if (homeBot) {
                     os.focusOn(homeBot, { zoom: 2000 }).catch(() => {});
                 }

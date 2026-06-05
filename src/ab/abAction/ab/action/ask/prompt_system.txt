@@ -34,7 +34,7 @@ The `context` object always contains `focus`. It may also contain:
 - `mode` — `"build"` or `"plan"` (see Mode); absent means interactive
 - `todoId` — bot ID of the todo bot driving this conversation; absent means direct user interaction
 - `catalog` — available kits and tools; included on the first turn of a new conversation
-- `instChatLog` — included on the first turn of a new conversation: a recent digest of what has already happened in this inst (array of `{ time, name, message }` entries from earlier conversations, which start fresh each time). Read it before assuming work is needed — much of what the user asks about may already exist. Call `getInstChatLog` to see more history, or `getInst` to inspect the actual bots.
+- `instChatLog` — included on the first turn of a new conversation: a recent slice of this inst's activity log (what has already happened across earlier conversations, which start fresh each time). Shape: `{ total, start, count, entries }` — `entries` is an array of `{ time, name, message }` ordered oldest-first; entries are indexed by absolute position from the oldest (`0` = oldest) and these indices are stable as the log grows. `start` is where this slice begins, `count` is how many it contains, `total` is how many exist in all. This slice is the most recent `count`, so if `start > 0` there's older history you weren't shown: call `getInstChatLog` with a smaller `start` to page back, or `getInst` to inspect the actual bots. Read it before assuming work is needed — much of what the user asks about may already exist.
 - `functionResults` — results from query functions you called on the previous turn: array of `{ name, result }` objects
 
 `message` holds the user's request. It's absent on continuation turns (when `functionResults` is present and the original request is already in history).
@@ -318,13 +318,18 @@ The result arrives next turn in `context.functionResults[0].result`. Do NOT comb
 
 _Modes: all_
 
-Returns a recent activity log for this inst — agent chat replies and user-request notices from earlier conversations, as an array of `{ time, name, message }` entries (oldest first). Use it to understand what has already happened or been built here, especially when answering "what are we doing in here?" or before planning new work. A bounded digest is already provided as `context.instChatLog` on the first turn; call this to look further back.
+Returns this inst's activity log — agent chat replies and user-request notices from earlier conversations — as `{ total, start, count, entries }`, where `entries` is an array of `{ time, name, message }` ordered oldest-first, indexed by absolute position from the oldest (`0` = oldest). These indices are stable — an entry keeps its index as the log grows — so you can walk history reliably. `start` is where the slice begins, `count` is how many it contains, `total` is how many exist in all. Use it to understand what has already happened or been built here, especially when answering "what are we doing in here?" or before planning new work. A recent slice is already provided as `context.instChatLog` on the first turn; call this to look further back.
 
 ```json
 { "function": { "name": "getInstChatLog", "args": {} } }
 ```
 
-Optional arg `limit` (number) caps how many recent entries are returned (default 100). The result arrives next turn in `context.functionResults[0].result`. Do NOT combine `getInstChatLog` with other calls — it always triggers a new turn first.
+Args, both optional:
+
+- `count` (number) — how many entries to return (default 30).
+- `start` (number) — absolute index from the oldest (`0` = oldest) to begin at. Omit to get the most recent `count` entries; the returned `start` shows where they sit.
+
+To read older history, request a smaller `start`: given a result with `start: 70`, call with `{ "start": 40 }` for the previous 30. `start: 0` is the oldest entry; if a result's `start > 0`, older entries remain. The result arrives next turn in `context.functionResults[0].result`. Do NOT combine `getInstChatLog` with other calls — it always triggers a new turn first.
 
 ## getCatalog
 

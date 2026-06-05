@@ -143,7 +143,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     // Recent inst activity digest — what already happened across earlier (now-cleared) conversation
     // threads, reconstructed from the persistent shared log bots. Gives the agent cross-thread
     // awareness so it doesn't propose rebuilding work that already exists. Omitted when empty.
-    const instChatLog = thisBot.abAskHelperBuildInstChatLog({ limit: 30 });
+    const instChatLog = thisBot.abAskHelperBuildInstChatLog({ count: 30 });
 
     // The user's prime-directive and personalization sections live in prompt_system.txt, wrapped in
     // <<name>> ... <</name>> markers (see ab.links.utils.applyOptionalPromptSection). When set, the
@@ -172,7 +172,7 @@ if (!hasInquiry && storedHistory.length > 0) {
     aiChatMessages = [
         { role: 'system', content: [{ text: systemPrompt }] },
         { role: 'assistant', content: [{ text: 'Understood. I will always respond with a valid JSON array of function calls and nothing else.' }] },
-        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry, { catalog, ...(instChatLog.length ? { instChatLog } : {}) }) }, ...attachmentBlocks] },
+        { role: 'user', content: [{ text: buildUserMessage(originalUserInquiry, { catalog, ...(instChatLog.entries.length ? { instChatLog } : {}) }) }, ...attachmentBlocks] },
     ];
 }
 

@@ -29,6 +29,7 @@
         "name": "public avatar",
         "studio": "AB",
         "targetAB": "mapAvatar",
+        "formAddress": "account_circle",
         "artifact": true
     },
     {

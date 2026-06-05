@@ -37,31 +37,35 @@ if (!avatarBot) {
     });
 }
 
-//add catalog
-const userAbArtifactShard = {
-    data: {
-        studioId: authBot.id,
-        label: 'user studio catalog',
-        autoLoadCasualKit: true,
-        eggParameters: {
-            toolboxBot: null,
-            gridInformation: {
-                dimension: 'home',
-                position: {
-                    x: 2,
-                    y: 2
+const catalog = getBot(byTag("studioCatalog", true), byTag("studioId", authBot?.id));
+
+if (!catalog) {
+    //add catalog
+    const userAbArtifactShard = {
+        data: {
+            studioId: authBot.id,
+            label: 'user studio catalog',
+            autoLoadCasualKit: true,
+            eggParameters: {
+                toolboxBot: null,
+                gridInformation: {
+                    dimension: 'home',
+                    position: {
+                        x: 2,
+                        y: 2
+                    }
                 }
             }
-        }
-    },
-    dependencies: [
-        {
-            askID: 'studioCatalog'
-        }
-    ]
-};
-await links.artifact.abCreateArtifactPromiseBot({
-    abArtifactName: 'studioCatalog',
-    abArtifactInstanceID: uuid(),
-    abArtifactShard: userAbArtifactShard,
-});
+        },
+        dependencies: [
+            {
+                askID: 'studioCatalog'
+            }
+        ]
+    };
+    await links.artifact.abCreateArtifactPromiseBot({
+        abArtifactName: 'studioCatalog',
+        abArtifactInstanceID: uuid(),
+        abArtifactShard: userAbArtifactShard,
+    });
+}

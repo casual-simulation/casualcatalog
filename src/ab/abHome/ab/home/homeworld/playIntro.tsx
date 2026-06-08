@@ -2,6 +2,10 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, that);
 }
 
+if (!links.learn.abIsPrimary()) {
+    return;
+} 
+
 masks.introPlayed = true;
 
 const abPosition = await ab.links.manifestation.getDefaultManifestPosition('map');

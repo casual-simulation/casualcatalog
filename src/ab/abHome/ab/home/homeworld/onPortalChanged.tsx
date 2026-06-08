@@ -35,6 +35,8 @@ if (that.portal == "mapPortal") {
             const abPosition = await links.manifestation.getDefaultManifestPosition('map');
             await os.focusOn(abPosition, { duration: 0, portal: 'map', zoom: 999999999 });
 
+            masks.introPlayed = true;
+
             // Show home intro menu.
             // shout('resetHomeIntroMenu');
 

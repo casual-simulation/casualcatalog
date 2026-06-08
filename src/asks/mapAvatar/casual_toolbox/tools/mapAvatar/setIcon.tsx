@@ -23,10 +23,11 @@ const spriteBot = await create({
     formAddress: iconURL,
     orientationMode: 'billboard',
     pointable: false,
-    transformer: getID(thisBot),
     [tags.dimension]: true,
     anchorPoint: 'center',
-    [tags.dimension + 'Z']: -.5
+    [tags.dimension + 'Z']: 2.5,
+    [tags.dimension + 'X']: tags[tags.dimension + 'X'],
+    [tags.dimension + 'Y']: tags[tags.dimension + 'Y']
 })
 
 links.spriteBot = getLink(spriteBot);

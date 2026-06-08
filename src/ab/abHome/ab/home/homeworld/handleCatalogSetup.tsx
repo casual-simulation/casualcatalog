@@ -19,11 +19,6 @@ if (!homeBot) {
     let positionX;
     let positionY;
 
-    // Current work-around for allowing geolocation for iOS app
-    if (getBot("system", "ab.iosbridge.messenger")) {
-        hasGeolocationPermission = true;
-    }
-
     if (hasGeolocationPermission) {
         const geolocation = await os.getGeolocation();
         if (geolocation.success) {

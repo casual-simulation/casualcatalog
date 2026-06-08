@@ -8,11 +8,6 @@ async function getDefaultManifestPosition(portal: 'map' | 'grid'): { x: number, 
             let currentPosition = undefined;
             let hasGeolocationPermission = await links.utils.hasGeolocationPermission();
 
-            // Current work-around for allowing geolocation for iOS app
-            if (getBot("system", "ab.iosbridge.messenger")) {
-                hasGeolocationPermission = true;
-            }
-
             if (hasGeolocationPermission) {
                 const geolocation = await os.getGeolocation();
                 if (geolocation.success) {

@@ -9,4 +9,11 @@ try {
     console.error(`Caught an error will querying permissions. Error:`, ab.links.utils.getErrorMessage(e));
 }
 
+if (!hasPermission) {
+    // Current work-around for allowing geolocation for iOS app
+    if (getBot("system", "ab.iosbridge.messenger")) {
+        hasPermission = true;
+    }
+}
+
 return hasPermission;

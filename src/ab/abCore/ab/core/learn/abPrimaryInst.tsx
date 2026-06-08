@@ -3,7 +3,7 @@ if (configBot) {
         const url = new URL(configBot.tags.url);
 
         for (const [key, value] of url.searchParams) {
-            if (key === 'inst' || key === 'staticInst') {
+            if (key === 'inst' || key === 'staticInst' || key === 'tempInst') {
                 return value;
             }
         }

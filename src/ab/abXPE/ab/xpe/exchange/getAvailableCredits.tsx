@@ -17,8 +17,9 @@ const balance: JSONAccountBalance = await thisBot.getAccountBalance({ userId, st
 if (balance) {
     const creditsNum = Number.parseFloat(balance.credits ?? '0');
     const debitsNum = Number.parseFloat(balance.debits ?? '0');
+    const pendingDebitsNum = Number.parseFloat(balance.pendingDebits ?? '0');
     
-    return creditsNum - debitsNum;
+    return creditsNum - debitsNum - pendingDebitsNum;
 } else {
     return null;
 }

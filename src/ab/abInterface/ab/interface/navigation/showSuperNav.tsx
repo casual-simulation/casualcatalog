@@ -15,17 +15,17 @@ if (!ab.abIsPrimary()) {
     //grab studioData, use it to inform label
     return;
 }
-let studioData = await os.listUserStudios();
+// let studioData = await os.listUserStudios();
 
-if (studioData.success) {
-    const studios = studioData.studios;
-    for (let i = 0; i < studios.length; ++i) {
-        let idString = studios[i].studioId;
-        idString = idString.slice(0, 4);
+// if (studioData.success) {
+//     const studios = studioData.studios;
+//     for (let i = 0; i < studios.length; ++i) {
+//         let idString = studios[i].studioId;
+//         idString = idString.slice(0, 4);
         
-        const isLoaded = tags.activeInsts.find(item => item.includes(idString));
-    }
-}
+//         const isLoaded = tags.activeInsts.find(item => item.includes(idString));
+//     }
+// }
 
 const superNavDropdown = {
     ...menuOptions,

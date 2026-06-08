@@ -25,6 +25,8 @@ const spriteBot = await create({
     pointable: false,
     [tags.dimension]: true,
     anchorPoint: 'center',
+    scale: 2,
+    lineTo: thisBot.id,
     [tags.dimension + 'Z']: 2.5,
     [tags.dimension + 'X']: tags[tags.dimension + 'X'],
     [tags.dimension + 'Y']: tags[tags.dimension + 'Y']

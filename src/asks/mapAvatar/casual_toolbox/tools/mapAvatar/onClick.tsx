@@ -29,7 +29,9 @@ const leaveGPSButton = {
     formAddress: links.homeworld?.tags.usingGPS ? 'near_me_disabled' : 'near_me',
     onClick: `@
         links.avatar.links.homeworld?.toggleGPS(!links.avatar.links.homeworld?.tags.usingGPS);
-
+        if (!links.avatar.links.homeworld.tags.introPlayed && !links.avatar.links.homeworld?.tags.usingGPS == true) {
+            links.avatar.links.homeworld.masks.introPlayed = true;
+        }
         shout("clearMapAvatarMenu");
     `,
 }

@@ -2,7 +2,11 @@ const dropdownOptions = [];
 
 const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
-const activeMenu = configBot.tags.menuPortal;
+const activeMenu = configBot.tags.menuPortal ?? 'abMenu';
+
+if (!configBot.tags.menuPortal) {
+    configBot.tags.menuPortal = 'abMenu';
+}
 
 // if (currentPortal != 'map') {
 //     thisBot.masks.abCoreMenuHide = true;
@@ -73,7 +77,9 @@ if (currentPortal == 'map') {
                             y: homeBot.tags[dimension + 'Y']
                         })
                     }
-
+                    if (!links.avatar.links.homeworld.tags.introPlayed) {
+                        links.avatar.links.homeworld.masks.introPlayed = true;
+                    }
                     os.focusOn(homeBot, { zoom: 2000 }).catch(() => {});
                 }
                 shout("abMenuRefresh");
@@ -108,7 +114,9 @@ if (currentPortal == 'map') {
                             y: links.place.tags[dimension + 'Y']
                         })
                     }
-
+                    if (!links.avatar.links.homeworld.tags.introPlayed) {
+                        links.avatar.links.homeworld.masks.introPlayed = true;
+                    }
                     os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
                     shout("clearMapAvatarMenu");
                 }
@@ -153,6 +161,9 @@ if (currentPortal == 'map') {
                     x: location.longitude,
                     y: location.latitude
                 })
+            }
+            if (!links.avatar.links.homeworld.tags.introPlayed) {
+                links.avatar.links.homeworld.masks.introPlayed = true;
             }
             links.skillBot.goToCurrentLocation();
             shout("abMenuRefresh");

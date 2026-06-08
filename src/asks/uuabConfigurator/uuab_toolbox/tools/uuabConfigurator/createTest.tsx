@@ -31,7 +31,7 @@ const abArtifactShard = {
         labelSetting: tags.chosenUUABName,
         label: tags.chosenUUABName,
         instSetting: 'uuab-redirect',
-        biosSetting: 'local',
+        biosSetting: 'temp',
         studioId: tags.studioId,
         completeOnLoad: true,
         urlVariables: [{

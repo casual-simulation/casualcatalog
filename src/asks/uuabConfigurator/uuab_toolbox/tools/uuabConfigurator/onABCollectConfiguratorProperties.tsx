@@ -14,7 +14,7 @@ const properties: ABConfiguratorProperty[] = [
         description: 'The way the inst functions with permissions and user interactions',
         default: "free",
         value: tags.chosenBIOS,
-        options: [{value: 'free', label: 'free'}, {value: 'studio', label: 'studio'}, {value: 'local', label: 'local'}]
+        options: [{value: 'free', label: 'free'}, {value: 'studio', label: 'studio'}, {value: 'local', label: 'local'}, {value: 'temp', label: 'temp'}]
     },
     {
         key: 'optionalSettings',

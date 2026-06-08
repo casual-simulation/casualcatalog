@@ -51,7 +51,7 @@ const homeWorldButton = {
     `
 };
 
-if (os.getCurrentInst() != 'home' && authBot) {
+if (os.getCurrentInst() != 'home' && authBot && ab.abIsPrimary()) {
     dropdownOptions.push(homeWorldButton);
 }
 
@@ -77,8 +77,8 @@ if (currentPortal == 'map') {
                             y: homeBot.tags[dimension + 'Y']
                         })
                     }
-                    if (!links.avatar.links.homeworld.tags.introPlayed) {
-                        links.avatar.links.homeworld.masks.introPlayed = true;
+                    if (!avatarBot.links.homeworld.tags.introPlayed) {
+                        avatarBot.links.homeworld.masks.introPlayed = true;
                     }
                     os.focusOn(homeBot, { zoom: 2000 }).catch(() => {});
                 }
@@ -114,8 +114,8 @@ if (currentPortal == 'map') {
                             y: links.place.tags[dimension + 'Y']
                         })
                     }
-                    if (!links.avatar.links.homeworld.tags.introPlayed) {
-                        links.avatar.links.homeworld.masks.introPlayed = true;
+                    if (!avatarBot.links.homeworld.tags.introPlayed) {
+                        avatarBot.links.homeworld.masks.introPlayed = true;
                     }
                     os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
                     shout("clearMapAvatarMenu");
@@ -162,8 +162,8 @@ if (currentPortal == 'map') {
                     y: location.latitude
                 })
             }
-            if (!links.avatar.links.homeworld.tags.introPlayed) {
-                links.avatar.links.homeworld.masks.introPlayed = true;
+            if (!avatarBot.links.homeworld.tags.introPlayed) {
+                avatarBot.links.homeworld.masks.introPlayed = true;
             }
             links.skillBot.goToCurrentLocation();
             shout("abMenuRefresh");

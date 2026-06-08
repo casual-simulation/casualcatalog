@@ -8,7 +8,7 @@ const {
 assert(studioId, `[${tags.system}.${tagName}] studioId is a required parameter.`);
 assert(content != null, `[${tags.system}] content is a required parameter`);
 
-const logRecordName = thisBot.getLogRecordName({ studioId });
+const logRecordName = thisBot.abGetLogRecordName({ studioId });
 
 // Metadata derived from current inst state.
 const address = uuid();
@@ -52,10 +52,22 @@ if (tags.debug) {
 }
 
 const recordDataResult: RecordDataResult = await ab.links.store.abPublishRecord({
-    userRecord: studioId,
+    userRecord: logRecordName,
     recordName: address,
     recordData: data,
     toast: false,
 })
 
-return recordDataResult?.success;
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}]recordDataResult:`, recordDataResult);
+}
+
+if (recordDataResult?.success) {
+    return true;
+} else {
+    if (recordDataResult?.errorCode === 'record_not_found') {
+        console.warn(`[${tags.system}.${tagName}] TODO: create log record?`);
+    }
+
+    return false;
+}

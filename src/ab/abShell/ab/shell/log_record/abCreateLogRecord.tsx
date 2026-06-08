@@ -4,7 +4,7 @@ const {
 
 assert(studioId, `[${tags.system}.${tagName}] studioId is a required parameter.`);
 
-const logRecordName = thisBot.getLogRecordName({ studioId });
+const logRecordName = thisBot.abGetLogRecordName({ studioId });
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] creating record '${logRecordName}' in ${studioId}`);

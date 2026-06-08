@@ -17,6 +17,7 @@ const menuOptions = {
 }
 
 if (!tags.discoverableData) {
+    whisper(thisBot, 'onEmbedCheck');
     await thisBot.getDataFromStrapi();
 }
 

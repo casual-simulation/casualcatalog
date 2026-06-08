@@ -24,6 +24,7 @@ if (!bios) {
 
 if (!instName) {
     instName = uuid();
+    instName = instName.slice(-8);
 }
 
 const currentURL = new URL(configBot.tags.url);
@@ -89,6 +90,10 @@ else if (bios == 'local') {
 else if (bios == 'free') {
     newURL.searchParams.append("owner", 'public');
     newURL.searchParams.append("inst", instName);
+    newURL.searchParams.append("gridPortal", 'home');
+}
+else if (bios == 'temp') {
+    newURL.searchParams.append("tempInst", instName);
     newURL.searchParams.append("gridPortal", 'home');
 }
 

@@ -35,7 +35,15 @@ else if (tags.bios == 'free') {
     } else {
         newURL.searchParams.append("bios", 'free');
     }
+} else if (tags.bios == 'temp') {
+    if (tags.instName) {
+        newURL.searchParams.append("tempInst", tags.instName);
+        newURL.searchParams.append("gridPortal", 'home'); 
+    } else {
+        newURL.searchParams.append("bios", 'temp');
+    }
 }
+
 
 if (configBot.tags.launcher) {
     newURL.searchParams.append("ask", configBot.tags.launcher);

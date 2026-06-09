@@ -28,6 +28,7 @@ if (tags.debug) {
 if (!publishAttempt.success) {
 
     //check permissions, try again
+    console.log(`[${tags.system}.${tagName}] requesting inst admin permission for studio ${studio}.`);
     const permissions = await os.grantInstAdminPermission(studio);
 
     if (tags.debug) {

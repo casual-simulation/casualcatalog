@@ -13,6 +13,7 @@ else if (authBot)
     {
         recordKey = authBot.id;
 
+        console.log(`[${tags.system}.${tagName}] requesting inst admin permission for record ${recordKey}.`);
         await os.grantInstAdminPermission(recordKey);
     }
 }

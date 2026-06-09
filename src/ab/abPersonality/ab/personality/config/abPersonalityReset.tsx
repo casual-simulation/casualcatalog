@@ -28,6 +28,7 @@ if (authBot) {
     if (!recordResponse.success) {
         if (recordResponse.errorCode === 'not_authorized') {
             // Ask user to grant permission;
+            console.log(`[${tags.system}.${tagName}] requesting inst admin permission for user record ${authBot.id}.`);
             const permission = await os.grantInstAdminPermission(authBot.id);
 
             if (permission.success) {

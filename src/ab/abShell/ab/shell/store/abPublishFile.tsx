@@ -40,6 +40,8 @@ if (!fileUpload.success) {
         return fileUpload;
     }
 
+
+    console.log(`[${tags.system}.${tagName}] requesting inst admin permission for record ${configBot.tags.studio ?? authBot.id}.`);
     await os.grantInstAdminPermission(userRecord);
 
     fileUpload = await os.recordFile(userRecord, file, { description: fileName, mimeType: mimeType, markers: markerSet.size > 0 ? Array.from(markerSet) : undefined });

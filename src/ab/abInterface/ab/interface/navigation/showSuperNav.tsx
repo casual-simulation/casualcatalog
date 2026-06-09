@@ -2,6 +2,8 @@ const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 let activeMenu = configBot.tags.menuPortal;
 
+masks.navOpen = true;
+
 if (!ab.abIsPrimary()) {
     configBot.tags.menuPortal = 'abMenu';
     activeMenu = 'abMenu';

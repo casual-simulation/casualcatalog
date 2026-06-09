@@ -8,6 +8,7 @@ if (that.bots) {
             console.log(`[${tags.system}.${tagName}] auth bot added. authBot id: ${thisBot.vars.authBotId}`);
         }
 
+        console.log(`[${tags.system}.${tagName}] auth bot added.`);
         shout('onABAuthBotAdded', { authBot: addedAuthBot });
     }
 }

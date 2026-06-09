@@ -1,4 +1,6 @@
-if (!ab.abIsPrimary()) {
+console.log(`[${tags.system}.${tagName}]: home layer loaded ${os.getCurrentInst()}`);
+
+if (!links.learn.abIsPrimary()) {
     return;
 }
 

@@ -15,5 +15,6 @@ if (that.studioId) {
     }
     
     await ab.links.search.onLookupABEggs({ recordKey: that.studioId, abID: "home", autoHatch: true, sourceEvent: 'ask'});
+    await os.sleep(0);
     superShout("homeLayerLoaded");
 }

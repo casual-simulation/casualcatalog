@@ -22,7 +22,7 @@ if (tags.activeInsts.find(item => item.includes(idString))) {
 if (instLoaded) {
     if (!that.keepLoaded) {
         os.unloadInst({
-            staticInst: tags.activeInsts.find(item => item.includes(idString)),
+            tempInst: tags.activeInsts.find(item => item.includes(idString)),
         });
         console.log("unloading", tags.activeInsts.find(item => item.includes(idString)))
     }
@@ -35,6 +35,6 @@ else {
     await os.sleep(0);
 
     await os.loadInst({
-        staticInst: instName
+        tempInst: instName
     });
 }

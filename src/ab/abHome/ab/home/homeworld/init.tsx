@@ -36,7 +36,6 @@ if (tags.debug) {
 
 if (!homeEggData.success) {
     if(homeEggData.errorCode && homeEggData.errorCode == 'not_authorized') {
-        console.log(`[${tags.system}.${tagName}] requesting inst admin permission for studio ${studio}.`);
         const permissions = await os.grantInstAdminPermission(studio);
         const homeEggData2 = await os.getData(studio, 'home');
 

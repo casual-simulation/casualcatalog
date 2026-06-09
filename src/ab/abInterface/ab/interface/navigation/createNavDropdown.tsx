@@ -71,7 +71,7 @@ if (currentPortal == 'map') {
                         })
                     os.focusOn(homeBot, { zoom: 2000 }).catch(() => {});
                 }
-                shout("abMenuRefresh");
+                superShout("abMenuRefresh");
             `
         };
         if (ab.abIsPrimary()) {
@@ -99,7 +99,7 @@ if (currentPortal == 'map') {
                             y: links.place.tags[dimension + 'Y']
                         })
                     os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
-                    shout("clearMapAvatarMenu");
+                    superShout("abMenuRefresh");
                 }
                 `
         }
@@ -131,7 +131,7 @@ if (currentPortal == 'map') {
         onClick: `@
             superShout("moveAvatarToCurrentLocation");
             links.skillBot.goToCurrentLocation();
-            shout("abMenuRefresh");
+            superShout("abMenuRefresh");
         `
     }
 

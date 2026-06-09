@@ -6,7 +6,7 @@ if (that.studioId) {
     //Check for user logged in
     if (!authBot) {
         console.log(`[${tags.system}.${tagName}]: User must be signed in to save data`);
-        await os.requestAuthBotInBackground();
+        await os.requestAuthBot();
     }
 
     if (!authBot) {

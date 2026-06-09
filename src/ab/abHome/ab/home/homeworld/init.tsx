@@ -15,14 +15,14 @@ if (!authBot) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] authBot not found`);
     }
-    await os.requestAuthBotInBackground();
+    await os.requestAuthBot();
 }
 
 if (!authBot) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] User not logged in.`);
     }
-    masks.awaitingAuthBot = true;
+    // masks.awaitingAuthBot = true;
     return;
 }
 

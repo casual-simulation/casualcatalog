@@ -51,7 +51,7 @@ const App = () => {
     }, [showAll]);
 
     useEffect(() => {
-        const collapsed = '120px';
+        const collapsed = '72px';
         const expanded = '33vh';
         const chat = '72px';
 
@@ -110,7 +110,7 @@ const App = () => {
                 }
             }}
         >
-            {tags.showTopBar && <TopBar />}
+            {tags.showTopBar && showAll && <TopBar />}
 
             <div
                 className="ab-console-log"

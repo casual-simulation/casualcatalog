@@ -1,7 +1,7 @@
 :root {
   --ab-console-bg: #f8f9fa;
   --on-ab-console-bg: #212529;
-  --ab-console-collapsed-height: 120px;
+  --ab-console-collapsed-height: 72px;
   --ab-console-expanded-height: 33vh;
   --ab-console-chat-height: 72px;
 }

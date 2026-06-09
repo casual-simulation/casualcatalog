@@ -37,10 +37,14 @@ if (!ab.abIsPrimary()) {
     } 
 }
 
+const min = 2.100;
+const max = 2.900;
+const randomNumber = Math.random() * (max - min) + min;
+
 const superNavDropdown = {
     ...menuOptions,
     label: ab.abIsPrimary() ? 'places' : studioName ? studioName + ' places' : os.getCurrentInst() + ' places',
-    dropdownSortOrder: 2,
+    dropdownSortOrder: Number(randomNumber.toFixed(3)),
     dropdownOptions: []
 }
 

@@ -8,7 +8,6 @@ if (that.dimension != tags.dimension) {
 
 tags[that.dimension] = true;
 links.spriteBot.tags[that.dimension] = true;
-links.spriteBot.tags[that.dimension + 'Z'] = -0.5;
 
 const prevX = tags[that.dimension + 'X'] ?? 0;
 const prevY = tags[that.dimension + 'Y'] ?? 0;

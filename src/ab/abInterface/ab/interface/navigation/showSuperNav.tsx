@@ -9,27 +9,31 @@ menuOptions[activeMenu] = true;
 menuOptions.abNavigationMenuRefresh = "@ destroy(thisBot);";
 menuOptions.abMenuRefresh = "@ destroy(thisBot);";
 menuOptions.skillBot = getLink(thisBot);
+let studioName;
 
-//TODO remove when more time
 if (!ab.abIsPrimary()) {
-    //grab studioData, use it to inform label
-    return;
-}
-// let studioData = await os.listUserStudios();
+   let studioData = await os.listUserStudios();
+    if (studioData.success) {
+        const studios = studioData.studios;
+        for (let i = 0; i < studios.length; ++i) {
+            let idString = studios[i].studioId;
+            idString = idString.slice(0, 4);
+            if (os.getCurrentInst().includes(idString)) {
+                studioName = studios[i].displayName;
+            }
+        }
+    }
 
-// if (studioData.success) {
-//     const studios = studioData.studios;
-//     for (let i = 0; i < studios.length; ++i) {
-//         let idString = studios[i].studioId;
-//         idString = idString.slice(0, 4);
-        
-//         const isLoaded = tags.activeInsts.find(item => item.includes(idString));
-//     }
-// }
+    if (!studioName && ab.links.remember.tags.allowedLayers && ab.links.remember.tags.allowedLayers.length != 0) {
+        if (ab.links.remember.tags.allowedLayers.find(layer => os.getCurrentInst().includes(layer.StudioId.slice(0, 4)))) {
+            studioName = ab.links.remember.tags.allowedLayers.find(layer => os.getCurrentInst().includes(layer.StudioId.slice(0, 4))).DisplayName;
+        }
+    } 
+}
 
 const superNavDropdown = {
     ...menuOptions,
-    label: ab.abIsPrimary() ? 'places' : os.getCurrentInst() + ' places',
+    label: ab.abIsPrimary() ? 'places' : studioName ? studioName + ' places' : os.getCurrentInst() + ' places',
     dropdownSortOrder: 2,
     dropdownOptions: []
 }
@@ -37,4 +41,6 @@ const superNavDropdown = {
 let dropdownOptions = JSON.parse(await thisBot.createNavDropdown());
 superNavDropdown.dropdownOptions = [...dropdownOptions];
 
-ab.links.menu.abCreateMenuDropdown(superNavDropdown);
+if (superNavDropdown.dropdownOptions.length > 0) {
+   ab.links.menu.abCreateMenuDropdown(superNavDropdown); 
+}

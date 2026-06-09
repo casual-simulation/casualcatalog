@@ -4,10 +4,6 @@ const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 const activeMenu = configBot.tags.menuPortal ?? 'abMenu';
 
-if (!configBot.tags.menuPortal) {
-    configBot.tags.menuPortal = 'abMenu';
-}
-
 // if (currentPortal != 'map') {
 //     thisBot.masks.abCoreMenuHide = true;
 // } else {
@@ -67,19 +63,12 @@ if (currentPortal == 'map') {
             onClick: `@
                 const homeBot = getBot("respawnPoint", true);
                 if (homeBot) {
-                    const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-                    if (avatarBot) {
-                        avatarBot.links.homeworld?.toggleGPS(false);
-                        const dimension = homeBot.tags.dimension ?? 'home';
-                        avatarBot.onPlaceClicked({
+                    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
+                    superShout("moveAvatarToPlace", {
                             dimension: dimension,
                             x: homeBot.tags[dimension + 'X'],
                             y: homeBot.tags[dimension + 'Y']
                         })
-                    }
-                    if (!avatarBot.links.homeworld.tags.introPlayed) {
-                        avatarBot.links.homeworld.masks.introPlayed = true;
-                    }
                     os.focusOn(homeBot, { zoom: 2000 }).catch(() => {});
                 }
                 shout("abMenuRefresh");
@@ -103,20 +92,12 @@ if (currentPortal == 'map') {
             place: getLink(hPlace),
             onClick: `@
                 if (links.place) {
-                    const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-                    if (avatarBot) {
-                        avatarBot.links.homeworld?.toggleGPS(false);
-                        
-                        const dimension = links.place.tags.dimension ?? 'home';
-                        avatarBot.onPlaceClicked({
+                    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
+                    superShout("moveAvatarToPlace", {
                             dimension: dimension,
                             x: links.place.tags[dimension + 'X'],
                             y: links.place.tags[dimension + 'Y']
                         })
-                    }
-                    if (!avatarBot.links.homeworld.tags.introPlayed) {
-                        avatarBot.links.homeworld.masks.introPlayed = true;
-                    }
                     os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
                     shout("clearMapAvatarMenu");
                 }
@@ -148,23 +129,7 @@ if (currentPortal == 'map') {
         label: 'current location',
         formAddress: 'near_me',
         onClick: `@
-            const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-            if (avatarBot) {
-                const location = await os.getGeolocation();
-                if (!location.success) {
-                    os.toast("Could not access current location.");
-                    return;
-                }
-                const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
-                avatarBot.onPlaceClicked({
-                    dimension: dimension,
-                    x: location.longitude,
-                    y: location.latitude
-                })
-            }
-            if (!avatarBot.links.homeworld.tags.introPlayed) {
-                avatarBot.links.homeworld.masks.introPlayed = true;
-            }
+            superShout("moveAvatarToCurrentLocation");
             links.skillBot.goToCurrentLocation();
             shout("abMenuRefresh");
         `

@@ -1,6 +1,11 @@
 const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
-const activeMenu = configBot.tags.menuPortal;
+let activeMenu = configBot.tags.menuPortal;
+
+if (!ab.abIsPrimary()) {
+    configBot.tags.menuPortal = 'abMenu';
+    activeMenu = 'abMenu';
+}
 
 const menuOptions = {};
 
@@ -12,7 +17,8 @@ menuOptions.skillBot = getLink(thisBot);
 let studioName;
 
 if (!ab.abIsPrimary()) {
-   let studioData = await os.listUserStudios();
+    shout("abMenuRefresh");
+    let studioData = await os.listUserStudios();
     if (studioData.success) {
         const studios = studioData.studios;
         for (let i = 0; i < studios.length; ++i) {

@@ -2,13 +2,15 @@
 // The approval todo has its own todoPlanId (a single-bot plan) and points its
 // todoParentId at this bot so refreshConnections draws a connection line back.
 
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] spawning approval for plan ${tags.todoPlanId} from todo ${thisBot.id}`);
+const todoBot = that;
+
+if (todoBot.tags.debug) {
+    console.log(`[${tags.system}.${tagName}] spawning approval for plan ${todoBot.tags.todoPlanId} from todo ${todoBot.tags.system}`);
 }
 
-const dimension = tags.dimension ?? 'home';
-const lastX = tags[dimension + 'X'] ?? 0;
-const lastY = tags[dimension + 'Y'] ?? 0;
+const dimension = todoBot.tags.dimension ?? 'home';
+const lastX = todoBot.tags[dimension + 'X'] ?? 0;
+const lastY = todoBot.tags[dimension + 'Y'] ?? 0;
 
 const shardBots = await ab.links.ask.abAskToolMakeTodos({
     args: {
@@ -21,14 +23,14 @@ const shardBots = await ab.links.ask.abAskToolMakeTodos({
             // later setTag-triggered refresh.
             extraShardData: {
                 isUserApprovalTodo: true,
-                todoApprovalForPlanId: tags.todoPlanId,
+                todoApprovalForPlanId: todoBot.tags.todoPlanId,
             },
         }],
     },
     askContext: {
         abDimension: dimension,
         abPosition: { x: lastX, y: lastY },
-        todoBot: thisBot,
+        todoBot: todoBot,
     },
     returnType: 'bots',
     autoAssignAgent: false, // This todo is meant for human approval, not agent processing.
@@ -36,7 +38,7 @@ const shardBots = await ab.links.ask.abAskToolMakeTodos({
 
 const approvalBot = shardBots.find(b => b.tags.abPatchTodoInstance);
 if (!approvalBot) {
-    if (tags.debug) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] approval spawn returned no patch-todo instance — aborting`);
     }
     return;
@@ -55,11 +57,11 @@ if (historyStorageBot) {
     const archivedHistory = ab.links.ask.abConversationHistoryGet({ historyStorageBot });
     setTag(approvalBot, 'abConversationHistory', archivedHistory);
     ab.links.ask.abConversationHistoryClear({ historyStorageBot, log: false });
-    if (tags.debug) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] archived ${archivedHistory?.length ?? 0} message(s) onto approval bot ${approvalBot.id} and cleared ab conversation history`);
     }
 }
 
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] spawned approval bot ${approvalBot.id} for plan ${tags.todoPlanId}`);
+if (todoBot.tags.debug) {
+    console.log(`[${tags.system}.${tagName}] spawned approval bot ${approvalBot.id} for plan ${todoBot.tags.todoPlanId}`);
 }

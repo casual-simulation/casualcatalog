@@ -1,6 +1,6 @@
 if (that?.todoId === thisBot.id) {
     if (masks.menuOpen) {
-        whisper(thisBot, 'abPatchTodoMenuOpen');
+        ab.links.todo.abPatchTodoMenuOpen(thisBot);
     }
 
     // Skip the per-todo chime on the very last todo of a build plan — the plan-completed

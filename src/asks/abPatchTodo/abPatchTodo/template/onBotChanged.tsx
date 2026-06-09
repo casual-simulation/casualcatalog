@@ -23,7 +23,7 @@ for (const tag of that.tags) {
 
     if (tag === 'todoReadyForAgent') {
         if (masks.menuOpen) {
-            thisBot.abPatchTodoMenuOpen();
+            ab.links.todo.abPatchTodoMenuOpen(thisBot);
         }
     }
 

@@ -18,7 +18,7 @@ if (askContext.userInitiated && pendingTodos.length > 0) {
     const approvalTodo = pendingTodos.find(b => b.tags.isUserApprovalTodo);
     if (approvalTodo) {
         os.focusOn(approvalTodo, { duration: approvalTodo.tags.todoFocusDuration }).catch(() => {});
-        whisper(approvalTodo, 'abPatchTodoMenuOpen');
+        ab.links.todo.abPatchTodoMenuOpen(approvalTodo);
         ab.links.utils.abLog({
             name,
             avatar,
@@ -50,7 +50,7 @@ if (userRequestTodo) {
 
     if (autoAssignAgent) {
         // Automatically assign the todo to agents.
-        whisper(userRequestTodo, 'onAssignAgentsClick');
+        ab.links.todo.onAssignAgentsClick(userRequestTodo);
     }
 
     shout('onABUserRequestTodoCreated', { todoBot: userRequestTodo });

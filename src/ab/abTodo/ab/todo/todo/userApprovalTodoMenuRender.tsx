@@ -1,5 +1,8 @@
-// Generation token set by abPatchTodoMenuOpen — see the comment there. Stamp our bots with it
-// and drop them at the end if a newer render has superseded us.
+const todoBot = that;
+
+// Generation token set by abPatchTodoMenuOpen — see the comment there. Lives on this controller
+// (masks.menuRenderToken). Stamp our bots with it and drop them at the end if a newer render has
+// superseded us.
 const renderToken = masks.menuRenderToken;
 
 const menuOptions: any = {
@@ -7,20 +10,20 @@ const menuOptions: any = {
     abPatchTodoMenuSortOrder: 0,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
     menuRenderToken: renderToken,
-    patchBot: getLink(thisBot),
+    patchBot: getLink(todoBot),
     groupSortOrder: 100,
     menuItems: [],
 };
 
 menuOptions.menuItems.push({
-    label: tags.todoLabel ?? tags.prompt ?? 'Review plan',
+    label: todoBot.tags.todoLabel ?? todoBot.tags.prompt ?? 'Review plan',
     menuItemType: 'button',
     formAddress: 'verified',
     menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     menuItemLabelStyle: { 'font-style': 'italic' },
 });
 
-if (tags.todoApproved) {
+if (todoBot.tags.todoApproved) {
     // Archived approval — show the outcome only, no action buttons.
     menuOptions.menuItems.push({
         label: 'approved',
@@ -32,19 +35,19 @@ if (tags.todoApproved) {
     menuOptions.menuItems.push({
         label: 'approve',
         formAddress: 'done',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUserApprovalApproveClick'); }),
+        onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalApproveClick(links.patchBot); }),
     });
 
     menuOptions.menuItems.push({
         label: 'undo',
         formAddress: 'undo',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUserApprovalUndoClick'); }),
+        onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalUndoClick(links.patchBot); }),
     });
 
     menuOptions.menuItems.push({
         label: 'restart',
         formAddress: 'replay',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUserApprovalRestartClick'); }),
+        onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalRestartClick(links.patchBot); }),
     });
 }
 

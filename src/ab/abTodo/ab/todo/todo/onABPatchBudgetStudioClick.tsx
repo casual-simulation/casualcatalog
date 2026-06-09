@@ -1,3 +1,5 @@
+const todoBot = that;
+
 configBot.masks.menuPortal = 'abPatchTodoBudgetStudioMenu';
 
 let ownerStudio = null;
@@ -16,12 +18,12 @@ ab.links.menu.abCreateMenuButton({
     abPatchTodoBudgetStudioMenu: true,
     abPatchTodoBudgetStudioMenuSortOrder: 1,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
-    label: `${!tags.budgetRecordName || tags.budgetRecordName === authBot.id ? '✓ ' : ''}your account`,
+    label: `${!todoBot.tags.budgetRecordName || todoBot.tags.budgetRecordName === authBot.id ? '✓ ' : ''}your account`,
     formAddress: 'person',
-    patchBot: getLink(thisBot),
+    patchBot: getLink(todoBot),
     onClick: ListenerString(() => {
         links.patchBot.tags.budgetRecordName = authBot.id;
-        whisper(links.patchBot, 'abPatchTodoMenuOpen');
+        ab.links.todo.abPatchTodoMenuOpen(links.patchBot);
     }),
 });
 
@@ -31,13 +33,13 @@ if (ownerStudio) {
         abPatchTodoBudgetStudioMenu: true,
         abPatchTodoBudgetStudioMenuSortOrder: 2,
         abPatchTodoMenuReset: `@destroy(thisBot)`,
-        label: `${tags.budgetRecordName === ownerStudio.studioId ? '✓ ' : ''}${ownerStudio.displayName}`,
+        label: `${todoBot.tags.budgetRecordName === ownerStudio.studioId ? '✓ ' : ''}${ownerStudio.displayName}`,
         formAddress: 'group',
-        patchBot: getLink(thisBot),
+        patchBot: getLink(todoBot),
         studioId: ownerStudio.studioId,
         onClick: ListenerString(() => {
             links.patchBot.tags.budgetRecordName = tags.studioId;
-            whisper(links.patchBot, 'abPatchTodoMenuOpen');
+            ab.links.todo.abPatchTodoMenuOpen(links.patchBot);
         }),
     });
 }

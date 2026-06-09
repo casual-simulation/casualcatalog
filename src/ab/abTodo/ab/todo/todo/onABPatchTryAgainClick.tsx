@@ -1,8 +1,10 @@
-const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
+const todoBot = that;
+
+const planTodos = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === todoBot.tags.todoPlanId);
 const failedTodo = planTodos.find(b => b.tags.abPatchError);
 
 if (failedTodo) {
-    whisper(failedTodo, 'abTodoResetState');
+    thisBot.abTodoResetState(failedTodo);
 }
 
 // Clear failedPlanId so the manager auto-resumes

@@ -1,3 +1,5 @@
+const todoBot = that;
+
 tagPortalBot.tags.tagPortalAnchorPoint = 'top';
 tagPortalBot.tags.tagPortalShowButton = true;
 tagPortalBot.tags.tagPortalButtonIcon = 'close';
@@ -9,4 +11,4 @@ tagPortalBot.tags.onClick = ListenerString(() => {
     tagPortalBot.tags.tagPortalButtonIcon = null;
 })
 
-configBot.tags.tagPortal = `${thisBot.id}.prompt`;
+configBot.tags.tagPortal = `${todoBot.id}.prompt`;

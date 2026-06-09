@@ -1,3 +1,5 @@
+const todoBot = that;
+
 configBot.masks.menuPortal = 'abPatchTodoBudgetMenu';
 
 ab.links.menu.abCreateMenuInput({
@@ -6,7 +8,7 @@ ab.links.menu.abCreateMenuInput({
     abPatchTodoMenuReset: `@destroy(thisBot)`,
     label: 'budget (credits)',
     formAddress: 'savings',
-    patchBot: getLink(thisBot),
+    patchBot: getLink(todoBot),
     onCreate: ListenerString(() => {
         const initial = links.patchBot.tags.budgetCredits;
         masks.menuItemText = initial != null ? Number(initial).toLocaleString() : '';
@@ -28,6 +30,6 @@ ab.links.menu.abCreateMenuInput({
     }),
     onSubmit: ListenerString(() => {
         whisper(thisBot, 'onABPatchBudgetInput', that.text);
-        whisper(links.patchBot, 'abPatchTodoMenuOpen');
+        ab.links.todo.abPatchTodoMenuOpen(links.patchBot);
     }),
 });

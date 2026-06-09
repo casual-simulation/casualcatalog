@@ -1,29 +1,31 @@
+const todoBot = that;
+
 shout('abPatchTodoMenuReset');
 
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] approval-approve clicked on ${thisBot.id} (approvalForPlanId=${tags.todoApprovalForPlanId})`);
+if (todoBot.tags.debug) {
+    console.log(`[${tags.system}.${tagName}] approval-approve clicked on ${todoBot.tags.system} (approvalForPlanId=${todoBot.tags.todoApprovalForPlanId})`);
 }
 
 // Already-approved approval bots in the log dimension shouldn't re-run the flow if clicked.
-if (tags.todoApproved) {
-    if (tags.debug) {
+if (todoBot.tags.todoApproved) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] already approved — skipping`);
     }
     return;
 }
 
-setTag(thisBot, 'todoShowArrow', false);
+setTag(todoBot, 'todoShowArrow', false);
 
-const chain = thisBot.abCollectApprovalChain();
+const chain = thisBot.abCollectApprovalChain(todoBot);
 if (!chain || chain.plans.length === 0) {
-    if (tags.debug) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] no chain found — destroying self`);
     }
-    destroy(thisBot);
+    destroy(todoBot);
     return;
 }
 
-if (tags.debug) {
+if (todoBot.tags.debug) {
     console.log(`[${tags.system}.${tagName}] chain spans ${chain.plans.length} plan(s): [${chain.plans.map(p => p.planId).join(', ')}]`);
 }
 
@@ -45,9 +47,9 @@ if (chain.topmostTodo) {
 const allTodos = thisBot.abExpandToDescendantTodos({ todos: chain.allTodos });
 
 // Archive the approval bot itself alongside the plan todos.
-allTodos.push(thisBot);
-setTag(thisBot, 'abTodoComplete', true);
-setTag(thisBot, 'animationState', 'complete');
+allTodos.push(todoBot);
+setTag(todoBot, 'abTodoComplete', true);
+setTag(todoBot, 'animationState', 'complete');
 
 for (const todo of allTodos) {
     shout('onAnyABPatchApprove', { botId: todo.id });
@@ -83,6 +85,6 @@ if (ab.links.manifestation.tags.abAwake && topmostManifestTarget) {
     const newAbBot = await ab.links.manifestation.abManifestBot(topmostManifestTarget);
     ab.links.manifestation.abClick();
     if (newAbBot) {
-        os.focusOn(newAbBot, { duration: tags.todoFocusDuration }).catch(() => {});
+        os.focusOn(newAbBot, { duration: todoBot.tags.todoFocusDuration }).catch(() => {});
     }
 }

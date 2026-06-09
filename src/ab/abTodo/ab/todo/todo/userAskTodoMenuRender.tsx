@@ -1,8 +1,11 @@
-const data = tags.userAskData;
+const todoBot = that;
+
+const data = todoBot.tags.userAskData;
 if (!data) return;
 
-// Generation token set by abPatchTodoMenuOpen — see the comment there. Stamp our bots with it
-// and drop them at the end if a newer render has superseded us.
+// Generation token set by abPatchTodoMenuOpen — see the comment there. Lives on this controller
+// (masks.menuRenderToken). Stamp our bots with it and drop them at the end if a newer render has
+// superseded us.
 const renderToken = masks.menuRenderToken;
 
 const questionType: string = data.questionType;
@@ -11,7 +14,7 @@ const options: string[] = Array.isArray(data.options) ? data.options : [];
 const allowOther: boolean = data.allowOther !== false;
 
 const siblings = getBots(b =>
-    b.tags.isUserAskTodo && b.tags.todoPlanId === tags.todoPlanId
+    b.tags.isUserAskTodo && b.tags.todoPlanId === todoBot.tags.todoPlanId
 );
 const chainComplete = siblings.length > 0 && siblings.every(b => b.tags.abTodoComplete);
 
@@ -20,7 +23,7 @@ const menuOptions: any = {
     abPatchTodoMenuSortOrder: 0,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
     menuRenderToken: renderToken,
-    patchBot: getLink(thisBot),
+    patchBot: getLink(todoBot),
     groupSortOrder: 100,
     menuItems: [],
 };
@@ -35,7 +38,7 @@ menuOptions.menuItems.push({
 });
 
 if (chainComplete) {
-    const answer = tags.userAskAnswer;
+    const answer = todoBot.tags.userAskAnswer;
     const display = Array.isArray(answer)
         ? (answer.length > 0 ? answer.join(', ') : '(none)')
         : (answer ?? '(no answer)');
@@ -50,7 +53,7 @@ if (chainComplete) {
         menuOptions.menuItems.push({
             label: option,
             userAskOptionLabel: option,
-            formAddress: tags.userAskAnswer === option ? 'radio_button_checked' : 'radio_button_unchecked',
+            formAddress: todoBot.tags.userAskAnswer === option ? 'radio_button_checked' : 'radio_button_unchecked',
             onClick: ListenerString(() => {
                 setTag(links.patchBot, 'userAskAnswer', thisBot.tags.userAskOptionLabel);
                 setTag(links.patchBot, 'userAskOtherText', null);
@@ -97,7 +100,7 @@ if (chainComplete) {
             if (otherText) {
                 setTag(links.patchBot, 'userAskAnswer', otherText);
             }
-            whisper(links.patchBot, 'userAskTodoSubmit');
+            ab.links.todo.userAskTodoSubmit(links.patchBot);
         }),
     });
 } else if (questionType === 'multiselect') {
@@ -105,7 +108,7 @@ if (chainComplete) {
         menuOptions.menuItems.push({
             label: option,
             userAskOptionLabel: option,
-            formAddress: (Array.isArray(tags.userAskAnswer) && tags.userAskAnswer.includes(option))
+            formAddress: (Array.isArray(todoBot.tags.userAskAnswer) && todoBot.tags.userAskAnswer.includes(option))
                 ? 'check_box'
                 : 'check_box_outline_blank',
             onClick: ListenerString(() => {
@@ -148,7 +151,7 @@ if (chainComplete) {
                 cur.push(otherText);
             }
             setTag(links.patchBot, 'userAskAnswer', cur);
-            whisper(links.patchBot, 'userAskTodoSubmit');
+            ab.links.todo.userAskTodoSubmit(links.patchBot);
         }),
     });
 } else if (questionType === 'custom') {
@@ -171,7 +174,7 @@ if (chainComplete) {
         label: 'Submit',
         formAddress: 'send',
         onClick: ListenerString(() => {
-            whisper(links.patchBot, 'userAskTodoSubmit');
+            ab.links.todo.userAskTodoSubmit(links.patchBot);
         }),
     });
 }

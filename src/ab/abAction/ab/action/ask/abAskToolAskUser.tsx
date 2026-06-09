@@ -76,7 +76,7 @@ for (let i = 0; i < questionTodos.length; i++) {
     setTag(questionTodos[i], 'userAskData', '🧬' + JSON.stringify(data));
     setTag(questionTodos[i], 'todoReadyForAgent', false);
     setTag(questionTodos[i], 'todoShowArrow', true);
-    setTag(questionTodos[i], 'onDestroy', '@whisper(thisBot, "userAskTodoOnDestroy")');
+    setTag(questionTodos[i], 'onDestroy', '@ab.links.todo.userAskTodoOnDestroy(thisBot)');
 }
 
 // Rebuild connection lines now that the chain bots have userAskData set so refreshConnections
@@ -90,5 +90,5 @@ setTag(parentTodo, 'animationState', 'incomplete');
 
 if (questionTodos[0]) {
     os.focusOn(questionTodos[0], { duration: questionTodos[0].tags.todoFocusDuration }).catch(() => {});
-    whisper(questionTodos[0], 'abPatchTodoMenuOpen');
+    ab.links.todo.abPatchTodoMenuOpen(questionTodos[0]);
 }

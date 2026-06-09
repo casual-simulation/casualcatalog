@@ -11,12 +11,14 @@
 // that need to clean themselves up afterward (e.g. an approval bot, which is intentionally
 // excluded from the destroy set) handle their own self-destroy.
 
-const startPlanId = tags.todoApprovalForPlanId ?? tags.todoPlanId;
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] called on bot ${thisBot.id} (isApproval=${!!tags.isUserApprovalTodo}), startPlanId=${startPlanId}`);
+const todoBot = that;
+
+const startPlanId = todoBot.tags.todoApprovalForPlanId ?? todoBot.tags.todoPlanId;
+if (todoBot.tags.debug) {
+    console.log(`[${tags.system}.${tagName}] called on ${todoBot.tags.system} (isApproval=${!!todoBot.tags.isUserApprovalTodo}), startPlanId=${startPlanId}`);
 }
 if (!startPlanId) {
-    if (tags.debug) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] no startPlanId — bailing`);
     }
     return false;
@@ -35,27 +37,27 @@ while (currentPlanId && !visitedPlans.has(currentPlanId)) {
         !b.tags.isUserApprovalTodo
     );
     if (todos.length === 0) {
-        if (tags.debug) {
+        if (todoBot.tags.debug) {
             console.log(`[${tags.system}.${tagName}] up-walk: plan ${currentPlanId} has no todos — stopping`);
         }
         break;
     }
 
     ancestorChain.push({ planId: currentPlanId, todos });
-    if (tags.debug) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] up-walk: collected plan ${currentPlanId} with ${todos.length} todo(s) [${todos.map(b => b.id).join(', ')}]`);
     }
 
     const parentId = todos[0].tags.todoParentId;
     if (!parentId) {
-        if (tags.debug) {
+        if (todoBot.tags.debug) {
             console.log(`[${tags.system}.${tagName}] up-walk: plan ${currentPlanId} has no todoParentId — reached root`);
         }
         break;
     }
     const parentBot = getBot('id', parentId);
     if (!parentBot) {
-        if (tags.debug) {
+        if (todoBot.tags.debug) {
             console.log(`[${tags.system}.${tagName}] up-walk: parent bot ${parentId} not found — stopping`);
         }
         break;
@@ -64,7 +66,7 @@ while (currentPlanId && !visitedPlans.has(currentPlanId)) {
 }
 
 if (ancestorChain.length === 0) {
-    if (tags.debug) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] empty ancestor chain — bailing`);
     }
     return false;
@@ -72,7 +74,7 @@ if (ancestorChain.length === 0) {
 
 const chainTodos = ancestorChain.flatMap(p => p.todos);
 const allTodos = thisBot.abExpandToDescendantTodos({ todos: chainTodos });
-if (tags.debug) {
+if (todoBot.tags.debug) {
     const chainIds = chainTodos.map(b => b.id);
     const descendantOnly = allTodos.filter(b => !chainIds.includes(b.id));
     console.log(`[${tags.system}.${tagName}] tree: ${ancestorChain.length} ancestor plan(s), ${chainTodos.length} chain todo(s), ${descendantOnly.length} additional descendant todo(s) — ${allTodos.length} total`);
@@ -86,18 +88,18 @@ if (tags.debug) {
 const appliedTodos = allTodos
     .filter(b => b.tags.abPatchApplied)
     .sort((a, b) => (b.tags.todoOrder ?? 0) - (a.tags.todoOrder ?? 0));
-if (tags.debug) {
+if (todoBot.tags.debug) {
     console.log(`[${tags.system}.${tagName}] undoing ${appliedTodos.length} applied patch(es)`);
 }
 for (const todo of appliedTodos) {
-    whisper(todo, 'abPatchUndo');
+    thisBot.abPatchUndo(todo);
 }
 
 // Clear awaitingUserResponse on user-ask clarifications so cascading onDestroy handlers treat
 // this as a deliberate cancel rather than the user abandoning a clarification chain.
 for (const todo of allTodos) {
     if (todo.tags.awaitingUserResponse === true) {
-        if (tags.debug) {
+        if (todoBot.tags.debug) {
             console.log(`[${tags.system}.${tagName}] clearing awaitingUserResponse on todo ${todo.id}`);
         }
         setTag(todo, 'awaitingUserResponse', null);
@@ -108,10 +110,10 @@ const allPlanIds = [...new Set(allTodos.map(b => b.tags.todoPlanId).filter(id =>
 const treeApprovals = getBots(b =>
     b.tags.isUserApprovalTodo &&
     allPlanIds.includes(b.tags.todoApprovalForPlanId) &&
-    b.id !== thisBot.id
+    b.id !== todoBot.id
 );
 
-if (tags.debug) {
+if (todoBot.tags.debug) {
     console.log(`[${tags.system}.${tagName}] destroying ${allTodos.length} todo(s) and ${treeApprovals.length} sibling approval(s); plan ids: [${allPlanIds.join(', ')}]`);
 }
 
@@ -123,7 +125,7 @@ destroy(treeApprovals);
 // the archive since there's nothing left to attach it to).
 const historyStorageBot = ab.links.remember;
 if (historyStorageBot) {
-    if (tags.debug) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] clearing ab conversation history`);
     }
     ab.links.ask.abConversationHistoryClear({ historyStorageBot, log: false });
@@ -135,7 +137,7 @@ ab.links.utils.abLog({
     space: 'shared',
 });
 
-if (tags.debug) {
+if (todoBot.tags.debug) {
     console.log(`[${tags.system}.${tagName}] cancel complete`);
 }
 

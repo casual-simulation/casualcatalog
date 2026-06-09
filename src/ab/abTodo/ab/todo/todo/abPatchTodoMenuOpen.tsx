@@ -1,8 +1,11 @@
-// Generation token for this render. Renders overlap (onBotChanged auto-retriggers this on
-// tag changes, and several click/lifecycle listeners whisper it too), so build-then-keep is
-// not atomic. Every bot this render creates is stamped with renderToken; if a newer render
+const todoBot = that;
+
+// Generation token for this render. Renders overlap (the todo's onBotChanged auto-retriggers
+// this on tag changes, and several click/lifecycle listeners whisper it too), so build-then-keep
+// is not atomic. Every bot this render creates is stamped with renderToken; if a newer render
 // supersedes us while we're awaiting bot creation, we drop our own bots at the end instead of
-// leaving duplicates behind. masks.menuRenderToken always holds the latest render's token.
+// leaving duplicates behind. masks.menuRenderToken (on this controller) always holds the latest
+// render's token — the controller is a singleton and only one todo menu is open at a time.
 const renderToken = uuid();
 masks.menuRenderToken = renderToken;
 
@@ -12,7 +15,7 @@ configBot.masks.menuPortal = 'abPatchTodoMenu';
 // Cleanup bot — resets menu if this todo bot is destroyed
 create({
     space: 'tempLocal',
-    patchBotId: thisBot.id,
+    patchBotId: todoBot.id,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
     onBotAdded: `@
         const patchBot = getBot('id', tags.patchBotId);
@@ -23,27 +26,27 @@ create({
     `,
 });
 
-masks.menuOpen = true;
+setTagMask(todoBot, 'menuOpen', true, 'tempLocal');
 
 // User-ask question todos render a distinct menu (question + answer UI). The standard plan
 // menu below doesn't apply — return early after rendering.
-if (tags.isUserAskTodo) {
-    await thisBot.userAskTodoMenuRender();
+if (todoBot.tags.isUserAskTodo) {
+    await thisBot.userAskTodoMenuRender(todoBot);
     return;
 }
 
 // User-approval todos render approve / undo / restart buttons that act on the entire
 // related plan chain. Return early — the standard plan menu doesn't apply.
-if (tags.isUserApprovalTodo) {
-    await thisBot.userApprovalTodoMenuRender();
+if (todoBot.tags.isUserApprovalTodo) {
+    await thisBot.userApprovalTodoMenuRender(todoBot);
     return;
 }
 
-const planTodos  = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === tags.todoPlanId);
+const planTodos  = getBots(b => b.tags.abPatchTodoInstance && b.tags.todoPlanId === todoBot.tags.todoPlanId);
 const allCompleted = planTodos.every(b => b.tags.abTodoComplete);
 const anyFailed  = planTodos.some(b => b.tags.abPatchError);
 const anyReady   = planTodos.some(b => b.tags.todoReadyForAgent);
-const isApproved = !!tags.todoApproved;
+const isApproved = !!todoBot.tags.todoApproved;
 const notStarted = !anyReady && !allCompleted && !anyFailed;
 const isBusy     = anyReady && !allCompleted && !anyFailed;
 
@@ -52,23 +55,23 @@ const menuOptions = {
     abPatchTodoMenuSortOrder: 0,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
     menuRenderToken: renderToken,
-    patchBot: getLink(thisBot),
+    patchBot: getLink(todoBot),
     groupSortOrder: 100,
     menuItems: [],
 };
 
 // Always: prompt label
 menuOptions.menuItems.push({
-    label: tags.todoLabel ?? tags.prompt ?? '',
+    label: todoBot.tags.todoLabel ?? todoBot.tags.prompt ?? '',
     menuItemType: 'button',
     formAddress: 'notes',
     menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     menuItemLabelStyle: { 'font-style': 'italic' },
-    onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchPromptClick'); }),
+    onClick: ListenerString(() => { ab.links.todo.onABPatchPromptClick(links.patchBot); }),
 });
 
 // Attachments (read-only) — only shown when the todo has attachments
-const todoAttachments: ABAttachment[] = tags.attachments ?? [];
+const todoAttachments: ABAttachment[] = todoBot.tags.attachments ?? [];
 if (todoAttachments.length > 0) {
     menuOptions.menuItems.push({
         label: `attachments (${todoAttachments.length})`,
@@ -83,37 +86,37 @@ if (todoAttachments.length > 0) {
 
 // Always: ai agent
 menuOptions.menuItems.push({
-    label: `ai agent: ${tags.agentName ?? tags.aiModel ?? 'default'}`,
+    label: `ai agent: ${todoBot.tags.agentName ?? todoBot.tags.aiModel ?? 'default'}`,
     formAddress: 'lightbulb',
-    ...(isApproved ? {} : { onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchAIModelClick'); }) }),
+    ...(isApproved ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchAIModelClick(links.patchBot); }) }),
 });
 
 if (globalThis.abXPE) {
     // Always: budget
     menuOptions.menuItems.push({
-        label: `budget: ${tags.budgetCredits != null ? Number(tags.budgetCredits).toLocaleString() + ' credits' : 'not set'}`,
+        label: `budget: ${todoBot.tags.budgetCredits != null ? Number(todoBot.tags.budgetCredits).toLocaleString() + ' credits' : 'not set'}`,
         formAddress: 'savings',
-        ...(isApproved ? {} : { onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetClick'); }) }),
+        ...(isApproved ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchBudgetClick(links.patchBot); }) }),
     });
-    
+
     // Always: budget studio
     const budgetStudioLabel = (() => {
-        if (!tags.budgetRecordName || tags.budgetRecordName === authBot.id) return 'your account';
+        if (!todoBot.tags.budgetRecordName || todoBot.tags.budgetRecordName === authBot.id) return 'your account';
         const studios = configBot.tags.user_studios?.studios;
-        const studio = studios?.find(s => s.studioId === tags.budgetRecordName);
-        return studio?.displayName ?? tags.budgetRecordName;
+        const studio = studios?.find(s => s.studioId === todoBot.tags.budgetRecordName);
+        return studio?.displayName ?? todoBot.tags.budgetRecordName;
     })();
     menuOptions.menuItems.push({
         label: `budget studio: ${budgetStudioLabel}`,
         formAddress: 'payment',
-        ...(isApproved ? {} : { onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchBudgetStudioClick'); }) }),
+        ...(isApproved ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchBudgetStudioClick(links.patchBot); }) }),
     });
 }
 
 
 // Always: cost for this todo (if completed)
-if (tags.creditSnapshotStart != null && tags.creditSnapshotEnd != null) {
-    const cost = tags.creditSnapshotStart - tags.creditSnapshotEnd;
+if (todoBot.tags.creditSnapshotStart != null && todoBot.tags.creditSnapshotEnd != null) {
+    const cost = todoBot.tags.creditSnapshotStart - todoBot.tags.creditSnapshotEnd;
     menuOptions.menuItems.push({
         label: `cost: ${Math.round(cost).toLocaleString()} credits`,
         menuItemType: 'text',
@@ -128,12 +131,12 @@ if (isApproved) {
     menuOptions.menuItems.push({
         label: 'begin plan',
         formAddress: 'play_circle',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onAssignAgentsClick'); }),
+        onClick: ListenerString(() => { ab.links.todo.onAssignAgentsClick(links.patchBot); }),
     });
     menuOptions.menuItems.push({
         label: 'cancel plan',
         formAddress: 'cancel',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
+        onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
     });
 } else if (isBusy) {
     await ab.links.menu.abCreateMenuBusyIndicator({
@@ -146,7 +149,7 @@ if (isApproved) {
     menuOptions.menuItems.push({
         label: 'cancel plan',
         formAddress: 'cancel',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
+        onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
     });
 } else if (allCompleted) {
     // Plan-level actions (approve / undo / restart) live on the dedicated user-approval todo
@@ -164,12 +167,12 @@ if (isApproved) {
     menuOptions.menuItems.push({
         label: 'cancel plan',
         formAddress: 'cancel',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchUndoClick'); }),
+        onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
     });
     menuOptions.menuItems.push({
         label: 'try again',
         formAddress: 'replay',
-        onClick: ListenerString(() => { whisper(links.patchBot, 'onABPatchTryAgainClick'); }),
+        onClick: ListenerString(() => { ab.links.todo.onABPatchTryAgainClick(links.patchBot); }),
     });
 }
 

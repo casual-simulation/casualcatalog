@@ -1,6 +1,8 @@
-if (!tags.isUserAskTodo) return;
+const todoBot = that;
 
-const data = tags.userAskData;
+if (!todoBot.tags.isUserAskTodo) return;
+
+const data = todoBot.tags.userAskData;
 if (!data?.askContext?.todoBot) return;
 
 const parentTodo = getBot('id', data.askContext.todoBot);
@@ -15,9 +17,9 @@ setTag(parentTodo, 'animationState', 'error');
 setTag(parentTodo, 'awaitingUserResponse', null);
 
 const siblings = getBots(b =>
-    b.id !== thisBot.id &&
+    b.id !== todoBot.id &&
     b.tags.isUserAskTodo &&
-    b.tags.todoPlanId === tags.todoPlanId
+    b.tags.todoPlanId === todoBot.tags.todoPlanId
 );
 for (const b of siblings) {
     destroy(b);

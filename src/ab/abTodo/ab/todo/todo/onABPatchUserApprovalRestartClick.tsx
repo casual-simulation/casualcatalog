@@ -1,19 +1,21 @@
+const todoBot = that;
+
 shout('abPatchTodoMenuReset');
 
-if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] approval-restart clicked on ${thisBot.id} (approvalForPlanId=${tags.todoApprovalForPlanId})`);
+if (todoBot.tags.debug) {
+    console.log(`[${tags.system}.${tagName}] approval-restart clicked on ${todoBot.tags.system} (approvalForPlanId=${todoBot.tags.todoApprovalForPlanId})`);
 }
 
-const chain = thisBot.abCollectApprovalChain();
+const chain = thisBot.abCollectApprovalChain(todoBot);
 if (!chain || chain.plans.length === 0) {
-    if (tags.debug) {
+    if (todoBot.tags.debug) {
         console.log(`[${tags.system}.${tagName}] no chain found — destroying self`);
     }
-    destroy(thisBot);
+    destroy(todoBot);
     return;
 }
 
-if (tags.debug) {
+if (todoBot.tags.debug) {
     console.log(`[${tags.system}.${tagName}] chain spans ${chain.plans.length} plan(s) — topmost=${chain.topmostTodo?.id}`);
 }
 
@@ -26,7 +28,7 @@ for (const plan of chain.plans) {
         .filter(b => b.tags.abPatchApplied && (!topmost || b.id !== topmost.id))
         .sort((a, b) => (b.tags.todoOrder ?? 0) - (a.tags.todoOrder ?? 0));
     for (const todo of appliedTodos) {
-        whisper(todo, 'abPatchUndo');
+        thisBot.abPatchUndo(todo);
     }
 }
 
@@ -34,17 +36,17 @@ const toDestroy = chain.allTodos.filter(b => !topmost || b.id !== topmost.id);
 destroy(toDestroy);
 
 // Also destroy sibling approval todos targeting plans in this chain (excluding self;
-// thisBot is destroyed at the end).
+// todoBot is destroyed at the end).
 const chainPlanIds = chain.plans.map(p => p.planId);
 const ancestorApprovals = getBots(b =>
     b.tags.isUserApprovalTodo &&
     chainPlanIds.includes(b.tags.todoApprovalForPlanId) &&
-    b.id !== thisBot.id
+    b.id !== todoBot.id
 );
 destroy(ancestorApprovals);
 
 if (topmost) {
-    whisper(topmost, 'abTodoResetState');
+    thisBot.abTodoResetState(topmost);
     setTag(topmost, 'todoReadyForAgent', true);
 }
 
@@ -54,4 +56,4 @@ ab.links.utils.abLog({
     space: 'shared',
 });
 
-destroy(thisBot);
+destroy(todoBot);

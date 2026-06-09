@@ -1,10 +1,12 @@
-const data = tags.userAskData;
-if (!data || tags.userAskAnswer == null) return;
+const todoBot = that;
 
-setTag(thisBot, 'abTodoComplete', true);
-setTag(thisBot, 'animationState', 'complete');
-setTag(thisBot, 'userAskOtherText', null);
-setTag(thisBot, 'todoShowArrow', false);
+const data = todoBot.tags.userAskData;
+if (!data || todoBot.tags.userAskAnswer == null) return;
+
+setTag(todoBot, 'abTodoComplete', true);
+setTag(todoBot, 'animationState', 'complete');
+setTag(todoBot, 'userAskOtherText', null);
+setTag(todoBot, 'todoShowArrow', false);
 
 // Close the menu portal — the user is done with this question.
 shout('abPatchTodoMenuReset');
@@ -13,7 +15,7 @@ configBot.masks.menuPortal = null;
 // Find all sibling question todos in this chain (same todoPlanId)
 const siblings = getBots(b =>
     b.tags.isUserAskTodo &&
-    b.tags.todoPlanId === tags.todoPlanId
+    b.tags.todoPlanId === todoBot.tags.todoPlanId
 );
 
 // Case A: more user-ask todos remain — focus the next one and open its menu.
@@ -23,11 +25,11 @@ const nextTodo = siblings
 
 if (nextTodo) {
     os.focusOn(nextTodo, { duration: nextTodo.tags.todoFocusDuration }).catch(() => {});
-    whisper(nextTodo, 'abPatchTodoMenuOpen');
+    thisBot.abPatchTodoMenuOpen(nextTodo);
     return;
 }
 
-const parentTodo = getBot('id', tags.todoParentId);
+const parentTodo = getBot('id', todoBot.tags.todoParentId);
 if (!parentTodo || parentTodo.tags.abTodoComplete || parentTodo.tags.abPatchError) return;
 
 // All complete — assemble result and append to history
@@ -69,4 +71,4 @@ setTag(parentTodo, 'awaitingUserResponse', false);
 
 // Case B: chain complete — focus the parent todo and open its menu.
 os.focusOn(parentTodo, { duration: parentTodo.tags.todoFocusDuration }).catch(() => {});
-whisper(parentTodo, 'abPatchTodoMenuOpen');
+thisBot.abPatchTodoMenuOpen(parentTodo);

@@ -56,7 +56,7 @@ ab.links.utils.remoteShout({ name: 'onAnyTodoFinished', arg: { ...that, buildPla
 
 if (buildPlanCompleted) {
     ab.links.utils.remoteShout({ name: 'onAnyABBuildPlanCompleted', arg: { todoId: finishedTodo.id, planId } });
-    whisper(finishedTodo, 'spawnUserApprovalTodo');
+    ab.links.todo.spawnUserApprovalTodo(finishedTodo);
 } else if (userRequestPlanCompleted) {
-    whisper(finishedTodo, 'spawnUserApprovalTodo');
+    ab.links.todo.spawnUserApprovalTodo(finishedTodo);
 }

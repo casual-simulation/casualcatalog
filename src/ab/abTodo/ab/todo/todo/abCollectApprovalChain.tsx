@@ -2,7 +2,9 @@
 // collecting every related plan's todos along the way. Returns the chain ordered
 // nearest-first (the plan being approved, then its parent plan, ... up to the root).
 
-const startPlanId = tags.todoApprovalForPlanId;
+const todoBot = that;
+
+const startPlanId = todoBot.tags.todoApprovalForPlanId;
 if (!startPlanId) {
     return { plans: [], allTodos: [], topmostTodo: null };
 }

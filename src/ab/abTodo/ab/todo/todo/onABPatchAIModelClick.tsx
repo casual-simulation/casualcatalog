@@ -1,3 +1,5 @@
+const todoBot = that;
+
 configBot.masks.menuPortal = 'abPatchTodoAIModelMenu';
 
 if (!configBot.tags.aiChatModels) {
@@ -10,7 +12,7 @@ const customAgents = await ab.links.utils.abCollectCustomAgentConfigs();
 const menuTags = {
     abPatchTodoAIModelMenu: true,
     abPatchTodoMenuReset: `@destroy(thisBot)`,
-    patchBot: getLink(thisBot),
+    patchBot: getLink(todoBot),
 };
 
 // Group models by provider.
@@ -21,13 +23,13 @@ for (const model of models) {
     }
     providerMap[model.provider].push({
         ...menuTags,
-        label: `${model.name === tags.aiModel && !tags.agentName ? '✓ ' : ''}${model.name}`,
+        label: `${model.name === todoBot.tags.aiModel && !todoBot.tags.agentName ? '✓ ' : ''}${model.name}`,
         formAddress: 'lightbulb',
         modelName: model.name,
         onClick: `@
             links.patchBot.tags.aiModel = tags.modelName;
             links.patchBot.tags.agentName = null;
-            whisper(links.patchBot, 'abPatchTodoMenuOpen');
+            ab.links.todo.abPatchTodoMenuOpen(links.patchBot);
         `,
     });
 }
@@ -39,13 +41,13 @@ for (const agent of customAgents) {
     }
     providerMap[agent.group].push({
         ...menuTags,
-        label: `${agent.agentName === tags.agentName ? '✓ ' : ''}${agent.agentName}`,
+        label: `${agent.agentName === todoBot.tags.agentName ? '✓ ' : ''}${agent.agentName}`,
         formAddress: 'lightbulb',
         agentName: agent.agentName,
         onClick: `@
             links.patchBot.tags.agentName = tags.agentName;
             links.patchBot.tags.aiModel = null;
-            whisper(links.patchBot, 'abPatchTodoMenuOpen');
+            ab.links.todo.abPatchTodoMenuOpen(links.patchBot);
         `,
     });
 }

@@ -1,1 +1,1 @@
-thisBot.abPatchTodoMenuOpen();
+ab.links.todo.abPatchTodoMenuOpen(thisBot);

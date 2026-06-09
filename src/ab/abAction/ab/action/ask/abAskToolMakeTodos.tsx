@@ -134,11 +134,11 @@ for (let i = 0; i < todos.length; i++) {
 
 if (autoFocus && firstTodoBot) {
     os.focusOn(firstTodoBot, { duration: firstTodoBot.tags.todoFocusDuration }).catch(() => {});
-    whisper(firstTodoBot, 'abPatchTodoMenuOpen');
+    ab.links.todo.abPatchTodoMenuOpen(firstTodoBot);
 }
 
 if (autoAssignAgent && firstTodoBot) {
-    whisper(firstTodoBot, 'onAssignAgentsClick');
+    ab.links.todo.onAssignAgentsClick(firstTodoBot);
 }
 
 if (returnType === 'bots') {

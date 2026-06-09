@@ -59,7 +59,6 @@ if (!getRecord.success) {
             recordKey = authBot.id;
         }
 
-        console.log(`[${tags.system}.${tagName}] requesting inst admin permission for record ${recordKey}.`);
         await os.grantInstAdminPermission(recordKey);
         getRecord = await os.getData(recordKey, abID);
     } else if (getRecord.errorCode === "not_logged_in") {
@@ -74,7 +73,6 @@ if (!getRecord.success) {
         if (!getRecord.success && 
             getRecord.errorCode === "not_authorized"
         ) {
-            console.log(`[${tags.system}.${tagName}] requesting inst admin permission for record ${recordKey}.`);
             await os.grantInstAdminPermission(recordKey);
             getRecord = await os.getData(recordKey, abID);
         }

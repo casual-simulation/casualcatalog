@@ -40,7 +40,6 @@ if (reserved) {
         usedStudio = configBot.tags.studio;
         lookupAsk = await os.getData(configBot.tags.studio, abFormattedAskID);
         if (!lookupAsk.success && lookupAsk.errorCode && lookupAsk.errorCode == 'not_authorized') {
-            console.log(`[${tags.system}.${tagName}] requesting inst admin permission for studio ${configBot.tags.studio}.`);
             await os.grantInstAdminPermission(configBot.tags.studio);
             lookupAsk = await os.getData(configBot.tags.studio, abFormattedAskID);
                 
@@ -54,7 +53,6 @@ if (reserved) {
         usedStudio = authBot?.id;
         lookupAsk = await os.getData(authBot?.id, abFormattedAskID);
         if (!lookupAsk.success && lookupAsk.errorCode && lookupAsk.errorCode == 'not_authorized') {
-            console.log(`[${tags.system}.${tagName}] requesting inst admin permission for user record ${authBot?.id}.`);
             await os.grantInstAdminPermission(authBot?.id);
             lookupAsk = await os.getData(authBot?.id, abFormattedAskID);
                 
@@ -85,7 +83,6 @@ if (reserved) {
             console.log(`[${tags.system}.${tagName}] lookupAsk attempt 3 (isUUAB):`, {...lookupAsk});
         }
         if(lookupAsk.errorCode && lookupAsk.errorCode == 'not_authorized') {
-            console.log(`[${tags.system}.${tagName}] requesting inst admin permission for record ${configBot.tags.studio ?? authBot.id}.`);
             await os.grantInstAdminPermission(configBot.tags.studio ?? authBot.id);
             lookupAsk = await os.getData(configBot.tags.studio ?? authBot.id, abFormattedAskID);
         }
@@ -98,7 +95,6 @@ if (reserved) {
             console.log(`[${tags.system}.${tagName}] lookupAsk attempt 3 (isChannel):`, {...lookupAsk});
         }
         if(lookupAsk.errorCode && lookupAsk.errorCode == 'not_authorized') {
-            console.log(`[${tags.system}.${tagName}] requesting inst admin permission for record ${configBot.tags.studio ?? authBot.id}.`);
             await os.grantInstAdminPermission(configBot.tags.studio ?? authBot.id);
             lookupAsk = await os.getData(configBot.tags.studio ?? authBot.id, abFormattedAskID);
         }

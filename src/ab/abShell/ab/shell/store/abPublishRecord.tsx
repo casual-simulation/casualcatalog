@@ -34,7 +34,6 @@ if (tags.debug) {
 if (!recordResponse.success) {
     if (recordResponse.errorCode === 'not_authorized') {
         // Ask user to grant permission.
-        console.log(`[${tags.system}.${tagName}] requesting inst admin permission for record ${userRecord}.`);
         const permission = await os.grantInstAdminPermission(userRecord);
 
         if (permission.success) {

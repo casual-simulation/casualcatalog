@@ -8,7 +8,6 @@ let record = await os.recordData(tags.studioId, 'catalogMetaData', {
 });
 
 if (!record.success) {
-    console.log(`[${tags.system}.${tagName}] requesting inst admin permission for studio ${tags.studioId}.`);
     await os.grantInstAdminPermission(tags.studioId);
 
     record = await os.recordData(tags.studioId, 'catalogMetaData', {

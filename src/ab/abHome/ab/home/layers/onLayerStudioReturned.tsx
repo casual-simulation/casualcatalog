@@ -11,6 +11,8 @@ if (that.studioId) {
 
     if (!authBot) {
         console.log(`[${tags.system}.${tagName}]: User login failed.`);
+        masks.awaitingAuthBot = true;
+        masks.awaitingStudio = that.studioId;
         return;
     }
     

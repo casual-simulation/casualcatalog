@@ -22,6 +22,7 @@ if (!authBot) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] User not logged in.`);
     }
+    masks.awaitingAuthBot = true;
     return;
 }
 

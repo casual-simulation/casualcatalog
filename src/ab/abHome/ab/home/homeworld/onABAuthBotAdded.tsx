@@ -1,5 +1,5 @@
-if (tags.awaitingAuthBot) {
-    masks.awaitingAuthBot = null;
+// if (tags.awaitingAuthBot) {
+//     masks.awaitingAuthBot = null;
 
-    thisBot.init();
-}
+//     thisBot.init();
+// }

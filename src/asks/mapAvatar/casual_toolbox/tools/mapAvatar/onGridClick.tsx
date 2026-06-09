@@ -2,7 +2,9 @@ if (tags.ownerID !=  authBot?.id || tags.usingGPS) {
     return;
 }
 
-shout("clearMapAvatarMenu");
+if (links.homeworld && links.homeworld.tags.introPlayed) {
+    shout("clearMapAvatarMenu");
+}
 
 if (that) {
     if (that.modality == 'mouse' && that.buttonId == 'right') { 

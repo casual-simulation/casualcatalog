@@ -1,3 +1,4 @@
+superShout("abNavigationMenuRefresh");
 superShout("showSuperNav");
 // const dropdownOptions = [];
 

@@ -17,7 +17,6 @@ menuOptions.skillBot = getLink(thisBot);
 let studioName;
 
 if (!ab.abIsPrimary()) {
-    shout("abMenuRefresh");
     let studioData = await os.listUserStudios();
     if (studioData.success) {
         const studios = studioData.studios;
@@ -51,6 +50,9 @@ const superNavDropdown = {
 let dropdownOptions = JSON.parse(await thisBot.createNavDropdown());
 superNavDropdown.dropdownOptions = [...dropdownOptions];
 
+if (!ab.abIsPrimary()) {
+    shout("abMenuRefresh");
+}
 if (superNavDropdown.dropdownOptions.length > 0) {
    ab.links.menu.abCreateMenuDropdown(superNavDropdown); 
 }

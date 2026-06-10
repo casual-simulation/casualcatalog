@@ -1,6 +1,6 @@
 await os.requestAuthBot();
 
-let publicFacing = that.publicFacing;
+let publicFacing = that.publicFacing; // CasualOS will default to publicRead if this is left undefined.
 let recordData = that.recordData ?? that.data;
 let recordName = that.recordName;
 let endpoint = that.endpoint ? that.endpoint : links.remember.tags.abEndpoint;
@@ -20,6 +20,8 @@ markerSet.clear();
 
 if (publicFacing) {
     markerSet.add('publicRead');
+} else if (publicFacing === false) {
+    markerSet.add('private');
 }
 
 function doRecord() {

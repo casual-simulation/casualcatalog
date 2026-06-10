@@ -3,8 +3,7 @@ let {
 } = that ?? {};
 
 if (!ownerRecordId) {
-    const authBot = await os.requestAuthBotInBackground();
-    ownerRecordId = authBot?.id;
+    ownerRecordId = await ab.links.utils.getLocalUserRecordId();
 }
 
 assert(ownerRecordId, `[${tags.system}.${tagName}] ownerRecordId is a required parameter.`);

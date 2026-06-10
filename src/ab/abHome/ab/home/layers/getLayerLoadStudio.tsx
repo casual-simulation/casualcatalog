@@ -1,3 +1,7 @@
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] inst: ${os.getCurrentInst()}, getLayerLoadStudio that:`, that);
+}
+
 if (!links.learn.abIsPrimary()) {
     return;
 }

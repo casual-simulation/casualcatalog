@@ -1,4 +1,11 @@
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] inst: ${os.getCurrentInst()}, toggleLayer that:`, that);
+}
+
 if (!links.learn.abIsPrimary()) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] inst: ${os.getCurrentInst()}, non-primary instance. Ignoring toggleLayer.`);
+    }
     return;
 }
 

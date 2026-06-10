@@ -1,4 +1,12 @@
+
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] inst: ${os.getCurrentInst()}, onLayerStudioReturned that:`, that);
+}
+
 if (os.getCurrentInst() != that.inst) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] Inst mismatch. Current: ${os.getCurrentInst()}, that: ${that.inst}. Ignoring.`);
+    }
     return;
 }
 

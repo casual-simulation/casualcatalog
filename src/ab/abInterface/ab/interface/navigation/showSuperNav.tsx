@@ -34,8 +34,15 @@ if (!ab.abIsPrimary()) {
     }
 
     if (!studioName && ab.links.remember.tags.allowedLayers && ab.links.remember.tags.allowedLayers.length != 0) {
-        if (ab.links.remember.tags.allowedLayers.find(layer => os.getCurrentInst().includes(layer.StudioId.slice(0, 4)))) {
-            studioName = ab.links.remember.tags.allowedLayers.find(layer => os.getCurrentInst().includes(layer.StudioId.slice(0, 4))).DisplayName;
+
+        const allowedLayer = ab.links.remember.tags.allowedLayers.find(layer => os.getCurrentInst().startsWith(layer.StudioId.slice(0, 4)));
+
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] Checked allowedLayers for currentInst ${os.getCurrentInst()}. match:`, allowedLayer, `allowedLayers:`, ab.links.remember.tags.allowedLayers);
+        }
+        
+        if (allowedLayer) {
+            studioName = allowedLayer.DisplayName;
         }
     } 
 }

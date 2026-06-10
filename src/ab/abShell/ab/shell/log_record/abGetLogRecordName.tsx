@@ -1,14 +1,14 @@
 let { 
-    recordId
+    ownerRecordId
 } = that ?? {};
 
-if (!recordId) {
+if (!ownerRecordId) {
     const authBot = await os.requestAuthBotInBackground();
-    recordId = authBot?.id;
+    ownerRecordId = authBot?.id;
 }
 
-assert(recordId, `[${tags.system}.${tagName}] recordId is a required parameter.`);
+assert(ownerRecordId, `[${tags.system}.${tagName}] ownerRecordId is a required parameter.`);
 
-let logRecordName = `${tags.logRecordPrefix}_${recordId}`;
+let logRecordName = `${tags.logRecordPrefix}_${ownerRecordId}`;
 
 return logRecordName;

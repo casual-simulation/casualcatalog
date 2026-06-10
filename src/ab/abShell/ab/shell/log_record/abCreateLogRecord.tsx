@@ -1,26 +1,26 @@
 let { 
-    recordId
+    ownerRecordId
 } = that ?? {};
 
-if (!recordId) {
+if (!ownerRecordId) {
     const authBot = await os.requestAuthBotInBackground();
-    recordId = authBot?.id;
+    ownerRecordId = authBot?.id;
 }
 
-assert(recordId, `[${tags.system}.${tagName}] must provide a recordId.`);
+assert(ownerRecordId, `[${tags.system}.${tagName}] must provide a ownerRecordId.`);
 
-const logRecordName = await thisBot.abGetLogRecordName({ recordId });
+const logRecordName = await thisBot.abGetLogRecordName({ ownerRecordId });
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}] creating record '${logRecordName}' in ${recordId}`);
+    console.log(`[${tags.system}.${tagName}] creating record '${logRecordName}' in ${ownerRecordId}`);
 }
 
-let isLocalUserRecordId = await ab.links.utils.isLocalUserRecordId(recordId);
+let isLocalUserRecordId = await ab.links.utils.isLocalUserRecordId(ownerRecordId);
 let studioId;
 
 if (!isLocalUserRecordId) {
     // Call createRecord with a studioId argument, otherwise it will be undefined and be created for the user record.
-    studioId = recordId;
+    studioId = ownerRecordId;
 }
     
 let createRecordResult = await os.createRecord(logRecordName, studioId);
@@ -28,7 +28,7 @@ let createRecordResult = await os.createRecord(logRecordName, studioId);
 if (!createRecordResult.success) {
     if (createRecordResult.errorCode === 'not_authorized') {
         // Ask user to grant permission;
-        const permission = await os.grantInstAdminPermission(recordId);
+        const permission = await os.grantInstAdminPermission(ownerRecordId);
 
         if (permission.success) {
             createRecordResult = await os.createRecord(logRecordName, studioId);

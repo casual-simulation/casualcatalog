@@ -1,20 +1,20 @@
 import { RecordDataResult } from 'casualos';
 
 let {
-    recordId,
+    ownerRecordId,
     content
 } = that ?? {};
 
 
-if (!recordId) {
+if (!ownerRecordId) {
     const authBot = await os.requestAuthBotInBackground();
-    recordId = authBot?.id;
+    ownerRecordId = authBot?.id;
 }
 
-assert(recordId, `[${tags.system}.${tagName}] recordId is a required parameter.`);
+assert(ownerRecordId, `[${tags.system}.${tagName}] ownerRecordId is a required parameter.`);
 assert(content != null, `[${tags.system}] content is a required parameter`);
 
-const logRecordName = await thisBot.abGetLogRecordName({ recordId });
+const logRecordName = await thisBot.abGetLogRecordName({ ownerRecordId });
 
 // Metadata derived from current inst state.
 const address = uuid();

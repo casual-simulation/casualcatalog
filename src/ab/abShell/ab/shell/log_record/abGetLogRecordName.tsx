@@ -1,9 +1,14 @@
-const { 
-    studioId = authBot?.id
+let { 
+    recordId
 } = that ?? {};
 
-assert(studioId, `[${tags.system}.${tagName}] studioId is a required parameter.`);
+if (!recordId) {
+    const authBot = await os.requestAuthBotInBackground();
+    recordId = authBot?.id;
+}
 
-let logRecordName = `log_${studioId}`;
+assert(recordId, `[${tags.system}.${tagName}] recordId is a required parameter.`);
+
+let logRecordName = `${tags.logRecordPrefix}_${recordId}`;
 
 return logRecordName;

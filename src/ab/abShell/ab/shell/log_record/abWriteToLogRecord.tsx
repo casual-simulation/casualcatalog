@@ -1,14 +1,20 @@
 import { RecordDataResult } from 'casualos';
 
-const {
-    studioId = authBot?.id,
+let {
+    recordId,
     content
 } = that ?? {};
 
-assert(studioId, `[${tags.system}.${tagName}] studioId is a required parameter.`);
+
+if (!recordId) {
+    const authBot = await os.requestAuthBotInBackground();
+    recordId = authBot?.id;
+}
+
+assert(recordId, `[${tags.system}.${tagName}] recordId is a required parameter.`);
 assert(content != null, `[${tags.system}] content is a required parameter`);
 
-const logRecordName = thisBot.abGetLogRecordName({ studioId });
+const logRecordName = await thisBot.abGetLogRecordName({ recordId });
 
 // Metadata derived from current inst state.
 const address = uuid();
@@ -59,7 +65,7 @@ const recordDataResult: RecordDataResult = await ab.links.store.abPublishRecord(
 })
 
 if (tags.debug) {
-    console.log(`[${tags.system}.${tagName}]recordDataResult:`, recordDataResult);
+    console.log(`[${tags.system}.${tagName}] recordDataResult:`, recordDataResult);
 }
 
 if (recordDataResult?.success) {

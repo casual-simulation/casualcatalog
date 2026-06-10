@@ -21,6 +21,10 @@ if (that.studioId) {
         console.log(`[${tags.system}.${tagName}]: User login failed.`);
         return;
     }
+
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] Requesting 'home' egg for studioId ${that.studioId}`);
+    }
     
     await ab.links.search.onLookupABEggs({ recordKey: that.studioId, abID: "home", autoHatch: true, sourceEvent: 'ask'});
     await os.sleep(0);

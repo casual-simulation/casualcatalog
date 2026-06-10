@@ -10,13 +10,7 @@ if (!masks.initialized && tags.abArtifactShardReconstituted && masks.abInitializ
 
     if (!masks.animationState) {
         os.sleep(100).then(() => {
-            const lineToBot = getBot(byID(tags.lineTo));
             let anim = 'appear';
-            if (lineToBot) {
-                if (!lineToBot.tags.selected) {
-                    anim = 'disappear';
-                }
-            }
             // Fixes a timing issue where the form briefly plays the incorrect animation when first initializing.
             masks.formOpacity = null;
             masks.animationState = anim;

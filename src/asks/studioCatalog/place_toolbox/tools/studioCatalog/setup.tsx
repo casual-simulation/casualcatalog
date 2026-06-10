@@ -71,19 +71,10 @@ shout('onStudioCatalogSetup', thisBot);
 
 if (data.autoLoadCasualKit) {
     thisBot.loadCasualKit();
+    await os.sleep(100);
 }
 
 if (!tags.studioId) {
     // If the bot doesn't have a studioId, automatically open the studio select menu.
     thisBot.onClick();
-} else {
-    masks.selected = false;
-    shout("onStudioCatalogDeselected", thisBot);
-    thisBot.moveStudio();
-    if (!tags.hasCustomMesh && tags.currentFormAnimation != 'closed' && tags.currentFormAnimation != 'closing') {
-        tags.scaleX = 1.5;
-        tags.scaleY = 1;
-        links.defaultVisualBot.tags.formAnimation = 'closed';
-        tags.currentFormAnimation = 'closed';
-    }
 }

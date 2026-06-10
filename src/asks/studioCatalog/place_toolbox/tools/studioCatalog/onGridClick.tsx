@@ -8,3 +8,7 @@ shout("studioCatalogPatternSelectMenuRefresh");
 if (masks.selectedBots) {
     masks.selectedBots = null;
 }
+
+if (masks.selected) {
+    masks.selected = null;
+}

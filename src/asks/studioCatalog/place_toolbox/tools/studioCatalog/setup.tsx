@@ -69,13 +69,26 @@ if (!tags.studioId && authBot) {
 
 shout('onStudioCatalogSetup', thisBot);
 
+if (data.autoLoadCasualKit) {
+    thisBot.loadCasualKit();
+}
+
 if (!tags.studioId) {
     // If the bot doesn't have a studioId, automatically open the studio select menu.
     thisBot.onClick();
 } else {
     masks.selected = false;
-}
-
-if (data.autoLoadCasualKit) {
-    thisBot.loadCasualKit();
+    shout("onStudioCatalogDeselected", thisBot);
+    thisBot.moveStudio();
+    if (!tags.hasCustomMesh && tags.currentFormAnimation != 'closed' && tags.currentFormAnimation != 'closing') {
+        tags.scaleX = 1.5;
+        tags.scaleY = 1;
+        links.defaultVisualBot.tags.formAnimation = null;
+        tags.currentFormAnimation = 'closing';
+        os.startFormAnimation(links.defaultVisualBot, "closing", {clampWhenFinished: true});
+        if (masks.scaleX) {
+            await os.sleep(0);
+            thisBot.onPointerEnter();
+        }
+    }
 }

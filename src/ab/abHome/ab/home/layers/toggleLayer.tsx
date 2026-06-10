@@ -22,16 +22,16 @@ if (tags.activeInsts.find(item => item.includes(idString))) {
 if (instLoaded) {
     if (!that.keepLoaded) {
         const instName = tags.activeInsts.find(item => item.includes(idString));
+        console.log("unloading", instName);
         os.unloadInst(instName);
-        console.log("unloading", instName)
     }
 }
 //if unloaded, sideload it
 else {
-    console.log("loading", instName)
+    console.log("loading", instName);
     masks.currLayerStudio = that.studioId;
 
     await os.sleep(0);
 
-    await os.loadInst(instName);
+    os.loadInst(instName);
 }

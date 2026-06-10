@@ -3,7 +3,9 @@ if (!builderVersion)
     return;
 }
 
-ab.log({ name: abPersonality.tags.abBuilderIdentity, avatar: abPersonality.tags.abBuilderAvatar, message: "scanned " + that, space: "local" });
+ab.log({ name: abPersonality.tags.abBuilderIdentity, avatar: abPersonality.tags.abBuilderAvatar, message: "qr code scanned: " + that, space: "local" });
+
+ab.links.log_record.abWriteToLogRecord({ content: `User scanned qr code: ${that}`});
 
 let requestingAI = false;
 if (configBot.tags.requestingAI) {

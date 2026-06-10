@@ -37,9 +37,3 @@ for (let i = 0; i < pool.length; ++i) {
 }
 
 tags.lineTo = getID(closest);
-
-if (closest.tags.selected) {
-    thisBot.onStudioCatalogSelected();
-} else {
-    thisBot.onStudioCatalogDeselected();
-}

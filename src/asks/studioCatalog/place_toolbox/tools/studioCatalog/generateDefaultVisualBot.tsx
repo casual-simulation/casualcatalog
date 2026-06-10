@@ -18,6 +18,7 @@ const book = {
     pointable: false,
     abIgnore: true,
     abCatalogBookBot: true,
+    formAnimation: 'closed',
     color: abPersonality?.tags?.abBaseColor ?? '#00D9CD',
     baseBotId: getID(thisBot),
     onFormAnimationFinished: ListenerString(() => {

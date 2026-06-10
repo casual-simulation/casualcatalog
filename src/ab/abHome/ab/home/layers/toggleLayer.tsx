@@ -18,6 +18,11 @@ if (tags.activeInsts.find(item => item.includes(idString))) {
     instLoaded = true;
 }
 
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] activeInsts:`, JSON.parse(JSON.stringify(tags.activeInsts)));
+    console.log(`[${tags.system}.${tagName}] idString ${idString} instLoaded?`, instLoaded);
+}
+
 //if loaded, unload
 if (instLoaded) {
     if (!that.keepLoaded) {

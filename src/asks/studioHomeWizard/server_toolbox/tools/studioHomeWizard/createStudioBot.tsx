@@ -11,6 +11,7 @@ if (configBot.tags.comId) {
     newURL.searchParams.append("comId", configBot.tags.comId);
 }
 
+newURL.searchParams.append("studio", that.id);
 newURL.searchParams.append("tempInst", 'home');
 newURL.searchParams.append("mapPortal", 'home');
 newURL.searchParams.append("ask", 'home');

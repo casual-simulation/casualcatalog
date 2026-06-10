@@ -112,7 +112,14 @@ options.push({
                     placeholder: 'who you are, what matters most right now, and how i should operate?',
                     currentValue: (currentValue && currentValue != unsetValue) ? currentValue : null,
                     onSubmitCallback: (listenerThat) => {
-                        shout('abPersonalityChange', { abPrimeDirectivePrompt: listenerThat.text || unsetValue });
+                        const abPrimeDirectivePrompt = listenerThat.text || unsetValue;
+                        shout('abPersonalityChange', { abPrimeDirectivePrompt });
+
+                        if (abPrimeDirectivePrompt === unsetValue) {
+                            ab.links.log_record.abWriteToLogRecord({ content: `User has cleared their prime directive prompt.`})
+                        } else {
+                            ab.links.log_record.abWriteToLogRecord({ content: `User has updated their prime directive prompt: ${abPrimeDirectivePrompt}`});
+                        }
                     }
                 })
             }),
@@ -129,7 +136,14 @@ options.push({
                     placeholder: 'how are you doing?',
                     currentValue: (currentValue && currentValue != unsetValue) ? currentValue : null,
                     onSubmitCallback: (listenerThat) => {
-                        shout('abPersonalityChange', { abPersonalizationPrompt: listenerThat.text || unsetValue });
+                        const abPersonalizationPrompt = listenerThat.text || unsetValue;
+                        shout('abPersonalityChange', { abPersonalizationPrompt });
+
+                        if (abPersonalizationPrompt === unsetValue) {
+                            ab.links.log_record.abWriteToLogRecord({ content: `User has cleared their personalization prompt.`})
+                        } else {
+                            ab.links.log_record.abWriteToLogRecord({ content: `User has updated their personalization prompt: ${abPersonalizationPrompt}`});
+                        }
                     }
                 })
             }),

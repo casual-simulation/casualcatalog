@@ -439,3 +439,24 @@ abCommands.addCommand('viewrecorddata', async (args) => {
         }
     ]
 })
+
+abCommands.addCommand('signout', async (args) => {
+    await os.signOut();
+    os.toast('signed out');
+}, {
+    shortDescription: 'Sign out of current account.',
+    usage: '.signout'
+})
+
+abCommands.addCommand('signin', async (args) => {
+    const authBot = await os.requestAuthBot();
+
+    if (authBot) {
+        os.toast('signed in');
+    } else {
+        os.toast('sign in failed');
+    }
+}, {
+    shortDescription: 'Sign in to account.',
+    usage: '.signin'
+})

@@ -11,15 +11,13 @@ if (configBot.tags.comId) {
     newURL.searchParams.append("comId", configBot.tags.comId);
 }
 
-newURL.searchParams.append("owner", that.id);
-newURL.searchParams.append("inst", 'home');
+newURL.searchParams.append("tempInst", 'home');
 newURL.searchParams.append("mapPortal", 'home');
-newURL.searchParams.append("studio", that.id);
 newURL.searchParams.append("ask", 'home');
 
 const abArtifactShard = {
     data: {
-        'biosSetting': 'studio',
+        'biosSetting': 'temp',
         'instSetting': 'home',
         'instURL': newURL.href,
         'studioSetting': that.id,

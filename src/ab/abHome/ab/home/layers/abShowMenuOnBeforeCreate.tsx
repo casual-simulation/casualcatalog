@@ -32,8 +32,8 @@ if (studioData.success) {
         const isLoaded = tags.activeInsts.find(item => item.includes(idString));
 
         if (abRemember.tags.allowedLayers && abRemember.tags.allowedLayers.length != 0) {
-            if (abRemember.tags.allowedLayers?.find(layer => layer.studioId == studios[i].StudioId)) {
-                if (!abRemember.tags.allowedLayers?.find(layer => layer.studioId == studios[i].StudioId).Enabled) {
+            if (abRemember.tags.allowedLayers?.find(layer => layer.StudioId == studios[i].studioId)) {
+                if (!abRemember.tags.allowedLayers?.find(layer => layer.StudioId == studios[i].studioId).Enabled) {
                     continue;
                 }
             }

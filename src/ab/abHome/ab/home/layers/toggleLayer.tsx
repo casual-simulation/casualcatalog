@@ -22,14 +22,23 @@ if (tags.activeInsts.find(item => item.includes(idString))) {
 if (instLoaded) {
     if (!that.keepLoaded) {
         const instName = tags.activeInsts.find(item => item.includes(idString));
-        console.log("unloading", instName);
-        os.unloadInst(instName);
+
+        if (instName) {
+            console.log("unloading", instName);
+            os.unloadInst(instName);
+        } else {
+            console.warn(`Could not find instance with idString ${idString} to unload.`);
+        }
     }
 }
 //if unloaded, sideload it
 else {
     console.log("loading", instName);
     masks.currLayerStudio = that.studioId;
+
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] configBot tags:`, JSON.parse(JSON.stringify(configBot.tags)));
+    }
 
     await os.sleep(0);
 

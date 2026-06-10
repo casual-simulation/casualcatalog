@@ -57,6 +57,7 @@ if (tags.studioId) {
             displayName: 'user studio'
         },
         onClick: `@
+            links.place.masks.selected = true;
             links.place.setStudio(tags.studioData);
             shout('clearHomePlaceMenu');
         `
@@ -73,6 +74,7 @@ if (tags.studioId) {
                 studioData: studios[i],
                 formAddress: 'radio_button_unchecked',
                 onClick: `@
+                    links.place.masks.selected = true;
                     links.place.setStudio(tags.studioData);
                     shout('clearHomePlaceMenu');
                 `

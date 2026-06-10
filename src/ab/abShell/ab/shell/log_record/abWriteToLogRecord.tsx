@@ -59,7 +59,7 @@ const recordDataResult: RecordDataResult = await ab.links.store.abPublishRecord(
     userRecord: logRecordName,
     recordName: address,
     recordData: data,
-    toast: false,
+    silent: true,
 })
 
 if (tags.debug) {

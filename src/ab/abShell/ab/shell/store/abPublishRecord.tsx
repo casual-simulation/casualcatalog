@@ -7,6 +7,7 @@ let endpoint = that.endpoint ? that.endpoint : links.remember.tags.abEndpoint;
 let markerSet = that.markerSet ?? new Set();
 let userRecord = that.userRecord ?? configBot.tags.selected_studioID ?? authBot.id;
 let toast = that.toast ?? true;
+let silent = that.silent ?? false;
 
 if (!recordData) {
     return "no data supplied";
@@ -46,13 +47,15 @@ if (!recordResponse.success) {
     }
 }
 
-if (recordResponse.success) {
-    ab.links.utils.abLogAndToast({ message: `data published to record ${userRecord} at address ${recordName}`, logType: 'log', toast: toast });
-} else {
-    ab.links.utils.abLog({ message: `data failed to publish to record ${userRecord} at address ${recordName}\n${JSON.stringify(recordResponse, undefined, 2)}`, logType: 'error' });
+if (!silent) {
+    if (recordResponse.success) {
+        ab.links.utils.abLogAndToast({ message: `data published to record ${userRecord} at address ${recordName}`, logType: 'log', toast: toast });
+    } else {
+        ab.links.utils.abLog({ message: `data failed to publish to record ${userRecord} at address ${recordName}\n${JSON.stringify(recordResponse, undefined, 2)}`, logType: 'error' });
 
-    if (toast) {
-        ab.links.utils.abToast({ message: `data failed to publish to record ${userRecord} at address ${recordName}. ${recordResponse.errorMessage}`, logType: 'error' });
+        if (toast) {
+            ab.links.utils.abToast({ message: `data failed to publish to record ${userRecord} at address ${recordName}. ${recordResponse.errorMessage}`, logType: 'error' });
+        }
     }
 }
 

@@ -72,6 +72,8 @@ shout('onStudioCatalogSetup', thisBot);
 if (!tags.studioId) {
     // If the bot doesn't have a studioId, automatically open the studio select menu.
     thisBot.onClick();
+} else {
+    masks.selected = false;
 }
 
 if (data.autoLoadCasualKit) {

@@ -38,8 +38,7 @@ const homeWorldButton = {
             newURL.searchParams.append("comId", configBot.tags.comId);
         }
 
-        newURL.searchParams.append("owner", "player");
-        newURL.searchParams.append("inst", 'home');
+        newURL.searchParams.append("tempInst", 'home');
         newURL.searchParams.append("mapPortal", 'home');
         newURL.searchParams.append("ask", 'home');
 

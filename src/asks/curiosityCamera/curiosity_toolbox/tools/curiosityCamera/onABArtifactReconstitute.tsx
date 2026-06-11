@@ -20,7 +20,7 @@ if (data.eggParameters) {
     tags[dimension + 'X'] = inMap ? -85.6753328691886 : dimensionX;
     tags[dimension + 'Y'] = inMap ? 42.96576576576577 : dimensionY;
 
-    tags.draggable = inMap ? false : null;
+    //tags.draggable = inMap ? false : null;
 
     // os.focusOn(thisBot);
 }

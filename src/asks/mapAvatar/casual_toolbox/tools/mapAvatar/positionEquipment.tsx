@@ -14,6 +14,9 @@ for (let i = 0; i < tags.equipment?.length; ++i) {
     });
 
     const equipmentBot = getBot("equipmentId", tags.equipment[i]);
+    if (!equipmentBot) {
+        continue;
+    }
     equipmentBot.tags[dimension + 'X'] = pos.x;
     equipmentBot.tags[dimension + 'Y'] = pos.y;
 

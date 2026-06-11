@@ -12,4 +12,5 @@ if (!tags.equipment.includes(that)) {
     tags.equipment.push(that);
 }
 
+changeState(thisBot, true, "selected");
 thisBot.positionEquipment();

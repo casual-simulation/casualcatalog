@@ -1,6 +1,7 @@
 const shard: ABArtifactShard = {
     data: {
         label: tags.label,
+        equipment: tags.equipment,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

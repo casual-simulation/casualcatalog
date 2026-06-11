@@ -2,6 +2,7 @@ const data = that.data;
 
 tags.journalURL = data.url ?? undefined;
 tags.userData = data.userData;
+tags.equipmentId = data.equipmentId ?? uuid();
 
 if (!data.userData) {
     thisBot.getUserData();
@@ -26,9 +27,12 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = inMap ? 42.965225225225225 : dimensionY;
     tags[dimension + 'Z'] = inMap ? -10 : -1.5;
 
-    tags.draggable = inMap ? false : null;
+    // os.focusOn(thisBot);
+}
 
-    os.focusOn(thisBot);
+const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+if (avatarBot) {
+    avatarBot.equipBot(thisBot.tags.equipmentId);
 }
 
 await thisBot.getDataFromStrapi();

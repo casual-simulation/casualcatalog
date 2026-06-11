@@ -13,6 +13,13 @@ if (that) {
     }
 }
 
+if (tags.selected) {
+    changeState(thisBot, false, "selected");
+    return;
+} else {
+    changeState(thisBot, true, "selected");
+}
+
 configBot.tags.menuPortal = 'mapAvatar_menu';
 
 const menuOptions = {

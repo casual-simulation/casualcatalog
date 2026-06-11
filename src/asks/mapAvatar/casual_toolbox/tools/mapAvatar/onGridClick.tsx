@@ -12,6 +12,8 @@ if (that) {
     }
 }
 
+changeState(thisBot, false, "selected");
+
 if (!configBot.tags.mapPortal) {
     thisBot.moveAvatar({
         dimension: configBot.tags.gridPortal ?? "home",

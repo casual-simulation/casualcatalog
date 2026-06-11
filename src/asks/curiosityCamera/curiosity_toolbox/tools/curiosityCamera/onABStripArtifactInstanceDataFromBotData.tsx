@@ -14,3 +14,4 @@ delete data.tags.discoverableData;
 delete data.tags.processingMode;
 delete data.tags.confidenceCount;
 delete data.tags.confidenceName;
+delete data.tags.equipmentId;

@@ -1,5 +1,6 @@
 const data = that.data;
 tags.processingMode = data.processingMode ?? 'ai';
+tags.equipmentId = data.equipmentId ?? uuid();
 
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
@@ -21,5 +22,10 @@ if (data.eggParameters) {
 
     tags.draggable = inMap ? false : null;
 
-    os.focusOn(thisBot);
+    // os.focusOn(thisBot);
+}
+
+const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+if (avatarBot) {
+    avatarBot.equipBot(thisBot.tags.equipmentId);
 }

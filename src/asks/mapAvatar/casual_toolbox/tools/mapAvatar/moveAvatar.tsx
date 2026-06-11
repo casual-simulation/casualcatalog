@@ -6,6 +6,8 @@ if (that.dimension != tags.dimension) {
     links.spriteBot.tags.dimension = that.dimension;
 }
 
+changeState(thisBot, false, "selected");
+
 tags[that.dimension] = true;
 links.spriteBot.tags[that.dimension] = true;
 

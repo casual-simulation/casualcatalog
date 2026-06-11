@@ -4,4 +4,6 @@ if (that.portal == 'mapPortal' || that.portal == 'gridPortal') {
         links.spriteBot.tags[(tags.dimension ?? 'home') + 'X'] = tags[(tags.dimension ?? 'home') + 'X'];
         links.spriteBot.tags[(tags.dimension ?? 'home') + 'Y'] = tags[(tags.dimension ?? 'home') + 'Y'];
     }
+
+    thisBot.positionEquipment();
 }

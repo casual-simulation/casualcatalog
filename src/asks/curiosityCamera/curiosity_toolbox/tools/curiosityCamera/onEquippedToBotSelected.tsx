@@ -1,0 +1,1 @@
+tags[that.tags.dimension] = true;

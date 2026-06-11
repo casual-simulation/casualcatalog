@@ -17,3 +17,4 @@ delete data.tags.formSubtype;
 delete data.tags.formAddress;
 delete data.tags.formAddressAspectRatio;
 delete data.tags.strokeColor;
+delete data.tags.equipment;

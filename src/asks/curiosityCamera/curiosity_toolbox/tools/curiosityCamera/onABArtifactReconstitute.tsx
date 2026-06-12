@@ -2,6 +2,11 @@ const data = that.data;
 tags.processingMode = data.processingMode ?? 'ai';
 tags.equipmentId = data.equipmentId ?? uuid();
 
+const existingCamera = getBot(byTag("curiosityCamera", true), not(byID(getID(thisBot))));
+if (existingCamera) {
+    destroy(existingCamera);
+}
+
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
         tags[tagName] = data.dimensionData[tagName];

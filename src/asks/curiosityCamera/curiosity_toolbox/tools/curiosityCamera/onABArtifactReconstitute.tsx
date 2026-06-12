@@ -1,11 +1,12 @@
 const data = that.data;
 tags.processingMode = data.processingMode ?? 'ai';
-tags.abEquipmentFor = data.abEquipmentFor;
 
 const existingCamera = getBot(byTag("curiosityCamera", true), not(byID(getID(thisBot))));
 if (existingCamera) {
     destroy(existingCamera);
 }
+
+tags.abEquipmentFor = data.abEquipmentFor;
 
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
@@ -33,4 +34,5 @@ if (data.eggParameters) {
 const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
 if (avatarBot) {
     tags.abEquipmentFor = getID(avatarBot);
+    avatarBot.links.equipment.positionEquipment({base: avatarBot, equipment: [thisBot]});
 }

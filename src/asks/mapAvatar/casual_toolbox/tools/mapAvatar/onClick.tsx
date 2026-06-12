@@ -13,11 +13,8 @@ if (that) {
     }
 }
 
-if (tags.selected) {
-    changeState(thisBot, false, "selected");
+if (tags.abEquipmentBaseSelected) {
     return;
-} else {
-    changeState(thisBot, true, "selected");
 }
 
 configBot.tags.menuPortal = 'mapAvatar_menu';

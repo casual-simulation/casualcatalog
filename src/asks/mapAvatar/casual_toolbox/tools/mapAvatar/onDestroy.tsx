@@ -2,4 +2,4 @@ if (links.spriteBot) {
     destroy(links.spriteBot);
 }
 
-changeState(thisBot, true, "selected");
+links.equipment.onEquipmentBaseSelected(thisBot);

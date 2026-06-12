@@ -28,7 +28,7 @@ if (avatarBot) {
         formAddress: 'add',
         abMenuSortOrder: -3,
         onClick: `@
-            links.avatar.equipBot(links.journal.tags.equipmentId);
+            links.journal.tags.abEquipmentFor = getID(links.avatar);
             shout("abMenuRefresh");
         `
     }

@@ -2,7 +2,7 @@ const shard: ABArtifactShard = {
     data: {
         url: tags.journalURL,
         userData: tags.userData,
-        equipmentId: tags.equipmentId,
+        abEquipmentFor: tags.abEquipmentFor,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

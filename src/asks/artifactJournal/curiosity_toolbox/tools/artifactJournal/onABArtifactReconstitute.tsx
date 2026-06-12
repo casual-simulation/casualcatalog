@@ -7,7 +7,7 @@ if (existingJournal) {
 
 tags.journalURL = data.url ?? undefined;
 tags.userData = data.userData;
-tags.equipmentId = data.equipmentId ?? uuid();
+tags.abEquipmentFor = data.abEquipmentFor;
 
 if (!data.userData) {
     thisBot.getUserData();
@@ -37,7 +37,7 @@ if (data.eggParameters) {
 
 const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
 if (avatarBot) {
-    avatarBot.equipBot(thisBot.tags.equipmentId);
+    tags.abEquipmentFor = getID(avatarBot);
 }
 
 await thisBot.getDataFromStrapi();

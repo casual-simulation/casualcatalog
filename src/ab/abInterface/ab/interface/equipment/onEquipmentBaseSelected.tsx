@@ -8,3 +8,5 @@ for (let i = 0; i < equipment.length; ++i) {
         equipment[i].tags[dimension] = true;
     }
 }
+
+thisBot.positionEquipment({base: that, equipment});

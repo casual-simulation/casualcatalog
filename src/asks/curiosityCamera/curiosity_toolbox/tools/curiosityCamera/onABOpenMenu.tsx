@@ -42,7 +42,7 @@ if (avatarBot) {
         formAddress: 'add',
         abMenuSortOrder: -3,
         onClick: `@
-            links.avatar.equipBot(links.camera.tags.equipmentId);
+            links.camera.tags.abEquipmentFor = getID(links.avatar);
             shout("abMenuRefresh");
         `
     }

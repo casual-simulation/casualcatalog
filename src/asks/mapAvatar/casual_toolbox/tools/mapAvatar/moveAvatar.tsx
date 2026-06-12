@@ -6,7 +6,7 @@ if (that.dimension != tags.dimension) {
     links.spriteBot.tags.dimension = that.dimension;
 }
 
-changeState(thisBot, false, "selected");
+links.equipment.onEquipmentBaseDeselected(thisBot);
 
 tags[that.dimension] = true;
 links.spriteBot.tags[that.dimension] = true;

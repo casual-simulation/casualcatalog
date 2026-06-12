@@ -1,6 +1,6 @@
 const data = that.data;
 tags.processingMode = data.processingMode ?? 'ai';
-tags.equipmentId = data.equipmentId ?? uuid();
+tags.abEquipmentFor = data.abEquipmentFor;
 
 const existingCamera = getBot(byTag("curiosityCamera", true), not(byID(getID(thisBot))));
 if (existingCamera) {
@@ -32,5 +32,5 @@ if (data.eggParameters) {
 
 const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
 if (avatarBot) {
-    avatarBot.equipBot(thisBot.tags.equipmentId);
+    tags.abEquipmentFor = getID(avatarBot);
 }

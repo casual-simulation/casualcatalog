@@ -4,8 +4,4 @@ if (that.tags.includes((tags.dimension ?? 'home') + 'X') || that.tags.includes((
         links.spriteBot.tags[(tags.dimension ?? 'home') + 'X'] = tags[(tags.dimension ?? 'home') + 'X'];
         links.spriteBot.tags[(tags.dimension ?? 'home') + 'Y'] = tags[(tags.dimension ?? 'home') + 'Y'];
     }
-
-    if (tags.selected) {
-        thisBot.positionEquipment();
-    }
 }

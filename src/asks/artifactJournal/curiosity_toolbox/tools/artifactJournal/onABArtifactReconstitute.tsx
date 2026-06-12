@@ -1,5 +1,10 @@
 const data = that.data;
 
+const existingJournal = getBot(byTag("artifactJournal", true), not(byID(getID(thisBot))));
+if (existingJournal) {
+    destroy(existingJournal);
+}
+
 tags.journalURL = data.url ?? undefined;
 tags.userData = data.userData;
 tags.equipmentId = data.equipmentId ?? uuid();

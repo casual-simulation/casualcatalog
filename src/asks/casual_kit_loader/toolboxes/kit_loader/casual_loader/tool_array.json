@@ -19,14 +19,14 @@
         "artifact": true
     },
     {
-        "name": "place",
+        "name": "blank place",
         "studio": "AB",
         "targetAB": "placePortal",
         "formAddress": "circle",
         "artifact": true
     },
     {
-        "name": "public avatar",
+        "name": "avatar",
         "studio": "AB",
         "targetAB": "mapAvatar",
         "formAddress": "account_circle",

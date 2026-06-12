@@ -48,13 +48,15 @@ if (tags.studioId) {
         dropdownOptions: []
     }
 
+    const username = await ab.links.console.getUserName({ canSetPreferredName: false });
+
     studioGroup.dropdownOptions.push( {
         ...BASE_MENU_TAGS,
-        label: 'user studio',
+        label: username ?? 'user studio',
         formAddress: 'radio_button_unchecked',
         studioData: {
             studioId: authBot?.id,
-            displayName: 'user studio'
+            displayName: username ? username + "'s" : 'user studio'
         },
         onClick: `@
             links.place.masks.selected = true;

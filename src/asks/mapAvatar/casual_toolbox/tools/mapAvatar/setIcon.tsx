@@ -26,6 +26,7 @@ const spriteBot = await create({
     [tags.dimension]: true,
     anchorPoint: 'center',
     scale: 2,
+    abIgnore: true,
     lineTo: thisBot.id,
     [tags.dimension + 'Z']: configBot.tags.mapPortal ? (tags[(tags.dimension ?? 'home') + 'Z'] ?? 0) + tags.scaleZ + 35 : (tags[(tags.dimension ?? 'home') + 'Z'] ?? 0) + tags.scaleZ - 1.5,
     [tags.dimension + 'X']: tags[tags.dimension + 'X'],

@@ -37,11 +37,13 @@ if (!homeBot) {
 
     console.log("creating user catalog");
 
+    const username = await ab.links.console.getUserName({ canSetPreferredName: false });
+
     //setup user catalog
     const userAbArtifactShard = {
         data: {
             studioId: authBot.id,
-            label: 'user studio catalog',
+            label: username ? username + "'s catalog" : 'user studio catalog',
             respawnPoint: true,
             autoLoadCasualKit: true,
             eggParameters: {

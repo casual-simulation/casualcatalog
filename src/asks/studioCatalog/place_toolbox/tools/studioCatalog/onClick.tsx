@@ -52,7 +52,7 @@ if (tags.studioId) {
 
     studioGroup.dropdownOptions.push( {
         ...BASE_MENU_TAGS,
-        label: username ?? 'user studio',
+        label: 'user studio',
         formAddress: 'radio_button_unchecked',
         studioData: {
             studioId: authBot?.id,

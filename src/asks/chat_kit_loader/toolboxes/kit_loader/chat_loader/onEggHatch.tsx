@@ -28,6 +28,7 @@ if (that.eggParameters) {
         abArtifactName: 'kit',
         abArtifactInstanceID: uuid(),
         abArtifactShard,
+        space: thisBot.space,
     });
 }
 

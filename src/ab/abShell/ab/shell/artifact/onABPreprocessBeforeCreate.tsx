@@ -33,6 +33,7 @@ if (sourceEvent === 'ask' ||
             const abArtifactInstanceID: string = data.tags.abArtifactInstanceID;
             const abArtifactInstanceOwner: string = data.tags.abArtifactInstanceOwner;
             const abArtifactBundle: ABArtifactBundle = JSON.parse(data.tags.abArtifactBundle.substring(2));
+            const space = data.space; // Space the promise bot wanted its reconstituted bots in (e.g. 'local'). (optional)
 
             if (abArtifactInstanceID) {
                 // Shard has an artifact instance ID
@@ -45,6 +46,7 @@ if (sourceEvent === 'ask' ||
                         abArtifactInstanceIDPrevious: abArtifactInstanceID,
                         abArtifactInstanceOwner,
                         eggParameters,
+                        space,
                         toast: false,
                     };
 
@@ -77,6 +79,7 @@ if (sourceEvent === 'ask' ||
                         abArtifactInstanceID,
                         abArtifactInstanceOwner,
                         eggParameters,
+                        space,
                         toast: false,
                     };
 
@@ -103,6 +106,7 @@ if (sourceEvent === 'ask' ||
                         abArtifactInstanceID: newArtifactInstanceID,
                         abArtifactInstanceOwner,
                         eggParameters,
+                        space,
                         toast: false,
                     };
 

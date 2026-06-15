@@ -58,6 +58,7 @@ if (studioCatalogs.length === 0) {
                     },
                     dependencies: [{ askID: 'studioCatalog' }],
                 },
+                space: 'local',
             });
 
             const name = askContext

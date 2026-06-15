@@ -11,6 +11,7 @@ const {
     abArtifactInstanceIDPrevious,
     abArtifactInstanceOwner = authBot?.id ?? ab.links.remember.tags.abRecordName,
     eggParameters, // Egg paramters that you would like to have passed to the reconsituted bots (optional).
+    space,
     toast = true,
 } = that as ABArtifactReconstituteArg;
 
@@ -112,6 +113,7 @@ try {
                 ignoreReserved: true,
                 sourceEvent: 'reconstitute',
                 eggParameters,
+                space, // Reconstitute the ask's shard bots into the artifact's space (e.g. 'local'). (optional)
                 onPreprocessBeforeCreate: handlePreprocessBeforeCreate
             })
 

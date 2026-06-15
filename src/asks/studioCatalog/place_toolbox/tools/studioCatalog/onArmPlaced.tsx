@@ -9,7 +9,7 @@ if (!tags.studioId) {
     destroy(links.armBot);
 } else {
     thisBot.handleToolMenu(that);  
-    if (!masks.selected) {
-        masks.selected = true;
+    if (!tags.abEquipmentBaseSelected) {
+        ab.links.equipment.onEquipmentBaseSelected(thisBot);
     }
 }

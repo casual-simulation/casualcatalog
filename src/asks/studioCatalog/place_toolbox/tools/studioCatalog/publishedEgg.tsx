@@ -4,8 +4,8 @@ if (egg) {
     return;
 }
 
-if (!masks.selected) {
-    masks.selected = true;
+if (!tags.abEquipmentBaseSelected) {
+    ab.links.equipment.onEquipmentBaseSelected(thisBot);
 }
 
 await os.sleep(0);

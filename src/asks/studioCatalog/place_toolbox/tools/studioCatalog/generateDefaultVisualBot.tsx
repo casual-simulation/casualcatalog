@@ -32,6 +32,11 @@ const book = {
         } else if (baseBot.tags.currentFormAnimation == 'closing') {
             baseBot.tags.currentFormAnimation = 'closed';
             tags.formAnimation = 'closed';
+            
+            const manifestation = getBot(byID(baseBot.tags.abEquipmentFor));
+            if (!manifestation.tags.abEquipmentSelected) {
+                baseBot.hideCatalog();
+            }
         }
     }),
     onAnyBotsRemoved: ListenerString(() => {

@@ -1,5 +1,5 @@
-if (tags.selected && that != thisBot) {
-    masks.selected = null;
+if (tags.abEquipmentBaseSelected && that != thisBot) {
+    ab.links.equipment.onEquipmentBaseDeselected(thisBot);
 }
 
 if (that == thisBot) {

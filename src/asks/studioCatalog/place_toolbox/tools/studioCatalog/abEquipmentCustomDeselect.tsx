@@ -1,0 +1,1 @@
+ab.links.equipment.onEquipmentBaseDeselected(thisBot);

@@ -10,8 +10,3 @@ for (let i = 0; i < connectedBots.length; ++i) {
     connectedBots[i].tags[dimension + 'X'] = prevX + offsetX;
     connectedBots[i].tags[dimension + 'Y'] = prevY + offsetY;
 }
-
-if (links.defaultVisualBot) {
-    links.defaultVisualBot.tags[that.dimension + 'X'] = that.to.x;
-    links.defaultVisualBot.tags[that.dimension + 'Y'] = that.to.y;
-}

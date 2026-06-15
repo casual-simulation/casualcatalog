@@ -26,6 +26,7 @@ const abMod = {
     armSelection: true,
     armGroupDrag: true,
     armTeleport: true,
+    abAllowEquipment: true,
     armMeshPath: links.remember.tags.abArmMeshPath,
     armColor: links.personality.tags.abBaseStrokeColor,
     personality: tags.personality,
@@ -511,5 +512,8 @@ links.remember.masks[dimension + 'ABLastPosition'] = '🧬' + JSON.stringify({ x
 await os.sleep(0); // Give CasualOS a chance to update tag masks.
 
 shout('onABMoved', { dimension, x: position.x, y: position.y });
+
+thisBot.abManifestUserCatalog();
+console.log("manifesting")
 
 return abBot;

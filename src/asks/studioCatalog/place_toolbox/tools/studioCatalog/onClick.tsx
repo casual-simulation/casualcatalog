@@ -18,11 +18,8 @@ const BASE_MENU_TAGS = {
 
 if (tags.studioId) {
 
-    if (tags.selected) {
-        masks.selected = null;
+    if (!tags.abEquipmentBaseSelected) {
         return;
-    } else {
-        masks.selected = true;
     }
 
     const shareButton = {
@@ -59,7 +56,7 @@ if (tags.studioId) {
             displayName: username ? username + "'s" : 'user studio'
         },
         onClick: `@
-            links.place.masks.selected = true;
+            ab.links.equipment.onEquipmentBaseSelected(links.place);
             links.place.setStudio(tags.studioData);
             shout('clearHomePlaceMenu');
         `
@@ -76,7 +73,7 @@ if (tags.studioId) {
                 studioData: studios[i],
                 formAddress: 'radio_button_unchecked',
                 onClick: `@
-                    links.place.masks.selected = true;
+                    ab.links.equipment.onEquipmentBaseSelected(links.place);
                     links.place.setStudio(tags.studioData);
                     shout('clearHomePlaceMenu');
                 `

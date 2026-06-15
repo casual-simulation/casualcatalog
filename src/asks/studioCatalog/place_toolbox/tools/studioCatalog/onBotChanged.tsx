@@ -9,8 +9,16 @@ if (that.tags.includes("color") && tags.color != 'clear') {
     }
 }
 
-if (that.tags.includes("selected")) {
-    if (tags.selected) {
+const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? tags.dimension ?? 'home';
+if (that.tags.includes(dimension + 'X') || that.tags.includes(dimension + 'Y')) {
+    if (links.defaultVisualBot) {
+        links.defaultVisualBot.tags[dimension + 'X'] = tags[dimension + 'X'];
+        links.defaultVisualBot.tags[dimension + 'Y'] = tags[dimension + 'Y'];
+    }
+}
+
+if (that.tags.includes("abEquipmentBaseSelected")) {
+    if (tags.abEquipmentBaseSelected) {
         shout("onStudioCatalogSelected", thisBot);
         thisBot.lockStudio();
         if (!tags.hasCustomMesh && links.defaultVisualBot && tags.currentFormAnimation != 'idle_open' && tags.currentFormAnimation != 'opening') {

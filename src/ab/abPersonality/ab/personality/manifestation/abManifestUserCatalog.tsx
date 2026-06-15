@@ -1,0 +1,45 @@
+//check authbot
+if (!authBot) {
+    await os.requestAuthBotInBackground();
+}
+
+if (!authBot) {
+    return;
+}
+
+let userCatalog = getBot(byTag("studioCatalog", true), byTag("studioId", authBot.id));
+
+if (!userCatalog) {
+    console.log("manifesting user catalog");
+
+    const username = await ab.links.console.getUserName({ canSetPreferredName: false });
+
+    //setup user catalog
+    const userAbArtifactShard = {
+        data: {
+            studioId: authBot.id,
+            label: username ? username + "'s catalog" : 'user studio catalog',
+            autoLoadCasualKit: true,
+            eggParameters: {
+                toolboxBot: null,
+                gridInformation: {
+                    dimension: 'home',
+                }
+            }
+        },
+        dependencies: [
+            {
+                askID: 'studioCatalog'
+            }
+        ]
+    };
+    userCatalog = await ab.links.artifact.abCreateArtifactPromiseBot({
+        abArtifactName: 'studioCatalog',
+        abArtifactInstanceID: uuid(),
+        abArtifactShard: userAbArtifactShard,
+    });
+}
+
+await os.sleep(0);
+
+userCatalog.tags.abEquipmentFor = links.abBot.id;

@@ -9,12 +9,12 @@ delete data.tags.formSubtype;
 delete data.tags.formAddress;
 delete data.tags.formAddressAspectRatio;
 
-// [Ryan] These shouldn't be hardcode but i dont understand whats going on with dimensionData.
+delete data.tags[data.tags.dimension];
+delete data.tags[data.tags.dimension + 'X'];
+delete data.tags[data.tags.dimension + 'Y'];
+delete data.tags[data.tags.dimension + 'Z'];
+delete data.tags[data.tags.dimension + 'RotationX'];
+delete data.tags[data.tags.dimension + 'RotationY'];
+delete data.tags[data.tags.dimension + 'RotationZ'];
 delete data.tags.dimension;
-delete data.tags.home;
-delete data.tags.homeX;
-delete data.tags.homeY;
-delete data.tags.homeZ;
-delete data.tags.homeRotationX;
-delete data.tags.homeRotationY;
-delete data.tags.homeRotationZ;
+delete data.tags.respawnPoint;

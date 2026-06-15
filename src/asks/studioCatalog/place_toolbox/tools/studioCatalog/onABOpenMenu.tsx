@@ -45,24 +45,3 @@ const inMap = configBot.tags.mapPortal ? true : false;
 //     onClick: `@links.place.publishStudio(); shout('abMenuRefresh');`
 // });
 
-
-if (inMap) {
-    
-    menuGroup.menuItems.push({
-        formAddress: 'open_with',
-        label: 'move catalog to current location',
-        onClick: `@links.place.moveStudioToLocation(); shout('abMenuRefresh');`
-    });
-
-
-    if (!tags.respawnPoint) {
-        //set home
-        menuGroup.menuItems.push({
-            formAddress: 'home',
-            label: 'set as home',
-            onClick: `@shout("setHomePlace", thisBot); shout('abMenuRefresh');`
-        }); 
-    }
-}
-
-ab.links.menu.abCreateMenuGroup(menuGroup);

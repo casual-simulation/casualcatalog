@@ -18,7 +18,7 @@ const BASE_MENU_TAGS = {
 
 if (tags.studioId) {
 
-    if (!tags.abEquipmentBaseSelected) {
+    if (tags.abEquipmentBaseSelected) {
         return;
     }
 

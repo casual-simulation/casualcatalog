@@ -21,13 +21,12 @@ if (that.tags.includes("abEquipmentBaseSelected")) {
     if (tags.abEquipmentBaseSelected) {
         shout("onStudioCatalogSelected", thisBot);
         thisBot.lockStudio();
-        if (!tags.hasCustomMesh && links.defaultVisualBot && tags.currentFormAnimation != 'idle_open' && tags.currentFormAnimation != 'opening') {
-            tags.currentFormAnimation = 'opening';
+        if (!tags.hasCustomMesh && links.defaultVisualBot && tags.currentFormAnimation != 'open') {
+            tags.currentFormAnimation = 'open';
             tags.scaleX = 1.5;
             tags.scaleY = 2;
             links.defaultVisualBot.tags.formAnimation = null;
-            links.defaultVisualBot.tags.formAnimation = "opening";
-            os.startFormAnimation(links.defaultVisualBot, "opening", {clampWhenFinished: true});
+            links.defaultVisualBot.tags.formAnimation = ["opening", "idle_open"];
             if (masks.scaleX) {
                 await os.sleep(0);
                 thisBot.onPointerEnter();
@@ -36,12 +35,12 @@ if (that.tags.includes("abEquipmentBaseSelected")) {
     } else {
         shout("onStudioCatalogDeselected", thisBot);
         thisBot.moveStudio();
-        if (!tags.hasCustomMesh && tags.currentFormAnimation != 'closed' && tags.currentFormAnimation != 'closing') {
+        if (!tags.hasCustomMesh && tags.currentFormAnimation != 'closed') {
+            tags.currentFormAnimation = 'closed';
             tags.scaleX = 1.5;
             tags.scaleY = 1;
             links.defaultVisualBot.tags.formAnimation = null;
-            tags.currentFormAnimation = 'closing';
-            os.startFormAnimation(links.defaultVisualBot, "closing", {clampWhenFinished: true});
+            links.defaultVisualBot.tags.formAnimation = ["closing", "closed"];
             if (masks.scaleX) {
                 await os.sleep(0);
                 thisBot.onPointerEnter();

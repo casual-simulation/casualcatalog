@@ -80,3 +80,6 @@ if (!tags.studioId) {
 }
 
 thisBot.onABMoved();
+if (!ab?.links.manifestation?.links.abBot?.tags.abEquipmentBaseSelected) {
+    ab?.links.equipment?.onEquipmentBaseSelected(ab?.links.manifestation?.links.abBot);
+}

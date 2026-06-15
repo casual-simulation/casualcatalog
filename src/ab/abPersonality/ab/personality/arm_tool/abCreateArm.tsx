@@ -47,30 +47,7 @@ const arm = {
         links.originBot.masks.armBot = getLink(thisBot);
         links.originBot.masks.draggable = tags.multiSelect;
 
-        if (tags.armMeshPath && !tags.multiSelect) {
-            if (tags.armMeshPath.startsWith('https://')) {
-                tags.formAddress = tags.armMeshPath;
-            } else {
-                tags.formAddress = ab.abBuildCasualCatalogURL(tags.armMeshPath);
-            }
-
-            tags.form = 'mesh';
-            tags.formSubtype = 'gltf';
-            tags.anchorPoint = 'center';
-            tags.color = tags.armColor;
-            tags.scale = 0.9999; // There is a really strange bug that if this is left undefined or set to 1 exactly, the arm will sometimes disappear.
-        } else {
-            tags.strokeColor = tags.armColor;
-            tags.form = 'cube';
-            tags.color = 'clear';
-            tags.scale = 0.9;
-            tags.scaleZ = 0.01;
-
-            if (tags.multiSelect) {
-                tags.form = 'sphere';
-                tags.color = tags.armColor;
-            }
-        }
+        thisBot.setArmForm(tags.multiSelect);
 
         // Make the origin bot unselectable for 1/4 of a second.
         // This helps prevent unintentional self-selection of the origin bot.
@@ -122,6 +99,47 @@ const arm = {
             if (tags.multiSelect) {
                 masks.color = 'clear';
             }
+        }
+    }),
+    setArmForm: ListenerString(() => {
+        const multiSelect = that;
+
+        // Every form tag listed once, defaulted to the single-select cube;
+        // forms below override only their differences. The loop writes every
+        // key each call (null clears), so switching forms leaves nothing stale.
+        const formTags = {
+            form: 'cube',
+            formAddress: null,
+            formSubtype: null,
+            anchorPoint: null,
+            color: 'clear',
+            strokeColor: tags.armColor,
+            scale: 0.9,
+            scaleZ: 0.01,
+        };
+
+        if (tags.armMeshPath && !multiSelect) {
+            formTags.form = 'mesh';
+
+            if (tags.armMeshPath.startsWith('https://')) {
+                formTags.formAddress = tags.armMeshPath;
+            } else {
+                formTags.formAddress = ab.abBuildCasualCatalogURL(tags.armMeshPath);
+            }
+            
+            formTags.formSubtype = 'gltf';
+            formTags.anchorPoint = 'center';
+            formTags.color = tags.armColor;
+            formTags.strokeColor = null;
+            formTags.scale = 0.9999; // There is a really strange bug that if this is left undefined or set to 1 exactly, the arm will sometimes disappear.
+            formTags.scaleZ = null;
+        } else if (multiSelect) {
+            formTags.form = 'sphere';
+            formTags.color = tags.armColor;
+        }
+
+        for (const key in formTags) {
+            tags[key] = formTags[key];
         }
     }),
     onClick: ListenerString(() => {
@@ -243,8 +261,12 @@ const arm = {
 
             whisper(links.originBot, 'onArmPlaced', { dimension: that.to.dimension, x: that.to.x, y: that.to.y, z: that.to.z });
             shout('onAnyArmPlaced', { originBot: links.originBot, dimension: that.to.dimension, x: that.to.x, y: that.to.y, z: that.to.z });
+
+            // The arm stays on the grid after a grid drop; render it as a
+            // single-select arm instead of the multi-select.
+            thisBot.setArmForm(false);
         }
-        
+
     }),
     onGridClick: ListenerString(() => {
         thisBot.originClearSelection();

@@ -1,3 +1,3 @@
 os.stopFormAnimation(links.defaultVisualBot);
 thisBot.showCatalog();
-ab.links.equipment.onEquipmentBaseSelected(thisBot);
+//ab.links.equipment.onEquipmentBaseSelected(thisBot);

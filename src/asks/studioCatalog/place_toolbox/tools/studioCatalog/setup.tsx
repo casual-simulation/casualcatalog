@@ -67,6 +67,11 @@ if (!tags.studioId && authBot) {
     }
 }
 
+thisBot.onABMoved();
+if (!ab?.links.manifestation?.links.abBot?.tags.abEquipmentBaseSelected) {
+    ab?.links.equipment?.onEquipmentBaseSelected(ab?.links.manifestation?.links.abBot);
+}
+
 shout('onStudioCatalogSetup', thisBot);
 
 if (data.autoLoadCasualKit) {
@@ -77,9 +82,4 @@ if (data.autoLoadCasualKit) {
 if (!tags.studioId) {
     // If the bot doesn't have a studioId, automatically open the studio select menu.
     thisBot.onClick();
-}
-
-thisBot.onABMoved();
-if (!ab?.links.manifestation?.links.abBot?.tags.abEquipmentBaseSelected) {
-    ab?.links.equipment?.onEquipmentBaseSelected(ab?.links.manifestation?.links.abBot);
 }

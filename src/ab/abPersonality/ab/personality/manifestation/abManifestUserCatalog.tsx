@@ -1,3 +1,7 @@
+if (!ab?.abIsPrimary() || tags.creatingUserCatalog) {
+    return;
+}
+
 //check authbot
 if (!authBot) {
     await os.requestAuthBotInBackground();
@@ -10,6 +14,7 @@ if (!authBot) {
 let userCatalog = getBot(byTag("studioCatalog", true), byTag("studioId", authBot.id));
 
 if (!userCatalog) {
+    masks.creatingUserCatalog = true;
     console.log("manifesting user catalog");
 
     const username = await ab.links.console.getUserName({ canSetPreferredName: false });
@@ -42,5 +47,6 @@ if (!userCatalog) {
     await os.sleep(0);
 
     userCatalog.tags.abEquipmentFor = links.abBot.id;
-    ab.links.equipment.positionEquipment(links.abBot);
+    masks.creatingUserCatalog = null;
+    //ab.links.equipment.positionEquipment(links.abBot);
 }

@@ -34,11 +34,23 @@ const menuGroup = {
             labelColor: 'black',
             label: 'factory reset homeworld',
             onClick: `@links.place.factoryResetHomeWorld(); shout('clearHomePlaceMenu');`
-        }
+        },
     ]
 }
 
 //If not home base
 if (tags.homeBase == true) {
     ab.links.menu.abCreateMenuGroup(menuGroup);
+}
+
+if (!tags.respawnPoint) {
+    //set home
+    const respawnButton = {
+        ...menuOptions,
+        formAddress: 'home',
+        label: 'set as home',
+        onClick: `@shout("setHomePlace", links.place); shout('abMenuRefresh');`
+    }; 
+
+    ab.links.menu.abCreateMenuButton(respawnButton);
 }

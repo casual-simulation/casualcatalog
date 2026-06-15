@@ -12,6 +12,7 @@ tags.form = data.form ?? 'mesh';
 tags.formSubtype = data.formSubtype ?? "gltf";
 tags.formAddress = data.formAddress ?? ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_icon.glb');;
 tags.formAddressAspectRatio = data.formAddressAspectRatio;
+tags.respawnPoint = data.respawnPoint;
 
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {

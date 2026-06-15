@@ -5,7 +5,7 @@ if (!links.learn.abIsPrimary()) {
 if (that.portal == "mapPortal") {
     if (that.dimension) {
         // Override the mapZoomPosition with the homeBase position (if available).
-        const homeBase = getBot(byTag("studioCatalog", true), byTag("respawnPoint", true)); 
+        const homeBase = getBot(byTag("respawnPoint", true)); 
 
         if (tags.debug) {
             console.log(`[${tags.system}.${tagName}] homeBase:`, homeBase);

@@ -2,6 +2,7 @@ const shard: ABArtifactShard = {
     data: {
         homeBase: tags.homeBase,
         label: tags.placeLabel,
+        respawnPoint: tags.respawnPoint,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

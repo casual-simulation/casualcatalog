@@ -1,3 +1,8 @@
+if (!that.base?.tags.abEquipmentBaseSelected) {
+    thisBot.onEquipmentBaseSelected(that.base);
+    return;
+}
+
 for (let i = 0; i < that.equipment?.length; ++i) {
     const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? that.base?.tags.dimension ?? "home";
     const isMap = configBot.tags.mapPortal ? true : false;
@@ -12,8 +17,6 @@ for (let i = 0; i < that.equipment?.length; ++i) {
         radius: rad,
         spacing: space,
     });
-
-    console.log("equip", pos, that, dimension)
 
     that.equipment[i].tags[dimension + 'X'] = pos.x ?? 0;
     that.equipment[i].tags[dimension + 'Y'] = pos.y ?? 0;

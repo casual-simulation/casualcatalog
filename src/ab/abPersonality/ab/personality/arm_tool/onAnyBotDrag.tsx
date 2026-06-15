@@ -20,13 +20,26 @@ if (dragBot.tags.armSelection) {
         }
     }
 
-    const multiSelectKeyHeld = os.getInputState('keyboard', 'Shift');
+    
+    let multiSelect;
+    
     const multiSelectAllowed = dragBot.tags.armMultiSelect ?? true;
+    if (multiSelectAllowed) {
+        const multiSelectDefault = dragBot.tags.armMultiSelectDefault ?? true;
+        multiSelect = multiSelectDefault;
+
+        const modeShiftKeyHeld = os.getInputState('keyboard', 'Shift');
+        if (modeShiftKeyHeld) {
+            multiSelect = !multiSelect;
+        }
+    } else {
+        multiSelect = false;
+    }
 
     const armBot = thisBot.abCreateArm({
         originBot: dragBot,
         dimension,
-        multiSelect: multiSelectKeyHeld && multiSelectAllowed,
+        multiSelect,
     })
 
     os.replaceDragBot(armBot);

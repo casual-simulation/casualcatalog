@@ -9,13 +9,13 @@ const attachments = askContext.attachments ?? [];
 // This gate only applies to direct user submissions (chat send, voice input). Re-entrant
 // calls from agent tools that spawn new plan todos (e.g. scaleModelPowerup's useTodoPlan)
 // must be allowed through, otherwise the agent's own work would block itself.
-const pendingTodos = getBots(b => b.tags.abPatchTodoInstance && !b.tags.todoApproved);
+const userPendingTodos = getBots(b => b.tags.ownerId === authBot?.id && b.tags.abPatchTodoInstance && !b.tags.todoApprove);
 
-if (askContext.userInitiated && pendingTodos.length > 0) {
+if (askContext.userInitiated && userPendingTodos.length > 0) {
     const name = thisBot.abAskHelperGetAgentName({ askContext });
     const avatar = thisBot.abAskHelperGetAgentAvatar({ askContext });
 
-    const approvalTodo = pendingTodos.find(b => b.tags.isUserApprovalTodo);
+    const approvalTodo = userPendingTodos.find(b => b.tags.isUserApprovalTodo);
     if (approvalTodo) {
         os.focusOn(approvalTodo, { duration: approvalTodo.tags.todoFocusDuration }).catch(() => {});
         ab.links.todo.abPatchTodoMenuOpen(approvalTodo);
@@ -29,7 +29,7 @@ if (askContext.userInitiated && pendingTodos.length > 0) {
         ab.links.utils.abLog({
             name,
             avatar,
-            message: `There ${pendingTodos.length === 1 ? 'is' : 'are'} still ${pendingTodos.length} todo${pendingTodos.length === 1 ? '' : 's'} in progress. Wait for the current work to finish (or cancel it) before making a new request.`,
+            message: `There ${userPendingTodos.length === 1 ? 'is' : 'are'} still ${userPendingTodos.length} todo${userPendingTodos.length === 1 ? '' : 's'} in progress. Wait for the current work to finish (or cancel it) before making a new request.`,
             space: 'shared',
         });
     }

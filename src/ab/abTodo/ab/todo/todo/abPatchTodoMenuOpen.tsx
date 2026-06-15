@@ -70,6 +70,16 @@ menuOptions.menuItems.push({
     onClick: ListenerString(() => { ab.links.todo.onABPatchPromptClick(links.patchBot); }),
 });
 
+// Owner attribution — sits directly under the prompt label
+if (todoBot.tags.ownerDisplayName) {
+    menuOptions.menuItems.push({
+        label: todoBot.tags.ownerDisplayName,
+        menuItemType: 'text',
+        formAddress: 'person',
+        menuItemStyle: { 'padding-top': '2px', 'padding-bottom': '2px' },
+    });
+}
+
 // Attachments (read-only) — only shown when the todo has attachments
 const todoAttachments: ABAttachment[] = todoBot.tags.attachments ?? [];
 if (todoAttachments.length > 0) {

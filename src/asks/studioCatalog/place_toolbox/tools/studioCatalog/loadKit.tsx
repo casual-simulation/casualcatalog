@@ -76,7 +76,6 @@ try {
             toolbox_name: expectedLabel,
             gridInformation: gridInformation,
         },
-        space: thisBot.space,
     });
 
     const reconstituteResult = await reconstitutionPromise;

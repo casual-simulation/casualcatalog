@@ -34,6 +34,7 @@ if (!userCatalog) {
         ]
     };
     userCatalog = await ab.links.artifact.abCreateArtifactPromiseBot({
+        space: 'local',
         abArtifactName: 'studioCatalog',
         abArtifactInstanceID: uuid(),
         abArtifactShard: userAbArtifactShard,
@@ -43,3 +44,4 @@ if (!userCatalog) {
 await os.sleep(0);
 
 userCatalog.tags.abEquipmentFor = links.abBot.id;
+ab.links.equipment.positionEquipment(links.abBot);

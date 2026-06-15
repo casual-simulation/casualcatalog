@@ -45,6 +45,8 @@ if (that.tags.includes("abEquipmentBaseSelected")) {
                 await os.sleep(0);
                 thisBot.onPointerEnter();
             }
+            await os.sleep(600);
+            links.defaultVisualBot.tags.formAnimation = 'closed';
         }
     }
 }

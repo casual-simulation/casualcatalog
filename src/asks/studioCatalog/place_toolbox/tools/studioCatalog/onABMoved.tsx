@@ -1,0 +1,1 @@
+tags.abEquipmentFor = ab.links.manifestation.links.abBot.id;

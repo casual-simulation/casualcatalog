@@ -514,6 +514,5 @@ await os.sleep(0); // Give CasualOS a chance to update tag masks.
 shout('onABMoved', { dimension, x: position.x, y: position.y });
 
 thisBot.abManifestUserCatalog();
-console.log("manifesting")
 
 return abBot;

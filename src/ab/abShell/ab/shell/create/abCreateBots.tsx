@@ -9,6 +9,7 @@ let {
     ignoreGridFocus, // Ryan Cook: adding this as an optional flag. (optional)
     onPreprocessBeforeCreate, // callback function that can be used to preprocess the bot data before the bots are created. (optional)
     sourceEvent, // sourceEvent is an event name that symbolizes what triggered this call to abCreateBots. (optional).
+    space, // bot space to create all bots into (e.g. 'local'). When undefined, bots default to 'shared'. (optional)
 } = that;
 
 // Backwards compatibility for when abCreateBots expected "bots" parameter.
@@ -65,8 +66,8 @@ for (const key in botData) {
     const data = botData[key];
 
     if (data.tags) {
-        try { 
-            const newBot = create(data.tags);
+        try {
+            const newBot = create(space ? { space } : {}, data.tags);
 
             idMap.set(data.id, newBot.id);
             newBots.push(newBot);
@@ -136,7 +137,7 @@ if (origin) {
 }
 
 const abEgg = create({
-    space: "shared",
+    space: space ?? "shared",
     ab: true,
     abEgg: true,
     abIgnore: true,
@@ -172,7 +173,9 @@ whisper(newBots, "onEggHatch", { ab: origin, version, inst: ab.tags.abInst, botI
 superShout("onABAdded", { ab: origin, version, inst: ab.tags.abInst, botIds: newBotIds, sourceEvent });
 superShout("onAbAdded", { ab: origin, version, inst: ab.tags.abInst, botIds: newBotIds, sourceEvent }); // Backwards compatibility.
 
-if (os.isCollaborative()) {
+const isSyncedSpace = !space || space === 'shared' || space === 'tempShared' || space === 'remoteTempShared';
+
+if (isSyncedSpace && os.isCollaborative()) {
     // Remote shout to all other connected remotes that a remote has added an ab.
     const remoteIds = (await os.remotes()).filter(id => id !== configBot.id)
     sendRemoteData(remoteIds, 'remote_ab_added', { ab: origin, version, inst: ab.tags.abInst, botIds: newBotIds, sourceEvent, abEggId: abEgg.id });

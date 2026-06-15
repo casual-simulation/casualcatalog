@@ -67,5 +67,6 @@ if (!homeBot) {
         abArtifactName: 'studioCatalog',
         abArtifactInstanceID: uuid(),
         abArtifactShard: userAbArtifactShard,
+        space: 'local',
     });
 }

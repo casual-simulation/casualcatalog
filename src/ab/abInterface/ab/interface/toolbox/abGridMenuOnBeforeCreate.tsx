@@ -21,6 +21,7 @@ const menuItems = [
                 abArtifactName: "studioCatalog",
                 abArtifactInstanceID: uuid(),
                 abArtifactShard,
+                space: 'local',
             });
 
             const abBot = ab.links.manifestation.links.abBot;

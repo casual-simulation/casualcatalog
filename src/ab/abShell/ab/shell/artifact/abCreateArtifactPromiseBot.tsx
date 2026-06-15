@@ -3,7 +3,7 @@ const {
     abArtifactInstanceID,
     abArtifactShard,
     abArtifactInstanceOwner = authBot?.id ?? ab.links.remember.tags.abRecordName,
-    space = 'shared',
+    space, // bot space to reconstitute the artifact into (e.g. 'local'). Defaults to 'shared' when undefined. (optional)
 } = that ?? {};
 
 

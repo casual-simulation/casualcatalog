@@ -7,6 +7,7 @@ const showIndicator = that?.showIndicator ?? true;
 const autoHatch = that?.autoHatch ?? true;
 const eggParameters = that?.eggParameters;
 const sourceEvent = that?.sourceEvent;
+const space = that?.space;
 const onPreprocessBeforeCreate = that?.onPreprocessBeforeCreate;
 const ignoreReserved = that?.ignoreReserved;
 const dataOnly = that?.dataOnly ?? false;
@@ -71,11 +72,12 @@ try {
                 }
             } else {
                 // Casual catalog response is a v1 aux file.
-                const newBots = await links.create.abCreateBots({ 
+                const newBots = await links.create.abCreateBots({
                     bots: casualCatalogResponse.data.state,
                     ignoreGridFocus: true,
                     origin: askID,
                     eggParameters,
+                    space,
                     onPreprocessBeforeCreate,
                     sourceEvent,
                 });

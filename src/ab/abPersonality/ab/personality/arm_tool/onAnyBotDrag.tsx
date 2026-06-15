@@ -3,7 +3,7 @@ const dimension = that.from.dimension;
 
 if (dragBot.tags.armSelection) {
     if (dragBot.masks.armBot) {
-        if (dragBot.links.armBot.tags.multiSelect && dragBot.links.armSelectedBots && dragBot.tags.armGroupDrag) {
+        if (dragBot.links.armBot.tags.multiSelect && Array.isArray(dragBot.links.armSelectedBots) && dragBot.tags.armGroupDrag) {
             if (tags.debug) {
                 console.log(`[${tags.system}.${tagName}] enable custom dragging`);
             }
@@ -25,7 +25,7 @@ if (dragBot.tags.armSelection) {
     
     const multiSelectAllowed = dragBot.tags.armMultiSelect ?? true;
     if (multiSelectAllowed) {
-        const multiSelectDefault = dragBot.tags.armMultiSelectDefault ?? true;
+        const multiSelectDefault = dragBot.tags.armMultiSelectDefault ?? false;
         multiSelect = multiSelectDefault;
 
         const modeShiftKeyHeld = os.getInputState('keyboard', 'Shift');

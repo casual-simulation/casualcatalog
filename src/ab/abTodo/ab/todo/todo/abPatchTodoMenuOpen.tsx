@@ -73,7 +73,7 @@ menuOptions.menuItems.push({
 // Owner attribution — sits directly under the prompt label
 if (todoBot.tags.ownerDisplayName) {
     menuOptions.menuItems.push({
-        label: todoBot.tags.ownerDisplayName,
+        label: `owner: ${todoBot.tags.ownerDisplayName}`,
         menuItemType: 'text',
         formAddress: 'person',
         menuItemStyle: { 'padding-top': '2px', 'padding-bottom': '2px' },

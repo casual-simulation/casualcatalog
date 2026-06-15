@@ -19,10 +19,20 @@ const todoDir = { x: 0, y: 1, z: 0 };
 const todoSpacing = tags.todoSpacing ?? 2;
 
 let todoParentId;
+let parentBot = null;
 
 if (parentTodoBot) {
+    parentBot = typeof parentTodoBot === 'string' ? getBot('id', parentTodoBot) : parentTodoBot;
     todoParentId = typeof parentTodoBot === 'string' ? parentTodoBot : parentTodoBot.id;
 }
+
+// Owner + base color form an inheritance chain. Child todos (made by an agent executing a
+// parent todo) inherit the parent's owner and color so the chain stays consistent no matter
+// which user is currently driving the agent cycle. The top-of-chain user request todo (no
+// parent) takes its owner from the current user and its color from ab's personality.
+const todoOwnerId = parentBot ? parentBot.tags.ownerId : authBot?.id;
+const todoOwnerDisplayName = parentBot ? parentBot.tags.ownerDisplayName : await ab.links.console.getUserName();
+const todoBaseColor = parentBot ? parentBot.tags.todoBaseColor : ab.links.personality.tags.abBaseColor;
 
 let todoDimension = abDimension;
 let todoBasePosition = { x: abPosition.x ?? 0, y: abPosition.y ?? 0, z: 0 };
@@ -95,7 +105,9 @@ for (let i = 0; i < todos.length; i++) {
             todoPlanId,
             todoOrder: i,
             todoParentId,
-            todoBaseColor: ab.links.personality.tags.abBaseColor,
+            todoBaseColor,
+            ownerId: todoOwnerId,
+            ownerDisplayName: todoOwnerDisplayName,
             todoShowArrow: true,
             focusMenuType: menuType,
             focusMenuActionData: menuActionData,

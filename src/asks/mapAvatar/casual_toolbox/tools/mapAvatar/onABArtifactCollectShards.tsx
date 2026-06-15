@@ -10,6 +10,7 @@ const shard: ABArtifactShard = {
             [ab.links.remember.tags.abActiveDimension + 'RotationX']: tags[ab.links.remember.tags.abActiveDimension + 'RotationX'],
             [ab.links.remember.tags.abActiveDimension + 'RotationY']: tags[ab.links.remember.tags.abActiveDimension + 'RotationY'],
             [ab.links.remember.tags.abActiveDimension + 'RotationZ']: tags[ab.links.remember.tags.abActiveDimension + 'RotationZ'],
+            prevID: thisBot.id
         },
         labelFloatingBackgroundColor: tags.labelFloatingBackgroundColor,
         labelColor: tags.labelColor,

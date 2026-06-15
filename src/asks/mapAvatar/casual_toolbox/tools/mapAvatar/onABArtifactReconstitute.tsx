@@ -21,6 +21,7 @@ tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? 'white';
 tags.strokeColor = data.strokeColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
+tags.prevID = data.prevID;
 changeState(thisBot, false, "selected");
 
 thisBot.setIcon(data.formAddress);
@@ -56,3 +57,5 @@ if (configBot.tags.mapPortal && links.homeworld?.tags.usingGPS) {
 if (data.clickOnLoad) {
     thisBot.onClick();
 }
+
+shout("abEquipmentBaseReconstituted", thisBot);

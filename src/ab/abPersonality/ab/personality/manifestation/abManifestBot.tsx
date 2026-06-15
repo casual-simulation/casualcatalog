@@ -26,6 +26,7 @@ const abMod = {
     armSelection: true,
     armGroupDrag: true,
     armTeleport: true,
+    armMultiSelectDefault: true,
     abAllowEquipment: true,
     armMeshPath: links.remember.tags.abArmMeshPath,
     armColor: links.personality.tags.abBaseStrokeColor,

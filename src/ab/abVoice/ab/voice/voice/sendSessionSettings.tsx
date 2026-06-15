@@ -22,7 +22,7 @@ const user_focus = ab.links.remember.links.abMultipleBotFocus ??
                    null;
                    
 const catalog = await ab.links.ask.abAskToolGetCatalog();
-const scene_data = ab.links.ask.abAskToolGetInst();
+const scene_data = ab.links.ask.abAskToolGetInstBots();
 
 const variables = { name, personalization_prompt, prime_directive_prompt, inst_directive_prompt, catalog, user_focus, scene_data };
 

@@ -26,6 +26,13 @@
         "artifact": true
     },
     {
+        "name": "catalog",
+        "studio": "AB",
+        "targetAB": "studioCatalog",
+        "formAddress": "menu_book",
+        "artifact": true
+    },
+    {
         "name": "avatar",
         "studio": "AB",
         "targetAB": "mapAvatar",

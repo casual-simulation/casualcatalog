@@ -12,7 +12,7 @@ if (!masks.initialized && tags.abArtifactShardReconstituted && masks.abInitializ
         os.sleep(100).then(() => {
             let anim = 'appear';
             const catalog = getBot(byID(tags.lineTo));
-            if (catalog && !catalog.tags.selected) {
+            if (catalog && !catalog.tags.abEquipmentBaseSelected) {
                 anim = 'disappear'
             }
             // Fixes a timing issue where the form briefly plays the incorrect animation when first initializing.

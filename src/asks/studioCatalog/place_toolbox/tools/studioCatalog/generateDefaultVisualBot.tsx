@@ -34,7 +34,7 @@ const book = {
             tags.formAnimation = 'closed';
             
             const manifestation = getBot(byID(baseBot.tags.abEquipmentFor));
-            if (!manifestation.tags.abEquipmentSelected) {
+            if (manifestation && !manifestation.tags.abEquipmentBaseSelected) {
                 baseBot.hideCatalog();
             }
         }

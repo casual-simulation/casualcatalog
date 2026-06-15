@@ -39,9 +39,8 @@ if (!userCatalog) {
         abArtifactInstanceID: uuid(),
         abArtifactShard: userAbArtifactShard,
     });
+    await os.sleep(0);
+
+    userCatalog.tags.abEquipmentFor = links.abBot.id;
+    ab.links.equipment.positionEquipment(links.abBot);
 }
-
-await os.sleep(0);
-
-userCatalog.tags.abEquipmentFor = links.abBot.id;
-ab.links.equipment.positionEquipment(links.abBot);

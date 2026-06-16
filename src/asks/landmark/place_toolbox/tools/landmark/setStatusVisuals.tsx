@@ -4,8 +4,8 @@ if (tags.discovered) {
     tags.label = tags.landmarkName;
     tags.scale = 9;
 } else {
-    tags.color = '#FFDE28';
-    tags.labelFloatingBackgroundColor = '#FFDE28';
+    tags.color = '#FF9F19';
+    tags.labelFloatingBackgroundColor = '#FF9F19';
     tags.label = null;
     tags.scale = 27;
 }

@@ -41,7 +41,9 @@ if(state)
 }
 else
 {
-    await os.closeCircleWipe();
+    await os.closeCircleWipe({
+        color: abPersonality.tags.abBaseColor
+    });
     configBot.tags.mapPortal = "${currentDim == "blueprint" ? "home" : currentDim}";
     configBot.tags.miniMapPortal = null;
 }`;
@@ -67,7 +69,9 @@ if(state)
 } 
 else
 {
-    await os.closeCircleWipe();
+    await os.closeCircleWipe({
+        color: abPersonality.tags.abBaseColor
+    });
     configBot.tags.gridPortal = "${currentDim == "blueprint" ? "home" : currentDim}"; configBot.tags.mapPortal = null;
 }`;
 
@@ -93,9 +97,13 @@ if(state)
 } 
 else
 {
-    await os.closeCircleWipe();
+    await os.closeCircleWipe({
+        color: abPersonality.tags.abBaseColor
+    });
     configBot.tags.gridPortal = "blueprint"; configBot.tags.mapPortal = null;
-    await os.openCircleWipe();
+    await os.openCircleWipe({
+        color: abPersonality.tags.abBaseColor
+    });
 }
 
 links.skillBot.abBlueprint();`;
@@ -122,7 +130,9 @@ if(state)
 } 
 else
 { 
-    await os.closeCircleWipe();
+    await os.closeCircleWipe({
+        color: abPersonality.tags.abBaseColor
+    });
     configBot.tags.sheetPortal = "${currentDim}";
 }`;
 
@@ -146,7 +156,9 @@ if(state)
 } 
 else
 { 
-    await os.closeCircleWipe();
+    await os.closeCircleWipe({
+        color: abPersonality.tags.abBaseColor
+    });
     configBot.tags.systemPortal = true;
 }`;
 

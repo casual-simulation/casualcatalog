@@ -41,7 +41,9 @@ if(state)
 }
 else
 {
-    await os.closeCircleWipe();
+    await os.closeCircleWipe({
+        color: abPersonality.tags.abBaseColor
+    });
     configBot.tags.mapPortal = "${currentDim == "blueprint" ? "home" : currentDim}";
     configBot.tags.miniMapPortal = null;
 }`;

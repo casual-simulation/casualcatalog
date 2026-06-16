@@ -70,6 +70,7 @@ if (!tags.studioId && authBot) {
 thisBot.onABMoved();
 if (!ab?.links.manifestation?.links.abBot?.tags.abEquipmentBaseSelected) {
     ab?.links.equipment?.onEquipmentBaseDeselected(thisBot);
+    thisBot.hideCatalog();
 }
 
 shout('onStudioCatalogSetup', thisBot);

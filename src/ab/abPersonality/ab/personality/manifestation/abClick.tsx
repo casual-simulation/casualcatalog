@@ -26,6 +26,7 @@ else {
     const abMenuBots = getBots("abMenu", true);
 
     whisper(abMenuBots, "abMenuRefresh");
+    shout("abNavigationMenuRefresh");
 
     clearInterval(links.abBot.tags.interval);
 

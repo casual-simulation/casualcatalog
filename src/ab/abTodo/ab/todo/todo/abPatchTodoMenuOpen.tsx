@@ -49,6 +49,7 @@ const anyReady   = planTodos.some(b => b.tags.todoReadyForAgent);
 const isApproved = !!todoBot.tags.todoApproved;
 const notStarted = !anyReady && !allCompleted && !anyFailed;
 const isBusy     = anyReady && !allCompleted && !anyFailed;
+const isUserRequesstTodo = todoBot.tags.agentMode === 'plan';
 
 const menuOptions = {
     abPatchTodoMenu: true,
@@ -144,7 +145,7 @@ if (isApproved) {
         onClick: ListenerString(() => { ab.links.todo.onAssignAgentsClick(links.patchBot); }),
     });
     menuOptions.menuItems.push({
-        label: 'cancel plan',
+        label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
         formAddress: 'cancel',
         onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
     });
@@ -157,7 +158,7 @@ if (isApproved) {
         label: 'agents working',
     });
     menuOptions.menuItems.push({
-        label: 'cancel plan',
+        label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
         formAddress: 'cancel',
         onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
     });
@@ -175,7 +176,7 @@ if (isApproved) {
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     });
     menuOptions.menuItems.push({
-        label: 'cancel plan',
+        label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
         formAddress: 'cancel',
         onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
     });

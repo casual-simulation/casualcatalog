@@ -24,6 +24,7 @@ tags.ownerId = data.ownerId;
 tags.ownerDisplayName = data.ownerDisplayName;
 tags.isUserAskTodo = data.isUserAskTodo;
 tags.isUserApprovalTodo = data.isUserApprovalTodo;
+tags.isUserRequestTodo = data.isUserRequestTodo;
 tags.todoApprovalForPlanId = data.todoApprovalForPlanId;
 tags.abConversationHistory = data.abConversationHistory;
 tags.todoShowArrow = data.todoShowArrow;

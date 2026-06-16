@@ -46,6 +46,7 @@ const [userRequestTodo] = await thisBot.abAskToolMakeTodos({
 
 if (userRequestTodo) {
     userRequestTodo.tags.agentMode = 'plan';
+    userRequestTodo.tags.isUserRequestTodo = true;
 
     const autoAssignAgent = ab.links.personality.tags.abAutoAssignAgentToTodo ?? true;
 

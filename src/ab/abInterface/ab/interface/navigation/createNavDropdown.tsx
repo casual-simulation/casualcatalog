@@ -2,7 +2,7 @@ const dropdownOptions = [];
 
 const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
-const activeMenu = configBot.tags.menuPortal ?? 'abMenu';
+let activeMenu = that?.menuPortal ?? configBot.tags.menuPortal ?? 'abMenu';
 
 // if (currentPortal != 'map') {
 //     thisBot.masks.abCoreMenuHide = true;

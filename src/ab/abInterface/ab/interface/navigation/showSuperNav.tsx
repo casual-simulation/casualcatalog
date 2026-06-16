@@ -1,6 +1,7 @@
 const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
-let activeMenu = configBot.tags.menuPortal;
+let activeMenu = that?.menuPortal ?? configBot.tags.menuPortal ?? 'abMenu';
+shout("abNavigationMenuRefresh");
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}]: showing nav for ${os.getCurrentInst()}`);
@@ -8,9 +9,8 @@ if (tags.debug) {
 
 masks.navOpen = true;
 
-if (!ab.abIsPrimary()) {
-    configBot.tags.menuPortal = 'abMenu';
-    activeMenu = 'abMenu';
+if (configBot.tags.menuPortal != activeMenu) {
+    configBot.tags.menuPortal = activeMenu;
 }
 
 const menuOptions = {};
@@ -64,7 +64,7 @@ const superNavDropdown = {
     dropdownOptions: []
 }
 
-let dropdownOptions = JSON.parse(await thisBot.createNavDropdown());
+let dropdownOptions = JSON.parse(await thisBot.createNavDropdown(that));
 superNavDropdown.dropdownOptions = [...dropdownOptions];
 
 if (!ab.abIsPrimary()) {

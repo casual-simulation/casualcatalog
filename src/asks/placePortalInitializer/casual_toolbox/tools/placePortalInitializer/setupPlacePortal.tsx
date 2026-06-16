@@ -70,3 +70,21 @@ if (!catalog) {
         space: 'local',
     });
 }
+
+gridPortalBot.tags.portalColor = configBot.tags.portalColor ?? abPersonality.tags.abBaseColor ?? null;
+
+const grid = create({
+    color: 'white',
+    formAddress: 'https://brandplayer-prod-filesbucket-458964701190.s3.amazonaws.com/8980607d-1ff6-4361-8d88-cf7e921f2be7/adc1d4a69ca9039b0c3ee9ebfccbf2b58a735e52f6bc8adc93cded84f62844e2.xml',
+    formOpacity: 0.1,
+    formSubtype: 'gltf',
+    form: 'mesh',
+    home: true,
+    homeX: 0.62,
+    homeY: -0.57,
+    homeZ: -0.01,
+    pointable: false,
+    scaleX: 32,
+    scaleY: 32,
+    scaleZ: 0.001
+})

@@ -18,7 +18,7 @@ if (that == thisBot) {
     // Kits alternate between an inner and outer ring: even spacing, with strong
     // depth separation between neighbours to reduce occlusion under the angled
     // ortho camera.
-    const baseRadius = isMap ? .0005 : 7;    // mid distance (and the odd kit's ring)
+    const baseRadius = isMap ? .0005 : 3;    // mid distance (and the odd kit's ring)
     const radiusSpread = isMap ? .0002 : 1;  // inner = base - spread, outer = base + spread
 
     // Below fullCircleAt, fan the kits across a partial arc in front of the

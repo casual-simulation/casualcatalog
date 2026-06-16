@@ -18,6 +18,7 @@ if (tags.abEquipmentBaseSelected) {
 }
 
 configBot.tags.menuPortal = 'mapAvatar_menu';
+await os.sleep(0);
 
 const menuOptions = {
     mapAvatar_menu: true,

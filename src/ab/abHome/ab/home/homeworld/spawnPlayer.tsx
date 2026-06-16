@@ -33,6 +33,7 @@ if (!avatarBot) {
         ]
     };
     await ab.links.artifact.abCreateArtifactPromiseBot({
+        space: 'tempShared',
         abArtifactName: 'mapAvatar',
         abArtifactInstanceID: uuid(),
         abArtifactShard,

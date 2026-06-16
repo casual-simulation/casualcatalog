@@ -37,7 +37,8 @@
         "studio": "AB",
         "targetAB": "mapAvatar",
         "formAddress": "account_circle",
-        "artifact": true
+        "artifact": true,
+        "space": "tempShared"
     },
     {
         "name": "aux importer",

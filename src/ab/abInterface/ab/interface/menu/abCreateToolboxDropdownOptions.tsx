@@ -34,6 +34,7 @@ for (let tool of toolboxTools) {
         label: tool.name,
         targetAB: tool.targetAB,
         isArtifact: tool.artifact || false,
+        targetSpace: tool.space,
         onClick: ListenerString(() => {
             let toolboxBot = tags.toolbox;
             if (!toolboxBot) {
@@ -56,6 +57,7 @@ for (let tool of toolboxTools) {
                     ]
                 };
                 links.artifact.abCreateArtifactPromiseBot({
+                    space: tags.targetSpace ?? "shared",
                     abArtifactName: tags.targetAB,
                     abArtifactInstanceID: uuid(),
                     abArtifactShard,

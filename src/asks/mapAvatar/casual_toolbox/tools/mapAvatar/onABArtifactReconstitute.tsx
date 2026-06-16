@@ -3,9 +3,11 @@ if (data.config) {
     data = data.config;
 }
 
-const existingAvatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-if (existingAvatarBot && existingAvatarBot != thisBot) {
-    destroy(existingAvatarBot);
+const existingAvatarBot = getBots(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+for (const existingBot of existingAvatarBot) {
+    if (existingBot != thisBot) {
+        destroy(existingAvatarBot);
+    }
 }
 
 await os.sleep(0);

@@ -18,8 +18,8 @@ if (that == thisBot) {
     // Kits alternate between an inner and outer ring: even spacing, with strong
     // depth separation between neighbours to reduce occlusion under the angled
     // ortho camera.
-    const baseRadius = isMap ? .0005 : 3;    // mid distance (and the odd kit's ring)
-    const radiusSpread = isMap ? .0002 : 1;  // inner = base - spread, outer = base + spread
+    const baseRadius = isMap ? .00035 : 3;    // mid distance (and the odd kit's ring)
+    const radiusSpread = isMap ? .000075 : 1;  // inner = base - spread, outer = base + spread
 
     // Below fullCircleAt, fan the kits across a partial arc in front of the
     // catalog — a few evenly-spaced kits read as a rigid polygon, a fan reads
@@ -31,7 +31,7 @@ if (that == thisBot) {
     const isFullCircle = count >= fullCircleAt;
     const span = isFullCircle ? Math.PI * 2 : count * (Math.PI * 2 / fullCircleAt);
 
-    const spacing = isMap ? .0005 : 1;
+    const spacing = isMap ? .00005 : 1;
 
     const roundTo = (v: number) => Math.round(v / spacing) * spacing;
     const toKey = (x: number, y: number) => `${roundTo(x)},${roundTo(y)}`;

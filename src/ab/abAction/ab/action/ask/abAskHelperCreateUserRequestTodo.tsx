@@ -9,7 +9,8 @@ const attachments = askContext.attachments ?? [];
 // This gate only applies to direct user submissions (chat send, voice input). Re-entrant
 // calls from agent tools that spawn new plan todos (e.g. scaleModelPowerup's useTodoPlan)
 // must be allowed through, otherwise the agent's own work would block itself.
-const userPendingTodos = getBots(b => b.tags.ownerId === authBot?.id && b.tags.abPatchTodoInstance && !b.tags.todoApprove);
+const authBot = await os.requestAuthBotInBackground();
+const userPendingTodos = getBots(b => b.tags.ownerId === authBot?.id && b.tags.abPatchTodoInstance && !b.tags.todoApproved);
 
 if (askContext.userInitiated && userPendingTodos.length > 0) {
     const name = thisBot.abAskHelperGetAgentName({ askContext });

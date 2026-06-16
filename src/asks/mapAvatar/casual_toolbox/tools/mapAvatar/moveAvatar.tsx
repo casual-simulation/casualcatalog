@@ -1,15 +1,15 @@
 if (that.dimension != tags.dimension) {
     tags[tags.dimension] = null;
-    links.spriteBot.tags[tags.dimension] = null;
+    // links.spriteBot.tags[tags.dimension] = null;
 
     tags.dimension = that.dimension;
-    links.spriteBot.tags.dimension = that.dimension;
+    // links.spriteBot.tags.dimension = that.dimension;
 }
 
 links.equipment.onEquipmentBaseDeselected(thisBot);
 
 tags[that.dimension] = true;
-links.spriteBot.tags[that.dimension] = true;
+// links.spriteBot.tags[that.dimension] = true;
 
 const prevX = tags[that.dimension + 'X'] ?? 0;
 const prevY = tags[that.dimension + 'Y'] ?? 0;

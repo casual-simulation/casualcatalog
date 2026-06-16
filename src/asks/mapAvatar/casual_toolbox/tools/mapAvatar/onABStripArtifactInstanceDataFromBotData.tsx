@@ -18,3 +18,4 @@ delete data.tags.formAddress;
 delete data.tags.formAddressAspectRatio;
 delete data.tags.strokeColor;
 delete data.tags.prevID;
+delete data.tags.formAnimation;

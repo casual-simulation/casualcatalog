@@ -1,5 +1,5 @@
-if (links.spriteBot) {
-    destroy(links.spriteBot);
-}
+// if (links.spriteBot) {
+//     destroy(links.spriteBot);
+// }
 
 links.equipment.onEquipmentBaseSelected(thisBot);

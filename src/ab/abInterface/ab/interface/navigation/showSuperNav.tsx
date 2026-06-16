@@ -71,5 +71,9 @@ if (!ab.abIsPrimary()) {
     shout("abMenuRefresh");
 }
 if (superNavDropdown.dropdownOptions.length > 0) {
+    const existingBots = getBots(byTag(activeMenu, true), byTag("label", ab.abIsPrimary() ? 'places' : studioName ? studioName + ' places' : os.getCurrentInst() + ' places'));
+    if (existingBots) {
+        destroy(existingBots);
+    }
    ab.links.menu.abCreateMenuDropdown(superNavDropdown); 
 }

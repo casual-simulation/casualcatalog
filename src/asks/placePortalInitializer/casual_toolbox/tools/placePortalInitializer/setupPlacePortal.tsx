@@ -80,11 +80,12 @@ const grid = create({
     formSubtype: 'gltf',
     form: 'mesh',
     home: true,
-    homeX: 0.62,
+    homeX: 0.52,
     homeY: -0.57,
     homeZ: -0.01,
     pointable: false,
     scaleX: 32,
     scaleY: 32,
-    scaleZ: 0.001
+    scaleZ: 0.001,
+    abIgnore: true
 })

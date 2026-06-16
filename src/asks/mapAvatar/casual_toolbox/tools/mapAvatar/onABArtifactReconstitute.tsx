@@ -22,7 +22,7 @@ tags.formAddress = newFormAdd;
 tags.label = label;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
-tags.labelColor = data.labelColor ?? 'white';
+tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black';
 tags.strokeColor = data.strokeColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
 tags.prevID = data.prevID;
 changeState(thisBot, false, "selected");

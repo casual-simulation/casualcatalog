@@ -48,5 +48,6 @@ if (!userCatalog) {
 
     userCatalog.tags.abEquipmentFor = links.abBot.id;
     masks.creatingUserCatalog = null;
+    userCatalog.hideCatalog();
     //ab.links.equipment.positionEquipment(links.abBot);
 }

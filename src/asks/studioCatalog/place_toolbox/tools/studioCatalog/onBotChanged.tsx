@@ -34,13 +34,15 @@ if (that.tags.includes("abEquipmentBaseSelected")) {
             tags.scaleY = 1.7;
 
             //activate opening animation
-            links.defaultVisualBot.tags.formAnimation = ["opening", "idle_open"];
+            if (links.defaultVisualBot.tags.formAnimation != ["opening", "idle_open"]) {
+                links.defaultVisualBot.tags.formAnimation = ["opening", "idle_open"];
+            }
 
             //if pointer scale effect is active
-            if (masks.scaleX) {
-                await os.sleep(0);
-                thisBot.onPointerEnter();
-            }
+            // if (masks.scaleX) {
+            //     await os.sleep(0);
+            //     thisBot.onPointerEnter();
+            // }
         }
     } else {
         //hide attached kits
@@ -58,13 +60,15 @@ if (that.tags.includes("abEquipmentBaseSelected")) {
             tags.scaleY = .7;
 
             //activate closing animation
-            links.defaultVisualBot.tags.formAnimation = ["closing", "closed"];
+            if (links.defaultVisualBot.tags.formAnimation != ["closing", "closed"] && links.defaultVisualBot.tags.formAnimation != "closed") {
+                links.defaultVisualBot.tags.formAnimation = ["closing", "closed"];
+            }
 
             //handle on pointer enter scale effects
-            if (masks.scaleX) {
-                await os.sleep(0);
-                thisBot.onPointerEnter();
-            }
+            // if (masks.scaleX) {
+            //     await os.sleep(0);
+            //     thisBot.onPointerEnter();
+            // }
 
             // await os.sleep(600);
             // links.defaultVisualBot.tags.formAnimation = 'closed';

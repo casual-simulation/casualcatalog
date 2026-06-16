@@ -45,6 +45,16 @@ const book = {
             destroy(thisBot);
         }
     }),
+    onBotChanged: ListenerString(() => {
+        const baseBot = getBot('id', tags.baseBotId);
+        if (that.tags.includes("formAnimation") && baseBot.tags.currentFormAnimation == 'closed') {
+            setTimeout(() => {
+                if (baseBot.tags.currentFormAnimation == 'closed') {
+                    tags.formAnimation = 'closed';
+                }
+            }, [600]);
+        } 
+    })
 }
 
 const bookBot = create(book);

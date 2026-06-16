@@ -11,5 +11,8 @@ if (that.tags.includes(tags.dimension)) {
 }
 
 if (that.tags.includes("color")) {
-    thisBot.createURL();
+    if (tags.instURL) {
+        thisBot.createURL();
+    }
+    tags.labelFloatingBackgroundColor = tags.color;
 }

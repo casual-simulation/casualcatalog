@@ -34,6 +34,7 @@ const abMod = {
     remember: tags.remember,
     learn: tags.learn,
     search: tags.search,
+    abMeshIsStatic: !!links.remember.tags.abMeshIsStatic,
     spinDurationMS: 2000,
     spinIntervalMS: 2000,
     // --- Movement knobs (tile-stepping toward a target, matched to the agent bots) ---
@@ -61,16 +62,9 @@ const abMod = {
         }
 
         if (formAddress) {
-            const animationStateMachineMod = links.manager.generateAnimationStateMachineMod({
-                controllerName: 'abBot',
-                gptSourceId: 'abBot',
-                debugAnim: tags.debug
-            })
-
             const colorize = instStudioConfig?.studio_ab_mesh_colorize !== false;
 
-            // Create the mesh for ab.
-            masks.meshBot = getLink(create({
+            const meshMod = {
                 space: 'tempLocal',
                 abBot: getLink(thisBot),
                 manager: tags.manager,
@@ -85,16 +79,33 @@ const abMod = {
                 anchorPoint: 'center',
                 [tags.dimension]: true,
                 [tags.dimension + 'Z']: -0.5,
-                ...animationStateMachineMod
-            }));
+            };
 
-            // Give abBot a reference to the meshBot changeAnimState function.
-            thisBot.listeners.changeAnimState = links.meshBot.listeners.changeAnimState;
+            if (!tags.abMeshIsStatic) {
+                // Animated mesh: attach the animation state machine so the mesh
+                // plays its own idle/click/etc. animations.
+                Object.assign(meshMod, links.manager.generateAnimationStateMachineMod({
+                    controllerName: 'abBot',
+                    gptSourceId: 'abBot',
+                    debugAnim: tags.debug
+                }));
+            }
+
+            // Create the mesh for ab.
+            masks.meshBot = getLink(create(meshMod));
+
+            if (!tags.abMeshIsStatic) {
+                // Give abBot a reference to the meshBot changeAnimState function.
+                thisBot.listeners.changeAnimState = links.meshBot.listeners.changeAnimState;
+            }
 
             tags.form = 'cube';
             tags.color = 'transparent';
             tags.scale = 1;
-            tags.spinIntervalMS = 4500;
+
+            if (!tags.abMeshIsStatic) {
+                tags.spinIntervalMS = 4500;
+            }
         } else {
             // If a custom mesh is not defined for ab, then give ab a "core".
             masks.coreBot = getLink(create({
@@ -123,7 +134,7 @@ const abMod = {
         masks.interval = setInterval(() => thisBot.animateBot(), tags.spinIntervalMS);
     }),
     onClick: ListenerString(() => {
-        if (links.meshBot) {
+        if (links.meshBot && !tags.abMeshIsStatic) {
             links.meshBot.changeAnimState('Click');
         }
 
@@ -197,7 +208,9 @@ const abMod = {
         gridPortalBot.masks.portalCursor = cursor;
     }),
     animateBot: ListenerString(async () => {
-        if (links.meshBot) {
+        // Animated meshes drive their own motion; static meshes (and ab's core)
+        // get the procedural spin, which rotates the child mesh via transformer.
+        if (links.meshBot && !tags.abMeshIsStatic) {
             return;
         }
 
@@ -399,7 +412,7 @@ const abMod = {
             links.manager.abClick({ reset: true });
         }
 
-        if (links.armBot && links.meshBot) {
+        if (links.armBot && links.meshBot && !tags.abMeshIsStatic) {
             const multiSelect = links.armBot.tags.multiSelect;
             if (multiSelect) {
                 links.meshBot.changeAnimState('SelectMultiBegin');
@@ -419,7 +432,7 @@ const abMod = {
 
         links.manager.abClick({ menu: 'grid' });
 
-        if (links.armBot && links.meshBot) {
+        if (links.armBot && links.meshBot && !tags.abMeshIsStatic) {
             const multiSelect = links.armBot.tags.multiSelect;
             if (multiSelect) {
                 links.meshBot.changeAnimState('SelectMultiEnd');
@@ -442,7 +455,7 @@ const abMod = {
             links.remember.masks.abMultipleBotFocus = getLink(selectedBots);
             links.manager.abClick({ menu: 'multipleBot' });
 
-            if (links.armBot && links.meshBot) {
+            if (links.armBot && links.meshBot && !tags.abMeshIsStatic) {
                 links.meshBot.changeAnimState('SelectMultiEnd');
             }
         } else {
@@ -455,7 +468,7 @@ const abMod = {
                 links.manager.abClick({ menu: 'bot' });
             }
 
-            if (links.armBot && links.meshBot) {
+            if (links.armBot && links.meshBot && !tags.abMeshIsStatic) {
                 links.meshBot.changeAnimState('SelectSingleEnd');
             }
         }

@@ -13,3 +13,7 @@ if (links.defaultVisualBot) {
     links.defaultVisualBot.masks.scaleY = 1.2;
     links.defaultVisualBot.masks.scaleZ = 1.2;
 }
+
+if (!tags.abEquipmentBaseSelected) {
+    ab.links.equipment.onEquipmentBaseSelected(thisBot);
+}

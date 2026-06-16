@@ -13,7 +13,7 @@ const book = {
     [tags.dimension + 'X']: tags[tags.dimension + 'X'],
     [tags.dimension + 'Y']: tags[tags.dimension + 'Y'],
     scaleMode: 'absolute',
-    scale: .7,
+    scale: .5,
     meshPositioningMode: 'absolute',
     pointable: false,
     abIgnore: true,

@@ -34,8 +34,8 @@ if (tags.studioId) {
 
 if (!hasCustomMesh) {
     // tags.formAddress = ab.abBuildCasualCatalogURL('/asks/meshes/hexagon_unlit.glb');
-    tags.scaleX = 1.5;
-    tags.scaleY = 2;
+    tags.scaleX = 1;
+    tags.scaleY = 1.7;
     tags.scaleZ = 1;
     tags.form = null;
 
@@ -69,7 +69,7 @@ if (!tags.studioId && authBot) {
 
 thisBot.onABMoved();
 if (!ab?.links.manifestation?.links.abBot?.tags.abEquipmentBaseSelected) {
-    ab?.links.equipment?.onEquipmentBaseSelected(ab?.links.manifestation?.links.abBot);
+    ab?.links.equipment?.onEquipmentBaseDeselected(thisBot);
 }
 
 shout('onStudioCatalogSetup', thisBot);

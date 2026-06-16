@@ -19,34 +19,55 @@ if (that.tags.includes(dimension + 'X') || that.tags.includes(dimension + 'Y')) 
 
 if (that.tags.includes("abEquipmentBaseSelected")) {
     if (tags.abEquipmentBaseSelected) {
+        //show attached kits
         shout("onStudioCatalogSelected", thisBot);
+        tags.currentFormAnimation = 'open';
+
+        //lock catalog in place, disable dragging
         thisBot.lockStudio();
-        if (!tags.hasCustomMesh && links.defaultVisualBot && tags.currentFormAnimation != 'open') {
-            tags.currentFormAnimation = 'open';
-            tags.scaleX = 1.5;
-            tags.scaleY = 2;
-            links.defaultVisualBot.tags.formAnimation = null;
+
+        //if default visuals
+        if (!tags.hasCustomMesh && links.defaultVisualBot) {
+
+            //change hitbox
+            tags.scaleX = 1;
+            tags.scaleY = 1.7;
+
+            //activate opening animation
             links.defaultVisualBot.tags.formAnimation = ["opening", "idle_open"];
+
+            //if pointer scale effect is active
             if (masks.scaleX) {
                 await os.sleep(0);
                 thisBot.onPointerEnter();
             }
         }
     } else {
+        //hide attached kits
         shout("onStudioCatalogDeselected", thisBot);
+        tags.currentFormAnimation = 'closed';
+
+        //allow easy movement for catalog
         thisBot.moveStudio();
-        if (!tags.hasCustomMesh && tags.currentFormAnimation != 'closed') {
-            tags.currentFormAnimation = 'closed';
-            tags.scaleX = 1.5;
-            tags.scaleY = 1;
-            links.defaultVisualBot.tags.formAnimation = null;
+
+        //if default visuals
+        if (!tags.hasCustomMesh) {
+
+            //fix hitbox
+            tags.scaleX = 1;
+            tags.scaleY = .7;
+
+            //activate closing animation
             links.defaultVisualBot.tags.formAnimation = ["closing", "closed"];
+
+            //handle on pointer enter scale effects
             if (masks.scaleX) {
                 await os.sleep(0);
                 thisBot.onPointerEnter();
             }
-            await os.sleep(600);
-            links.defaultVisualBot.tags.formAnimation = 'closed';
+
+            // await os.sleep(600);
+            // links.defaultVisualBot.tags.formAnimation = 'closed';
         }
     }
 }

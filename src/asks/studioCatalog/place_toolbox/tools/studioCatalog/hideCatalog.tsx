@@ -2,5 +2,9 @@ const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? tags.
 tags[dimension] = false;
 masks[dimension] = null;
 
-links.defaultVisualBot.tags[dimension] = false;
-links.defaultVisualBot.masks[dimension] = null;
+setTimeout(() => {
+    if (tags[dimension] == false) {
+        links.defaultVisualBot.tags[dimension] = false;
+        links.defaultVisualBot.masks[dimension] = null;
+    }
+}, 600)

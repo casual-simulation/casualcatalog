@@ -12,6 +12,12 @@ const dbg = (msg: string, data?: any) => {
     }
 };
 
+// onAgentTick is shouted inst-wide by each user's executor. Only drive agents the local user owns.
+if (tags.ownerId && tags.ownerId !== authBot?.id) {
+    dbg('skip tick — not owned by local user', { ownerId: tags.ownerId });
+    return;
+}
+
 if (!links.todoBot || tags.todoInProgress || masks.moving) {
     dbg('skip tick', {
         hasTodoBot: !!links.todoBot,

@@ -4,10 +4,10 @@ if (tags.debug) {
 
 // Mark this plan as failed — remaining todos in this plan will be skipped
 if (that?.planId) {
-    setTagMask(thisBot, 'failedPlanId', that.planId, 'shared');
+    setTagMask(thisBot, 'failedPlanId', that.planId, 'local');
 }
 
-setTagMask(thisBot, 'activeTodoId', null, 'shared');
+setTagMask(thisBot, 'activeTodoId', null, 'local');
 
 const agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
 if (agentBot) {

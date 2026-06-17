@@ -2,7 +2,7 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] todo finished:`, that?.todoId);
 }
 
-setTagMask(thisBot, 'activeTodoId', null, 'shared');
+setTagMask(thisBot, 'activeTodoId', null, 'local');
 
 // Reset agent's todo state so it can pick up the next todo
 const agentBot = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
@@ -11,8 +11,7 @@ if (agentBot) {
     agentBot.tags.todoInProgress = false;
 }
 
-// When a build plan finishes, spawn the approval bot and broadcast the completed event. Lives
-// on the manager (which runs on one client) so the shared approval bot isn't created N times.
+// When a build plan finishes, spawn the approval bot and broadcast the completed event.
 const finishedTodo = that?.todoId ? getBot('id', that.todoId) : null;
 const planId = finishedTodo?.tags.todoPlanId;
 

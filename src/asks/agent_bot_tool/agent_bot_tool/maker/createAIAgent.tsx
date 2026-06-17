@@ -1,4 +1,9 @@
-const { dimension, aiModel, aiProvider, customAgentConfig } = that;
+const { dimension, aiModel, aiProvider, customAgentConfig, ownerId } = that;
+
+// Every agent is owned by a user. The manager passes the owning todo's ownerId; manual creation
+// (configurator / egg hatch) leaves it undefined so it falls back to the creating user. ownerId
+// is what scopes onAgentTick / onABTodoExecutorChanged so each user only drives their own agents.
+const agentOwnerId = ownerId ?? authBot?.id;
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, that);
@@ -19,6 +24,7 @@ const botTags = {
     creator: null,
     abIDOrigin: null,
     abIgnore: true,
+    ownerId: agentOwnerId,
     aiModel,
     aiProvider,
     ai_toolbox: null,

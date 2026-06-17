@@ -2,6 +2,15 @@
 
 thisBot.abStopAgentCycle();
 
+// One-time migration from when the agent/todo cycle was driven by a single executor per instance, to now being driven by each user's client.
+// Clears out old shared tag masks that are now supposed to be local.
+if (!thisBot.tags.executorStateMigratedToLocal) {
+    for (const t of ['executorClientId', 'executorHeartbeat', 'activeTodoId', 'activeAgentId', 'activePlanId', 'failedPlanId']) {
+        setTagMask(thisBot, t, null, 'shared');
+    }
+    setTagMask(thisBot, 'executorStateMigratedToLocal', true, 'local');
+}
+
 const managerId = thisBot.id;
 const cycleId = uuid();
 thisBot.vars.currentCycleId = cycleId;
@@ -32,8 +41,8 @@ async function tick() {
 
     const prevExecutorClientId = manager.tags.executorClientId;
     if (prevExecutorClientId !== myClientId) {
-        // Claim the lock.
-        setTagMask(manager, 'executorClientId', myClientId, 'shared');
+        // Claim the lock. Only dedupes between tabs of the same user — each user runs their own executor.
+        setTagMask(manager, 'executorClientId', myClientId, 'local');
 
         if (prevExecutorClientId) {
             shout('onABTodoExecutorChanged', { executorClientId: myClientId });
@@ -41,7 +50,7 @@ async function tick() {
     }
 
     // Renew the lock.
-    setTagMask(manager, 'executorHeartbeat', now, 'shared');
+    setTagMask(manager, 'executorHeartbeat', now, 'local');
 
     const deltaTime = thisBot.vars.lastTickTime != null ? now - thisBot.vars.lastTickTime : null;
     thisBot.vars.lastTickTime = now;

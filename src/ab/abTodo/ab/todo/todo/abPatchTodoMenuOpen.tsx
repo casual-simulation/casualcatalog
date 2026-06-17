@@ -51,6 +51,10 @@ const notStarted = !anyReady && !allCompleted && !anyFailed;
 const isBusy     = anyReady && !allCompleted && !anyFailed;
 const isUserRequesstTodo = todoBot.tags.agentMode === 'plan';
 
+// Only the todo's owner can act on / edit it. Other users see a read-only menu: no edit affordances
+// and no action buttons. (Legacy todos with no ownerId are treated as owned/editable.)
+const isOwner = !todoBot.tags.ownerId || todoBot.tags.ownerId === authBot?.id;
+
 const menuOptions = {
     abPatchTodoMenu: true,
     abPatchTodoMenuSortOrder: 0,
@@ -68,7 +72,7 @@ menuOptions.menuItems.push({
     formAddress: 'notes',
     menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     menuItemLabelStyle: { 'font-style': 'italic' },
-    onClick: ListenerString(() => { ab.links.todo.onABPatchPromptClick(links.patchBot); }),
+    ...(isOwner ? { onClick: ListenerString(() => { ab.links.todo.onABPatchPromptClick(links.patchBot); }) } : {}),
 });
 
 // Owner attribution — sits directly under the prompt label
@@ -99,7 +103,7 @@ if (todoAttachments.length > 0) {
 menuOptions.menuItems.push({
     label: `ai agent: ${todoBot.tags.agentName ?? todoBot.tags.aiModel ?? 'default'}`,
     formAddress: 'lightbulb',
-    ...(isApproved ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchAIModelClick(links.patchBot); }) }),
+    ...(isApproved || !isOwner ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchAIModelClick(links.patchBot); }) }),
 });
 
 if (globalThis.abXPE) {
@@ -107,7 +111,7 @@ if (globalThis.abXPE) {
     menuOptions.menuItems.push({
         label: `budget: ${todoBot.tags.budgetCredits != null ? Number(todoBot.tags.budgetCredits).toLocaleString() + ' credits' : 'not set'}`,
         formAddress: 'savings',
-        ...(isApproved ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchBudgetClick(links.patchBot); }) }),
+        ...(isApproved || !isOwner ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchBudgetClick(links.patchBot); }) }),
     });
 
     // Always: budget studio
@@ -120,7 +124,7 @@ if (globalThis.abXPE) {
     menuOptions.menuItems.push({
         label: `budget studio: ${budgetStudioLabel}`,
         formAddress: 'payment',
-        ...(isApproved ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchBudgetStudioClick(links.patchBot); }) }),
+        ...(isApproved || !isOwner ? {} : { onClick: ListenerString(() => { ab.links.todo.onABPatchBudgetStudioClick(links.patchBot); }) }),
     });
 }
 
@@ -136,19 +140,23 @@ if (todoBot.tags.creditSnapshotStart != null && todoBot.tags.creditSnapshotEnd !
     });
 }
 
+// Action buttons (begin / cancel / try again) are owner-only. Non-owners still see the
+// informational items, just without the buttons that would let them act on someone else's todo.
 if (isApproved) {
     // no action buttons — approved todos are read-only receipts
 } else if (notStarted) {
-    menuOptions.menuItems.push({
-        label: 'begin plan',
-        formAddress: 'play_circle',
-        onClick: ListenerString(() => { ab.links.todo.onAssignAgentsClick(links.patchBot); }),
-    });
-    menuOptions.menuItems.push({
-        label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
-        formAddress: 'cancel',
-        onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
-    });
+    if (isOwner) {
+        menuOptions.menuItems.push({
+            label: 'begin plan',
+            formAddress: 'play_circle',
+            onClick: ListenerString(() => { ab.links.todo.onAssignAgentsClick(links.patchBot); }),
+        });
+        menuOptions.menuItems.push({
+            label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
+            formAddress: 'cancel',
+            onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
+        });
+    }
 } else if (isBusy) {
     await ab.links.menu.abCreateMenuBusyIndicator({
         abPatchTodoMenu: true,
@@ -157,11 +165,13 @@ if (isApproved) {
         menuRenderToken: renderToken,
         label: 'agents working',
     });
-    menuOptions.menuItems.push({
-        label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
-        formAddress: 'cancel',
-        onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
-    });
+    if (isOwner) {
+        menuOptions.menuItems.push({
+            label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
+            formAddress: 'cancel',
+            onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
+        });
+    }
 } else if (allCompleted) {
     // Plan-level actions (approve / undo / restart) live on the dedicated user-approval todo
     // spawned next to the last plan todo — see spawnUserApprovalTodo.
@@ -175,16 +185,18 @@ if (isApproved) {
         labelColor: 'white',
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     });
-    menuOptions.menuItems.push({
-        label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
-        formAddress: 'cancel',
-        onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
-    });
-    menuOptions.menuItems.push({
-        label: 'try again',
-        formAddress: 'replay',
-        onClick: ListenerString(() => { ab.links.todo.onABPatchTryAgainClick(links.patchBot); }),
-    });
+    if (isOwner) {
+        menuOptions.menuItems.push({
+            label: todoBot.tags.isUserRequestTodo ? 'cancel ask' : 'cancel plan',
+            formAddress: 'cancel',
+            onClick: ListenerString(() => { ab.links.todo.onABPatchUndoClick(links.patchBot); }),
+        });
+        menuOptions.menuItems.push({
+            label: 'try again',
+            formAddress: 'replay',
+            onClick: ListenerString(() => { ab.links.todo.onABPatchTryAgainClick(links.patchBot); }),
+        });
+    }
 }
 
 await ab.links.menu.abCreateMenuGroup(menuOptions);

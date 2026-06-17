@@ -71,8 +71,8 @@ if (tags.activeTodoId) {
         } else {
             // Agent gone — drop active state so the pending-scan branch will
             // re-spawn one and assign this todo afresh on the next tick.
-            setTagMask(thisBot, 'activeTodoId', null, 'shared');
-            setTagMask(thisBot, 'activeAgentId', null, 'shared');
+            setTagMask(thisBot, 'activeTodoId', null, 'local');
+            setTagMask(thisBot, 'activeAgentId', null, 'local');
         }
         return;
     } else {
@@ -82,8 +82,8 @@ if (tags.activeTodoId) {
             if (tags.debug) {
                 console.log(`[${tags.system}.${tagName}] No agent working on active todo ${tags.activeTodoId}, resetting for re-assignment`);
             }
-            setTagMask(thisBot, 'activeTodoId', null, 'shared');
-            setTagMask(thisBot, 'activeAgentId', null, 'shared');
+            setTagMask(thisBot, 'activeTodoId', null, 'local');
+            setTagMask(thisBot, 'activeAgentId', null, 'local');
         }
     }
     return;
@@ -98,7 +98,7 @@ if (!todoBots || todoBots.length === 0) {
     const idleAgent = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
     if (idleAgent) {
         destroy(idleAgent);
-        setTagMask(thisBot, 'activeAgentId', null, 'shared');
+        setTagMask(thisBot, 'activeAgentId', null, 'local');
     }
     return;
 }
@@ -107,7 +107,10 @@ if (!todoBots || todoBots.length === 0) {
 // User-ask question todos are never agent-assignable, and a parent still actively paused on
 // a question chain (awaitingUserResponse === true) should be skipped — but a parent that is
 // `false` (ready-to-resume) DOES pass through so a fresh executor's manager can pick it up.
+// Only the local user's own todos are considered — every user runs their own executor and is
+// responsible for their own todos. Other users' todos are ignored here.
 const pendingTodos = todoBots.filter(b =>
+    b.tags.ownerId === authBot?.id &&
     !b.tags.abPatchCode &&
     !b.tags.abTodoComplete &&
     !b.tags.abPatchError &&
@@ -130,7 +133,7 @@ if (pendingTodos.length === 0) {
     const idleAgent = tags.activeAgentId ? getBot('id', tags.activeAgentId) : null;
     if (idleAgent) {
         destroy(idleAgent);
-        setTagMask(thisBot, 'activeAgentId', null, 'shared');
+        setTagMask(thisBot, 'activeAgentId', null, 'local');
     }
     return;
 }
@@ -152,8 +155,40 @@ if (tags.debug) {
 }
 
 const nextTodo = pendingTodos[0];
-setTagMask(thisBot, 'activePlanId', nextTodo.tags.todoPlanId, 'shared');
-setTagMask(thisBot, 'activeTodoId', nextTodo.id, 'shared');
+
+// Budget access guard. If this todo spends from a studio account the local user isn't a member
+// of, the AI request would fail deep inside askGPT with an opaque "no response received". Catch
+// it here — before claiming the todo or spawning an agent — and surface a clear error on the todo.
+const budgetRecordName = nextTodo.tags.budgetRecordName;
+if (budgetRecordName && budgetRecordName !== authBot?.id) {
+    if (!configBot.tags.user_studios) {
+        await ab.abRefreshStudios();
+
+        if (isStaleCycle()) {
+            if (tags.debug) {
+                console.log(`[${tags.system}.${tagName}] Stale cycle detected after abRefreshStudios, aborting`);
+            }
+            return;
+        }
+        
+    }
+    let studios = configBot.tags.user_studios?.studios ?? [];
+    let hasBudgetAccess = studios.some(s => s.studioId === budgetRecordName);
+
+    if (!hasBudgetAccess) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] No budget access for ${budgetRecordName} on todo ${nextTodo.id} — failing todo`);
+        }
+        
+        nextTodo.tags.abPatchError = `You don't have access to the budget account set on this todo (${budgetRecordName}). Change the budget studio to one you belong to (or your own account) and try again.`;
+        nextTodo.tags.animationState = 'error';
+        thisBot.onTodoFailed({ todoId: nextTodo.id, planId: nextTodo.tags.todoPlanId });
+        return;
+    }
+}
+
+setTagMask(thisBot, 'activePlanId', nextTodo.tags.todoPlanId, 'local');
+setTagMask(thisBot, 'activeTodoId', nextTodo.id, 'local');
 
 // Normalize any non-null askUser resume signal — picking up the todo *is* the resume.
 // Prevents the resume branch from re-firing on subsequent ticks.
@@ -183,7 +218,7 @@ if (agentBot && mismatch) {
         console.log(`[${tags.system}.${tagName}] Agent mismatch (agent: ${agentBot.tags.agentName ?? agentBot.tags.aiModel}, todo: ${todoAgentName ?? nextTodo.tags.aiModel}), destroying old agent`);
     }
     destroy(agentBot);
-    setTagMask(thisBot, 'activeAgentId', null, 'shared');
+    setTagMask(thisBot, 'activeAgentId', null, 'local');
     agentBot = null;
 }
 
@@ -246,7 +281,7 @@ if (!agentBot) {
             const customAgent = customAgents.find(a => a.agentName === nextTodo.tags.agentName);
             if (customAgent) {
                 const { aiModel, aiProvider, group, ...customAgentConfig } = customAgent;
-                agentBot = agentMakerBot.createAIAgent({ dimension, aiModel, aiProvider, customAgentConfig });
+                agentBot = agentMakerBot.createAIAgent({ dimension, aiModel, aiProvider, customAgentConfig, ownerId: nextTodo.tags.ownerId });
             }
         } else {
             const aiChatModels = configBot.tags.aiChatModels ?? (await ai.listChatModels());
@@ -260,7 +295,7 @@ if (!agentBot) {
 
             const match = aiChatModels?.find(e => e.name === nextTodo.tags.aiModel);
             if (match) {
-                agentBot = agentMakerBot.createAIAgent({ dimension, aiModel: match.name, aiProvider: match.provider });
+                agentBot = agentMakerBot.createAIAgent({ dimension, aiModel: match.name, aiProvider: match.provider, ownerId: nextTodo.tags.ownerId });
             }
         }
     } else {
@@ -272,12 +307,12 @@ if (!agentBot) {
             console.error(`[${tags.system}.${tagName}] Could not create AI agent`);
         }
         ab.links.utils.abLog({ message: 'Could not create AI agent' });
-        setTagMask(thisBot, 'activeTodoId', null, 'shared');
+        setTagMask(thisBot, 'activeTodoId', null, 'local');
         return;
     }
 }
 
-setTagMask(thisBot, 'activeAgentId', agentBot.id, 'shared');
+setTagMask(thisBot, 'activeAgentId', agentBot.id, 'local');
 
 // Force a fresh credits snapshot before agent starts to minimize cross-todo contamination
 if (globalThis.abXPE) {

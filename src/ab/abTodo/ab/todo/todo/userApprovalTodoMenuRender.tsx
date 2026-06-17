@@ -5,6 +5,9 @@ const todoBot = that;
 // superseded us.
 const renderToken = masks.menuRenderToken;
 
+// Only the owner can approve / undo / restart. Other users see the plan read-only.
+const isOwner = !todoBot.tags.ownerId || todoBot.tags.ownerId === authBot?.id;
+
 const menuOptions: any = {
     abPatchTodoMenu: true,
     abPatchTodoMenuSortOrder: 0,
@@ -32,24 +35,34 @@ if (todoBot.tags.todoApproved) {
         menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
     });
 } else {
-    menuOptions.menuItems.push({
-        label: 'approve',
-        formAddress: 'done',
-        onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalApproveClick(links.patchBot); }),
-    });
+    if (isOwner) {
+        menuOptions.menuItems.push({
+            label: 'approve',
+            formAddress: 'done',
+            onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalApproveClick(links.patchBot); }),
+        });
 
-    menuOptions.menuItems.push({
-        label: 'undo',
-        formAddress: 'undo',
-        onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalUndoClick(links.patchBot); }),
-    });
+        menuOptions.menuItems.push({
+            label: 'undo',
+            formAddress: 'undo',
+            onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalUndoClick(links.patchBot); }),
+        });
 
-    menuOptions.menuItems.push({
-        label: 'restart',
-        formAddress: 'replay',
-        onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalRestartClick(links.patchBot); }),
-    });
-}
+        menuOptions.menuItems.push({
+            label: 'restart',
+            formAddress: 'replay',
+            onClick: ListenerString(() => { ab.links.todo.onABPatchUserApprovalRestartClick(links.patchBot); }),
+        });
+    } else {
+        const ownerName = todoBot.tags.ownerDisplayName ?? 'owner';
+        menuOptions.menuItems.push({
+            label: `waiting for ${ownerName} to review`,
+            menuItemType: 'text',
+            formAddress: 'hourglass_empty',
+            menuItemStyle: { 'padding-top': '6px', 'padding-bottom': '6px' },
+        });
+    }
+} 
 
 await ab.links.menu.abCreateMenuGroup(menuOptions);
 

@@ -70,7 +70,6 @@ if (!tags.studioId && authBot) {
 thisBot.onABMoved();
 if (!ab?.links.manifestation?.links.abBot?.tags.abEquipmentBaseSelected) {
     ab?.links.equipment?.onEquipmentBaseDeselected(thisBot);
-    thisBot.hideCatalog();
 }
 
 shout('onStudioCatalogSetup', thisBot);
@@ -83,4 +82,6 @@ if (data.autoLoadCasualKit) {
 if (!tags.studioId) {
     // If the bot doesn't have a studioId, automatically open the studio select menu.
     thisBot.onClick();
+} else {
+    thisBot.hideCatalog();
 }

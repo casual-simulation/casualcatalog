@@ -33,6 +33,10 @@ async function tick() {
     const lockIsStale = !manager.tags.executorHeartbeat ||
                         (now - manager.tags.executorHeartbeat) >= lockExpiry;
 
+    if (manager.tags.debug) {
+        console.log(`[${manager.tags.system}.tick] tick started | myClientId: ${myClientId} | currentExecutorClientId: ${manager.tags.executorClientId} | lockIsStale: ${lockIsStale}`);
+    }
+
     if (manager.tags.executorClientId !== myClientId && !lockIsStale) {
         // Executor is another client and they are active.
         thisBot.vars.cycleTimeoutId = setTimeout(tick, intervalMS);

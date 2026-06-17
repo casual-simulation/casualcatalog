@@ -18,42 +18,14 @@ const book = {
     pointable: false,
     abIgnore: true,
     abCatalogBookBot: true,
-    formAnimation: 'closed',
+    formAnimation: 'closed_static',
     color: abPersonality?.tags?.abBaseColor ?? '#00D9CD',
     baseBotId: getID(thisBot),
-    // onFormAnimationFinished: ListenerString(() => {
-    //     const baseBot = getBot('id', tags.baseBotId);
-    //     if (!baseBot || baseBot.tags.hasCustomMesh) {
-    //         return;
-    //     }
-    //     if (baseBot.tags.currentFormAnimation == 'opening') {
-    //         baseBot.tags.currentFormAnimation = 'idle_open';
-    //         tags.formAnimation = 'idle_open';
-    //     } else if (baseBot.tags.currentFormAnimation == 'closing') {
-    //         baseBot.tags.currentFormAnimation = 'closed';
-    //         tags.formAnimation = 'closed';
-            
-    //         const manifestation = getBot(byID(baseBot.tags.abEquipmentFor));
-    //         if (manifestation && !manifestation.tags.abEquipmentBaseSelected) {
-    //             baseBot.hideCatalog();
-    //         }
-    //     }
-    // }),
     onAnyBotsRemoved: ListenerString(() => {
         const { botIDs } = that;
         if (botIDs.includes(tags.baseBotId)) {
             destroy(thisBot);
         }
-    }),
-    onBotChanged: ListenerString(() => {
-        const baseBot = getBot('id', tags.baseBotId);
-        if (that.tags.includes("formAnimation") && baseBot.tags.currentFormAnimation == 'closed') {
-            setTimeout(() => {
-                if (baseBot.tags.currentFormAnimation == 'closed') {
-                    tags.formAnimation = 'closed';
-                }
-            }, [600]);
-        } 
     })
 }
 

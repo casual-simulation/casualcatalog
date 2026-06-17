@@ -60,8 +60,8 @@ if (that.tags.includes("abEquipmentBaseSelected")) {
             tags.scaleY = .7;
 
             //activate closing animation
-            if (links.defaultVisualBot.tags.formAnimation != ["closing", "closed"] && links.defaultVisualBot.tags.formAnimation != "closed") {
-                links.defaultVisualBot.tags.formAnimation = ["closing", "closed"];
+            if (links.defaultVisualBot.tags.formAnimation != ["closing", "closed_static"]) {
+                links.defaultVisualBot.tags.formAnimation = ["closing", "closed_static"];
             }
 
             //handle on pointer enter scale effects

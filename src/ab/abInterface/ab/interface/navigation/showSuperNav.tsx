@@ -57,11 +57,14 @@ const min = 2.100;
 const max = 2.900;
 const randomNumber = Math.random() * (max - min) + min;
 
+const username = await ab.links.console.getUserName({ canSetPreferredName: false });
+
 const superNavDropdown = {
     ...menuOptions,
-    label: ab.abIsPrimary() ? 'places' : studioName ? studioName + ' places' : os.getCurrentInst() + ' places',
+    label: ab.abIsPrimary() ? (username ? username + "'s places" : "user's places") : studioName ? studioName + ' places' : os.getCurrentInst() + ' places',
     dropdownSortOrder: Number(randomNumber.toFixed(3)),
-    dropdownOptions: []
+    dropdownOptions: [],
+    defaultOpen: ab.abIsPrimary() && that?.defaultOpenPlaces ? true : null
 }
 
 let dropdownOptions = JSON.parse(await thisBot.createNavDropdown(that));

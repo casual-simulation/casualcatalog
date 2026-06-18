@@ -31,6 +31,12 @@ if (data.eggParameters) {
     // os.focusOn(thisBot);
 }
 
+if (configBot.tags.mapPortal) {
+    tags.scale = 1.5;
+} else {
+    tags.scale = 1;
+}
+
 const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
 if (avatarBot) {
     tags.abEquipmentFor = getID(avatarBot);

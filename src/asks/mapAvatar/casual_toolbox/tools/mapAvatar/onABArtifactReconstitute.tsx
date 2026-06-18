@@ -61,7 +61,7 @@ if (configBot.tags.mapPortal && links.homeworld?.tags.usingGPS) {
 if (configBot.tags.mapPortal) {
     tags.scale = 5;
 } else {
-    tags.scale = 2;
+    tags.scale = 3;
 }
 
 

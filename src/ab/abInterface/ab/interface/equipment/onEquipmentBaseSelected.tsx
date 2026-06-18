@@ -1,6 +1,15 @@
 setTagMask(that, "abEquipmentBaseSelected", true, "tempShared");
 const equipment = getBots("abEquipmentFor", that.id);
 
+if (that.tags.abEquipmentExclusiveSelect) {
+    const selectedExclusives = getBots(byTag("abEquipmentBaseSelected", true), byTag("abEquipmentExclusiveSelect", true));
+    for (const selected of selectedExclusives) {
+        if (selected != that) {
+            thisBot.onEquipmentBaseDeselected(selected);
+        }
+    }
+}
+
 let abEquipmentMenuOptions = [];
 
 for (let i = 0; i < equipment.length; ++i) {

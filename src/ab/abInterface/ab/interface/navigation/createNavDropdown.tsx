@@ -22,7 +22,7 @@ const formAddressLink = await ab.abBuildCasualCatalogURL("/ab/icons/egg_planet_l
 
 const homeWorldButton = {
     ...menuOptions,
-    label: "homeworld",
+    label: abRemember.tags.abHomeworldName ?? "homeworld",
     formAddress: formAddressLink,
     onClick: `@
         const currentURL = new URL(configBot.tags.url);
@@ -42,7 +42,7 @@ const homeWorldButton = {
         newURL.searchParams.append("mapPortal", 'home');
         newURL.searchParams.append("ask", 'home');
 
-        os.openURL(newURL.href);
+        os.goToURL(newURL.href);
     `
 };
 

@@ -6,7 +6,7 @@ if (tags.label) {
     tags.homePlace = true;
 }
 tags.instURL = data.instURL ?? null;
-tags.scale = data.scale ?? null;
+tags.scale = data.scale ?? 2;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#0000FF';
 tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#0000FF'; 
 tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'black'

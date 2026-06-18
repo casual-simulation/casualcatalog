@@ -46,4 +46,6 @@ shout('clearInstCreatorMenu');
 
 thisBot.determineLineTo();
 
-thisBot.onClick();
+if (!tags.instURL) {
+    thisBot.onClick();
+}

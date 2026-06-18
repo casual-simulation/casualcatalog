@@ -29,7 +29,7 @@ const menuOptions = {
 
 const leaveGPSButton = {
     ...menuOptions,
-    label: (links.homeworld?.tags.usingGPS ? 'disable' : 'enable') + ' gps tracking',
+    label: links.homeworld?.tags.usingGPS ? 'stop following location' : 'use my location',
     mapAvatar_menuSortOrder: -1,
     formAddress: links.homeworld?.tags.usingGPS ? 'near_me_disabled' : 'near_me',
     onClick: `@

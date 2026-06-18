@@ -4,4 +4,9 @@ if (that.portal == 'mapPortal' || that.portal == 'gridPortal') {
     //     links.spriteBot.tags[(tags.dimension ?? 'home') + 'X'] = tags[(tags.dimension ?? 'home') + 'X'];
     //     links.spriteBot.tags[(tags.dimension ?? 'home') + 'Y'] = tags[(tags.dimension ?? 'home') + 'Y'];
     // }
+    if (configBot.tags.mapPortal) {
+        tags.scale = 5;
+    } else {
+        tags.scale = 2;
+    }
 }

@@ -1,0 +1,26 @@
+const menuPortal = that.base.tags.abEquipmentMenuPortal ?? configBot.tags.menuPortal;
+
+const menuOptions = {
+    [menuPortal]: true,
+    abMenuRefresh: `@destroy(thisBot);`,
+    baseLink: getLink(that.base)
+}
+
+for (let option of that.options) {
+    option = {
+        ...option,
+        ...menuOptions
+    }
+}
+
+const equipmentDropdown = {
+    label: 'equipment',
+    [menuPortal + 'SortOrder']: that.base.tags.abEquipmentMenuOrder ?? 10000,
+    dropdownSortOrder: that.base.tags.abEquipmentMenuOrder ?? 10000,
+    ...menuOptions,
+    dropdownOptions: that.options
+}
+
+if (that.options.length > 0) {
+  ab.links.menu.abCreateMenuDropdown(equipmentDropdown);  
+}

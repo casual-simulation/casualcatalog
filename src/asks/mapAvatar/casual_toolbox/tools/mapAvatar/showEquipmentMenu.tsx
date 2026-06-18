@@ -1,21 +1,5 @@
-//if this isnt the users own avatar, dont respond
-if (tags.ownerID !=  authBot?.id) {
-    return;
-}
-
 shout('abMenuRefresh');
-shout("clearMapAvatarMenu");
-
-//handle right click
-if (that) {
-    if (that.modality == 'mouse' && that.buttonId == 'right') { 
-        return;
-    }
-}
-
-if (tags.abEquipmentBaseSelected) {
-    return;
-}
+shout("clearEquipmentMenu");
 
 configBot.tags.menuPortal = 'mapAvatar_menu';
 await os.sleep(0);
@@ -23,9 +7,20 @@ await os.sleep(0);
 const menuOptions = {
     mapAvatar_menu: true,
     clearMapAvatarMenu: `@destroy(thisBot);`,
+    clearEquipmentMenu: `@destroy(thisBot);`,
     abMenuRefresh: "@ destroy(thisBot);",
     avatar: getLink(thisBot)
 }
+
+const equipmentDropdown = {
+    ...menuOptions,
+    label: 'equipment',
+    dropdownSortOrder: 20,
+    dropdownOptions: [],
+    mapAvatar_menuSortOrder: 20,
+}
+
+const equipment = getBots()
 
 const leaveGPSButton = {
     ...menuOptions,
@@ -41,6 +36,5 @@ const leaveGPSButton = {
     `,
 }
 
-ab.links.menu.abCreateMenuButton(leaveGPSButton);
 
-thisBot.showPlaceNavMenu();
+ab.links.menu.abCreateMenuButton(leaveGPSButton);

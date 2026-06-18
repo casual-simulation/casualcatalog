@@ -41,6 +41,8 @@ const leaveGPSButton = {
     `,
 }
 
-ab.links.menu.abCreateMenuButton(leaveGPSButton);
+if (configBot.tags.mapPortal && links.homeworld) {
+    ab.links.menu.abCreateMenuButton(leaveGPSButton);
+}
 
 thisBot.showPlaceNavMenu();

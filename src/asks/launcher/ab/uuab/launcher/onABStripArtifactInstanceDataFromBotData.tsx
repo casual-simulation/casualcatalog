@@ -14,3 +14,5 @@ delete data.tags.chosenOnClick;
 delete data.tags.chosenInfo;
 delete data.tags.chosenLink;
 delete data.tags.chosenAsk;
+
+delete data.tags.uuabUsingCameraBackground;

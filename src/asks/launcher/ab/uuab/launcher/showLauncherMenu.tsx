@@ -55,11 +55,21 @@ if (thisBot.vars.uuabMenuData) {
     }
 }
 
+const useCamBackgroundButton = {
+    ...menuOptions,
+    formAddress: tags.uuabUsingCameraBackground ? 'toggle_on' : 'toggle_off',
+    label: 'use camera background',
+    launcher_menuSortOrder: 3,
+    onClick: `@
+        links.launcher.useCameraBackground(!links.launcher.tags.uuabUsingCameraBackground);
+    `
+}
+
 const lockButton = {
     ...menuOptions,
     formAddress: 'lock',
     label: 'lock uuab',
-    launcher_menuSortOrder: 3,
+    launcher_menuSortOrder: 4,
     onClick: `@
         links.launcher.lockUUAB();
         links.launcher.showUUABMenu();
@@ -70,7 +80,7 @@ const saveButton = {
     ...menuOptions,
     formAddress: 'save',
     label: 'submit',
-    launcher_menuSortOrder: 4,
+    launcher_menuSortOrder: 5,
     onClick: `@
         links.launcher.submitUUAB();
     `
@@ -80,7 +90,7 @@ const testButton = {
     ...menuOptions,
     formAddress: 'science',
     label: 'test menu',
-    launcher_menuSortOrder: 5,
+    launcher_menuSortOrder: 6,
     onClick: `@
         links.launcher.showTestMenu();
     `
@@ -93,3 +103,4 @@ ab.links.menu.abCreateMenuButton(newMenuItemButton);
 ab.links.menu.abCreateMenuButton(lockButton);
 ab.links.menu.abCreateMenuButton(saveButton);
 ab.links.menu.abCreateMenuButton(testButton);
+ab.links.menu.abCreateMenuButton(useCamBackgroundButton);

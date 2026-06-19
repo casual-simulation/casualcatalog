@@ -10,6 +10,11 @@ if (thisBot.vars.uuabMenuData == []) {
 tags.uuabMenuData = thisBot.vars.uuabMenuData;
 
 tags.uuabLocked = data.uuabLocked ?? false;
+tags.uuabUsingCameraBackground = data.uuabUsingCameraBackground ?? false;
+
+if (tags.uuabUsingCameraBackground) {
+    gridPortalBot.tags.portalBackgroundAddress = "casualos://camera-feed/rear";
+}
 
 links.console.cmdABSleep();
 

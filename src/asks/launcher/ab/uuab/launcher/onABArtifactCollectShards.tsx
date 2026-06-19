@@ -1,7 +1,8 @@
 const shard: ABArtifactShard = {
     data: {
         uuabMenuData: thisBot.vars.uuabMenuData,
-        uuabLocked: tags.uuabLocked
+        uuabLocked: tags.uuabLocked,
+        uuabUsingCameraBackground: tags.uuabUsingCameraBackground
     },
     dependencies: [
         {

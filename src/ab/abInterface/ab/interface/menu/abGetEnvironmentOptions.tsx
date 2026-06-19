@@ -387,36 +387,27 @@ if (links.homeworld) {
         dropdownOptions: [
             {
                 formAddress: 'save',
-                label: 'backup homeworld',
+                label: 'save layer',
                 homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.saveHomeworld();
                     shout('abMenuRefresh');
                 }),
             },
-            {
-                formAddress: 'refresh',
-                label: 'refresh homeworld',
-                homeworld: tags.homeworld,
-                onClick: ListenerString(async () => {
-                    links.homeworld.refreshHomeworldInst();
-                    shout('abMenuRefresh');
-                }),
-            },
-            {
-                formAddress: 'history',
-                label: 'homeworld version history',
-                homeworld: tags.homeworld,
-                onClick: ListenerString(async () => {
-                    links.homeworld.showHomeVersionHistory();
-                    shout('abMenuRefresh');
-                }),
-            },
+            // {
+            //     formAddress: 'history',
+            //     label: 'homeworld version history',
+            //     homeworld: tags.homeworld,
+            //     onClick: ListenerString(async () => {
+            //         links.homeworld.showHomeVersionHistory();
+            //         shout('abMenuRefresh');
+            //     }),
+            // },
             {
                 formAddress: 'delete_forever',
                 color: 'red',
                 labelColor: 'black',
-                label: 'factory reset homeworld',
+                label: 'factory reset layer',
                 homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.factoryResetHomeworld();

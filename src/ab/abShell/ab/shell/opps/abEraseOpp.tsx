@@ -16,7 +16,7 @@ const oppsRecordName = await thisBot.abGetOppsRecordName({ ownerRecordId });
 let eraseResult = await os.eraseData(oppsRecordName, address);
 
 if (!eraseResult?.success && eraseResult?.errorCode === 'not_authorized') {
-    const permission = await os.grantInstAdminPermission(ownerRecordId);
+    const permission = await os.grantInstAdminPermission(oppsRecordName);
     if (permission?.success) {
         eraseResult = await os.eraseData(oppsRecordName, address);
     }

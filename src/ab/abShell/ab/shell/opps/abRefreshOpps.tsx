@@ -27,7 +27,7 @@ while (true) {
     if (!result?.success) {
         if (result?.errorCode === 'not_authorized' && !triedGrant) {
             triedGrant = true;
-            const permission = await os.grantInstAdminPermission(ownerRecordId);
+            const permission = await os.grantInstAdminPermission(oppsRecordName);
             if (permission?.success) {
                 continue; // retry the same cursor with permission granted
             }

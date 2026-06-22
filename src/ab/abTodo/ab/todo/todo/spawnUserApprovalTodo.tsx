@@ -62,6 +62,33 @@ if (historyStorageBot) {
     }
 }
 
+// Create a `todo_approval` opp so the owner can be guided back here to address this approval.
+try {
+    const ownerId = todoBot.tags.ownerId;
+    if (ownerId && ab.links.opps) {
+        const { inst, instType, instOwner } = ab.links.utils.getCurrentInstInfo();
+
+        await ab.links.opps.abCreateOpp({
+            type: 'todo_approval',
+            description: 'Approve, undo, or restart your completed plan.',
+            ownerRecordId: ownerId,
+            todoBotId: approvalBot.id,
+            inst,
+            instOwner,
+            instType,
+            dimension: approvalBot.tags.dimension ?? todoBot.tags.dimension ?? 'home',
+        });
+
+        if (todoBot.tags.debug) {
+            console.log(`[${tags.system}.${tagName}] created todo_approval opp for approval bot ${approvalBot.id} (owner ${ownerId})`);
+        }
+    }
+} catch (e) {
+    if (todoBot.tags.debug) {
+        console.log(`[${tags.system}.${tagName}] failed to create todo_approval opp:`, e);
+    }
+}
+
 if (todoBot.tags.debug) {
     console.log(`[${tags.system}.${tagName}] spawned approval bot ${approvalBot.id} for plan ${todoBot.tags.todoPlanId}`);
 }

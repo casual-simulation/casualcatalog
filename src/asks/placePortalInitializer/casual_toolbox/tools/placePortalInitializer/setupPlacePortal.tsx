@@ -56,3 +56,7 @@ const grid = create({
     scaleZ: 0.001,
     abIgnore: true
 })
+
+if (configBot.tags.placeAsk) {
+    ab.links.ask.abCoreMenuAction(configBot.tags.placeAsk);
+}

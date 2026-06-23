@@ -1,0 +1,7 @@
+Convert the below page prompt into a plan with todos that use tools from the simKit, then configure the tools, to create the simulation page. Use the following guidelines.
+
+In every todo that loads a <simAction | simReaction | simSmartReaction> from the catalog, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
+
+## Page Prompt
+
+{{pagePrompt}}

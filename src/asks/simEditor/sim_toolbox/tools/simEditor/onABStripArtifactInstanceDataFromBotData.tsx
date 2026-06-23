@@ -1,0 +1,21 @@
+const { data } = that;
+
+delete data.tags.label;
+delete data.tags.labelColor;
+delete data.tags.labelFloatingBackgroundColor;
+delete data.tags.color;
+delete data.tags[data.tags.dimension + "X"];
+delete data.tags[data.tags.dimension + "Y"];
+delete data.tags[data.tags.dimension + "Z"];
+delete data.tags[data.tags.dimension + "RotationX"];
+delete data.tags[data.tags.dimension + "RotationY"];
+delete data.tags[data.tags.dimension + "RotationZ"];
+delete data.tags[data.tags.dimension];
+delete data.tags.dimension;
+delete data.tags.pageID;
+delete data.tags.abConfiguratorGroup;
+delete data.tags.pageBotData;
+delete data.tags.pageData;
+delete data.tags.pageObjective;
+delete data.tags.prevPage;
+delete data.tags.nextPage;

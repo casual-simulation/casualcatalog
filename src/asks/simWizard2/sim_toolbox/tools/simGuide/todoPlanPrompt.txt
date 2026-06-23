@@ -1,0 +1,8 @@
+Convert the below user prompt into a plan with todos to load simEditors, one per page, then configure them, use the following guidelines.
+
+In every todo that loads a <simEditor> from the catalog, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
+
+## User Prompt
+
+{{userPrompt}}
+

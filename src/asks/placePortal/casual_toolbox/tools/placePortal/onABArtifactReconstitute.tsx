@@ -13,6 +13,7 @@ tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'b
 
 tags.studioId = data.studioId;
 tags.originType = data.originType;
+tags.placeAsk = data.placeAsk;
 
 tags.form = 'mesh';
 tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/sphere_solidColor.glb");

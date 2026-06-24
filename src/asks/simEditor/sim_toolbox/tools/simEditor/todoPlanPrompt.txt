@@ -11,7 +11,7 @@ The following simKit tools are available for this page:
 
 **Trigger chains are always linear.** Each item triggers exactly the next one. There is no branching.
 
-**Every page must have exactly one starting action.** Set `startingAction: true` on the first item in the sequence only.
+**Every page must have exactly one starting action.** `startingAction` is a boolean field on simAction and simPropAction. It must be set to `true` on the first action or prop action the learner sees, and `false` on every other action and prop action. Without a starting action the page has no entry point and the learner will see nothing. Never set it to `true` on more than one item.
 
 **Triggers are always simID strings.** Every item that should follow another references the preceding item's simID in its `triggers` array. The starting action has an empty `triggers` array.
 

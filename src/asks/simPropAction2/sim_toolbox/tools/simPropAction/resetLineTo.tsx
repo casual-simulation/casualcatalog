@@ -1,6 +1,6 @@
 const triggers = tags.actionTriggers ?? [];
 const completionTriggers = tags.completionTriggers ?? [];
-const triggerFilter = tags.actionTriggerFilter ?? [];
+const hideTriggers = tags.hideTriggers ?? [];
 
 const newLineTo = [];
 

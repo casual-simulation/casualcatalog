@@ -8,9 +8,9 @@ tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPerso
 tags.labelColor = data.labelColor ?? 'white';
 tags.simID = data.simID ?? uuid();
 tags.propLocked = data.propLocked ?? false;
-tags.scaleX = 2;
-tags.scaleY = 2;
-tags.scaleZ = 1;
+tags.scaleX = data.scaleX ?? 2;
+tags.scaleY = data.scaleY ?? 2;
+tags.scaleZ = data.scaleZ ?? 1;
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('simProp_' + getID(thisBot));
 
 if (data.genForm || data.imagePrompt) {
@@ -46,10 +46,4 @@ if (tags.dimension && tags.dimension != 'blueprint') {
     tags.blueprint = true;
     tags.blueprintX = tags[tags.dimension + 'X'];
     tags.blueprintY = tags[tags.dimension + 'Y'];
-}
-
-if (data.autoGenerateReactions == false) {
-    return;
-} else {
-   thisBot.createPropReactions(); 
 }

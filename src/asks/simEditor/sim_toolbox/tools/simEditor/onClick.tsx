@@ -16,16 +16,25 @@ const menuOptions = {
     editor: getLink(thisBot)
 }
 
-// const configButton = {
-//     ...menuOptions,
-//     label: 'configure',
-//     simEditor_menuSortOrder: 1,
-//     formAddress: 'edit',
-//     onClick: `@
-//         ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: links.editor.tags.abConfiguratorGroup});
-//     `
-// }
+const configButton = {
+    ...menuOptions,
+    label: 'configure',
+    simEditor_menuSortOrder: 1,
+    formAddress: 'edit',
+    onClick: `@
+        ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: links.editor.tags.abConfiguratorGroup});
+    `
+}
 
-// ab.links.menu.abCreateMenuButton(configButton);
+const createPageButton = {
+    ...menuOptions,
+    label: 'create page',
+    simEditor_menuSortOrder: 2,
+    formAddress: 'edit',
+    onClick: `@
+        links.editor.generatePage();
+    `
+}
 
-ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: tags.abConfiguratorGroup});
+ab.links.menu.abCreateMenuButton(configButton);
+ab.links.menu.abCreateMenuButton(createPageButton);

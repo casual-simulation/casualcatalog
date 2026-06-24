@@ -38,7 +38,7 @@ const properties: ABConfiguratorProperty[] = [
         },
     },
     {
-        key: 'hidetriggers',
+        key: 'hideTriggers',
         type: 'list',
         label: 'hide triggers',
         description: 'A list of simIDs of other actions/reactions that trigger this action to hide. hideTriggers and completionTriggers on SIM_PROP_ACTION should never be the same — hide fires when the prop is clicked, completion fires when what follows that click is done',
@@ -52,7 +52,7 @@ const properties: ABConfiguratorProperty[] = [
         },
     },
     {
-        key: 'completiontriggers',
+        key: 'completionTriggers',
         type: 'list',
         label: 'completion triggers',
         description: 'A list of simIDs of other actions/reactions that trigger this action to complete. hideTriggers and completionTriggers on SIM_PROP_ACTION should never be the same — hide fires when the prop is clicked, completion fires when what follows that click is done',

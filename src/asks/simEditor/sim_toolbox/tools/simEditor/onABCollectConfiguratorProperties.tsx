@@ -1,6 +1,6 @@
 const properties: ABConfiguratorProperty[] = [
-    { key: 'pageID', type: 'text', default: null, label: 'pageID'},
-    { key: 'objective', type: 'text', default: null, label: 'objective'},
+    { key: 'pageID', type: 'text', default: null, label: 'pageID', value: tags.pageID,},
+    { key: 'objective', type: 'text', default: null, label: 'objective', value: tags.pageObjective,},
     { 
         key: 'bots', 
         type: 'list', 
@@ -37,8 +37,8 @@ const properties: ABConfiguratorProperty[] = [
             ]
         }
     },
-    { key: 'prevPage', type: 'text', description: "the pageID of the page that should be before this page", default: null, label: 'previous page'},
-    { key: 'nextPage', type: 'text', description: "the pageID of the page that should be after this page", default: null, label: 'next page'},
+    { key: 'prevPage', type: 'text', description: "the pageID of the page that should be before this page", default: null, label: 'previous page', value: tags.prevPage},
+    { key: 'nextPage', type: 'text', description: "the pageID of the page that should be after this page", default: null, label: 'next page', value: tags.nextPage},
 ]
 
 return properties;

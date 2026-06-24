@@ -1,10 +1,16 @@
+const pagePrompt = `
+pageObjective: "${tags.pageObjective}",
+bots: ${JSON.stringify(tags.pageBotData)},
+steps: ${JSON.stringify(tags.pageData)},
+`
+
 let inquiry = tags.todoPlanPrompt;
 inquiry = inquiry.replaceAll('{{pageID}}', thisBot.tags.pageID);
-inquiry = inquiry.replaceAll('{{pagePrompt}}', that);
+inquiry = inquiry.replaceAll('{{pagePrompt}}', pagePrompt);
 
 const params: ABAskGPTParameters = {
     inquiry,
-    inquiryLabel: that,
+    inquiryLabel: pagePrompt,
     agentMode: 'plan',
     abBot: thisBot,
     abDimension: 'home',

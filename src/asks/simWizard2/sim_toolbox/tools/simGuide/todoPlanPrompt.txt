@@ -1,11 +1,31 @@
-Convert the below user prompt into a plan with todos to load simEditors, one per page, then configure them, use the following guidelines.
+Convert the below user prompt into a plan with todos to load simEditors, one per page, then configure them.
 
-In every todo that loads a <simEditor> from the catalog, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
+## Guidelines
 
-You are trying to make a 3d simulation, page by page of how to accomplish the goal that the user lays out.
-Pages require a pageID, this pageID should be used to inform the nextPage and prevPage fields, which describe the order these pages go in.
+You are creating a 3D step-by-step tutorial simulation from an instructional prompt. Break the content into self-contained pages, each covering one clear sub-goal or phase of the task.
+
+**Page design rules:**
+- Each page should have one clear objective
+- Pages should be self-contained — understandable without having completed previous pages
+- 3–5 steps per page is ideal
+- Steps should map to physical interactions with props (clicks, drags) or simple observe/confirm moments
+
+**Each simEditor must be configured with:**
+- `pageID` — **required, without this the page cannot be built**
+- `objective` — one sentence describing what the learner accomplishes on this page
+- `prevPage` — the pageID of the preceding page. **Required if this is not the first page**
+- `nextPage` — the pageID of the following page. **Required if this is not the last page**
+- `bots` — the physical objects present on this page that the learner interacts with
+- `steps` — an ordered list of steps, each with:
+  - `instruction` — plain language telling the learner what to do
+  - `actionType` — one of: `click`, `drag`, `observe`, `confirm`
+
+**Assign all pageIDs upfront** before creating any todos so that nextPage and prevPage references can be fully resolved across all pages.
+
+**Todo order:** create and configure all simEditors in page order, first page first.
+
+In every todo that loads a simEditor from the catalog, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
 
 ## User Prompt
 
 {{userPrompt}}
-

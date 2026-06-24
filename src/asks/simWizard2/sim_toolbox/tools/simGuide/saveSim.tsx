@@ -7,6 +7,8 @@ for (const page of pageBots) {
     const abArtifactShard = {
         data: {
             placeAsk: tags.startingPage ?? startingPage?.tags.pageID ?? anyPage?.tags.pageID,
+            prevPage: page.tags.prevPage,
+            nextPage: page.tags.nextPage,
             eggParameters: {
                 gridInformation: {
                     dimension: page.tags.pageID,

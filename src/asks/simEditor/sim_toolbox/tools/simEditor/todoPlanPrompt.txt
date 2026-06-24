@@ -1,4 +1,4 @@
-Convert the below page description into a plan with todos that use tools from the simKit, then configure the tools to create the simulation page.
+Convert the below page description into a plan with todos to load simKit tools, then configure them to create the simulation page.
 
 ## Guidelines
 
@@ -13,18 +13,24 @@ The following simKit tools are available for this page:
 
 **Every page must have exactly one starting action.** Set `startingAction: true` on the first item in the sequence only.
 
-**simPropAction has two distinct trigger fields:**
-- `hideTriggers` — the simPropReaction that fires when the learner clicks the prop
-- `completionTriggers` — the item that follows the prop reaction
-- These must never be the same
+**Triggers are always simID strings.** Every item that should follow another references the preceding item's simID in its `triggers` array. The starting action has an empty `triggers` array.
 
-**All items must be placed in dimension {{pageID}}**. Use spatially sensible, non-overlapping locations. Units are in feet as integers.
+**How each tool uses triggers:**
+- **simAction** — `triggers` contains the simID of the preceding simAction, simPropReaction, or simPropAction
+- **simPropReaction** — has no triggers, it fires on physical interaction with its prop
+- **simPropAction** — `triggers` contains the simID of the preceding item that causes it to appear. `hideTriggers` contains the simID of the simPropReaction that fires when the learner clicks the prop. `completionTriggers` contains the simID of the item that follows the prop reaction. `hideTriggers` and `completionTriggers` must never be the same.
+
+**Props should be positioned, scaled, and colored to reflect their real world appearance and location.** Place them where they would actually exist in the scene relative to each other. Scale and color are available on every simProp — use them to make the scene recognizable.
+
+**Labels are optional.** Only include a label on an item if it meaningfully helps the learner. If the instruction or context makes it clear, omit the label.
+
+**All items must be placed in dimension=`{{pageID}}`**. Use spatially sensible, non-overlapping locations. Units are in feet as integers.
 
 **Assign all simIDs upfront** before creating any todos. Every simID must be a unique lowercase_snake_case string. Pre-resolve all trigger references so every todo carries its exact constraints.
 
 **Todo order must follow dependencies:** simProps → simPropReactions → simPropActions → simActions
 
-In every todo that loads a tool from the simKit, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan.
+In every todo that loads a tool from the simKit, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
 
 ## Page Description
 

@@ -1,7 +1,31 @@
-Convert the below page prompt into a plan with todos that use tools from the simKit, then configure the tools, to create the simulation page. Use the following guidelines.
+Convert the below page description into a plan with todos that use tools from the simKit, then configure the tools to create the simulation page.
 
-In every todo that loads a <simAction | simReaction | simSmartReaction> from the catalog, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
+## Guidelines
 
-## Page Prompt
+The following simKit tools are available for this page:
+
+- **simAction** — for observe or confirm steps with no prop interaction
+- **simProp** — a physical object the learner interacts with
+- **simPropReaction** — fires when the learner clicks or drags a prop
+- **simPropAction** — instructs the learner to interact with a prop
+
+**Trigger chains are always linear.** Each item triggers exactly the next one. There is no branching.
+
+**Every page must have exactly one starting action.** Set `startingAction: true` on the first item in the sequence only.
+
+**simPropAction has two distinct trigger fields:**
+- `hideTriggers` — the simPropReaction that fires when the learner clicks the prop
+- `completionTriggers` — the item that follows the prop reaction
+- These must never be the same
+
+**All items must be placed in dimension {{pageID}}**. Use spatially sensible, non-overlapping locations. Units are in feet as integers.
+
+**Assign all simIDs upfront** before creating any todos. Every simID must be a unique lowercase_snake_case string. Pre-resolve all trigger references so every todo carries its exact constraints.
+
+**Todo order must follow dependencies:** simProps → simPropReactions → simPropActions → simActions
+
+In every todo that loads a tool from the simKit, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan.
+
+## Page Description
 
 {{pagePrompt}}

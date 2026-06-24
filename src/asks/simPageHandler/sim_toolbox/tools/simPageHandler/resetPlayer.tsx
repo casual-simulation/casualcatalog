@@ -1,0 +1,1 @@
+clearTagMasks(thisBot);

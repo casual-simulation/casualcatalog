@@ -1,0 +1,23 @@
+const { propertyValues } = that;
+
+if ('simID' in propertyValues) {
+    tags.simID = propertyValues.simID;
+}
+
+if ('label' in propertyValues) {
+    tags.label = propertyValues.label;
+}
+
+if ('story' in propertyValues) {
+    tags.actionStory = propertyValues.story;
+}
+
+if ('triggers' in propertyValues) {
+    tags.actionTriggers = propertyValues.triggers;
+}
+
+if ('startingAction' in propertyValues) {
+    tags.startingAction = propertyValues.startingAction.value;
+}
+
+thisBot.resetLineTo();

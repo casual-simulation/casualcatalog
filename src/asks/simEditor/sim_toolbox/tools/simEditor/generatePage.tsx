@@ -1,5 +1,5 @@
 let inquiry = tags.todoPlanPrompt;
-inquiry = inquiry.replaceAll('{{botId}}', thisBot.id);
+inquiry = inquiry.replaceAll('{{pageID}}', thisBot.tags.pageID);
 inquiry = inquiry.replaceAll('{{pagePrompt}}', that);
 
 const params: ABAskGPTParameters = {

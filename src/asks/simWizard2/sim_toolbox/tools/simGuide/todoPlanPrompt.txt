@@ -2,6 +2,9 @@ Convert the below user prompt into a plan with todos to load simEditors, one per
 
 In every todo that loads a <simEditor> from the catalog, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
 
+You are trying to make a 3d simulation, page by page of how to accomplish the goal that the user lays out.
+Pages require a pageID, this pageID should be used to inform the nextPage and prevPage fields, which describe the order these pages go in.
+
 ## User Prompt
 
 {{userPrompt}}

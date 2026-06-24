@@ -36,6 +36,10 @@ if (ask) {
     newURL.searchParams.append("ask", ask);
 }
 
+if (tags.placeAsk) {
+    newURL.searchParams.append("placeAsk", tags.placeAsk);
+}
+
 const ownerStudio = tags.studioId ?? authBot.id;
 if (studio && studio != ownerStudio) {
     newURL.searchParams.append("studio", studio);

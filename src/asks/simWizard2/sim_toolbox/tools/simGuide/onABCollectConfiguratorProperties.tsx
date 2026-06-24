@@ -14,6 +14,14 @@ const properties: ABConfiguratorProperty[] = [
         default: "",
         value: tags.wizardPrompt,
     },
+    {
+        key: 'startingPage',
+        label: 'starting page',
+        type: 'text',
+        description: 'The pageID for the page that is first',
+        default: "",
+        value: tags.startingPage,
+    }
 ]
 
 return properties;

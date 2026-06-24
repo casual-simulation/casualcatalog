@@ -65,6 +65,8 @@ if (isLocal) {
         }
     }
     thisBot.vars.oppSeen = nextSeen;
+
+    thisBot.abRefreshOppsMenu();
 } else {
     console.error(`[${tags.system}.${tagName}] refreshed opps for non-local user ${ownerRecordId} — not updating in-session cache or seen-tracking`);
 }

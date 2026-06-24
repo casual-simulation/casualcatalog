@@ -62,6 +62,7 @@ if (ownerRecordId === localUserRecordId) {
         thisBot.vars.activeOpps = [];
     }
     thisBot.vars.activeOpps.push(opp);
+    thisBot.abRefreshOppsMenu();
 }
 
 return opp;

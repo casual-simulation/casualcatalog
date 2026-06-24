@@ -29,6 +29,7 @@ if (tags.debug) {
 // Drop from the in-session active cache (local user's cache only).
 if (isLocal && Array.isArray(thisBot.vars.activeOpps)) {
     thisBot.vars.activeOpps = thisBot.vars.activeOpps.filter(o => o.address !== address);
+    thisBot.abRefreshOppsMenu();
 }
 
 return eraseResult?.success === true;

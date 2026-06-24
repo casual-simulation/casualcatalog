@@ -47,6 +47,7 @@ async function tick() {
                 opp.expired = true;
                 await manager.abSaveOpp({ opp });
                 manager.vars.activeOpps = (manager.vars.activeOpps ?? []).filter(o => o.address !== opp.address);
+                manager.abRefreshOppsMenu();
                 continue;
             }
 

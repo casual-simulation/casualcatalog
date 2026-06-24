@@ -31,7 +31,9 @@ if (tags.debug) {
 let initialBoot = links.remember.tags.initialBoot ? true : false;
 
 if (initialBoot) {
-    thisBot.abBootStatusShow({ label: `starting up ${links.remember.tags.abBuilderIdentity}`});
+    if (thisBot.abIsPrimary()) {
+        thisBot.abBootStatusShow({ label: `starting up ${links.remember.tags.abBuilderIdentity}`});
+    }
 }
 
 //inst mode (player or builder)

@@ -1,6 +1,6 @@
 const oppsEnabledParam = configBot.tags.oppsEnabled;
 if (oppsEnabledParam != null && oppsEnabledParam !== '') {
-    tags.oppsEnabled = oppsEnabledParam;
+    setTagMask(thisBot, 'oppsEnabled', oppsEnabledParam, 'local');
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] oppsEnabled overridden from URL:`, oppsEnabledParam);
     }

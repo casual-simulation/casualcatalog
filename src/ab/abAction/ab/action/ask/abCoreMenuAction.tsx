@@ -104,14 +104,24 @@ else if (!inquiryHasSpace) {
         ab.links.manifestation.abClick();
     } else {
         // Need to decide where the cost of the ai calls is going to come from.
-        let costRecordName;
-        
-        if (ab.links.utils.isInstOwnedByStudio()) { 
-            // Inst owner is likely a studio, the cost of the ai call will come from it.
-            costRecordName = configBot.tags.owner;
-        } else {
-            // Cost of the ai call will come from the user.
-            costRecordName = authBot.id;
+        // Default to the user's own record.
+        let costRecordName = authBot.id;
+
+        if (ab.links.utils.isInstOwnedByStudio()) {
+            // Inst is owned by a studio. Only charge the studio if we're actually a member of it;
+            // otherwise the cost falls back to the user's own record.
+            const { instOwner } = ab.links.utils.getCurrentInstInfo();
+
+            if (!configBot.tags.user_studios) {
+                await ab.abRefreshStudios();
+            }
+
+            const isStudioMember = configBot.tags.user_studios?.success &&
+                configBot.tags.user_studios.studios?.some(s => s.studioId === instOwner);
+
+            if (isStudioMember) {
+                costRecordName = instOwner;
+            }
         }
 
         const attachments: ABAttachment[] = thisBot.vars.abAttachments ?? [];

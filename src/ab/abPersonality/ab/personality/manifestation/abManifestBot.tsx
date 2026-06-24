@@ -479,6 +479,13 @@ const abMod = {
     onArmDestroy: ListenerString(() => {
         shout('abMenuRefresh');
     }),
+    onABUserRequestTodoCreated: ListenerString(() => {
+        if (links.armBot) {
+            destroy(links.armBot);
+        }
+
+        ab.links.equipment.onEquipmentBaseDeselected(thisBot);
+    }),
     onDestroy: ListenerString(() => {
         thisBot.vars.destroyed = true;
 

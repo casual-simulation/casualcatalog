@@ -1,3 +1,18 @@
+const oppsEnabledParam = configBot.tags.oppsEnabled;
+if (oppsEnabledParam != null && oppsEnabledParam !== '') {
+    tags.oppsEnabled = oppsEnabledParam;
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] oppsEnabled overridden from URL:`, oppsEnabledParam);
+    }
+}
+
+if (!tags.oppsEnabled) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] opps disabled; skipping initialize.`);
+    }
+    return;
+}
+
 const userRecordId = await ab.links.utils.getLocalUserRecordId();
 
 if (!userRecordId) {

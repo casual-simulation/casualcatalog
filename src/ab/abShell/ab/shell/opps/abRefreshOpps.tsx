@@ -3,6 +3,13 @@
 // nor expired. The cache + seen-tracking are only updated when refreshing the LOCAL user's
 // record, since the cycle watches that cache.
 
+if (!tags.oppsEnabled) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] opps disabled; no-op.`);
+    }
+    return [];
+}
+
 let {
     ownerRecordId
 } = that ?? {};

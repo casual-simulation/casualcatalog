@@ -2,6 +2,13 @@
 
 thisBot.abStopOppCycle();
 
+if (!tags.oppsEnabled) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] opps disabled; not starting cycle.`);
+    }
+    return;
+}
+
 const managerId = thisBot.id;
 const cycleId = uuid();
 thisBot.vars.currentOppCycleId = cycleId;
@@ -13,6 +20,13 @@ async function tick() {
     if (manager.vars.currentOppCycleId !== cycleId) {
         if (manager.tags.debug) {
             console.log(`[${manager.tags.system}.oppTick] Stale cycle detected, aborting`);
+        }
+        return;
+    }
+
+    if (!manager.tags.oppsEnabled) {
+        if (manager.tags.debug) {
+            console.log(`[${manager.tags.system}.oppTick] opps disabled; stopping cycle.`);
         }
         return;
     }

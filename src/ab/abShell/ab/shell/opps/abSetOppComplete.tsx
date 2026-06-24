@@ -1,3 +1,10 @@
+if (!tags.oppsEnabled) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] opps disabled; no-op.`);
+    }
+    return false;
+}
+
 let {
     address,
     completionData,

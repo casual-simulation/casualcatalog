@@ -2,6 +2,13 @@
 // and it gets written in place — used for create, completion, expiry, and any other opp mutation.
 // Caller is responsible for the in-session cache (add/remove/replace), since that varies by op.
 
+if (!tags.oppsEnabled) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] opps disabled; no-op.`);
+    }
+    return false;
+}
+
 let {
     opp,
     ownerRecordId

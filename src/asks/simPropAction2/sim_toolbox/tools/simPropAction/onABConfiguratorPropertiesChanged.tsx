@@ -25,7 +25,8 @@ if ('completionTriggers' in propertyValues) {
 }
 
 if ('startingAction' in propertyValues) {
-    tags.startingAction = propertyValues.startingAction.value;
+    tags.startingAction = propertyValues.startingAction;
 }
 
+await os.sleep(0);
 thisBot.resetLineTo();

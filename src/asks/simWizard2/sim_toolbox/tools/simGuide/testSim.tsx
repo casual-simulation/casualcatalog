@@ -6,7 +6,7 @@ const anyPage = getBot(byTag("simEditor", true));
 //create place with starting page
 const abArtifactShard = {
     data: {
-        placeAsk: tags.startingPage ?? startingPage?.tags.pageID ?? anyPage?.tags.pageID,
+        placeAsk: tags.simID + '_' + (tags.startingPage ?? startingPage?.tags.pageID ?? anyPage?.tags.pageID),
         eggParameters: {
             gridInformation: {
                 dimension: 'home',
@@ -23,7 +23,7 @@ const abArtifactShard = {
         }
     ]
 };
-links.artifact.abCreateArtifactPromiseBot({
+ab.links.artifact.abCreateArtifactPromiseBot({
     abArtifactName: "placePortal",
     abArtifactInstanceID: uuid(),
     abArtifactShard,

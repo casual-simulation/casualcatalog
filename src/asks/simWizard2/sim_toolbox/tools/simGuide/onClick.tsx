@@ -48,3 +48,4 @@ const testSimButton = {
 
 ab.links.menu.abCreateMenuButton(configButton);
 ab.links.menu.abCreateMenuButton(saveSimButton);
+ab.links.menu.abCreateMenuButton(testSimButton);

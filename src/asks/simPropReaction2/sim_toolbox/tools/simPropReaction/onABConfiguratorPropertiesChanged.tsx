@@ -12,4 +12,5 @@ if ('props' in propertyValues) {
     tags.actionTriggers = propertyValues.props;
 }
 
+await os.sleep(0);
 thisBot.resetLineTo();

@@ -6,7 +6,7 @@ for (const page of pageBots) {
     //make simPageHandler
     const abArtifactShard = {
         data: {
-            placeAsk: tags.startingPage ?? startingPage?.tags.pageID ?? anyPage?.tags.pageID,
+            placeAsk: tags.simID + '_' + page.tags.pageID,
             prevPage: page.tags.prevPage,
             nextPage: page.tags.nextPage,
             eggParameters: {
@@ -25,7 +25,7 @@ for (const page of pageBots) {
             }
         ]
     };
-    const handler = await links.artifact.abCreateArtifactPromiseBot({
+    const handler = await ab.links.artifact.abCreateArtifactPromiseBot({
         abArtifactName: "simPageHandler",
         abArtifactInstanceID: uuid(),
         abArtifactShard,

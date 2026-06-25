@@ -13,6 +13,8 @@ const params: ABAskGPTParameters = {
 
 await ab.links.ask.askGPT(params);
 
+tags.generatedSim = true;
+
 if (tags.destroyAfterUse) {
     destroy(thisBot);
 }

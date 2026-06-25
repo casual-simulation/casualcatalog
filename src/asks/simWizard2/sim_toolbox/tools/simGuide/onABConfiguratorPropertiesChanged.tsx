@@ -10,7 +10,7 @@ if ('startingPage' in propertyValues) {
 
 if ('prompt' in propertyValues) {
     tags.wizardPrompt = propertyValues.prompt;
-    if (propertyValues.prompt) {
+    if (propertyValues.prompt && !tags.generatedSim) {
        await thisBot.generateFromPrompt(propertyValues.prompt);
     }
 }

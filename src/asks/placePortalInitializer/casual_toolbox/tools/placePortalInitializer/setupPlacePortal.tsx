@@ -58,5 +58,5 @@ const grid = create({
 })
 
 if (configBot.tags.placeAsk) {
-    ab.links.ask.abCoreMenuAction(configBot.tags.placeAsk);
+    ab.links.ask.abCoreMenuAction({inquiry: configBot.tags.placeAsk, autoHatch: true});
 }

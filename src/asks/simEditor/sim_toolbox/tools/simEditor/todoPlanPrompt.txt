@@ -26,7 +26,7 @@ The following simKit tools are available for this page:
 
 **All items must be placed in dimension=`{{pageID}}`**. Use spatially sensible, non-overlapping locations. Units are in feet as integers.
 
-**dimension tag must be specified.** Make sure to set the dimension tag to `{{pageID}}, not just setting the {{pageID}} tag to true.
+**dimension tag must be specified.** Make sure to set the dimension tag to `{{pageID}}`, in addition to setting the {{pageID}} tag to true.
 
 **Assign all simIDs upfront** before creating any todos. Every simID must be a unique lowercase_snake_case string. Pre-resolve all trigger references so every todo carries its exact constraints.
 

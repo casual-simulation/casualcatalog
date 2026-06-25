@@ -14,3 +14,4 @@ delete data.tags[data.tags.dimension];
 delete data.tags.dimension;
 delete data.tags.simID;
 delete data.tags.wizardPrompt;
+delete data.tags.generatedSim;

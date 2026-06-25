@@ -33,6 +33,7 @@ const saveSimButton = {
     formAddress: 'save',
     onClick: `@
         links.wizard.saveSim();
+        shout("clearSimWizardMenu");
     `
 }
 
@@ -43,6 +44,7 @@ const testSimButton = {
     formAddress: 'science',
     onClick: `@
         links.wizard.testSim();
+        shout("clearSimWizardMenu");
     `
 }
 

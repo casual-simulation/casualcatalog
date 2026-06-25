@@ -6,7 +6,7 @@ let instName = tags.instSetting ?? null;
 let ask = 'placePortalInitializer';
 const studio = tags.studioId;
 
-instName = instName.replace(/[^a-zA-Z0-9]/g, '');
+instName = instName.replace(/[^a-zA-Z0-9_-]/g, '');
 tags.instSetting = instName;
 
 //url variables

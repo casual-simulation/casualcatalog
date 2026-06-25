@@ -10,6 +10,7 @@ tags.nextPage = data.nextPage;
 tags.form = 'nothing';
 tags.queuedActions = [];
 tags.completedActions = [];
+tags.pageInitialized = data.pageInitialized ?? false;
 
 //Place bot correctly
 if (data.dimensionData) {

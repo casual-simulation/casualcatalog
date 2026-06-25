@@ -15,3 +15,4 @@ delete data.tags.completedActions;
 delete data.tags.queuedActions;
 delete data.tags.prevPage;
 delete data.tags.nextPage;
+delete data.tags.pageInitialized;

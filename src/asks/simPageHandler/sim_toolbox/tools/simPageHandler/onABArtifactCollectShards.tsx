@@ -18,7 +18,8 @@ const shard: ABArtifactShard = {
         pageID: tags.pageID,
         prevPage: tags.prevPage,
         nextPage: tags.nextPage,
-        strokeColor: tags.strokeColor
+        strokeColor: tags.strokeColor,
+        pageInitialized: tags.pageInitialized
     },
     dependencies: [
         {

@@ -1,3 +1,7 @@
+if (configBot.tags.placeAsk != (tags.simID + '_' + tags.pageID)) {
+    return;
+}
+
 if (configBot.tags.staticInst) {
     shout("onRemoteData", {
         name: "onStartMenu",
@@ -12,7 +16,8 @@ if (configBot.tags.staticInst) {
 const props = getBots("simProp", true);
 for (const prop of props) {
     prop.tags.home = true;
-    prop.tags.homeX = props.tags[tags.pageID + 'X'];
-    prop.tags.homeY = props.tags[tags.pageID + 'Y'];
-    prop.tags.homeZ = props.tags[tags.pageID + 'Z'];
+    prop.tags.homeX = prop.tags[tags.pageID + 'X'];
+    prop.tags.homeY = prop.tags[tags.pageID + 'Y'];
+    prop.tags.homeZ = prop.tags[tags.pageID + 'Z'];
+    prop.tags.propLocked = true;
 }

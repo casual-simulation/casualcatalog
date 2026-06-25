@@ -1,4 +1,8 @@
 //spawn back place
+if (configBot.tags.placeAsk != (tags.simID + '_' + tags.pageID)) {
+    return;
+}
+
 const abArtifactShard = {
     data: {
         label: tags.prevPage,

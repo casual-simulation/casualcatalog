@@ -20,3 +20,8 @@ if (!tags.simStarted) {
         await sendRemoteData(remotes, "onStartMenu");
     }
 }
+
+if (!tags.pageInitialized) {
+    tags.pageInitialized = true;
+    thisBot.setupPage();
+}

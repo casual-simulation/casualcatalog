@@ -30,8 +30,3 @@ if (data.eggParameters) {
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
 }
-
-if (!tags.pageInitialized) {
-    tags.pageInitialized = true;
-    thisBot.showStartButton();
-}

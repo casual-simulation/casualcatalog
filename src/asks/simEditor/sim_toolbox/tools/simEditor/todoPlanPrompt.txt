@@ -6,7 +6,7 @@ The following simKit tools are available for this page:
 
 - **simAction** — for observe or confirm steps with no prop interaction
 - **simProp** — a physical object the learner interacts with
-- **simPropReaction** — fires when the learner clicks or drags a prop
+- **simPropReaction** — fires when the learner clicks or drags a prop, watches a specific prop by its simID
 - **simPropAction** — instructs the learner to interact with a prop
 
 **Trigger chains are always linear.** Each item triggers exactly the next one. There is no branching.
@@ -17,20 +17,20 @@ The following simKit tools are available for this page:
 
 **How each tool uses triggers:**
 - **simAction** — `triggers` contains the simID of the preceding simAction, simPropReaction, or simPropAction
-- **simPropReaction** — has no triggers, it fires on physical interaction with its prop
+- **simPropReaction** — has no triggers, it fires on physical interaction with its prop. Must reference the prop's simID in its `props` array.
 - **simPropAction** — `triggers` contains the simID of the preceding item that causes it to appear. `hideTriggers` contains the simID of the simPropReaction that fires when the learner clicks the prop. `completionTriggers` contains the simID of the item that follows the prop reaction. `hideTriggers` and `completionTriggers` must never be the same.
 
-**Props should be positioned, scaled, and colored to reflect their real world appearance and location.** Place them where they would actually exist in the scene relative to each other. Scale and color are available on every simProp — use them to make the scene recognizable.
+**Props should be positioned, scaled, and colored to reflect their real world appearance and location.** Props can also have animations, botSnap, and other visual effects applied to them — use these where they improve clarity or realism. For example, a snap effect when a part is placed correctly, or an animation drawing attention to the next prop the learner should interact with. Place them where they would actually exist in the scene relative to each other. Scale and color are available on every simProp — use them to make the scene recognizable.
 
-**Labels are optional.** Only include a label on an item if it meaningfully helps the learner. If the instruction or context makes it clear, omit the label.
+**Labels describe the real world task, not the interaction.** A label should say what the learner is physically doing — "Unscrew the left bolt", "Open the valve", "Attach the bracket" — never "click the bolt" or "drag the valve". The click or drag is just the mechanism; the label is the meaning. simActions and simPropActions must always have a label.
 
-**All items must be placed in dimension=`{{pageID}}`**. Use spatially sensible, non-overlapping locations. Units are in feet as integers.
+**Prop labels are optional.** Only include a label on a simProp if it meaningfully helps the learner identify it. If the prop is visually obvious from its shape and color, omit the label.
 
-**dimension tag must be specified.** Make sure to set the dimension tag to `{{pageID}}`, in addition to setting the {{pageID}} tag to true.
+**All items must be placed in dimension=`{{pageID}}`.** Set the dimension tag to `{{pageID}}` and the `{{pageID}}` tag to true on every item.
 
 **Assign all simIDs upfront** before creating any todos. Every simID must be a unique lowercase_snake_case string. Pre-resolve all trigger references so every todo carries its exact constraints.
 
-**Todo order must follow dependencies:** simProps → simPropReactions → simPropActions → simActions
+**Todo order follows creation dependencies, not execution order:** simProps → simPropReactions → simPropActions → simActions. A simAction may be the starting action even though it is created last — todo order is about ensuring references exist, not about what the learner sees first.
 
 In every todo that loads a tool from the simKit, explicitly instruct the builder to load it even if the catalog marks it `agentReady: false` — these tools are intended to be loaded and then configured manually using the instructions in this plan, so the builder must not skip or substitute them with a hand-built bot.
 

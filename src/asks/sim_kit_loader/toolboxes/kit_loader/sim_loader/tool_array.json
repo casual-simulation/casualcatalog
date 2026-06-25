@@ -2,98 +2,49 @@
     {
         "name": "sim action",
         "studio": "AB",
-        "targetAB": "simAction",
-        "artifact": true
-    },
-    {
-        "name": "sim camera reaction",
-        "studio": "AB",
-        "targetAB": "simCameraReaction",
-        "artifact": true
-    },
-    {
-        "name": "sim cycle",
-        "studio": "AB",
-        "targetAB": "simCycle",
-        "artifact": true
-    },
-    {
-        "name": "sim door",
-        "studio": "AB",
-        "targetAB": "simDoor",
-        "artifact": true
-    },
-    {
-        "name": "sim filter",
-        "studio": "AB",
-        "targetAB": "simFilter",
-        "artifact": true
-    },
-    {
-        "name": "sim guide",
-        "studio": "AB",
-        "targetAB": "simWizard",
+        "targetAB": "simAction2",
         "artifact": true,
         "agentReady": true
     },
     {
-        "name": "sim place",
+        "name": "sim guide",
         "studio": "AB",
-        "targetAB": "simPlace",
-        "artifact": true
-    },
-    {
-        "name": "sim place HD",
-        "studio": "AB",
-        "targetAB": "simPlaceHD",
-        "artifact": true
-    },
-    {
-        "name": "sim player",
-        "studio": "AB",
-        "targetAB": "simPlayer",
-        "artifact": true
+        "targetAB": "simWizard2",
+        "artifact": true,
+        "agentReady": true
     },
     {
         "name": "sim prop",
         "studio": "AB",
-        "targetAB": "simProp",
-        "artifact": true
+        "targetAB": "simProp2",
+        "artifact": true,
+        "agentReady": true
     },
     {
         "name": "sim prop action",
         "studio": "AB",
-        "targetAB": "simPropAction",
-        "artifact": true
+        "targetAB": "simPropAction2",
+        "artifact": true,
+        "agentReady": true
     },
     {
         "name": "sim prop reaction",
         "studio": "AB",
-        "targetAB": "simPropReaction",
-        "artifact": true
+        "targetAB": "simPropReaction2",
+        "artifact": true,
+        "agentReady": true
     },
     {
-        "name": "sim reaction",
+        "name": "sim editor",
         "studio": "AB",
-        "targetAB": "simReaction",
-        "artifact": true
+        "targetAB": "simEditor",
+        "artifact": true,
+        "agentReady": true
     },
     {
-        "name": "sim restart",
+        "name": "sim page handler",
         "studio": "AB",
-        "targetAB": "simMenu",
-        "artifact": true
-    },
-    {
-        "name": "sim role",
-        "studio": "AB",
-        "targetAB": "simRole",
-        "artifact": true
-    },
-    {
-        "name": "sim smart reaction",
-        "studio": "AB",
-        "targetAB": "simSmartReaction",
+        "targetAB": "simPageHandler",
         "artifact": true
     }
 ]

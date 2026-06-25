@@ -25,7 +25,7 @@ links.artifact.abCreateArtifactPromiseBot({
 });
 
 //spawn next place
-const abArtifactShard = {
+const abArtifactShard2 = {
     data: {
         placeAsk: tags.nextPage,
         eggParameters: {
@@ -47,7 +47,7 @@ const abArtifactShard = {
 links.artifact.abCreateArtifactPromiseBot({
     abArtifactName: "placePortal",
     abArtifactInstanceID: uuid(),
-    abArtifactShard,
+    abArtifactShard: abArtifactShard2,
 });
 
 //showActions

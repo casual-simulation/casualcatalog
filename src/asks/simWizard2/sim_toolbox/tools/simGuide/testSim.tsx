@@ -6,6 +6,7 @@ const anyPage = getBot(byTag("simEditor", true));
 //create place with starting page
 const abArtifactShard = {
     data: {
+        label: tags.simID,
         placeAsk: tags.simID + '_' + (tags.startingPage ?? startingPage?.tags.pageID ?? anyPage?.tags.pageID),
         eggParameters: {
             gridInformation: {

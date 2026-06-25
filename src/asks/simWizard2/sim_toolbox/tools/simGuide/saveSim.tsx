@@ -11,7 +11,7 @@ for (const page of pageBots) {
             nextPage: page.tags.nextPage,
             eggParameters: {
                 gridInformation: {
-                    dimension: page.tags.pageID,
+                    dimension: 'home',
                     position: {
                         x: -10,
                         y: 10
@@ -32,7 +32,8 @@ for (const page of pageBots) {
     });
 
     //grab associated tools
-    const allPageInfo = getBots(page.tags.pageID, true);
+    let allPageInfo = getBots(page.tags.pageID, true);
+    allPageInfo.push(handler);
 
     //publish as simID_pageID
     try {

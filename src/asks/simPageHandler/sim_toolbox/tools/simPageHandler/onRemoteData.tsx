@@ -6,7 +6,7 @@ if (that.name == "onActionCompleted") {
 
 else if (that.name == "onStartMenu") {
 
-    setTagMask(thisBot, "simStarted", true, "tempShared");
+    setTagMask(thisBot, "simStarted", true, "tempLocal");
 
     shout("clearActionMenu");
     shout("clearRoleStats");

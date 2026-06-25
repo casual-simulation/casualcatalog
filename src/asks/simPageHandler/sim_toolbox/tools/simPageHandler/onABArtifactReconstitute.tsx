@@ -4,7 +4,8 @@ if (data.config) {
 }
 
 tags.simID = data.simID ?? uuid();
-tags.form = nothing;
+tags.pageID = data.pageID;
+tags.form = 'nothing';
 tags.queuedActions = [];
 tags.completedActions = [];
 

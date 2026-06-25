@@ -6,7 +6,8 @@ for (const page of pageBots) {
     //make simPageHandler
     const abArtifactShard = {
         data: {
-            placeAsk: tags.simID + '_' + page.tags.pageID,
+            pageID: page.tags.pageID,
+            simID: tags.simID,
             prevPage: page.tags.prevPage,
             nextPage: page.tags.nextPage,
             eggParameters: {
@@ -31,9 +32,11 @@ for (const page of pageBots) {
         abArtifactShard,
     });
 
+    await os.sleep(0);
+
     //grab associated tools
     let allPageInfo = getBots(page.tags.pageID, true);
-    allPageInfo.push(handler);
+    allPageInfo.push(handler[0]);
 
     //publish as simID_pageID
     try {

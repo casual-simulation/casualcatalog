@@ -15,7 +15,8 @@ const autoFocus: boolean = that.autoFocus ?? true; // After creation, focus and 
 const autoAssignAgent: boolean = that.autoAssignAgent ?? ab.links.personality.tags.abAutoAssignAgentToTodo ?? true; // Automatically assign the todo to agents. Callers doing tag post-processing (userAsk, userRequest) pass false and handle it themselves.
 
 const todoPlanId = uuid();
-const todoDir = { x: 0, y: 1, z: 0 };
+// Straight +y column; the -x drift comes from the column placement below, not the step dir.
+const todoDir = tags.todoDir ?? { x: 0, y: 1, z: 0 };
 const todoSpacing = tags.todoSpacing ?? 2;
 
 let todoParentId;
@@ -43,6 +44,45 @@ if (menuActionData?.menu === 'grid') {
     todoBasePosition = { x: menuActionData.dimensionX, y: menuActionData.dimensionY, z: 0 };
 }
 
+// Place the chain as one straight column, shifting it -x only to dodge bots. Child chains start
+// one lane -x of the anchor; the root todo starts on it.
+const columnSpacing = todoSpacing;
+
+// Snapshot occupied tiles (rounded to whole tiles for a reliable collision check).
+const tileKey = (x: number, y: number) => `${Math.round(x)},${Math.round(y)}`;
+const occupiedTiles = new Set<string>();
+getBots((b) => {
+    if (b.tags[todoDimension]) {
+        const p = getBotPosition(b, todoDimension);
+        occupiedTiles.add(tileKey(p.x, p.y));
+    }
+});
+
+// Per-todo offsets from the base, before the -x lane shift.
+const columnOffsets = todos.map((_, i) => {
+    const step = todoStartOffset + i;
+    return {
+        dx: step * todoDir.x * todoSpacing,
+        dy: step * todoDir.y * todoSpacing,
+        dz: step * todoDir.z * todoSpacing,
+    };
+});
+
+// First -x lane where the whole column is clear. null => fall back to per-todo search.
+const firstLaneOffset = parentBot ? columnSpacing : 0;
+const MAX_LANES = 64;
+let laneShiftX: number | null = null;
+for (let lane = 0; lane < MAX_LANES; lane++) {
+    const shiftX = -(firstLaneOffset + lane * columnSpacing);
+    const clear = columnOffsets.every((o) =>
+        !occupiedTiles.has(tileKey(todoBasePosition.x + shiftX + o.dx, todoBasePosition.y + o.dy))
+    );
+    if (clear) {
+        laneShiftX = shiftX;
+        break;
+    }
+}
+
 const createdBots = [];
 let firstTodoBot: Bot | null = null;
 
@@ -50,7 +90,6 @@ const aiChatModels: any[] = configBot.tags.aiChatModels ?? [];
 
 for (let i = 0; i < todos.length; i++) {
     const todo = todos[i];
-    const step = todoStartOffset + i;
 
     // If this todo has non-image attachments, override to the best available Gemini Flash model
     // since OpenAI and Anthropic models only support image files as multimodal input (as of 2026-04-29). 
@@ -78,20 +117,31 @@ for (let i = 0; i < todos.length; i++) {
         }
     }
 
-    let computedPosition = {
-        x: todoBasePosition.x + step * todoDir.x * todoSpacing,
-        y: todoBasePosition.y + step * todoDir.y * todoSpacing,
-        z: todoBasePosition.z + step * todoDir.z * todoSpacing
+    const offset = columnOffsets[i];
+    let computedPosition;
+    if (laneShiftX !== null) {
+        // Straight column: every todo shares the chosen -x lane.
+        computedPosition = {
+            x: todoBasePosition.x + laneShiftX + offset.dx,
+            y: todoBasePosition.y + offset.dy,
+            z: todoBasePosition.z + offset.dz,
+        };
+    } else {
+        // No clear lane: per-todo open search (avoids overlap, not straight), biased -x.
+        computedPosition = ab.links.utils.findOpenPositionAround({
+            dimension: todoDimension,
+            center: {
+                x: todoBasePosition.x + offset.dx,
+                y: todoBasePosition.y + offset.dy,
+                z: todoBasePosition.z + offset.dz,
+            },
+            radius: 15,
+            innerRadius: 0,
+            direction: 'outward',
+            spacing: 1,
+            preferAngle: Math.PI,
+        })
     }
-    
-    computedPosition = ab.links.utils.findOpenPositionAround({
-        dimension: todoDimension,
-        center: computedPosition,
-        radius: 15,
-        innerRadius: 0,
-        direction: 'outward',
-        spacing: 1,
-    })
 
     const abArtifactShard: ABArtifactShard = {
         data: {

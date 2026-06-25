@@ -48,11 +48,12 @@ if (menuActionData?.menu === 'grid') {
 // one lane -x of the anchor; the root todo starts on it.
 const columnSpacing = todoSpacing;
 
-// Snapshot occupied tiles (rounded to whole tiles for a reliable collision check).
+// Snapshot occupied tiles (rounded for a reliable collision check). Skip the abBot (+ its
+// mesh/core children) and agent bots — they roam the layout area and would shove columns around.
 const tileKey = (x: number, y: number) => `${Math.round(x)},${Math.round(y)}`;
 const occupiedTiles = new Set<string>();
 getBots((b) => {
-    if (b.tags[todoDimension]) {
+    if (b.tags[todoDimension] && !b.tags.abBot && !b.tags.abAgent) {
         const p = getBotPosition(b, todoDimension);
         occupiedTiles.add(tileKey(p.x, p.y));
     }

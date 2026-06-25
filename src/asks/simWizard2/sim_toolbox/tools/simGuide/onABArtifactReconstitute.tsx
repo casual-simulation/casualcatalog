@@ -7,6 +7,7 @@ tags.simID = data.simID ?? uuid();
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('simGuide_' + getID(thisBot));
 tags.wizardPrompt = data.wizardPrompt;
 tags.generatedSim = data.generatedSim;
+tags.startingPage = data.startingPage;
 
 // Form
 tags.form = 'mesh';

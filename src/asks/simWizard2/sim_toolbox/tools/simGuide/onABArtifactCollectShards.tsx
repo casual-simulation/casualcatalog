@@ -16,7 +16,8 @@ const shard: ABArtifactShard = {
         labelColor: tags.labelColor,
         simID: tags.simID,
         wizardPrompt: tags.wizardPrompt,
-        generatedSim: tags.generatedSim
+        generatedSim: tags.generatedSim,
+        startingPage: tags.startingPage
     },
     dependencies: [
         {

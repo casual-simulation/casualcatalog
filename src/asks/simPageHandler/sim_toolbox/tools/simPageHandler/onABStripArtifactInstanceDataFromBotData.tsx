@@ -9,6 +9,7 @@ delete data.tags[data.tags.dimension + "RotationZ"];
 delete data.tags[data.tags.dimension];
 delete data.tags.dimension;
 delete data.tags.simID;
+delete data.tags.pageID;
 delete data.tags.timeout;
 delete data.tags.completedActions;
 delete data.tags.queuedActions;

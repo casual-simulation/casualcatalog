@@ -8,6 +8,7 @@ const abArtifactShard = {
     data: {
         label: tags.simID,
         placeAsk: tags.simID + '_' + (tags.startingPage ?? startingPage?.tags.pageID ?? anyPage?.tags.pageID),
+        instSetting: tags.simID,
         generateURLOnLoad: true,
         eggParameters: {
             gridInformation: {

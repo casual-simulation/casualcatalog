@@ -2,6 +2,8 @@ const data = that.data;
 
 tags.label = data.label ?? null;
 tags.placeLabel = tags.label;
+tags.instSetting = data.instSetting;
+
 if (tags.label) {
     tags.homePlace = true;
 }

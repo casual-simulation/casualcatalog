@@ -1,7 +1,10 @@
 //spawn back place
 const abArtifactShard = {
     data: {
-        placeAsk: tags.prevPage,
+        label: tags.prevPage,
+        placeAsk: tags.simID + '_' + tags.prevPage,
+        instSetting: tags.prevPage,
+        generateURLOnLoad: true,
         eggParameters: {
             gridInformation: {
                 dimension: 'home',
@@ -18,7 +21,7 @@ const abArtifactShard = {
         }
     ]
 };
-links.artifact.abCreateArtifactPromiseBot({
+ab.links.artifact.abCreateArtifactPromiseBot({
     abArtifactName: "placePortal",
     abArtifactInstanceID: uuid(),
     abArtifactShard,
@@ -27,7 +30,10 @@ links.artifact.abCreateArtifactPromiseBot({
 //spawn next place
 const abArtifactShard2 = {
     data: {
-        placeAsk: tags.nextPage,
+        label: tags.nextPage,
+        placeAsk: tags.simID + '_' + tags.nextPage,
+        instSetting: tags.nextPage,
+        generateURLOnLoad: true,
         eggParameters: {
             gridInformation: {
                 dimension: 'home',
@@ -44,7 +50,7 @@ const abArtifactShard2 = {
         }
     ]
 };
-links.artifact.abCreateArtifactPromiseBot({
+ab.links.artifact.abCreateArtifactPromiseBot({
     abArtifactName: "placePortal",
     abArtifactInstanceID: uuid(),
     abArtifactShard: abArtifactShard2,

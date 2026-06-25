@@ -13,3 +13,5 @@ delete data.tags.pageID;
 delete data.tags.timeout;
 delete data.tags.completedActions;
 delete data.tags.queuedActions;
+delete data.tags.prevPage;
+delete data.tags.nextPage;

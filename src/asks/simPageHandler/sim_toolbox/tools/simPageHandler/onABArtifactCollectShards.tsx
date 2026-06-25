@@ -16,6 +16,8 @@ const shard: ABArtifactShard = {
         labelColor: tags.labelColor,
         simID: tags.simID,
         pageID: tags.pageID,
+        prevPage: tags.prevPage,
+        nextPage: tags.nextPage,
         strokeColor: tags.strokeColor
     },
     dependencies: [

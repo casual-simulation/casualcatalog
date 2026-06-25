@@ -5,6 +5,8 @@ if (data.config) {
 
 tags.simID = data.simID ?? uuid();
 tags.pageID = data.pageID;
+tags.prevPage = data.prevPage;
+tags.nextPage = data.nextPage;
 tags.form = 'nothing';
 tags.queuedActions = [];
 tags.completedActions = [];
@@ -27,5 +29,3 @@ if (data.eggParameters) {
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
 }
-
-thisBot.setupPage()

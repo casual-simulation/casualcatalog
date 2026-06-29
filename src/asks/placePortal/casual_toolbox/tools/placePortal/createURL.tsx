@@ -47,9 +47,9 @@ if (studio && studio != ownerStudio) {
 
 newURL.searchParams.append("portalColor", tags.color);
 
-if (abAwake) {
-    newURL.searchParams.append("abSleep", false);
-}
+// if (abAwake) {
+//     newURL.searchParams.append("abSleep", false);
+// }
 
 if (bios == 'studio') {
     if (instName) {

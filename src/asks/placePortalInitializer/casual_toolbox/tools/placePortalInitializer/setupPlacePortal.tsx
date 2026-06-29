@@ -60,3 +60,5 @@ const grid = create({
 if (configBot.tags.placeAsk) {
     ab.links.ask.abCoreMenuAction({message: configBot.tags.placeAsk, autoHatch: true});
 }
+
+ab.links.manifestation.abSetAwake({awake: true});

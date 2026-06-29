@@ -8,6 +8,7 @@ const shard: ABArtifactShard = {
         studioId: tags.studioId,
         originType: tags.originType,
         instSetting: tags.instSetting,
+        biosSetting: tags.biosSetting,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

@@ -1,7 +1,7 @@
 shout('clearInstCreatorMenu');
 
 //chosen
-let bios = 'studio';
+let bios = tags.biosSetting ?? 'studio';
 let instName = tags.instSetting ?? null;
 let ask = 'placePortalInitializer';
 const studio = tags.studioId;
@@ -48,7 +48,7 @@ if (studio && studio != ownerStudio) {
 newURL.searchParams.append("portalColor", tags.color);
 
 if (abAwake) {
-    newURL.searchParams.append("abStayAwake", abAwake);
+    newURL.searchParams.append("abSleep", false);
 }
 
 if (bios == 'studio') {
@@ -59,6 +59,23 @@ if (bios == 'studio') {
     } else {
         newURL.searchParams.append("bios", 'studio');
     }
+}
+else if (bios == 'local') {
+    if (instName) {
+        newURL.searchParams.append("staticInst", instName);
+        newURL.searchParams.append("gridPortal", 'home');
+    } else {
+        newURL.searchParams.append("bios", 'local');
+    }
+} 
+else if (bios == 'free') {
+    newURL.searchParams.append("owner", 'public');
+    newURL.searchParams.append("inst", instName);
+    newURL.searchParams.append("gridPortal", 'home');
+}
+else if (bios == 'temp') {
+    newURL.searchParams.append("tempInst", instName);
+    newURL.searchParams.append("gridPortal", 'home');
 }
 
 if(instName) {

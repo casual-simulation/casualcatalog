@@ -3,6 +3,7 @@ const data = that.data;
 tags.label = data.label ?? null;
 tags.placeLabel = tags.label;
 tags.instSetting = data.instSetting;
+tags.biosSetting = data.biosSetting;
 
 if (tags.label) {
     tags.homePlace = true;

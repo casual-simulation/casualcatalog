@@ -50,79 +50,81 @@ if (os.getCurrentInst() != 'home' && authBot && ab.abIsPrimary()) {
     dropdownOptions.push(homeWorldButton);
 }
 
-if (currentPortal == 'map') {
 
-    const homeBaseBot = getBot("respawnPoint", true);
+const homeBaseBot = getBot("respawnPoint", true);
 
-    if (homeBaseBot) {
-        const homeButton = {
-            ...menuOptions,
-            label: 'home',
-            formAddress: 'https://auth-aux-dev-filesbucket-682397690660.s3.amazonaws.com/318c04f1-1391-4c10-8d43-aaebc5170265/cd38affc0604beaa588da21aa1be750bb3e73b3b3cae23eb30307c34494459f3.png',
-            onClick: `@
-                const homeBot = getBot("respawnPoint", true);
-                if (homeBot) {
-                    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
-                    superShout("moveAvatarToPlace", {
-                            dimension: dimension,
-                            x: homeBot.tags[dimension + 'X'],
-                            y: homeBot.tags[dimension + 'Y']
-                        })
-                    os.focusOn(homeBot, { zoom: 2000 }).catch(() => {});
-                }
+if (homeBaseBot && homeBaseBot.tags[currentDim] == true) {
+    const homeButton = {
+        ...menuOptions,
+        label: 'home',
+        formAddress: 'https://auth-aux-dev-filesbucket-682397690660.s3.amazonaws.com/318c04f1-1391-4c10-8d43-aaebc5170265/cd38affc0604beaa588da21aa1be750bb3e73b3b3cae23eb30307c34494459f3.png',
+        onClick: `@
+            const homeBot = getBot("respawnPoint", true);
+            if (homeBot) {
+                const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
+                const inMap = configBot.tags.mapPortal ? true : false;
+                superShout("moveAvatarToPlace", {
+                        dimension: dimension,
+                        x: homeBot.tags[dimension + 'X'],
+                        y: homeBot.tags[dimension + 'Y']
+                    })
+                os.focusOn(homeBot, { zoom: inMap ? 2000 : 25 }).catch(() => {});
+            }
+            superShout("abMenuRefresh");
+        `
+    };
+    if (ab.abIsPrimary()) {
+        dropdownOptions.push(homeButton);
+    }
+}
+
+const placesArr = [];
+const places = getBots("homePlace", true);
+for (const hPlace of places) {
+    if (hPlace.tags.homeBase == true) {
+        continue;
+    }
+    const placeObj = {
+        ...menuOptions,
+        label: hPlace.tags.placeLabel,
+        formAddress: hPlace.tags.placeLabelIcon ?? 'location_on',
+        place: getLink(hPlace),
+        onClick: `@
+            if (links.place) {
+                const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
+                const inMap = configBot.tags.mapPortal ? true : false;
+                superShout("moveAvatarToPlace", {
+                        dimension: dimension,
+                        x: links.place.tags[dimension + 'X'],
+                        y: links.place.tags[dimension + 'Y']
+                    })
+                os.focusOn(links.place, { zoom: inMap ? 2000 : 25 }).catch(e => {});
                 superShout("abMenuRefresh");
+            }
             `
-        };
-        if (ab.abIsPrimary()) {
-            dropdownOptions.push(homeButton);
-        }
     }
 
-    const placesArr = [];
-    const places = getBots("homePlace", true);
-    for (const hPlace of places) {
-        if (hPlace.tags.homeBase == true) {
-            continue;
-        }
-        const placeObj = {
-            ...menuOptions,
-            label: hPlace.tags.placeLabel,
-            formAddress: hPlace.tags.placeLabelIcon ?? 'location_on',
-            place: getLink(hPlace),
-            onClick: `@
-                if (links.place) {
-                    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
-                    superShout("moveAvatarToPlace", {
-                            dimension: dimension,
-                            x: links.place.tags[dimension + 'X'],
-                            y: links.place.tags[dimension + 'Y']
-                        })
-                    os.focusOn(links.place, { zoom: 2000 }).catch(e => {});
-                    superShout("abMenuRefresh");
-                }
-                `
-        }
+    placesArr.push(placeObj);
+}
 
-        placesArr.push(placeObj);
+placesArr.sort((a, b) => {
+    const nameA = a.label.toUpperCase();
+    const nameB = b.label.toUpperCase();
+
+    if (nameA < nameB) {
+        return -1;
     }
-
-    placesArr.sort((a, b) => {
-        const nameA = a.label.toUpperCase();
-        const nameB = b.label.toUpperCase();
-
-        if (nameA < nameB) {
-            return -1;
-        }
-        if (nameA > nameB) {
-            return 1;
-        }
-        return 0;
-    });
-
-    for (const sortedPlace of placesArr) {
-        dropdownOptions.push(sortedPlace);
+    if (nameA > nameB) {
+        return 1;
     }
+    return 0;
+});
 
+for (const sortedPlace of placesArr) {
+    dropdownOptions.push(sortedPlace);
+}
+
+if (currentPortal == 'map') {
     const currentLocationButton = {
         ...menuOptions,
         label: 'current location',

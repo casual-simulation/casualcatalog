@@ -71,6 +71,7 @@ const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
 try {
     await ab.links.search.onLookupAskID({
         askID: toolbox.name,
+        space: "local",
         eggParameters: {
             studioId: tags.studioId,
             toolbox_name: expectedLabel,

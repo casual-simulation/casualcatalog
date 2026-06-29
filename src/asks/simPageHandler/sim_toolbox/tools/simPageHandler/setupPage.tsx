@@ -12,6 +12,7 @@ if (tags.prevPage) {
                 label: tags.prevPage,
                 placeAsk: tags.simID + '_' + tags.prevPage,
                 instSetting: tags.prevPage,
+                biosSetting: 'temp',
                 generateURLOnLoad: true,
                 eggParameters: {
                     gridInformation: {
@@ -46,6 +47,7 @@ if (tags.nextPage) {
                 label: tags.nextPage,
                 placeAsk: tags.simID + '_' + tags.nextPage,
                 instSetting: tags.nextPage,
+                biosSetting: 'temp',
                 generateURLOnLoad: true,
                 eggParameters: {
                     gridInformation: {

@@ -17,24 +17,8 @@ tags.startingAction = data.startingAction ?? false;
 tags.actionStory = data.actionStory;
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('simPropAction_' + getID(thisBot));
 
-//Handle lineTo
-if (tags.lineTo) {
-    tags.lineTo = null;
-}
+thisBot.resetLineTo();
 shout("onActionReconstituted", thisBot);
-
-//clear possible extra data
-if (tags.choosingTrigger) {
-    tags.choosingTrigger = null;
-}
-
-if (tags.choosingHideTrigger) {
-    tags.choosingHideTrigger = null;
-}
-
-if (tags.choosingCompletionTrigger) {
-    tags.choosingCompletionTrigger = null;
-}
 
 if (tags.startingAction == true) {
     tags.scaleZ = 1.4;

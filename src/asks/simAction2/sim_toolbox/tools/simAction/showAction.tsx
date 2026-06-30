@@ -24,21 +24,9 @@ const tempButton = {
     formAddress: tags.actionIcon ?? null,
     action: getLink(thisBot),
     onClick: `@
-        if (configBot.tags.staticInst) {
-            shout("onRemoteData", {
-                name: "onActionCompleted",
-                that: links.action.tags.simID,
-                remoteId: getID(configBot)
-            });
-        } else {
-            const remotes = await os.remotes();
-            await sendRemoteData(remotes, "onActionCompleted", links.action.tags.simID);
-        }
-        
-        if (links.action.tags.actionStory) {
-            ab.log({message: links.action.tags.actionStory, space: "shared", name: "sim"});
-        } else {
-            ab.log({message: "completed: " + links.action.tags.label, space: "shared", name: "sim"});
+        const pageBot = getBot("simPageHandler", true);
+        if (pageBot) {
+            pageBot.completeAction(links.action.tags.simID);
         }
     `
 }

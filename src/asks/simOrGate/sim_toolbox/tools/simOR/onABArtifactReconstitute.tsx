@@ -4,26 +4,14 @@ if (data.config) {
     data = data.config;
 }
 
-tags.label = data.label ?? 'action';
+tags.label = data.label ?? 'OR gate';
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
-tags.labelFloatingBackgroundColor = data.labelFloatingBackgroundColor ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD'; 
 tags.labelColor = data.labelColor ?? 'white';
 tags.simID = data.simID ?? uuid();
-tags.actionIcon = data.actionIcon ?? 'sticky_note_2';
 tags.actionTriggers = data.actionTriggers;
-tags.startingAction = data.startingAction ?? false;
-tags.actionStory = data.actionStory;
-tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('simAction_' + getID(thisBot));
+tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('simOR_' + getID(thisBot));
 
 thisBot.resetLineTo();
-
-shout("onActionReconstituted", thisBot);
-
-if (tags.startingAction == true) {
-    tags.scaleZ = 1.4;
-} else {
-    tags.scaleZ = 1;
-}
 
 //Place bot correctly
 if (data.dimensionData) {
@@ -32,7 +20,7 @@ if (data.dimensionData) {
     }
 }
 
-//If new action
+//If new
 if (data.eggParameters) {
     const dimension = data.eggParameters.gridInformation?.dimension ?? 'home';
     const dimensionX = data.eggParameters.gridInformation?.position?.x ?? 0;

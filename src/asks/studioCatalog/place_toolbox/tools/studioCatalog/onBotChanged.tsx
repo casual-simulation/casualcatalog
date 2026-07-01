@@ -34,7 +34,7 @@ if (that.tags.includes("abEquipmentBaseSelected")) {
             tags.scaleY = 1.7;
 
             //activate opening animation
-            if (links.defaultVisualBot.tags.formAnimation != ["opening", "idle_open"]) {
+            if (!links.defaultVisualBot.tags.formAnimation.includes("opening") && !links.defaultVisualBot.tags.formAnimation.includes("idle_open")) {
                 links.defaultVisualBot.tags.formAnimation = ["opening", "idle_open"];
             }
 
@@ -60,7 +60,7 @@ if (that.tags.includes("abEquipmentBaseSelected")) {
             tags.scaleY = .7;
 
             //activate closing animation
-            if (links.defaultVisualBot.tags.formAnimation != ["closing", "closed_static"]) {
+            if (!links.defaultVisualBot.tags.formAnimation.includes("closing") && !links.defaultVisualBot.tags.formAnimation.includes("closed_static")) {
                 links.defaultVisualBot.tags.formAnimation = ["closing", "closed_static"];
             }
 

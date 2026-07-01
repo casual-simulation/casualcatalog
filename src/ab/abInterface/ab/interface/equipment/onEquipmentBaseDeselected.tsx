@@ -5,6 +5,6 @@ for (let i = 0; i < equipment.length; ++i) {
         equipment[i].abEquipmentCustomDeselect()
     } else {
         const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? that.tags.dimension ?? 'home';
-        equipment[i].tags[dimension] = false;
+        equipment[i].tags[dimension] = null;
     }
 }

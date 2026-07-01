@@ -29,7 +29,7 @@ if (tags.animationState === 'disappear') {
     }
 
     const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? tags.dimension ?? 'home';
-    tags[dimension] = false;
+    tags[dimension] = null;
     masks[dimension] = null;
     masks.pointable = null;
 }

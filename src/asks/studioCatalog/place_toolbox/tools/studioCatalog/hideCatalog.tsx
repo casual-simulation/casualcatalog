@@ -1,16 +1,16 @@
 const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? tags.dimension ?? 'home';
-tags[dimension] = false;
+tags[dimension] = null;
 masks[dimension] = null;
 
-if (links.defaultVisualBot.tags.formAnimation == ["closing", "closed_static"]) {
-    links.defaultVisualBot.tags[dimension] = false;
+if (links.defaultVisualBot.tags.formAnimation.includes("closing") || links.defaultVisualBot.tags.formAnimation.includes("closed_static")) {
+    links.defaultVisualBot.tags[dimension] = null;
     links.defaultVisualBot.masks[dimension] = null;
     return;
 }
 
 setTimeout(() => {
-    if (tags[dimension] == false) {
-        links.defaultVisualBot.tags[dimension] = false;
+    if (!tags[dimension]) {
+        links.defaultVisualBot.tags[dimension] = null;
         links.defaultVisualBot.masks[dimension] = null;
     }
 }, 600)

@@ -11,6 +11,7 @@ for (let i = 0; i < that.equipment?.length; ++i) {
         innerRadius: inRad,
         radius: rad,
         spacing: space,
+        preferAngle: 0
     });
 
     that.equipment[i].tags[dimension + 'X'] = pos.x ?? 0;

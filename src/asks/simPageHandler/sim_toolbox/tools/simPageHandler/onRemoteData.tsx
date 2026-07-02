@@ -1,10 +1,4 @@
-if (that.name == "onActionCompleted") {
-    if (that.remoteId == getID(configBot)) {
-        thisBot.completeAction(that.that);
-    }
-}
-
-else if (that.name == "onStartMenu") {
+if (that.name == "onStartMenu") {
 
     setTagMask(thisBot, "simStarted", true, "tempLocal");
 

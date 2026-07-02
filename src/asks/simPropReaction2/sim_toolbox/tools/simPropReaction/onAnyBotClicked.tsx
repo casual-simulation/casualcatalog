@@ -3,15 +3,9 @@ if (tags.propReactionType == 'onClick') {
         if (tags.actionTriggers.includes(that.bot.tags.simID) && that.bot.tags.propLocked) {
             //Activate completion for this reaction
 
-            if (configBot.tags.staticInst || configBot.tags.tempInst) {
-                shout("onRemoteData", {
-                    name: "onActionCompleted",
-                    that: tags.simID,
-                    remoteId: getID(configBot)
-                });
-            } else {
-                const remotes = await os.remotes();
-                await sendRemoteData(remotes, "onActionCompleted", tags.simID);
+            const pageBot = getBot("simPageHandler", true);
+            if (pageBot) {
+                pageBot.completeAction(tags.simID);
             }
         }
     }

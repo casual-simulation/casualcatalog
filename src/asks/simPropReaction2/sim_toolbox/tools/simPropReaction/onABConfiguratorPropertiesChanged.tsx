@@ -5,7 +5,7 @@ if ('simID' in propertyValues) {
 }
 
 if ('reactionType' in propertyValues) {
-    tags.propReactionType = propertyValues.reactionType;
+    tags.propReactionType = propertyValues.reactionType.value;
 }
 
 if ('props' in propertyValues) {

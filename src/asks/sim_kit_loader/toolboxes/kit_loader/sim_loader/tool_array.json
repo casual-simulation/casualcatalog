@@ -4,14 +4,16 @@
         "studio": "AB",
         "targetAB": "simAction2",
         "artifact": true,
-        "agentReady": true
+        "agentReady": true,
+        "description": "A learner-facing instruction step that becomes available once its triggers have been satisfied."
     },
     {
         "name": "sim guide",
         "studio": "AB",
         "targetAB": "simWizard2",
         "artifact": true,
-        "agentReady": true
+        "agentReady": true,
+        "description": "Takes a user prompt describing a procedure and breaks it into pages, creating and configuring one simEditor per page. Assigns all pageIDs upfront so that nextPage and prevPage references are fully resolved before any editors are created. The entry point for the entire simulation pipeline."
     },
     {
         "name": "sim prop",
@@ -39,7 +41,8 @@
         "studio": "AB",
         "targetAB": "simEditor",
         "artifact": true,
-        "agentReady": true
+        "agentReady": true,
+        "description": "Takes a page description and builds the simulation page by creating and configuring the necessary simKit tools in the correct dependency order. Assigns all simIDs upfront, pre-resolves all trigger references, and produces one todo per tool. The bridge between the simGuide's page plan and the actual built simulation."
     },
     {
         "name": "sim page handler",

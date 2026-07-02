@@ -11,14 +11,14 @@ The following simKit tools are available for this page:
 
 **Trigger chains are always linear.** Each item triggers exactly the next one. There is no branching.
 
-**Every page must have exactly one starting action.** `startingAction` is a boolean field on simAction and simPropAction. It must be set to `true` on the first action or prop action the learner sees, and `false` on every other action and prop action. Without a starting action the page has no entry point and the learner will see nothing. Never set it to `true` on more than one item.
+**Every page (collection of tools you are making) must have exactly one starting action.** `startingAction` is a boolean field on simAction and simPropAction. It must be set to `true` on the first action or prop action the learner sees, and `false` on every other action and prop action. Without a starting action the page has no entry point and the learner will see nothing. Never set it to `true` on more than one item.
 
 **Triggers are always simID strings.** Every item that should follow another references the preceding item's simID in its `triggers` array. The starting action has an empty `triggers` array.
 
 **How each tool uses triggers:**
 - **simAction** — `triggers` contains the simID of the preceding simAction, simPropReaction, or simPropAction
 - **simPropReaction** — has no triggers, it fires on physical interaction with its prop. Must reference the prop's simID in its `props` array.
-- **simPropAction** — `triggers` contains the simID of the preceding item that causes it to appear. `hideTriggers` contains the simID of the simPropReaction that fires when the learner clicks the prop. `completionTriggers` contains the simID of the item that follows the prop reaction. `hideTriggers` and `completionTriggers` must never be the same.
+- **simPropAction** — `triggers` contains the simID of the preceding item that causes it to appear. `hideTriggers` contains the simID of the simPropReaction that fires when the learner clicks the prop. `completionTriggers` contains the simID of the item, action, propAction, propReaction, that cuases the prop action to consider itself completed. `hideTriggers` and `completionTriggers` can be the same if the propAction should be considered completed on that action, such as dragging something away.
 
 **Props should be positioned, scaled, and colored to reflect their real world appearance and location.** Props can also have animations, botSnap, and other visual effects applied to them — use these where they improve clarity or realism. For example, a snap effect when a part is placed correctly, or an animation drawing attention to the next prop the learner should interact with. Place them where they would actually exist in the scene relative to each other. Scale and color are available on every simProp — use them to make the scene recognizable.
 

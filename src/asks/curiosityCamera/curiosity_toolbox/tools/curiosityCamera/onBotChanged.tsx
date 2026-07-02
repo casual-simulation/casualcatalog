@@ -1,0 +1,1 @@
+shout("onEquipmentChanged", {bot: thisBot, tags: that.tags});

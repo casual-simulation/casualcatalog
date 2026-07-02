@@ -1,3 +1,7 @@
+if (!thisBot.getPresenceEnabled()) {
+    return;
+}
+
 const gridPortalBotIndex = that.findIndex((el) => {
     if (el && globalThis.gridPortalBot && el.bot === gridPortalBot) {
         return true;

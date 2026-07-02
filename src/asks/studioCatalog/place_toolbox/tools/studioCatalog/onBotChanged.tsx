@@ -9,6 +9,10 @@ if (that.tags.includes("color") && tags.color != 'clear') {
     }
 }
 
+if (that.tags.includes("abEquipmentFor")) {
+    shout("onEquipmentChanged", {bot: thisBot, tags: that.tags});
+}
+
 const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? tags.dimension ?? 'home';
 if (that.tags.includes(dimension + 'X') || that.tags.includes(dimension + 'Y')) {
     if (links.defaultVisualBot) {

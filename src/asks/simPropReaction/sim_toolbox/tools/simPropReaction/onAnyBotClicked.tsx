@@ -3,7 +3,7 @@ if (tags.propReactionType == 'onClick') {
         if (tags.actionTriggers.includes(that.bot.tags.simID) && that.bot.tags.propLocked) {
             //Activate completion for this reaction
 
-            if (configBot.tags.staticInst) {
+            if (configBot.tags.staticInst || configBot.tags.tempInst) {
                 shout("onRemoteData", {
                     name: "onActionCompleted",
                     that: tags.simID,

@@ -18,7 +18,7 @@ for (let i = 0; i < roleBots.length; ++i) {
                 ab.log({message: "completed: " + tags.label, space: "shared", name: "sim"});
             }
 
-            if (configBot.tags.staticInst) {
+            if (configBot.tags.staticInst || configBot.tags.tempInst) {
                 shout("onRemoteData", {
                     name: "onActionCompleted",
                     that: tags.simID,
@@ -43,7 +43,7 @@ for (let i = 0; i < roleBots.length; ++i) {
             } else {
                 ab.log({message: "completed: " + tags.label, space: "shared", name: "sim"});
             }
-            if (configBot.tags.staticInst) {
+            if (configBot.tags.staticInst || configBot.tags.tempInst) {
                 shout("onRemoteData", {
                     name: "onActionCompleted",
                     that: tags.simID,
@@ -65,7 +65,7 @@ for (let i = 0; i < roleBots.length; ++i) {
         } else {
             ab.log({message: "completed: " + tags.label, space: "shared", name: "sim"});
         }
-        if (configBot.tags.staticInst) {
+        if (configBot.tags.staticInst || configBot.tags.tempInst) {
             shout("onRemoteData", {
                 name: "onActionCompleted",
                 that: tags.simID,
@@ -82,7 +82,7 @@ for (let i = 0; i < roleBots.length; ++i) {
             } else {
                 ab.log({message: "completed: " + tags.label, space: "shared", name: "sim"});
             }
-            if (configBot.tags.staticInst) {
+            if (configBot.tags.staticInst || configBot.tags.tempInst) {
                 shout("onRemoteData", {
                     name: "onActionCompleted",
                     that: tags.simID,

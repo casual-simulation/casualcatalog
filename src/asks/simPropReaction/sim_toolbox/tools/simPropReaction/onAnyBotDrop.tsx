@@ -3,7 +3,7 @@ if (tags.propReactionType == 'onDrag') {
         if (tags.actionTriggers.includes(that.bot.tags.simID)) {
             //Activate completion for this reaction
 
-            if (configBot.tags.staticInst) {
+            if (configBot.tags.staticInst || configBot.tags.tempInst) {
                 shout("onRemoteData", {
                     name: "onActionCompleted",
                     that: tags.simID,

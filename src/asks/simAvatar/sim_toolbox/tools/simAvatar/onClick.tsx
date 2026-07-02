@@ -25,7 +25,7 @@ const playerBot = await getBot(byTag("simPlayer", true), byTag("remoteID", getID
 if (playerBot.tags.simStarted) {
     playerBot.showActionMenu();
 } else {
-    if (configBot.tags.staticInst) {
+    if (configBot.tags.staticInst || configBot.tags.tempInst) {
         shout("onRemoteData", {
             name: "onStartMenu",
             that: null,

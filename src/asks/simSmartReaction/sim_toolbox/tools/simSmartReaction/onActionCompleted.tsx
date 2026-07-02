@@ -18,7 +18,7 @@ if (tags.manualFunction && thisBot.raw.manualFunction != '@') {
     try {
         const result = thisBot.manualFunction;
         if (result == true) {
-            if (configBot.tags.staticInst) {
+            if (configBot.tags.staticInst || configBot.tags.tempInst) {
                 shout("onRemoteData", {
                     name: "onActionCompleted",
                     that: tags.simID,
@@ -100,7 +100,7 @@ if (tags.actionTriggers && tags.actionTriggers.length != 0 && tags.actionTrigger
     }
     
     if (requirementsMet) {
-        if (configBot.tags.staticInst) {
+        if (configBot.tags.staticInst || configBot.tags.tempInst) {
             shout("onRemoteData", {
                 name: "onActionCompleted",
                 that: tags.simID,

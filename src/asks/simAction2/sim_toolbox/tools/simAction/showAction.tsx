@@ -9,6 +9,7 @@ if (menuBot) {
 }
 
 if (configBot.tags.menuPortal != "action_menu") {
+    configBot.masks.menuPortal = null;
     configBot.tags.menuPortal = "action_menu";
 }
 

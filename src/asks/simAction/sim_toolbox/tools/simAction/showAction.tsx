@@ -24,7 +24,7 @@ const tempButton = {
     formAddress: tags.actionIcon ?? null,
     action: getLink(thisBot),
     onClick: `@
-        if (configBot.tags.staticInst) {
+        if (configBot.tags.staticInst || configBot.tags.tempInst) {
             shout("onRemoteData", {
                 name: "onActionCompleted",
                 that: links.action.tags.simID,

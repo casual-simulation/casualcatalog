@@ -10,7 +10,7 @@ if (!tags.completedActions?.includes(that)) {
     tags.completedActions?.push(that);
 }
 
-if (configBot.tags.staticInst) {
+if (configBot.tags.staticInst || configBot.tags.tempInst) {
     shout("onRemoteData", {
         name: "onActionCompleted",
         that: that,

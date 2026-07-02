@@ -41,7 +41,7 @@ const restartButton = {
     label: 'restart simulation',
     formAddress: 'replay',
     onClick: `@
-        if (configBot.tags.staticInst) {
+        if (configBot.tags.staticInst || configBot.tags.tempInst) {
             shout("onRemoteData", {
                 name: "onStartMenu",
                 that: null,

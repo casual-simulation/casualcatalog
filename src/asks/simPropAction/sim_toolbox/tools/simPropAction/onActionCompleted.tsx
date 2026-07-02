@@ -32,7 +32,7 @@ if (currentRoleTag && tags.roleTags.includes(currentRoleTag)) {
     if (tags.completionTriggers && tags.completionTriggers.length != 0 && tags.completionTriggers.includes(that.bot?.tags?.simID)) {
         playerBot.completeAction(tags.simID);
 
-        if (configBot.tags.staticInst) {
+        if (configBot.tags.staticInst || configBot.tags.tempInst) {
             shout("onRemoteData", {
                     name: "onActionCompleted",
                     that: tags.simID,

@@ -14,7 +14,7 @@ if (!simXPBot?.tags?.queuedActions?.find(action => action.id == that.id)) {
 
 shout("clearActionMenu");
 
-if (configBot.tags.staticInst) {
+if (configBot.tags.staticInst || configBot.tags.tempInst) {
     shout("onRemoteData", {
         name: "onActionAddedToQueue",
         that: that.id,

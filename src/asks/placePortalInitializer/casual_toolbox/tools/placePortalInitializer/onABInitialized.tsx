@@ -5,8 +5,8 @@ const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id)
 
 if (!avatarBot) {
     //get user location if applicable
-    let posX = -10;
-    let posY = 6;
+    let posX = -5;
+    let posY = 5;
 
     const abArtifactShard = {
         data: {

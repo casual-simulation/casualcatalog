@@ -30,7 +30,7 @@ const mapMenuBot = {
     ...menuOptions
 };
 
-mapMenuBot.label = "map portal";
+mapMenuBot.label = "map";
 mapMenuBot.formAddress = "public";
 mapMenuBot.onClick = `@ 
 const state = os.getInputState("keyboard", "Shift");

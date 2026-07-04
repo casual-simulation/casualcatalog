@@ -17,6 +17,7 @@ const book = {
     meshPositioningMode: 'absolute',
     pointable: false,
     abIgnore: true,
+    abEquipmentIgnore: true,
     abCatalogBookBot: true,
     formAnimation: ['closed_static'],
     color: abPersonality?.tags?.abBaseColor ?? '#00D9CD',

@@ -10,7 +10,7 @@ const firstIndex = permalinkURL.indexOf("&");
 const initialURL = permalinkURL.substring(0, firstIndex);
 const updatedURL = activeBios != false ? initialURL + "&inst=" + activeInst : initialURL;
 
-setTagMask(thisBot, "abShowMenuLabel",`mode: ${currentPortal} portal`);
+setTagMask(thisBot, "abShowMenuLabel",`mode: ${currentPortal}`);
 setTagMask(thisBot, "currentDimension", currentDim);
 setTagMask(thisBot, "currentPortal", currentPortal);
 setTagMask(thisBot, "dropdownSortOrder", 1);
@@ -57,7 +57,7 @@ if (currentPortal != "map")
 const gridMenuBot = {
     ...menuOptions
 };
-gridMenuBot.label = "grid portal";
+gridMenuBot.label = "grid";
 gridMenuBot.formAddress = "cube";
 gridMenuBot.onClick = `@
 
@@ -85,7 +85,7 @@ const blueprintMenuBot = {
     ...menuOptions
 };
 
-blueprintMenuBot.label = "blueprint portal";
+blueprintMenuBot.label = "blueprint";
 blueprintMenuBot.formAddress = "architecture";
 blueprintMenuBot.onClick = `@
 
@@ -118,7 +118,7 @@ if (currentDim != "blueprint")
 const sheetMenuBot = {
     ...menuOptions
 };
-sheetMenuBot.label = "sheet portal";
+sheetMenuBot.label = "sheet";
 sheetMenuBot.formAddress = "table_view";
 sheetMenuBot.onClick = `@ 
 
@@ -144,7 +144,7 @@ const systemMenuBot = {
     ...menuOptions
 };
 
-systemMenuBot.label = "system portal";
+systemMenuBot.label = "system";
 systemMenuBot.formAddress = "settings_applications";
 systemMenuBot.onClick = `@
 
@@ -161,9 +161,30 @@ else
     });
     configBot.tags.systemPortal = true;
 }`;
-
-//system portal button
 dropdownOptions.push(systemMenuBot);
+
+//auth portal button
+const authMenuBot = {
+    ...menuOptions
+};
+
+authMenuBot.label = "account";
+authMenuBot.formAddress = "account_circle";
+authMenuBot.onClick = `@
+
+const state = os.getInputState("keyboard", "Shift");
+const endpoint = await os.getRecordsEndpoint();
+
+if(state)
+{
+    os.openURL(endpoint);
+} 
+else
+{ 
+    os.goToURL(endpoint);
+}`;
+
+dropdownOptions.push(authMenuBot);
 
 masks.dropdownOptions = dropdownOptions;
 

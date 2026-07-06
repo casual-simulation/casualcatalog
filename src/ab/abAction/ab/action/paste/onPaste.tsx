@@ -15,16 +15,46 @@ const MACROS = [
 ];
 
 let formattedCopy = replaceMacros(that.text);
-let copyBot = JSON.parse(formattedCopy);
+let copyBot;
+try {
+    copyBot = JSON.parse(formattedCopy);
+} catch (e) {
+    os.toast("pasted data is not valid JSON");
+    return;
+}
+
 let pastedData = !copyBot.state ? {[copyBot.id]: copyBot} : copyBot.state;
-let dimMod = ab.links.remember.tags.abFocusData;
+let dimMod = ab.links.remember.tags.abGridFocus;
+
+if (dimMod) {
+    let firstBotData = {
+        x: null,
+        y: null
+    };
+    for (const pastedBotData in pastedData) {
+        if (!firstBotData.x) {
+            firstBotData.x = pastedData[pastedBotData].tags[dimMod.dimension + 'X'] ?? 0;
+            firstBotData.y = pastedData[pastedBotData].tags[dimMod.dimension + 'Y'] ?? 0;
+            pastedData[pastedBotData].tags[dimMod.dimension] = true;
+            pastedData[pastedBotData].tags[dimMod.dimension + 'X'] = dimMod.position.x;
+            pastedData[pastedBotData].tags[dimMod.dimension + 'Y'] = dimMod.position.y;
+            continue;
+        }
+
+        let xOffset = 0;
+        let yOffset = 0;
+
+        xOffset = pastedData[pastedBotData].tags[dimMod.dimension + 'X'] - firstBotData.x;
+        yOffset = pastedData[pastedBotData].tags[dimMod.dimension + 'Y'] - firstBotData.y;
+
+        pastedData[pastedBotData].tags[dimMod.dimension] = true;
+        pastedData[pastedBotData].tags[dimMod.dimension + 'X'] = dimMod.position.x + xOffset;
+        pastedData[pastedBotData].tags[dimMod.dimension + 'Y'] = dimMod.position.y + yOffset;
+    }
+}
 
 if (Object.keys(pastedData).length == 1 && dimMod)
 {
-    pastedData[dimMod.dimension] = true;
-    pastedData[dimMod.dimension+"X"] = dimMod.x;
-    pastedData[dimMod.dimension+"Y"] = dimMod.y;
-
     os.toast("bot added to inst");
 }
 else

@@ -2,7 +2,7 @@
 
 const focusType = that.bot ? "bot" : "position";
 const duration = that.duration;
-const zoom = that.zoom ?? configBot.tags.mapPortal ? 1000 : 25;
+const zoom = that.zoom ?? configBot.tags.mapPortal ? ab?.links.manifestation.tags.defaultMapPortalZoom : ab?.links.manifestation.tags.defaultGridPortalZoom;
 const rotation = that.rotation ?? {x: 45, y: 45};
 const easing = that.easing ?? {type: "linear", mode: "inout"};
 const focusOptions = {

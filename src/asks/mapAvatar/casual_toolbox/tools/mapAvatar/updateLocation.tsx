@@ -30,7 +30,7 @@ if (loc.success) {
             }
         }); 
     }
-    os.focusOn(thisBot, {portal: 'map', zoom: 1000, rotation: {x: 45, y: 45}});
+    os.focusOn(thisBot, {portal: 'map', zoom: ab.links.manifestation.tags.defaultMapPortalZoom, rotation: {x: 45, y: 45}});
     
     // continues the locationLoop
     thisBot.locationLoop()

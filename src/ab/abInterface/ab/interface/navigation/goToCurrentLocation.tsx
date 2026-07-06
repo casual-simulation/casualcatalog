@@ -8,7 +8,7 @@ if (location.success) {
         configBot.tags.mapPortal = currentDim;
     }
 
-    os.focusOn({x: location.longitude, y: location.latitude}, {portal: 'map', zoom: 1000, rotation: {x: 45, y: 45}});
+    os.focusOn({x: location.longitude, y: location.latitude}, {portal: 'map', zoom: ab.links.manifestation.tags.defaultMapPortalZoom, rotation: {x: 45, y: 45}});
 } else {
     os.toast("Location services not available")
 }

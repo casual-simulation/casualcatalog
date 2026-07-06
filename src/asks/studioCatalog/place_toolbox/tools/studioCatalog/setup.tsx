@@ -12,7 +12,7 @@ tags.strokeColor = abPersonality?.tags.abBaseStrokeColor;
 tags.prevBotID = data.prevBotID;
 tags.respawnPoint = data.respawnPoint;
 tags.toolbox_array = data.toolbox_array ?? ab.links.remember.tags.toolbox_array;
-tags.armColor = abPersonality?.tags.abBaseStrokeColor;
+tags.armColor = "white";
 tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
 tags.abIgnore = true;
 

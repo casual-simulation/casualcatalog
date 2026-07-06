@@ -30,7 +30,7 @@ const abMod = {
     abAllowEquipment: true,
     abEquipmentExclusiveSelect: true,
     armMeshPath: links.remember.tags.abArmMeshPath,
-    armColor: links.personality.tags.abBaseStrokeColor,
+    armColor: "white",
     personality: tags.personality,
     remember: tags.remember,
     learn: tags.learn,

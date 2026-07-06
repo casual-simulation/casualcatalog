@@ -86,6 +86,7 @@ if (that.keys == "d") {
     }
 
     ab.links.manifestation.links.abBot.links.armBot?.originSetSelection(lineToArr);
+    ab.links.manifestation.links.abBot.links.armBot?.setArmVisible(false);
     ab.links.manifestation.links.abBot.masks.lineTo = lineToArr;
 
     await os.sleep(0)

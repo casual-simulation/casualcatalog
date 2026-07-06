@@ -75,12 +75,12 @@ if (that.keys == "d") {
        }
     }
  
-    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+    // const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
     const newBotsArr = [];
     const lineToArr = [];
     for (const newBotData of selectedBots) {
         const newBot = create(newBotData);
-        newBot.tags[dimension + 'Z'] = (newBot.tags[dimension + 'Z'] ?? 0) + (newBot.tags[newBot.tags.scale ? 'scale' : newBot.tags.scaleZ ? 'scaleZ' : 'scale'] ?? 1);
+        // newBot.tags[dimension + 'Z'] = (newBot.tags[dimension + 'Z'] ?? 0) + (newBot.tags[newBot.tags.scale ? 'scale' : newBot.tags.scaleZ ? 'scaleZ' : 'scale'] ?? 1);
         newBotsArr.push(newBot);
         lineToArr.push(newBot.id)
     }

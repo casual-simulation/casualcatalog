@@ -66,7 +66,25 @@ const username = await ab.links.console.getUserName();
 
 ab.log({ name: username, message: 'pasted data', space: 'shared' });
 
-ab.links.create.abCreateBots({bots: pastedData, sourceEvent: 'paste'});
+const newBots = await ab.links.create.abCreateBots({bots: pastedData, sourceEvent: 'paste'});
+const lineToArr = [];
+
+for (const newBotData of newBots) {
+    lineToArr.push(newBotData.id);
+}
+
+//select new bots
+ab.links.manifestation.links.abBot.links.armBot?.originSetSelection(lineToArr);
+ab.links.manifestation.links.abBot.masks.lineTo = lineToArr;
+
+await os.sleep(0)
+if (lineToArr.length > 1) {
+    ab.links.remember.masks.abMultipleBotFocus = getLink(lineToArr);
+    ab.links.manifestation.abClick({ menu: 'multipleBot' });
+} else {
+    ab.links.remember.masks.abBotFocus = getLink(lineToArr[0]);
+    ab.links.manifestation.abClick({ menu: 'bot' });
+}
 
 function replaceMacros(text) {
     if (!text) {

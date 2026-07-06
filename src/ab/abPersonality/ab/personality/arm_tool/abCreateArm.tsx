@@ -6,7 +6,7 @@ assert(typeof dimension === 'string', `[${tags.system}.${tagName}] dimension is 
 
 const position = that.position ?? getBotPosition(originBot, dimension);
 const multiSelect = that.multiSelect ?? false;
-const armColor = that.armColor ?? originBot.tags.armColor ?? originBot.tags.strokeColor ?? originBot.tags.color;
+const armColor = that.armColor ?? originBot.tags.armColor ?? originBot.tags.strokeColor ?? "white";
 const armMeshPath = that.armMeshPath ?? originBot.tags.armMeshPath;
 const armDropSound = that.armDropSound ?? originBot.tags.armDropSound;
 const armTeleportSound = that.armTeleportSound ?? originBot.tags.armTeleportSound;

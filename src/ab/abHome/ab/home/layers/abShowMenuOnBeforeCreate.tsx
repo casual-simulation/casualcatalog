@@ -43,7 +43,7 @@ if (studioData.success) {
             ...menuOptions,
             label: studios[i].displayName.toLocaleLowerCase(),
             studioData: studios[i],
-            formAddress: isLoaded ? 'radio_button_checked' : 'radio_button_unchecked',
+            formAddress: isLoaded ? 'check_box' : 'check_box_outline_blank',
             onClick: `@
                 links.skillBot.toggleLayer(tags.studioData);
                 shout('abMenuRefresh');

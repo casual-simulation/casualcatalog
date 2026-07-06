@@ -10,6 +10,7 @@ if (avatarBot) {
     os.focusOn(avatarBot, {
         portal: 'map',
         duration: .5 * 3,
+        rotation: {x: 45, y: 45},
         easing: {
             type: "quadratic",
             mode: "inout"

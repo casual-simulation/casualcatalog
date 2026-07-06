@@ -55,12 +55,12 @@ const footprint = {
 
             tags.form = 'mesh';
             tags.formSubtype = 'gltf';
-            tags.color = links.personality.tags.abBaseStrokeColor;
-            tags.strokeColor = links.personality.tags.abBaseStrokeColor;
+            tags.color = "white";
+            tags.strokeColor = "white";
             tags.anchorPoint = 'center';
         } else {
             tags.color = 'clear';
-            tags.strokeColor = links.personality.tags.abBaseStrokeColor;
+            tags.strokeColor = "white";
             tags.scaleZ = 0.01;
         }
 

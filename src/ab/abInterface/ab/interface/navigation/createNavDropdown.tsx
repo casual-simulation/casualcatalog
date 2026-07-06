@@ -68,7 +68,7 @@ if (homeBaseBot && homeBaseBot.tags[currentDim] == true) {
                         x: homeBot.tags[dimension + 'X'],
                         y: homeBot.tags[dimension + 'Y']
                     })
-                os.focusOn(homeBot, { zoom: inMap ? 2000 : 25, rotation: {x: 45, y: 45}}).catch(() => {});
+                os.focusOn(homeBot, { zoom: inMap ? 1000 : 25, rotation: {x: 45, y: 45}}).catch(() => {});
             }
             superShout("abMenuRefresh");
         `
@@ -98,7 +98,7 @@ for (const hPlace of places) {
                         x: links.place.tags[dimension + 'X'],
                         y: links.place.tags[dimension + 'Y']
                     })
-                os.focusOn(links.place, { zoom: inMap ? 2000 : 25, rotation: {x: 45, y: 45} }).catch(e => {});
+                os.focusOn(links.place, { zoom: inMap ? 1000 : 25, rotation: {x: 45, y: 45} }).catch(e => {});
                 superShout("abMenuRefresh");
             }
             `

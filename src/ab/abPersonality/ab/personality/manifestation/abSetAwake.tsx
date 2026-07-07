@@ -41,7 +41,6 @@ if (tags.abAwake !== awake) {
         await thisBot.abManifestBot({ dimension, position });
         
         setTagMask(thisBot, "abEquipmentExcludeFromMenu", null, "shared");
-        ab.links.equipment.onEquipmentBaseSelected(links.abBot);
         shout("onABAwake", { dimension, position, initial });
 
         if (initial) {
@@ -69,6 +68,8 @@ if (tags.abAwake !== awake) {
                     ab.log({ name: links.personality.tags.abBuilderIdentity, avatar: links.personality.tags.abBuilderAvatar, message: links.remember.tags.abInitialMessage, space: "shared" });
                 }
             }
+        } else {
+            ab.links.equipment.onEquipmentBaseSelected(links.abBot);
         }
 
     } else {

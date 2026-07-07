@@ -41,6 +41,7 @@ if (tags.abAwake !== awake) {
         await thisBot.abManifestBot({ dimension, position });
         
         setTagMask(thisBot, "abEquipmentExcludeFromMenu", null, "shared");
+        ab.links.equipment.onEquipmentBaseSelected(links.abBot);
         shout("onABAwake", { dimension, position, initial });
 
         if (initial) {

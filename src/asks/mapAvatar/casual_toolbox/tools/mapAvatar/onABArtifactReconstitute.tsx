@@ -70,3 +70,4 @@ if (data.clickOnLoad) {
 }
 
 shout("abEquipmentBaseReconstituted", thisBot);
+shout("onUserAvatarSpawned", thisBot);

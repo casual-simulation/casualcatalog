@@ -1,4 +1,14 @@
 {
+    "nvidia": {
+        "meshPath": "/ab/meshes/casualBot_GLM_01.glb",
+        "avatar": "/ab/icons/z_ai_avatar_256.png",
+        "armMeshPath": "/ab/meshes/webslinger.glb",
+        "armColor": "#ffffff",
+        "chatBarColor": "#ffffff",
+        "scale": 0.6,
+        "formOpacity": null,
+        "showName": false
+    },
     "openai": {
         "meshPath": "/ab/meshes/casualBot_chatGPT_01.glb",
         "avatar": "/ab/icons/openai_avatar_256.png",

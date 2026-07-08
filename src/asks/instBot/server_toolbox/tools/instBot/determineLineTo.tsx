@@ -22,11 +22,11 @@ for (let i = 0; i < catalogBots.length; ++i) {
     }
 }
 
-tags.lineToValue = getID(closest);
-
 if (tags.originType && tags.originType != 'studioCatalog') {
+    tags.lineToValue = getID(closest);
     tags.lineTo = getID(closest);
 } else {
+    // tags.lineToValue = getID(closest);
     if (closest.tags.selected) {
         //tags.lineTo = getID(closest);
     }

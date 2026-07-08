@@ -16,7 +16,7 @@ if (links.homeworld) {
     const username = await ab.links.console.getUserName({ canSetPreferredName: false });
     const homeworldButtons = {
         ...menuOptions,
-        label: `homeworld actions`,
+        label: `world layer actions`,
         abMenuSortOrder: -3,
         menuItemType: 'dropdown',
         dropdownSortOrder: -3,
@@ -24,7 +24,7 @@ if (links.homeworld) {
             {
                 ...menuOptions,
                 formAddress: 'save',
-                label: `save ${username ? username + "'s " : ""}layer`,
+                label: `save ${username ? username + "'s " : ""}world layer`,
                 homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.saveHomeworld();
@@ -46,7 +46,7 @@ if (links.homeworld) {
                 formAddress: 'delete_forever',
                 color: 'red',
                 labelColor: 'black',
-                label: `factory reset ${username ? username + "'s " : ""}layer`,
+                label: `factory reset ${username ? username + "'s " : ""}world layer`,
                 homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.factoryResetHomeworld();

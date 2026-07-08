@@ -3,6 +3,8 @@ if (!tags.studioId) {
     return;
 }
 
+return;
+
 const catalogBots = getBots(byTag("studioCatalog", true), byTag("studioId", tags.studioId));
 
 if (catalogBots.length === 0) {

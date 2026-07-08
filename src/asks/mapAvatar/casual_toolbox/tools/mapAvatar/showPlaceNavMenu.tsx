@@ -1,5 +1,6 @@
 superShout("abNavigationMenuRefresh");
-superShout("showSuperNav", {defaultOpenPlaces: true});
+// superShout("showSuperNav", {defaultOpenPlaces: true});
+superShout("showSuperNav");
 // const dropdownOptions = [];
 
 // const currentDim = ab.links.remember.tags.abActiveDimension;

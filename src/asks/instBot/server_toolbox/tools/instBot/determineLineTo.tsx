@@ -28,6 +28,6 @@ if (tags.originType && tags.originType != 'studioCatalog') {
     tags.lineTo = getID(closest);
 } else {
     if (closest.tags.selected) {
-        tags.lineTo = getID(closest);
+        //tags.lineTo = getID(closest);
     }
 }

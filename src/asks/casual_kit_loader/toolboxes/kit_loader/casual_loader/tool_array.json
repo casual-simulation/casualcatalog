@@ -33,10 +33,10 @@
         "artifact": true
     },
     {
-        "name": "avatar",
+        "name": "pin",
         "studio": "AB",
         "targetAB": "mapAvatar",
-        "formAddress": "account_circle",
+        "formAddress": "person_pin_circle",
         "artifact": true,
         "space": "tempShared"
     },

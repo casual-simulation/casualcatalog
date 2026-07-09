@@ -33,6 +33,8 @@ for (let i = 0; i < equipment.length; ++i) {
     }
 }
 
-thisBot.showEquipmentMenu({base: that, options: abEquipmentMenuOptions});
+if (that.tags.abEquipmentShowEquipmentMenu) {
+    thisBot.showEquipmentMenu({base: that, options: abEquipmentMenuOptions});
+}
 
 thisBot.positionEquipment({base: that, equipment});

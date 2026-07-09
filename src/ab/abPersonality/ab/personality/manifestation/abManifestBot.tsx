@@ -28,6 +28,8 @@ const abMod = {
     armTeleport: true,
     armMultiSelectDefault: true,
     abAllowEquipment: true,
+    abEquipmentShowEquipmentMenu: true,
+    abEquipmentMenuPortal: 'abMenu',
     abEquipmentExclusiveSelect: true,
     armMeshPath: links.remember.tags.abArmMeshPath,
     armColor: "white",

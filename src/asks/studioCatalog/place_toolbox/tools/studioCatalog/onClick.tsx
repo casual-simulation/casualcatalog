@@ -12,13 +12,14 @@ configBot.tags.menuPortal = 'home_place_menu';
 const BASE_MENU_TAGS = {
     home_place_menu: true,
     clearHomePlaceMenu: `@destroy(thisBot);`,
-    abMenuRefresh: "@ destroy(thisBot);",
+    abMenuRefresh: `@ 
+    destroy(thisBot);`,
     place: getLink(thisBot)
 }
 
 if (tags.studioId) {
 
-    if (tags.abEquipmentBaseSelected) {
+    if (tags.abEquipmentBaseSelected && !that.forceMenu) {
         return;
     }
 
@@ -27,7 +28,7 @@ if (tags.studioId) {
         label: 'share',
         formAddress: 'ios_share',
         onClick: `@
-            //shout('clearHomePlaceMenu');
+            
             links.place.onStoreMenu();
         `
     };

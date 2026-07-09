@@ -1,8 +1,10 @@
-const menuPortal = that.base.tags.abEquipmentMenuPortal ?? configBot.tags.menuPortal;
+const menuPortal = that.base.tags.abEquipmentMenuPortal ?? configBot.tags.menuPortal ?? 'abMenu';
+await os.sleep(0);
 
 const menuOptions = {
     [menuPortal]: true,
-    abMenuRefresh: `@destroy(thisBot);`,
+    abMenuRefresh: `@
+    destroy(thisBot);`,
     baseLink: getLink(that.base)
 }
 

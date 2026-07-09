@@ -1,5 +1,7 @@
 let awake = that?.awake;
 let initial = that?.initial ?? false;
+let posX = that?.position?.x;
+let posY = that?.position?.y;
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that:`, that);
@@ -36,7 +38,7 @@ if (tags.abAwake !== awake) {
             return;
         }
 
-        const position = { x: 0, y: 0 };
+        const position = { x: posX ?? 0, y: posY ?? 0 };
 
         await thisBot.abManifestBot({ dimension, position });
         
@@ -73,6 +75,7 @@ if (tags.abAwake !== awake) {
         }
 
     } else {
+        ab.links.equipment.onEquipmentBaseDeselected(links.abBot);
         destroy(links.abBot);
         setTagMask(thisBot, "abEquipmentExcludeFromMenu", false, "shared");
 

@@ -10,3 +10,6 @@ if (that.portal == 'mapPortal' || that.portal == 'gridPortal') {
         tags.scale = 3;
     }
 }
+if (that.portal == "systemPortal" && tags.abEquipmentBaseSelected) {
+    ab.links.equipment.onEquipmentBaseDeselected(thisBot);
+} 

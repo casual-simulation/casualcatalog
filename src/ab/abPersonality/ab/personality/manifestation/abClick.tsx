@@ -12,7 +12,7 @@ const state = os.getInputState("keyboard", "Shift");
 
 const abMenuIsOpen = configBot.tags.menuPortal === 'abMenu';
 
-if (reset || (abMenuIsOpen && !state)) {
+if (reset || (abMenuIsOpen && !state && !tags.keepMenuOpen)) {
     links.abBot.animateBot();
 
     links.abBot.masks.lineTo = null;

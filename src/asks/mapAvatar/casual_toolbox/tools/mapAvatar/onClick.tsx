@@ -17,11 +17,14 @@ if (tags.abEquipmentBaseSelected) {
     return;
 }
 
-configBot.tags.menuPortal = 'mapAvatar_menu';
+ab.links.manifestation.masks.keepMenuOpen = true;
+ab.links.menu.abOpenMenu("Show");
+
+configBot.tags.menuPortal = 'abMenu';
 await os.sleep(0);
 
 const menuOptions = {
-    mapAvatar_menu: true,
+    abMenu: true,
     clearMapAvatarMenu: `@destroy(thisBot);`,
     abMenuRefresh: "@ destroy(thisBot);",
     avatar: getLink(thisBot)
@@ -45,4 +48,4 @@ if (configBot.tags.mapPortal && links.homeworld) {
     ab.links.menu.abCreateMenuButton(leaveGPSButton);
 }
 
-thisBot.showPlaceNavMenu();
+//thisBot.showPlaceNavMenu();

@@ -23,6 +23,17 @@ if (links.homeworld) {
         dropdownOptions: [
             {
                 ...menuOptions,
+                formAddress: 'home_pin',
+                label: `set respawn point`,
+                homeworld: tags.homeworld,
+                onClick: ListenerString(async () => {
+                    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+                    links.homeworld.setRespawnPoint({x: links.avatar.tags[dimension + 'X'], y: links.avatar.tags[dimension + 'Y']});
+                    shout('abMenuRefresh');
+                }),
+            },
+            {
+                ...menuOptions,
                 formAddress: 'save',
                 label: `save ${username ? username + "'s " : ""}world layer`,
                 homeworld: tags.homeworld,

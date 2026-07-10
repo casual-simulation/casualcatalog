@@ -8,7 +8,14 @@ if (!links.learn.abIsPrimary()) {
 
 masks.introPlayed = true;
 
-const abPosition = await ab.links.manifestation.getDefaultManifestPosition('map');
+const studio = configBot.tags.studio ?? authBot.id;
+
+const respawnData = await os.getData(studio, "homeworldRespawnPoint");
+if (respawnData) {
+    respawnData.x = respawnData.x + .0003;
+}
+
+const abPosition = respawnData ?? await ab.links.manifestation.getDefaultManifestPosition('map');
 const newAB = await ab.links.manifestation.abManifestBot({ dimension: 'home', position: abPosition });
 
 // Play intro music sting.

@@ -13,6 +13,14 @@ if (!avatarBot) {
         }
     }
 
+    const studio = configBot.tags.studio ?? authBot.id;
+
+    const respawnData = await os.getData(studio, "homeworldRespawnPoint");
+    if (respawnData) {
+        posX = respawnData.x;
+        posY = respawnData.y;
+    }
+
     const abArtifactShard = {
         data: {
             clickOnLoad: true,

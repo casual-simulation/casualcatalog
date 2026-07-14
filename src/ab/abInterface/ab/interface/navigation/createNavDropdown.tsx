@@ -65,7 +65,7 @@ if (links.homeworld && links.homeworld.tags.homeRespawnX && links.homeworld.tags
                         x: links.homeworld.tags.homeRespawnX,
                         y: links.homeworld.tags.homeRespawnY
                     })
-                os.focusOn({ x: links.homeworld.tags.homeRespawnX, y: links.homeworld.tags.homeRespawnY, z: 0 }, { zoom: inMap ? ab.links.manifestation.tags.defaultMapPortalZoom : ab.links.manifestation.tags.defaultGridPortalZoom, rotation: {x: 45, y: 45}}).catch(() => {});
+                os.focusOn({ x: links.homeworld.tags.homeRespawnX, y: links.homeworld.tags.homeRespawnY}, { portal: inMap ? 'map' : 'grid', zoom: inMap ? ab.links.manifestation.tags.defaultMapPortalZoom : ab.links.manifestation.tags.defaultGridPortalZoom, rotation: {x: 45, y: 45}}).catch(() => {});
             }
             superShout("abMenuRefresh");
         `

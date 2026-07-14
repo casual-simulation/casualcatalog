@@ -4,6 +4,7 @@ os.syncConfigBotTagsToURL(["abStayAwake"]);
 
 if (links.learn.abIsPrimary()) {
     if (!tags.homeRespawnX) {
+        const studio = configBot.tags.studio ?? authBot.id;
         const respawnData = await os.getData(studio, "homeworldRespawnPoint");
         console.log("respawn", respawnData)
         if (respawnData) {

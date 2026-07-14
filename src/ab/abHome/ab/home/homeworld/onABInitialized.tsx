@@ -7,9 +7,9 @@ if (links.learn.abIsPrimary()) {
         const studio = configBot.tags.studio ?? authBot.id;
         const respawnData = await os.getData(studio, "homeworldRespawnPoint");
         console.log("respawn", respawnData)
-        if (respawnData) {
-            masks.homeRespawnX = respawnData.x;
-            masks.homeRespawnY = respawnData.y;
+        if (respawnData.success) {
+            masks.homeRespawnX = respawnData.data.x;
+            masks.homeRespawnY = respawnData.data.y;
         }
     }
 

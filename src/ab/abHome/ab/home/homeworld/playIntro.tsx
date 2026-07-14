@@ -13,19 +13,21 @@ let respawnData;
 
 if (!tags.homeRespawnX) {
     respawnData = await os.getData(studio, "homeworldRespawnPoint");
-    if (respawnData) {
-        masks.homeRespawnX = respawnData.x;
-        masks.homeRespawnY = respawnData.y;
-        respawnData.x = respawnData.x + .0003;
+    if (respawnData.success) {
+        masks.homeRespawnX = respawnData.data.x;
+        masks.homeRespawnY = respawnData.data.y;
+        respawnData.data.x = respawnData.data.x + .0003;
     }
 } else {
     respawnData = {
-        x: tags.homeRespawnX + .0003,
-        y: tags.homeRespawnY
+        data: {
+            x: tags.homeRespawnX + .0003,
+            y: tags.homeRespawnY
+        }
     }
 }
 
-const abPosition = respawnData ?? await ab.links.manifestation.getDefaultManifestPosition('map');
+const abPosition = respawnData?.data ?? await ab.links.manifestation.getDefaultManifestPosition('map');
 const newAB = await ab.links.manifestation.abManifestBot({ dimension: 'home', position: abPosition });
 
 // Play intro music sting.

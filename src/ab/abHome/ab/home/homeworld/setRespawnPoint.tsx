@@ -16,7 +16,7 @@ const metadata = {
     y: that.y
 }
 
-const publishAttempt = await ab.links.store.abPublishAB({ab: 'homeworldRespawnPoint', target: metadata, sourceEvent: 'home_respawn_publish', keepMenu: true});
+const publishAttempt = await os.recordData(studio, 'homeworldRespawnPoint', metadata);
 
 if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] saveData publishAttempt 1:`, publishAttempt);
@@ -32,7 +32,7 @@ if (!publishAttempt.success) {
         console.log(`[${tags.system}.${tagName}] saveData permissions:`, permissions);
     }
 
-    const secondPublishAttempt = await ab.links.store.abPublishAB({ab: 'homeworldRespawnPoint', target: metadata, sourceEvent: 'home_respawn_publish', keepMenu: true});
+    const secondPublishAttempt = await os.recordData(studio, 'homeworldRespawnPoint', metadata);
 
         
     if (tags.debug) {

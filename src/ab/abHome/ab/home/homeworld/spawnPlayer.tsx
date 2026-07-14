@@ -17,9 +17,9 @@ if (!avatarBot) {
 
     if (!tags.homeRespawnX || !tags.homeRespawnY) {
         const respawnData = await os.getData(studio, "homeworldRespawnPoint");
-        if (respawnData) {
-            posX = respawnData.x;
-            posY = respawnData.y;
+        if (respawnData.success) {
+            posX = respawnData.data.x;
+            posY = respawnData.data.y;
             masks.homeRespawnX = posX;
             masks.homeRespawnY = posY;
         }

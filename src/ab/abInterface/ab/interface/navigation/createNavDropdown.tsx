@@ -50,25 +50,22 @@ if (os.getCurrentInst() != 'home' && authBot && ab.abIsPrimary()) {
     dropdownOptions.push(homeWorldButton);
 }
 
-
-const homeBaseBot = getBot("respawnPoint", true);
-
-if (homeBaseBot && homeBaseBot.tags[currentDim] == true) {
+if (links.homeworld && links.homeworld.tags.homeRespawnX && links.homeworld.tags.homeRespawnY) {
     const homeButton = {
         ...menuOptions,
         label: 'home',
+        homeworld: tags.homeworld,
         formAddress: 'https://auth-aux-dev-filesbucket-682397690660.s3.amazonaws.com/318c04f1-1391-4c10-8d43-aaebc5170265/cd38affc0604beaa588da21aa1be750bb3e73b3b3cae23eb30307c34494459f3.png',
         onClick: `@
-            const homeBot = getBot("respawnPoint", true);
-            if (homeBot) {
+            if (links.homeworld) {
                 const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
                 const inMap = configBot.tags.mapPortal ? true : false;
                 superShout("moveAvatarToPlace", {
                         dimension: dimension,
-                        x: homeBot.tags[dimension + 'X'],
-                        y: homeBot.tags[dimension + 'Y']
+                        x: links.homeworld.tags.homeRespawnX,
+                        y: links.homeworld.tags.homeRespawnY
                     })
-                os.focusOn(homeBot, { zoom: inMap ? ab.links.manifestation.tags.defaultMapPortalZoom : ab.links.manifestation.tags.defaultGridPortalZoom, rotation: {x: 45, y: 45}}).catch(() => {});
+                os.focusOn({ x: links.homeworld.tags.homeRespawnX, y: links.homeworld.tags.homeRespawnY, z: 0 }, { zoom: inMap ? ab.links.manifestation.tags.defaultMapPortalZoom : ab.links.manifestation.tags.defaultGridPortalZoom, rotation: {x: 45, y: 45}}).catch(() => {});
             }
             superShout("abMenuRefresh");
         `

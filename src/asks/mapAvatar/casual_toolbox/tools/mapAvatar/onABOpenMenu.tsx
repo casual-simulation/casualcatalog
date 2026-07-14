@@ -23,7 +23,7 @@ if (links.homeworld) {
         dropdownOptions: [
             {
                 ...menuOptions,
-                formAddress: 'home_pin',
+                formAddress: 'pin_drop',
                 label: `set respawn point`,
                 homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {

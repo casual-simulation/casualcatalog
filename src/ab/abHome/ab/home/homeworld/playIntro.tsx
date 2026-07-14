@@ -9,10 +9,20 @@ if (!links.learn.abIsPrimary()) {
 masks.introPlayed = true;
 
 const studio = configBot.tags.studio ?? authBot.id;
+let respawnData;
 
-const respawnData = await os.getData(studio, "homeworldRespawnPoint");
-if (respawnData) {
-    respawnData.x = respawnData.x + .0003;
+if (!tags.homeRespawnX) {
+    respawnData = await os.getData(studio, "homeworldRespawnPoint");
+    if (respawnData) {
+        masks.homeRespawnX = respawnData.x;
+        masks.homeRespawnY = respawnData.y;
+        respawnData.x = respawnData.x + .0003;
+    }
+} else {
+    respawnData = {
+        x: tags.homeRespawnX + .0003,
+        y: tags.homeRespawnY
+    }
 }
 
 const abPosition = respawnData ?? await ab.links.manifestation.getDefaultManifestPosition('map');

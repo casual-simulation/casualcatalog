@@ -15,10 +15,17 @@ if (!avatarBot) {
 
     const studio = configBot.tags.studio ?? authBot.id;
 
-    const respawnData = await os.getData(studio, "homeworldRespawnPoint");
-    if (respawnData) {
-        posX = respawnData.x;
-        posY = respawnData.y;
+    if (!tags.homeRespawnX || !tags.homeRespawnY) {
+        const respawnData = await os.getData(studio, "homeworldRespawnPoint");
+        if (respawnData) {
+            posX = respawnData.x;
+            posY = respawnData.y;
+            masks.homeRespawnX = posX;
+            masks.homeRespawnY = posY;
+        }
+    } else {
+        posX = tags.homeRespawnX;
+        posY = tags.homeRespawnY;
     }
 
     const abArtifactShard = {

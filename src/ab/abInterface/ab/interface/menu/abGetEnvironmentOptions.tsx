@@ -31,17 +31,17 @@ if (!configBot.tags.abStayAwake) {
 // ========================================
 // ■ ACCOUNT
 // ========================================
-if (authBot) {
-    options.push({
-        label: "account info",
-        abEnvironmentMenuSortOrder: 200,
-        formAddress: "badge",
-        onClick: ListenerString(() => {
-            os.showAccountInfo(); 
-            shout('abMenuRefresh');
-        }),
-    })
-}
+// if (authBot) {
+//     options.push({
+//         label: "account info",
+//         abEnvironmentMenuSortOrder: 200,
+//         formAddress: "badge",
+//         onClick: ListenerString(() => {
+//             os.showAccountInfo(); 
+//             shout('abMenuRefresh');
+//         }),
+//     })
+// }
 
 // ========================================
 // ▼ PERSONALITY
@@ -379,44 +379,44 @@ if (instAIDropdownOptions && instAIDropdownOptions.length > 0) {
 // ========================================
 // ▼ HOMEWORLD
 // ========================================
-if (links.homeworld) {
-    options.push({
-        label: `homeworld`,
-        abEnvironmentMenuSortOrder: 300,
-        menuItemType: 'dropdown',
-        dropdownOptions: [
-            {
-                formAddress: 'save',
-                label: 'save layer',
-                homeworld: tags.homeworld,
-                onClick: ListenerString(async () => {
-                    links.homeworld.saveHomeworld();
-                    shout('abMenuRefresh');
-                }),
-            },
-            // {
-            //     formAddress: 'history',
-            //     label: 'homeworld version history',
-            //     homeworld: tags.homeworld,
-            //     onClick: ListenerString(async () => {
-            //         links.homeworld.showHomeVersionHistory();
-            //         shout('abMenuRefresh');
-            //     }),
-            // },
-            {
-                formAddress: 'delete_forever',
-                color: 'red',
-                labelColor: 'black',
-                label: 'factory reset layer',
-                homeworld: tags.homeworld,
-                onClick: ListenerString(async () => {
-                    links.homeworld.factoryResetHomeworld();
-                    shout('abMenuRefresh');
-                }),
-            }
-        ]
-    })
-}
+// if (links.homeworld) {
+//     options.push({
+//         label: `homeworld`,
+//         abEnvironmentMenuSortOrder: 300,
+//         menuItemType: 'dropdown',
+//         dropdownOptions: [
+//             {
+//                 formAddress: 'save',
+//                 label: 'save layer',
+//                 homeworld: tags.homeworld,
+//                 onClick: ListenerString(async () => {
+//                     links.homeworld.saveHomeworld();
+//                     shout('abMenuRefresh');
+//                 }),
+//             },
+//             // {
+//             //     formAddress: 'history',
+//             //     label: 'homeworld version history',
+//             //     homeworld: tags.homeworld,
+//             //     onClick: ListenerString(async () => {
+//             //         links.homeworld.showHomeVersionHistory();
+//             //         shout('abMenuRefresh');
+//             //     }),
+//             // },
+//             {
+//                 formAddress: 'delete_forever',
+//                 color: 'red',
+//                 labelColor: 'black',
+//                 label: 'factory reset layer',
+//                 homeworld: tags.homeworld,
+//                 onClick: ListenerString(async () => {
+//                     links.homeworld.factoryResetHomeworld();
+//                     shout('abMenuRefresh');
+//                 }),
+//             }
+//         ]
+//     })
+// }
 
 // ========================================
 // ▼ PRESENCE

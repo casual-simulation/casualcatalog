@@ -17,8 +17,8 @@ for (let option of that.options) {
 
 const equipmentDropdown = {
     label: 'equipment',
-    [menuPortal + 'SortOrder']: that.base.tags.abEquipmentMenuOrder ?? 10000,
-    dropdownSortOrder: that.base.tags.abEquipmentMenuOrder ?? 10000,
+    [menuPortal + 'SortOrder']: that.base.tags.abEquipmentMenuOrder ?? 200,
+    dropdownSortOrder: that.base.tags.abEquipmentMenuOrder ?? 200,
     ...menuOptions,
     dropdownOptions: that.options
 }

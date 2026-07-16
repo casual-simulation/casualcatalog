@@ -66,7 +66,7 @@ if (configBot.tags.mapPortal) {
 
 
 if (data.clickOnLoad) {
-    thisBot.onClick();
+    thisBot.onClick({origin: 'grid'});
 }
 
 shout("abEquipmentBaseReconstituted", thisBot);

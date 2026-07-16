@@ -68,3 +68,17 @@ if (links.homeworld) {
 
         ab.links.menu.abCreateMenuDropdown(homeworldButtons);
 }
+
+if (links.layers) {
+    const dropdownOptions = await links.layers.getLayerMenu({menuPortal: "abMenu"});
+    const layersButtons = {
+        ...menuOptions,
+        label: `world layers`,
+        abMenuSortOrder: -2,
+        menuItemType: 'dropdown',
+        dropdownSortOrder: -2,
+        dropdownOptions: dropdownOptions
+    }
+
+    ab.links.menu.abCreateMenuDropdown(layersButtons);
+}

@@ -18,7 +18,7 @@ if (tags.abEquipmentBaseSelected) {
 }
 
 ab.links.manifestation.masks.keepMenuOpen = true;
-ab.links.menu.abOpenMenu("Show");
+ab.links.menu.abOpenMenu("GridShow");
 
 configBot.tags.menuPortal = 'abMenu';
 await os.sleep(0);

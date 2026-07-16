@@ -11,12 +11,12 @@ const menuOptions = {
     abMenu: true,
     avatar: getLink(thisBot)
 }
+const username = await ab.links.console.getUserName({ canSetPreferredName: false });
 
 if (links.homeworld) {
-    const username = await ab.links.console.getUserName({ canSetPreferredName: false });
     const homeworldButtons = {
         ...menuOptions,
-        label: `world layer actions`,
+        label: `${username}'s world layer`,
         abMenuSortOrder: -3,
         menuItemType: 'dropdown',
         dropdownSortOrder: -3,
@@ -24,7 +24,7 @@ if (links.homeworld) {
             {
                 ...menuOptions,
                 formAddress: 'pin_drop',
-                label: `set respawn point`,
+                label: `set default location`,
                 homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
@@ -35,7 +35,7 @@ if (links.homeworld) {
             {
                 ...menuOptions,
                 formAddress: 'save',
-                label: `save ${username ? username + "'s " : ""}world layer`,
+                label: `save world layer`,
                 homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.saveHomeworld();
@@ -57,7 +57,7 @@ if (links.homeworld) {
                 formAddress: 'delete_forever',
                 color: 'red',
                 labelColor: 'black',
-                label: `factory reset ${username ? username + "'s " : ""}world layer`,
+                label: `factory reset world layer`,
                 homeworld: tags.homeworld,
                 onClick: ListenerString(async () => {
                     links.homeworld.factoryResetHomeworld();

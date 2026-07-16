@@ -18,7 +18,7 @@ if (tags.abEquipmentBaseSelected) {
 }
 
 ab.links.manifestation.masks.keepMenuOpen = true;
-if (that.origin == 'grid') {
+if (that?.origin && that.origin == 'grid') {
     ab.links.menu.abOpenMenu("GridShow");
 } else {
     ab.links.menu.abOpenMenu("Show");

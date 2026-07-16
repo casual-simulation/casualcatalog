@@ -18,7 +18,12 @@ if (tags.abEquipmentBaseSelected) {
 }
 
 ab.links.manifestation.masks.keepMenuOpen = true;
-ab.links.menu.abOpenMenu("GridShow");
+if (that.origin == 'grid') {
+    ab.links.menu.abOpenMenu("GridShow");
+} else {
+    ab.links.menu.abOpenMenu("Show");
+}
+
 
 configBot.tags.menuPortal = 'abMenu';
 await os.sleep(0);

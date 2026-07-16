@@ -23,5 +23,5 @@ if (that) {
 // }
 
 if (configBot.tags.mapPortal) {
-    thisBot.onClick();
+    thisBot.onClick({origin: 'grid'});
 }

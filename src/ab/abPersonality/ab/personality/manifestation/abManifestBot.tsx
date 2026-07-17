@@ -415,6 +415,8 @@ const abMod = {
             links.manager.abClick({ reset: true });
         }
 
+        abRemember.tags.abBotSnapState = false;
+
         if (links.armBot && links.meshBot && !tags.abMeshIsStatic) {
             const multiSelect = links.armBot.tags.multiSelect;
             if (multiSelect) {
@@ -479,6 +481,7 @@ const abMod = {
         shout('onABSelectedBot', selectedBots);
     }),
     onArmDestroy: ListenerString(() => {
+        abRemember.tags.abBotSnapState = "face";
         shout('abMenuRefresh');
     }),
     onABUserRequestTodoCreated: ListenerString(() => {

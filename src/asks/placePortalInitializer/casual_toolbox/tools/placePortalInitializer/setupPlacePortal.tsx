@@ -36,14 +36,15 @@ const abArtifactShard = {
         eggName: instName,
         eggStudio: configBot.tags.studio ?? authBot.id,
         eggConfigConfirmed: true,
+        label: instName,
         studioId: configBot.tags.studio ?? authBot.id,
         eggParameters: {
             toolboxBot: getLink(thisBot),
             gridInformation: {
                 dimension: dimension,
                 position: {
-                    x: -5,
-                    y: 10
+                    x: -3,
+                    y: 7
                 }
             }
         }

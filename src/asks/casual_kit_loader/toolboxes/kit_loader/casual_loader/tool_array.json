@@ -26,14 +26,14 @@
         "artifact": true
     },
     {
-        "name": "catalog",
+        "name": "blank catalog",
         "studio": "AB",
         "targetAB": "studioCatalog",
         "formAddress": "menu_book",
         "artifact": true
     },
     {
-        "name": "pin",
+        "name": "navigation pin",
         "studio": "AB",
         "targetAB": "mapAvatar",
         "formAddress": "person_pin_circle",

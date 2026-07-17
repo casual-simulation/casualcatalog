@@ -1,44 +1,3 @@
-//set color
-
-//add grid
-
-//add back button
-
-// //add avatar
-// const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-
-// if (!avatarBot) {
-//     //get user location if applicable
-//     let posX = 5;
-//     let posY = 5;
-
-//     const abArtifactShard = {
-//         data: {
-//             eggParameters: {
-//                 gridInformation: {
-//                     dimension: 'home',
-//                     position: {
-//                         x: posX,
-//                         y: posY
-//                     }
-//                 }
-//             }
-//         },
-//         dependencies: [
-//             {
-//                 askID: 'mapAvatar'
-//             }
-//         ]
-//     };
-//     await ab.links.artifact.abCreateArtifactPromiseBot({
-//         space: 'tempShared',
-//         abArtifactName: 'mapAvatar',
-//         abArtifactInstanceID: uuid(),
-//         abArtifactShard,
-//     });
-// }
-
-// gridPortalBot.tags.portalColor = configBot.tags.portalColor ?? abPersonality.tags.abBaseColor ?? null;
 const formAdd = ab?.abBuildCasualCatalogURL("/asks/place-assets/grid_textureMesh_01.glb");
 
 const grid = create({
@@ -61,5 +20,45 @@ const grid = create({
 if (configBot.tags.placeAsk) {
     ab.links.ask.abCoreMenuAction({message: configBot.tags.placeAsk, autoHatch: true});
 }
+
+const instName = configBot.tags.tempInst ?? configBot.tags.staticInst ?? configBot.tags.inst;
+const egg = getBot(byTag("eggConfigurator", true), byTag("chosenEggName", instName));
+if (egg) {
+    egg.updateEggData();
+    return;
+}
+
+const dimension = tags.dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+
+//createEgg
+const abArtifactShard = {
+    data: {
+        eggName: instName,
+        eggStudio: configBot.tags.studio ?? authBot.id,
+        eggConfigConfirmed: true,
+        studioId: configBot.tags.studio ?? authBot.id,
+        eggParameters: {
+            toolboxBot: getLink(thisBot),
+            gridInformation: {
+                dimension: dimension,
+                position: {
+                    x: -5,
+                    y: 10
+                }
+            }
+        }
+    },
+    dependencies: [
+        {
+            askID: 'eggConfigurator'
+        }
+    ]
+};
+
+ab.links.artifact.abCreateArtifactPromiseBot({
+    abArtifactName: 'eggConfigurator',
+    abArtifactInstanceID: uuid(),
+    abArtifactShard,
+});
 
 ab.links.manifestation.abSetAwake({awake: true});

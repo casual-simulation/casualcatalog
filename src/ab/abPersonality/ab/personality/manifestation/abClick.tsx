@@ -10,9 +10,9 @@ const reset = that ? that.reset : false;
 const menu = that ? that.menu : "core";
 const state = os.getInputState("keyboard", "Shift");
 
-const abMenuIsOpen = configBot.tags.menuPortal === 'abMenu';
+const abselected = links.abBot?.tags.abEquipmentBaseSelected ? true : false;
 
-if (reset || (abMenuIsOpen && !state && !tags.keepMenuOpen)) {
+if (reset || (abselected && !state && !tags.keepMenuOpen)) {
     links.abBot.animateBot();
 
     links.abBot.masks.lineTo = null;

@@ -89,7 +89,7 @@ const visitLinkButton = {
 const visitButton = {
     ...menuOptions,
     formAddress: 'check_circle',
-    label: 'check in',
+    label: 'clock in',
     landmark_menuSortOrder: 1,
     onClick: `@
         links.place.checkIn();

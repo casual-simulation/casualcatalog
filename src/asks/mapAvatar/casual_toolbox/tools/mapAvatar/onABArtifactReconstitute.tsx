@@ -18,8 +18,9 @@ if (!data.label && authBot && authBot.tags.name) {
     label = authBot.tags.name;
 }
 
-const newFormAdd = await ab.abBuildCasualCatalogURL('ab/userIcons/avatar_pin.glb');
+const newFormAdd = await ab.abBuildCasualCatalogURL('ab/userIcons/avatar_pin_animated.glb');
 tags.formAddress = newFormAdd;
+tags.formAnimation = 'idle';
 
 tags.label = label;
 tags.color = data.color ?? abPersonality?.tags?.abBaseColor ?? '#00D9CD';
@@ -29,7 +30,7 @@ tags.strokeColor = data.strokeColor ?? abPersonality?.tags?.abBaseColor ?? '#00D
 tags.prevID = data.prevID;
 changeState(thisBot, false, "selected");
 
-thisBot.setIcon();
+//thisBot.setIcon();
 
 setTagMask(thisBot, "abIgnore", true, "shared");
 

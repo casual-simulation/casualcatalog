@@ -13,6 +13,21 @@ const menuOptions = {
 }
 const username = await ab.links.console.getUserName({ canSetPreferredName: false });
 
+if (links.portal) {
+    const portalOptions = links.portal.getPortalMenu();
+    const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
+    const portalButton = {
+        ...menuOptions,
+        label: `current portal: ${currentPortal}`,
+        abMenuSortOrder: -4,
+        menuItemType: 'dropdown',
+        dropdownSortOrder: -4,
+        dropdownOptions: portalOptions
+    }
+
+    ab.links.menu.abCreateMenuDropdown(portalButton);
+}
+
 if (links.homeworld) {
     const homeworldButtons = {
         ...menuOptions,

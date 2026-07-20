@@ -7,6 +7,10 @@ switch (tapCode)
 
         thisBot.onChat({message: ".."});
         break;
+    case "4678":
+        shout("openSystemPortal");
+
+        break;
     case "4242":
         thisBot.abChatBarOpen();
         break;

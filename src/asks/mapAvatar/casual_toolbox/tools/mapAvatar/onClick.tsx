@@ -3,7 +3,7 @@ if (tags.ownerID !=  authBot?.id) {
     return;
 }
 
-shout('abMenuRefresh');
+superShout('abMenuRefresh');
 shout("clearMapAvatarMenu");
 
 //handle right click

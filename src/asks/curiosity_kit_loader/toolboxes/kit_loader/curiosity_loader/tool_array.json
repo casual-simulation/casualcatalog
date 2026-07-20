@@ -4,12 +4,14 @@
         "name": "artifact journal",
         "studio": "AB",
         "targetAB": "artifactJournal",
+        "formAddress": "menu_book",
         "artifact": true
     },
     {
         "name": "curiosity camera",
         "studio": "AB",
         "targetAB": "curiosityCamera",
+        "formAddress": "photo_camera",
         "artifact": true
     }
 ]

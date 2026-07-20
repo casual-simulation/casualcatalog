@@ -41,6 +41,7 @@ const leaveGPSButton = {
     mapAvatar_menuSortOrder: -1,
     formAddress: 'navigation',
     onClick: `@
+        superShout("abMenuRefresh");
         links.avatar.links.homeworld?.toggleGPS(!links.avatar.links.homeworld?.tags.usingGPS);
         if (!links.avatar.links.homeworld.tags.introPlayed && !links.avatar.links.homeworld?.tags.usingGPS == true) {
             links.avatar.links.homeworld.masks.introPlayed = true;

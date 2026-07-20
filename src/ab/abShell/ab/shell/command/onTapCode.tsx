@@ -7,7 +7,7 @@ switch (tapCode)
 
         thisBot.onChat({message: ".."});
         break;
-    case "4678":
+    case "4422":
         shout("openSystemPortal");
 
         break;

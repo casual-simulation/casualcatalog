@@ -61,3 +61,5 @@ if (data.generateURLOnLoad) {
         thisBot.onClick();
     }
 }
+
+shout("onWorldLayerEvent");

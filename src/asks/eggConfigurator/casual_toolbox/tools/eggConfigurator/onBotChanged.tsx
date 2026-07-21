@@ -16,3 +16,7 @@ if (that.tags.includes(tags.dimension)) {
     const connectedBots = getBots("lineTo", getID(thisBot));
     setTag(connectedBots, tags.dimension, tags[tags.dimension]);
 }
+
+if (tags.isAvatarEquipment) {
+    shout("onEquipmentChanged", {bot: thisBot, tags: that.tags});
+}

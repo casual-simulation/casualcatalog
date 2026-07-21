@@ -44,6 +44,10 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 }
 
+if (tags.studioId) {
+    tags.worldLayer = tags.studioId;
+}
+
 // const strokeBot = await thisBot.generateStroke();
 // tags.strokeBot = getLink(strokeBot);
 shout('clearInstCreatorMenu');

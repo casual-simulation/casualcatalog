@@ -49,9 +49,15 @@ if (!publishAttempt.success) {
     } else {
         ab.links.manifestation.abSetAwake({ awake: true });
         os.tip("home layer saved", 0, gridPortalBot.tags.pixelHeight);
+        if (links.save) {
+            setTagMask(links.save, "newChanges", null, "shared");
+        }
         return secondPublishAttempt;
     }
 } else {
     os.tip("home layer saved", 0, gridPortalBot.tags.pixelHeight);
+    if (links.save) {
+        setTagMask(links.save, "newChanges", null, "shared");
+    }
     return publishAttempt;
 }

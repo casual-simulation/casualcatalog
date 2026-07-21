@@ -21,3 +21,4 @@ delete data.tags.studioId;
 delete data.tags.originType;
 delete data.tags.instSetting;
 delete data.tags.biosSetting;
+delete data.tags.worldLayer;

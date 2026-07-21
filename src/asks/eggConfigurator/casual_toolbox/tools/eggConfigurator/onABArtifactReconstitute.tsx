@@ -11,6 +11,7 @@ tags.labelColor = data.labelColor ?? abPersonality?.tags?.abBaseLabelColor ?? 'b
 tags.prevBotID = data.prevBotID;
 tags.studioId = data.studioId;
 tags.strokeBot = null;
+tags.isAvatarEquipment = data.isAvatarEquipment;
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('egg_' + getID(thisBot));
 
 if (tags.eggConfigConfirmed) {
@@ -52,4 +53,11 @@ if (data.eggParameters) {
 // const strokeBot = await thisBot.generateStroke();
 // tags.strokeBot = getLink(strokeBot);
 
-thisBot.determineLineTo();
+if (tags.isAvatarEquipment) {
+    const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+    if (avatarBot) {
+        masks.abEquipmentFor = avatarBot.id;
+    }
+} else {
+    thisBot.determineLineTo();
+}

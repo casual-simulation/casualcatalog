@@ -25,8 +25,6 @@ if (!authBot) {
     return;
 }
 
-await thisBot.handleCatalogSetup();
-
 const studio = configBot.tags.studio ?? authBot.id;
 const homeEggData = await os.getData(studio, 'home');
 
@@ -50,6 +48,8 @@ if (!homeEggData.success) {
         thisBot.saveHomeworld();
     }
 }
+
+await thisBot.handleEggSetup();
 
 // Manually call homeworld's onPortalChanged so it sets up the intro state.
 thisBot.onPortalChanged({ portal: 'mapPortal', dimension: currentDim });

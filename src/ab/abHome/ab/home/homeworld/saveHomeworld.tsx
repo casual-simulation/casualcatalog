@@ -44,14 +44,14 @@ if (!publishAttempt.success) {
         if (tags.debug) {
             console.log(`[${tags.system}.${tagName}] Could not publish`, secondPublishAttempt);
         }
-        os.toast("failed to save homeworld.");
+        os.toast("failed to save homelayer.");
         return secondPublishAttempt;
     } else {
         ab.links.manifestation.abSetAwake({ awake: true });
-        os.tip("home world saved", 0, gridPortalBot.tags.pixelHeight);
+        os.tip("home layer saved", 0, gridPortalBot.tags.pixelHeight);
         return secondPublishAttempt;
     }
 } else {
-    os.tip("home world saved", 0, gridPortalBot.tags.pixelHeight);
+    os.tip("home layer saved", 0, gridPortalBot.tags.pixelHeight);
     return publishAttempt;
 }

@@ -6,7 +6,6 @@ if (links.learn.abIsPrimary()) {
     if (!tags.homeRespawnX) {
         const studio = configBot.tags.studio ?? authBot.id;
         const respawnData = await os.getData(studio, "homeworldRespawnPoint");
-        console.log("respawn", respawnData)
         if (respawnData.success) {
             masks.homeRespawnX = respawnData.data.x;
             masks.homeRespawnY = respawnData.data.y;

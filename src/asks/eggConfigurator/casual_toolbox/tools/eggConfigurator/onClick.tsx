@@ -5,4 +5,6 @@ else {
     ab.links.configurator.abOpenConfigurator({ abConfiguratorGroup: tags.abConfiguratorGroup});
 }
 
-tags.lineTo = tags.lineToValue;
+if (!tags.isAvatarEquipment) {
+    tags.lineTo = tags.lineToValue;
+}

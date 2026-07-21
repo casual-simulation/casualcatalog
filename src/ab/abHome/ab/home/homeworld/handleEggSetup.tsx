@@ -21,8 +21,8 @@ if (!homeEgg) {
     const userAbArtifactShard = {
         data: {
             studioId: configBot.tags.studio ?? authBot.id,
-            label: username ? username + "'s home" : 'home',
-            chosenEggName: 'home',
+            label: 'home',
+            eggName: 'home',
             eggConfigConfirmed: true,
             isAvatarEquipment: true,
             eggParameters: {

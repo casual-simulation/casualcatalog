@@ -78,9 +78,14 @@ const menuTags = {
             label: "publish current inst to egg",
             formAddress: 'publish',
             catalog: getLink(catalog),
+            homeworld: tags.homeworld,
             onClick: `@
-                shout("clearEggSetupMenu");
-                links.catalog.onStoreMenu({baseAB: links.eggConfigurator.tags.chosenEggName});
+                if (links.eggConfigurator.tags.isAvatarEquipment && links.homeworld) {
+                    links.homeworld.saveHomeworld();
+                } else {
+                    shout("clearEggSetupMenu");
+                    links.catalog.onStoreMenu({baseAB: links.eggConfigurator.tags.chosenEggName});
+                }
             `,
             eggSetupMenuSortOrder: 11,
         }

@@ -67,7 +67,7 @@ const pubButton = {
     abMenuSortOrder: -1,
 }
 
-if (tags.eggConfigConfirmed) {
+if (tags.eggConfigConfirmed && !tags.isAvatarEquipment) {
     ab.links.menu.abCreateMenuButton(editButton);
     ab.links.menu.abCreateMenuButton(pubButton);
 }

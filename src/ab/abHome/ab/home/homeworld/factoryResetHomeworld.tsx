@@ -33,4 +33,4 @@ destroy(homeWorldBots);
 destroy(catalogs);
 destroy(kits);
 
-thisBot.handleCatalogSetup();
+thisBot.init();

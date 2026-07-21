@@ -1,1 +1,3 @@
-thisBot.determineLineTo();
+if (!tags.isAvatarEquipment) {
+    thisBot.determineLineTo();
+}

@@ -11,6 +11,8 @@ const shard: ABArtifactShard = {
         studioId: tags.studioId,
         lineTo: tags.lineTo,
         isAvatarEquipment: tags.isAvatarEquipment,
+        customSaveFunction: tags.customSaveFunction,
+        customSaveFunctionOrigin: tags.customSaveFunctionOrigin,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

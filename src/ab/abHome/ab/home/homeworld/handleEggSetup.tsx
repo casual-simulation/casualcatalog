@@ -25,6 +25,8 @@ if (!homeEgg) {
             eggName: 'home',
             eggConfigConfirmed: true,
             isAvatarEquipment: true,
+            customSaveFunction: "saveHomeworld",
+            customSaveFunctionOrigin: getLink(thisBot),
             eggParameters: {
                 toolboxBot: null,
                 gridInformation: {

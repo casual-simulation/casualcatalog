@@ -12,6 +12,8 @@ tags.prevBotID = data.prevBotID;
 tags.studioId = data.studioId;
 tags.strokeBot = null;
 tags.isAvatarEquipment = data.isAvatarEquipment;
+tags.customSaveFunction = data.customSaveFunction;
+tags.customSaveFunctionOrigin = data.customSaveFunctionOrigin;
 tags.abConfiguratorGroup = data.abConfiguratorGroup ?? ('egg_' + getID(thisBot));
 
 if (tags.eggConfigConfirmed) {

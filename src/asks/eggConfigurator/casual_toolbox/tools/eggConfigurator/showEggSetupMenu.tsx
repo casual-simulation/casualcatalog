@@ -80,8 +80,8 @@ const menuTags = {
             catalog: getLink(catalog),
             homeworld: tags.homeworld,
             onClick: `@
-                if (links.eggConfigurator.tags.isAvatarEquipment && links.homeworld) {
-                    links.homeworld.saveHomeworld();
+                if (links.eggConfigurator.tags.customSaveFunction && links.eggConfigurator.links.customSaveFunctionOrigin) {
+                    whisper(links.eggConfigurator.links.customSaveFunctionOrigin, links.eggConfigurator.tags.customSaveFunction);
                 } else {
                     shout("clearEggSetupMenu");
                     links.catalog.onStoreMenu({baseAB: links.eggConfigurator.tags.chosenEggName});

@@ -19,3 +19,4 @@ delete data.tags.prevBotID;
 delete data.tags.studioId;
 delete data.tags.lineTo;
 delete data.tags.lineToValue;
+delete data.tags.isAvatarEquipment;

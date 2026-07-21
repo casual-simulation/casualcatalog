@@ -10,6 +10,7 @@ const shard: ABArtifactShard = {
         labelColor: tags.labelColor,
         studioId: tags.studioId,
         lineTo: tags.lineTo,
+        isAvatarEquipment: tags.isAvatarEquipment,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

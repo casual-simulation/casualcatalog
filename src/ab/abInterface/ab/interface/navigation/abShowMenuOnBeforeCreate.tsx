@@ -1,2 +1,2 @@
-superShout("abNavigationMenuRefresh");
+shout("abNavigationMenuRefresh");
 superShout("showSuperNav");

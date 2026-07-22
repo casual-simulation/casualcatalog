@@ -1,2 +1,4 @@
-masks.navOpen = null;
-shout("abNavigationMenuRefresh");
+if (tags.navOpen && ab.abIsPrimary()) {
+    masks.navOpen = null;
+    superShout("abMenuRefresh");
+}

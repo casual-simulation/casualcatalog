@@ -1,14 +1,7 @@
 const dropdownOptions = [];
 
-const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 let activeMenu = that?.menuPortal ?? configBot.tags.menuPortal ?? 'abMenu';
-
-// if (currentPortal != 'map') {
-//     thisBot.masks.abCoreMenuHide = true;
-// } else {
-//     thisBot.masks.abCoreMenuHide = false;
-// }
 
 const menuOptions = {};
 
@@ -118,6 +111,7 @@ for (const sortedPlace of placesArr) {
     dropdownOptions.push(sortedPlace);
 }
 
+if (ab.abIsPrimary()) {
 if (currentPortal == 'map') {
     const currentLocationButton = {
         ...menuOptions,
@@ -129,21 +123,8 @@ if (currentPortal == 'map') {
             superShout("abMenuRefresh");
         `
     }
-
-    if (ab.abIsPrimary()) {
         dropdownOptions.push(currentLocationButton);
     }
 }
-
-// if (dropdownOptions.length == 0) {
-//     thisBot.masks.abCoreMenuHide = true;
-// } else {
-//     thisBot.masks.abCoreMenuHide = false;
-// }
-
-thisBot.masks.abShowMenuHide = true;
-thisBot.masks.abGridShowMenuHide = true;
-
-masks.dropdownOptions = dropdownOptions;
 
 return JSON.stringify(dropdownOptions);

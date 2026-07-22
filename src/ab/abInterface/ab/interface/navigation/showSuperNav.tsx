@@ -1,5 +1,3 @@
-const currentDim = ab.links.remember.tags.abActiveDimension;
-const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 let activeMenu = that?.menuPortal ?? configBot.tags.menuPortal ?? 'abMenu';
 shout("abNavigationMenuRefresh");
 
@@ -64,10 +62,6 @@ const randomNumber = Math.random() * (max - min) + min;
 
 const username = await ab.links.console.getUserName({ canSetPreferredName: false });
 
-if (!ab.abIsPrimary()) {
-    shout("abMenuRefresh");
-}
-
 const superNavDropdown = {
     ...menuOptions,
     label: ab.abIsPrimary() ? (username ? username + "'s places" : "user's places") : studioName ? studioName + ' places' : os.getCurrentInst() + ' places',
@@ -80,11 +74,11 @@ const superNavDropdown = {
 let dropdownOptions = JSON.parse(await thisBot.createNavDropdown(that));
 superNavDropdown.dropdownOptions = [...dropdownOptions];
 
-
 if (superNavDropdown.dropdownOptions.length > 0) {
     const existingBots = getBots(byTag(activeMenu, true), byTag("superNavId", studioId));
     if (existingBots) {
         destroy(existingBots);
     }
-   ab.links.menu.abCreateMenuDropdown(superNavDropdown); 
+    await os.sleep(0);
+    ab.links.menu.abCreateMenuDropdown(superNavDropdown); 
 }

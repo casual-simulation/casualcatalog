@@ -21,6 +21,7 @@ menuOptions.abNavigationMenuRefresh = "@ destroy(thisBot);";
 menuOptions.abMenuRefresh = "@ destroy(thisBot);";
 menuOptions.skillBot = getLink(thisBot);
 let studioName;
+let studioId;
 
 if (!ab.abIsPrimary()) {
     let studioData = await os.listUserStudios();
@@ -31,6 +32,7 @@ if (!ab.abIsPrimary()) {
             idString = idString.slice(0, 4);
             if (os.getCurrentInst().includes(idString)) {
                 studioName = studios[i].displayName;
+                studioId = studios[i]?.studioId;
             }
         }
     }
@@ -49,6 +51,7 @@ if (!ab.abIsPrimary()) {
         
         if (allowedLayer) {
             studioName = allowedLayer.DisplayName;
+            studioId = allowedLayer.StudioId;
         }
     } 
 }
@@ -64,7 +67,8 @@ const superNavDropdown = {
     label: ab.abIsPrimary() ? (username ? username + "'s places" : "user's places") : studioName ? studioName + ' places' : os.getCurrentInst() + ' places',
     dropdownSortOrder: Number(randomNumber.toFixed(3)),
     dropdownOptions: [],
-    defaultOpen: ab.abIsPrimary() && that?.defaultOpenPlaces ? true : null
+    defaultOpen: ab.abIsPrimary() && that?.defaultOpenPlaces ? true : null,
+    superNavId: studioId
 }
 
 let dropdownOptions = JSON.parse(await thisBot.createNavDropdown(that));
@@ -74,7 +78,7 @@ if (!ab.abIsPrimary()) {
     shout("abMenuRefresh");
 }
 if (superNavDropdown.dropdownOptions.length > 0) {
-    const existingBots = getBots(byTag(activeMenu, true), byTag("label", ab.abIsPrimary() ? 'places' : studioName ? studioName + ' places' : os.getCurrentInst() + ' places'));
+    const existingBots = getBots(byTag(activeMenu, true), byTag("superNavId", studioId));
     if (existingBots) {
         destroy(existingBots);
     }

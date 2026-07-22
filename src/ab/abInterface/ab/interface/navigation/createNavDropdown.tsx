@@ -50,37 +50,34 @@ if (os.getCurrentInst() != 'home' && authBot && ab.abIsPrimary()) {
     dropdownOptions.push(homeWorldButton);
 }
 
-if (links.homeworld && links.homeworld.tags.homeRespawnX && links.homeworld.tags.homeRespawnY) {
-    const homeButton = {
-        ...menuOptions,
-        label: 'home',
-        homeworld: tags.homeworld,
-        formAddress: 'https://auth-aux-dev-filesbucket-682397690660.s3.amazonaws.com/318c04f1-1391-4c10-8d43-aaebc5170265/cd38affc0604beaa588da21aa1be750bb3e73b3b3cae23eb30307c34494459f3.png',
-        onClick: `@
-            if (links.homeworld) {
-                const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
-                const inMap = configBot.tags.mapPortal ? true : false;
-                superShout("moveAvatarToPlace", {
-                        dimension: dimension,
-                        x: links.homeworld.tags.homeRespawnX,
-                        y: links.homeworld.tags.homeRespawnY
-                    })
-                os.focusOn({ x: links.homeworld.tags.homeRespawnX, y: links.homeworld.tags.homeRespawnY}, { portal: inMap ? 'map' : 'grid', zoom: inMap ? ab.links.manifestation.tags.defaultMapPortalZoom : ab.links.manifestation.tags.defaultGridPortalZoom, rotation: {x: 45, y: 45}}).catch(() => {});
-            }
-            superShout("abMenuRefresh");
-        `
-    };
-    if (ab.abIsPrimary()) {
+if (ab.abIsPrimary()) {
+    if (links.homeworld && links.homeworld.tags.homeRespawnX && links.homeworld.tags.homeRespawnY) {
+        const homeButton = {
+            ...menuOptions,
+            label: 'home',
+            homeworld: tags.homeworld,
+            formAddress: 'https://auth-aux-dev-filesbucket-682397690660.s3.amazonaws.com/318c04f1-1391-4c10-8d43-aaebc5170265/cd38affc0604beaa588da21aa1be750bb3e73b3b3cae23eb30307c34494459f3.png',
+            onClick: `@
+                if (links.homeworld) {
+                    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
+                    const inMap = configBot.tags.mapPortal ? true : false;
+                    superShout("moveAvatarToPlace", {
+                            dimension: dimension,
+                            x: links.homeworld.tags.homeRespawnX,
+                            y: links.homeworld.tags.homeRespawnY
+                        })
+                    os.focusOn({ x: links.homeworld.tags.homeRespawnX, y: links.homeworld.tags.homeRespawnY}, { portal: inMap ? 'map' : 'grid', zoom: inMap ? ab.links.manifestation.tags.defaultMapPortalZoom : ab.links.manifestation.tags.defaultGridPortalZoom, rotation: {x: 45, y: 45}}).catch(() => {});
+                }
+                superShout("abMenuRefresh");
+            `
+        };
         dropdownOptions.push(homeButton);
-    }
+    } 
 }
 
 const placesArr = [];
 const places = getBots("homePlace", true);
 for (const hPlace of places) {
-    if (hPlace.tags.homeBase == true) {
-        continue;
-    }
     const placeObj = {
         ...menuOptions,
         label: hPlace.tags.placeLabel,

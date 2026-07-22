@@ -6,7 +6,13 @@ if (that.dimension != tags.dimension) {
     // links.spriteBot.tags.dimension = that.dimension;
 }
 
-links.equipment.onEquipmentBaseDeselected(thisBot);
+if (links.homeworld) {
+    if (!links.homeworld.tags.usingGPS) {
+        links.equipment.onEquipmentBaseDeselected(thisBot);
+    }
+} else {
+    links.equipment.onEquipmentBaseDeselected(thisBot);
+}
 
 tags[that.dimension] = true;
 // links.spriteBot.tags[that.dimension] = true;

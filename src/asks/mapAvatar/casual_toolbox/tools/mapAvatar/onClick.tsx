@@ -4,7 +4,6 @@ if (tags.ownerID !=  authBot?.id) {
 }
 
 shout('abMenuRefresh');
-superShout("abNavigationMenuRefresh");
 shout("clearMapAvatarMenu");
 
 //handle right click

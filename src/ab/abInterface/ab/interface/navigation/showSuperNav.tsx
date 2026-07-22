@@ -54,6 +54,8 @@ if (!ab.abIsPrimary()) {
             studioId = allowedLayer.StudioId;
         }
     } 
+} else {
+    studioId = configBot.tags.studioId ?? authBot?.id;
 }
 
 const min = 2.100;
@@ -61,6 +63,10 @@ const max = 2.900;
 const randomNumber = Math.random() * (max - min) + min;
 
 const username = await ab.links.console.getUserName({ canSetPreferredName: false });
+
+if (!ab.abIsPrimary()) {
+    shout("abMenuRefresh");
+}
 
 const superNavDropdown = {
     ...menuOptions,
@@ -74,9 +80,7 @@ const superNavDropdown = {
 let dropdownOptions = JSON.parse(await thisBot.createNavDropdown(that));
 superNavDropdown.dropdownOptions = [...dropdownOptions];
 
-if (!ab.abIsPrimary()) {
-    shout("abMenuRefresh");
-}
+
 if (superNavDropdown.dropdownOptions.length > 0) {
     const existingBots = getBots(byTag(activeMenu, true), byTag("superNavId", studioId));
     if (existingBots) {

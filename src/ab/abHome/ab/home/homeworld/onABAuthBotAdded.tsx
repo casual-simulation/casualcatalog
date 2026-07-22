@@ -1,4 +1,3 @@
-console.log("initializing after auth")
 if (tags.awaitingAuthBot) {
     return;
 }

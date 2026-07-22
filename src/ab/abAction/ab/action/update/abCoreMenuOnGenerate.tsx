@@ -16,7 +16,7 @@ tags.refreshDisplay = `@
     masks.formAddress = null;
     
     if (abUpdateChecker.tags.updateAvailable) {
-        masks.label = 'update ' + abPersonality.tags.abBuilderIdentity;
+        masks.label = 'update ' + abPersonality.tags.abBuilderIdentity + ' (current: v' + ab.tags.abCoreMajorVersion + '.' + ab.tags.abCoreMinorVersion + ')';
         masks.color = '#A4DD00';
         masks.formAddress = 'update';
     } else {

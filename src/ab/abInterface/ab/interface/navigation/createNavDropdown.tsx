@@ -142,6 +142,7 @@ if (currentPortal == 'map') {
 // }
 
 thisBot.masks.abShowMenuHide = true;
+thisBot.masks.abGridShowMenuHide = true;
 
 masks.dropdownOptions = dropdownOptions;
 

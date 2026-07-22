@@ -1,3 +1,3 @@
-if (!ab.abIsPrimary()) {
-    shout("abMenuRefresh");
-}
+// if (!ab.abIsPrimary()) {
+//     shout("abMenuRefresh");
+// }

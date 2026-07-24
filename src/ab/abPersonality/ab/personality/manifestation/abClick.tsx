@@ -36,7 +36,7 @@ else {
 
     const rotZ = links.abBot.tags.dimension + "RotationZ";
 
-    if (state && menu == "core") {
+    if (state && menu =="core") {
         links.menu.abEnvironmentMenu();
     }
     else {

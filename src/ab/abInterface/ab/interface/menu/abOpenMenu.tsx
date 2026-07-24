@@ -2,9 +2,13 @@ await os.requestAuthBotInBackground();
 
 configBot.masks.menuPortal = "abMenu";
 
-let menuType = that ? "ab" + that.charAt(0).toUpperCase() + that.slice(1) + "Menu": "abCoreMenu"; //set up a check to see what type of menu should be occuring [core, bot, grid, inst]
+const chosenMenu = that.menu ?? that;
+
+let menuType = chosenMenu ? "ab" + (that.ignoreABKit ? '' : ab.links.manifestation.tags.currentKit ? ab.links.manifestation.tags.currentKit.charAt(0).toUpperCase() +  ab.links.manifestation.tags.currentKit.slice(1) : '') + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abCoreMenu"; //set up a check to see what type of menu should be occuring [core, bot, grid, inst]
 let menuSkills = getBots(menuType + "Action");
 let maxOptions = menuType == "inst" ? 7 : 5;
+
+console.log("menuType", menuType)
 
 const BASE_TAGS = {
     abMenu: true,
@@ -104,4 +108,4 @@ thisBot.masks.onKeyDown = `@
     }
 `;
 
-shout('onABOpenMenu', { menu: that, menuType, menuPortal: configBot.masks.menuPortal });
+shout('onABOpenMenu', { menu: chosenMenu, menuType, menuPortal: configBot.masks.menuPortal });

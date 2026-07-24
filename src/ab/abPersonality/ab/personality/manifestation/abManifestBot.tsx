@@ -34,6 +34,8 @@ const abMod = {
     armMeshPath: links.remember.tags.abArmMeshPath,
     armColor: "white",
     personality: tags.personality,
+    kitBot: getLink(that.kitBot),
+    kit: that.kit ?? tags.currentKit,
     remember: tags.remember,
     learn: tags.learn,
     search: tags.search,
@@ -53,14 +55,58 @@ const abMod = {
         if (thisBot.vars.destroyed) {
             return;
         }
+        if (tags.kit) {
+            
+            if (tags.kit == 'log') {
+                if (instStudioConfig?.studio_ab_mesh_url_log ?? instStudioConfig?.studio_ab_mesh_url) {
+                    formAddress = instStudioConfig.studio_ab_mesh_url_log ?? instStudioConfig?.studio_ab_mesh_url;
+                } else if (links.remember.tags.abMeshPath_log ?? links.remember.tags.abMeshPath) {
+                    const newAddress = links.remember.tags.abMeshPath_log ?? links.remember.tags.abMeshPath;
+                    if (newAddress.startsWith('https://')) {
+                        formAddress = newAddress;
+                    } else {
+                        formAddress = links.learn.abBuildCasualCatalogURL(newAddress);
+                    }
+                }
 
-        if (instStudioConfig?.studio_ab_mesh_url) {
-            formAddress = instStudioConfig.studio_ab_mesh_url;
-        } else if (links.remember.tags.abMeshPath) {
-            if (links.remember.tags.abMeshPath.startsWith('https://')) {
-                formAddress = links.remember.tags.abMeshPath;
+            } else if (tags.kit == 'catalog') {
+                if (instStudioConfig?.studio_ab_mesh_url_catalog ?? instStudioConfig?.studio_ab_mesh_url) {
+                    formAddress = instStudioConfig.studio_ab_mesh_url_catalog ?? instStudioConfig?.studio_ab_mesh_url;
+                } else if (links.remember.tags.abMeshPath_catalog ?? links.remember.tags.abMeshPath) {
+                    const newAddress = links.remember.tags.abMeshPath_catalog ?? links.remember.tags.abMeshPath;
+                    if (newAddress.startsWith('https://')) {
+                        formAddress = newAddress;
+                    } else {
+                        formAddress = links.learn.abBuildCasualCatalogURL(newAddress);
+                    }
+                }
             } else {
-                formAddress = links.learn.abBuildCasualCatalogURL(links.remember.tags.abMeshPath);
+                if (links.kitBot && links.kitBot?.tags.abMeshPath) {
+                    if (links.kitBot?.tags.abMeshPath.startsWith('https://')) {
+                        formAddress = links.kitBot?.tags.abMeshPath;
+                    } else {
+                        formAddress = links.learn.abBuildCasualCatalogURL(that.kitBot.tags.abMeshPath);
+                    }
+                }
+                else if (instStudioConfig?.studio_ab_mesh_url) {
+                    formAddress = instStudioConfig.studio_ab_mesh_url;
+                } else if (links.remember.tags.abMeshPath) {
+                    if (links.remember.tags.abMeshPath.startsWith('https://')) {
+                        formAddress = links.remember.tags.abMeshPath;
+                    } else {
+                        formAddress = links.learn.abBuildCasualCatalogURL(links.remember.tags.abMeshPath);
+                    }
+                }
+            }
+        } else {
+            if (instStudioConfig?.studio_ab_mesh_url) {
+                formAddress = instStudioConfig.studio_ab_mesh_url;
+            } else if (links.remember.tags.abMeshPath) {
+                if (links.remember.tags.abMeshPath.startsWith('https://')) {
+                    formAddress = links.remember.tags.abMeshPath;
+                } else {
+                    formAddress = links.learn.abBuildCasualCatalogURL(links.remember.tags.abMeshPath);
+                }
             }
         }
 
@@ -75,6 +121,8 @@ const abMod = {
                 color: colorize ? links.personality.tags.abBaseColor : null,
                 form: 'mesh',
                 formSubtype: 'gltf',
+                scaleMode: 'absolute',
+                orientationMode: tags.kit == 'log' ? "billboardFront" : null,
                 formAddress,
                 formAnimation: false,
                 pointable: false,
@@ -539,7 +587,5 @@ links.remember.masks[dimension + 'ABLastPosition'] = '🧬' + JSON.stringify({ x
 await os.sleep(0); // Give CasualOS a chance to update tag masks.
 
 shout('onABMoved', { dimension, x: position.x, y: position.y });
-
-thisBot.abManifestUserCatalog();
 
 return abBot;

@@ -1,12 +1,69 @@
 const options = [];
 
 // ========================================
+// ■ MODE
+// ========================================
+const kitGroup = {
+    abEnvironmentMenuSortOrder: 0,
+    groupSortOrder: 0,
+    menuItemType: 'group',
+    menuItems: []
+}
+
+const logKit = {
+    label: `log`,
+    formAddress: "article",
+    onClick: ListenerString(() => {
+        ab.links.manifestation.equipKit({kit: 'log'})
+    }),  
+}
+
+const catalogKit = {
+    label: `catalog`,
+    formAddress: "cube",
+    onClick: ListenerString(() => {
+        ab.links.manifestation.equipKit({kit: 'catalog'})
+    }),  
+}
+const defaultKit = {
+    label: `${abRemember.tags.defaultKitName ?? 'casual kit'}`,
+    formAddress: "category",
+    onClick: ListenerString(() => {
+        ab.links.manifestation.equipKit({kit: abRemember.tags.defaultKit ?? 'casual_kit_loader'})
+    }),  
+}
+
+if (ab.links.manifestation.tags.currentKit == 'log') {
+    kitGroup.menuItems.push(catalogKit);
+    kitGroup.menuItems.push(defaultKit);
+}
+
+else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+    kitGroup.menuItems.push(logKit);
+    kitGroup.menuItems.push(defaultKit);
+}
+
+else if (ab.links.manifestation.tags.currentKit == abRemember.tags.defaultKit) {
+    kitGroup.menuItems.push(logKit);
+    kitGroup.menuItems.push(catalogKit);
+} 
+
+else {
+    kitGroup.menuItems.push(logKit);
+    kitGroup.menuItems.push(catalogKit);
+    kitGroup.menuItems.push(defaultKit);
+}
+
+options.push(kitGroup)
+
+
+// ========================================
 // ■ HIDE
 // ========================================
 if (!configBot.tags.abStayAwake) {
     options.push({
         label: `hide`,
-        abEnvironmentMenuSortOrder: 0,
+        abEnvironmentMenuSortOrder: 1,
         formAddress: "visibility_off",
         onClick: ListenerString(() => {
             destroy(links.manifestation.links.abBot);

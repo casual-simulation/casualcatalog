@@ -10,7 +10,7 @@ const firstIndex = permalinkURL.indexOf("&");
 const initialURL = permalinkURL.substring(0, firstIndex);
 const updatedURL = activeBios != false ? initialURL + "&inst=" + activeInst : initialURL;
 
-setTagMask(thisBot, "abLogCoreMenuLabel",`current portal: ${currentPortal}`);
+setTagMask(thisBot, "abLogSelfSelectMenuLabel",`current portal: ${currentPortal}`);
 setTagMask(thisBot, "currentDimension", currentDim);
 setTagMask(thisBot, "currentPortal", currentPortal);
 setTagMask(thisBot, "dropdownSortOrder", 1);

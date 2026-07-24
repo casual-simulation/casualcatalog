@@ -37,7 +37,7 @@ else {
     const rotZ = links.abBot.tags.dimension + "RotationZ";
 
     if (state && menu =="core") {
-        links.menu.abEnvironmentMenu();
+        links.menu.abOpenMenu("selfSelect");
     }
     else {
         links.menu.abOpenMenu(menu);

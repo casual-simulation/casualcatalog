@@ -5,6 +5,7 @@ if (that.eggParameters) {
 
     const abArtifactShard = {
         data: {
+            kitId: 'chat_kit',
             label: that.eggParameters.toolbox_name ?? "chat kit",
             studioId: that.eggParameters.studioId,
             tool_array: tags.tool_array,

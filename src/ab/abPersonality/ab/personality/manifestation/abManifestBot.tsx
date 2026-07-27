@@ -483,7 +483,11 @@ const abMod = {
             }
         }
 
-        links.manager.abClick({ menu: 'grid' });
+        if (tags.kit && tags.kit != 'log' && tags.kit != 'catalog') {
+            links.manager.abClick({ menu: 'grid' , ignoreABKit: true});
+        } else {
+            links.manager.abClick({ menu: 'grid' });
+        }
 
         if (links.armBot && links.meshBot && !tags.abMeshIsStatic) {
             const multiSelect = links.armBot.tags.multiSelect;

@@ -8,6 +8,7 @@ if (links.input) {
 
 const reset = that ? that.reset : false;
 const menu = that ? that.menu : "core";
+const ignoreKit = that ? that.ignoreABKit : false;
 const state = os.getInputState("keyboard", "Shift");
 
 const abselected = links.abBot?.tags.abEquipmentBaseSelected ? true : false;
@@ -40,7 +41,7 @@ else {
         links.menu.abOpenMenu("selfSelect");
     }
     else {
-        links.menu.abOpenMenu(menu);
+        links.menu.abOpenMenu({menu: menu, ignoreABKit: ignoreKit});
     }
 
     animateTag(links.abBot, {

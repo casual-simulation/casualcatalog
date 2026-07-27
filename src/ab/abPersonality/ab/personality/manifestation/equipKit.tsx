@@ -24,7 +24,7 @@ if (!links.kitBot) {
 }
 
 if (links.kitBot) {
-    kitBot.tags[dimension] = false;
+    links.kitBot.tags[dimension] = false;
 }
 
 destroy(links.abBot);

@@ -20,10 +20,10 @@ masks.kitBot = that.kitBot;
 
 if (!links.kitBot) {
     const phys_kit = getBot('kitId', that.kit);
-    masks.kitBot = getLink(phys_kit);
+    if (phys_kit) {
+        masks.kitBot = getLink(phys_kit);
+    }
 }
-
-console.log("kit stuff", tags.currentKit, tags.kitBot)
 
 if (links.kitBot) {
     links.kitBot.tags[dimension] = false;

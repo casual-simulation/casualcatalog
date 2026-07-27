@@ -23,6 +23,8 @@ if (!links.kitBot) {
     masks.kitBot = getLink(phys_kit);
 }
 
+console.log("kit stuff", tags.currentKit, tags.kitBot)
+
 if (links.kitBot) {
     links.kitBot.tags[dimension] = false;
 }

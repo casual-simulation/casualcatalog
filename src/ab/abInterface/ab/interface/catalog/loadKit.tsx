@@ -76,7 +76,7 @@ try {
         eggParameters: {
             studioId: tags.studioId,
             toolbox_name: expectedLabel,
-            gridInformation: gridInformation,
+            gridInformation: abRemember.tags.abGridFocus ?? gridInformation,
         },
     });
 

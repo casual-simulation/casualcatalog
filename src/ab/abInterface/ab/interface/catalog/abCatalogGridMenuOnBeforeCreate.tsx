@@ -1,7 +1,7 @@
 const menuItems = [];
 const activeMenu = configBot.tags.menuPortal;
 
-const gridInformation = {dimension: that?.dimension, position: { x: that?.x, y: that?.y}} ?? abRemember.tags.abGridFocus;
+const gridInformation = abRemember.tags.abGridFocus;
 const toolboxes = [...tags.toolbox_array] ?? [];
 
 // Strip out toolboxes that are alreacy loaded for this studio.

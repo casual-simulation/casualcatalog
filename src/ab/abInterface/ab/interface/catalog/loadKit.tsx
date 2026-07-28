@@ -69,6 +69,7 @@ const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
 });
 
 try {
+    console.log("pre_kit_loader", gridInformation)
     await ab.links.search.onLookupAskID({
         askID: toolbox.name,
         space: "local",

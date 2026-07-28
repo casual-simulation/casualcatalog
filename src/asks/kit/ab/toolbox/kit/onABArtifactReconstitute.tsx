@@ -12,6 +12,8 @@ tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
 tags.armColor = "white";
 tags.kitId = data.kitId;
 
+console.log("kit data", that)
+
 //Place bot correctly
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {

@@ -10,14 +10,18 @@ if (tags.currentKit && tags.currentKit != 'log' && tags.currentKit != 'catalog')
         phys_kit = getBot('kitId', tags.currentKit);
     }
 
-    console.log("phys_kit", phys_kit);
     if (phys_kit) {
         phys_kit.manifest({dimension: dimension, position: {x: posX, y: posY + (inMap ? .0002 : 2)}})
     }
 }
 
 masks.currentKit = that.kit;
-masks.kitBot = that.kitBot;
+if (!that.kitBot) {
+    masks.kitBot = null;
+    tags.kitBot = null;
+} else {
+   masks.kitBot = that.kitBot; 
+}
 
 if (!links.kitBot) {
     const phys_kit = getBot('kitId', that.kit);

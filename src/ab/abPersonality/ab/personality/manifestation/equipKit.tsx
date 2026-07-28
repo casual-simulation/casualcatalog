@@ -10,6 +10,7 @@ if (tags.currentKit && tags.currentKit != 'log' && tags.currentKit != 'catalog')
         phys_kit = getBot('kitId', tags.currentKit);
     }
 
+    console.log("phys_kit", phys_kit);
     if (phys_kit) {
         phys_kit.manifest({dimension: dimension, position: {x: posX, y: posY + (inMap ? .0002 : 2)}})
     }

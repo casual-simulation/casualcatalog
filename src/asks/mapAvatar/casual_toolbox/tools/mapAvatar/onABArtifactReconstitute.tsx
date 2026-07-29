@@ -53,7 +53,7 @@ if (data.eggParameters) {
     tags[dimension + 'Y'] = dimensionY;
 }
 
-if (configBot.tags.mapPortal && links.homeworld?.tags.usingGPS) {
+if (configBot.tags.mapPortal && ab.links.navigation?.tags.usingGPS) {
     thisBot.onGPSEnabled();
 } else {
     thisBot.onGPSDisabled();

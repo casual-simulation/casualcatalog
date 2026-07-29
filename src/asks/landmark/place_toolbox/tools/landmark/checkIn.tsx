@@ -3,7 +3,7 @@ const journal = getBot("artifactJournal", true);
 tags.discovered = true; 
 thisBot.setStatusVisuals();
 
-if (journal?.links?.homeworld?.tags?.usingGPS) {
+if (ab.links.navigation?.tags?.usingGPS) {
     if (journal) {
         journal.discoverLandmark(tags.landmarkID);
     }

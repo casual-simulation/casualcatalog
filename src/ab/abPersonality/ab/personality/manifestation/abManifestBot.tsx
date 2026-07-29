@@ -8,6 +8,14 @@ if (thisBot.vars.abBotLastId) {
     destroy(thisBot.vars.abBotLastId);
 }
 
+if (!tags.currentKit) {
+    if (configBot.tags.mapPortal) {
+        masks.currentKit = 'log';
+    } else {
+        masks.currentKit = abRemember.tags.defaultABKit;
+    }
+}
+
 const abMod = {
     space: 'tempLocal',
     dimension,

@@ -15,11 +15,11 @@ if (loc.success) {
 
     // moves bot to new location
     
-    const distance = Math.sqrt(Math.pow((xLoc - tags[mapDimension + 'X']), 2) + Math.pow((yLoc - tags[mapDimension + 'Y']), 2));
+    const distance = Math.sqrt(Math.pow((xLoc - links.abBot.tags[mapDimension + 'X']), 2) + Math.pow((yLoc - links.abBot.tags[mapDimension + 'Y']), 2));
     if (distance > .0005) {
-        clearAnimations(thisBot);
-        tags[mapDimension + 'X'] = xLoc;
-        tags[mapDimension + 'Y'] = yLoc;
+        clearAnimations(links.abBot);
+        links.abBot.tags[mapDimension + 'X'] = xLoc;
+        links.abBot.tags[mapDimension + 'Y'] = yLoc;
     }
     else {
         thisBot.moveAvatar({
@@ -30,7 +30,7 @@ if (loc.success) {
             }
         }); 
     }
-    os.focusOn(thisBot, {portal: 'map', zoom: ab.links.manifestation.tags.defaultMapPortalZoom, rotation: {x: 45, y: 45}});
+    os.focusOn(links.abBot, {portal: 'map', zoom: tags.defaultMapPortalZoom, rotation: {x: 45, y: 45}});
     
     // continues the locationLoop
     thisBot.locationLoop()
@@ -39,5 +39,5 @@ else {
     // ends the location loop and allows gridclick moving
     os.toast("Could Not Find Location...Make sure location Permissions are enabled")
     shout("onLocationLost")
-    ab.links.navigation?.toggleGPS(false);
+    links.navigation?.toggleGPS(false);
 }

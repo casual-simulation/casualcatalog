@@ -6,8 +6,8 @@ if (that.dimension != tags.dimension) {
     // links.spriteBot.tags.dimension = that.dimension;
 }
 
-if (links.homeworld) {
-    if (!links.homeworld.tags.usingGPS) {
+if (ab.links.navigation) {
+    if (!ab.links.navigation.tags.usingGPS) {
         links.equipment.onEquipmentBaseDeselected(thisBot);
     }
 } else {

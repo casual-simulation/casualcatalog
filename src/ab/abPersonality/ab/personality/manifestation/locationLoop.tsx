@@ -4,5 +4,4 @@ if(!ab.links.navigation?.tags.usingGPS){
 }
 
 await os.sleep(500)
-console.log("[RoT] updating location")
 whisper(thisBot, "updateLocation")

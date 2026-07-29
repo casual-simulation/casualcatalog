@@ -1,6 +1,4 @@
-let locationBot = getBot(byTag("name", "locationRequest"));
-let journal = getBot(byTag("artifactJournal", true))
-let locationToggled= journal.links.homeworld?.tags.usingGPS ?? false;
+let locationToggled= ab.links.navigation?.tags.usingGPS ?? false;
 const App = () => {
     return (<>
         <style>{tags["App.css"]}</style>

@@ -5,7 +5,7 @@ if (!avatarBot) {
     let posX = -85.6733605741107;
     let posY = 42.965495495495496;
 
-    if (tags.usingGPS) {
+    if (ab.links.navigation.tags.usingGPS) {
         let loc = await os.getGeolocation()
         if (loc.success) {
             posX = loc.latitude;

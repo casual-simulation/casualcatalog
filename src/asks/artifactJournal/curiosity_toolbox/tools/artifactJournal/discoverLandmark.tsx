@@ -9,7 +9,7 @@ if (!that) {
     return;
 }
 
-if (!tags.userData.discoveredLandmarks.includes(that) && links.homeworld?.tags.usingGPS) {
+if (!tags.userData.discoveredLandmarks.includes(that) && ab.links.navigation?.tags.usingGPS) {
     tags.userData.discoveredLandmarks.push(that);
     thisBot.saveData();
 }

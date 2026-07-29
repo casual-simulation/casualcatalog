@@ -1,4 +1,4 @@
-if (tags.ownerID !=  authBot?.id || ab.links.navigation?.tags.usingGPS) {
+if (ab.links.navigation?.tags.usingGPS) {
     return;
 }
 
@@ -8,19 +8,19 @@ if (!that) {
     return;
 }
 
-clearAnimations(thisBot);
+clearAnimations(links.abBot);
 
 let xPos;
 let yPos;
 const dimension = that.dimension ?? "home";
 
-if (tags[dimension + 'X'] > that.x) {
+if (links.abBot.tags[dimension + 'X'] > that.x) {
     xPos = that.x + .0005;
 } else {
     xPos = that.x - .0005;
 }
 
-if (tags[dimension + 'Y'] > that.y) {
+if (links.abBot.tags[dimension + 'Y'] > that.y) {
     yPos = that.y + .0005;
 } else {
     yPos = that.y - .0005;

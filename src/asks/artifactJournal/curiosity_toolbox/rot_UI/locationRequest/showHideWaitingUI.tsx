@@ -1,5 +1,4 @@
-const journal = getBot(byTag("artifactJournal", true))
-if (!journal.links.homeworld?.tags.usingGPS) {
+if (!ab.links.navigation?.tags.usingGPS) {
     thisBot.openApp("awaitingLocationPermission")
 }
 else {

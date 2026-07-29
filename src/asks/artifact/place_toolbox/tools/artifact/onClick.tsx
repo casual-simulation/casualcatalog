@@ -191,8 +191,7 @@ if (!tags.artifactLocked) {
     // if (tags.artifactLink) {
     //    ab.links.menu.abCreateMenuButton(visitLinkButton); 
     // }
-    const journal = getBot("artifactJournal", true);
-    if (journal?.links?.homeworld?.tags.usingGPS == true) {
+    if (ab.links.navigation?.tags.usingGPS == true) {
         ab.links.menu.abCreateMenuButton(collectButton);
     }
     else {

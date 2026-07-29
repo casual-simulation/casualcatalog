@@ -1,4 +1,4 @@
-if (tags.ownerID !=  authBot?.id || tags.usingGPS) {
+if (tags.ownerID !=  authBot?.id || ab.links.navigation.tags.usingGPS) {
     return;
 }
 

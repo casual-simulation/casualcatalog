@@ -37,13 +37,13 @@ const menuOptions = {
 
 const leaveGPSButton = {
     ...menuOptions,
-    label: links.homeworld?.tags.usingGPS ? 'stop following location' : 'use my location',
+    label: ab.links.navigation?.tags.usingGPS ? 'stop following location' : 'use my location',
     mapAvatar_menuSortOrder: -1,
     formAddress: 'navigation',
     onClick: `@
         superShout("abMenuRefresh");
-        links.avatar.links.homeworld?.toggleGPS(!links.avatar.links.homeworld?.tags.usingGPS);
-        if (!links.avatar.links.homeworld.tags.introPlayed && !links.avatar.links.homeworld?.tags.usingGPS == true) {
+        ab.links.navigation?.toggleGPS(!ab.links.navigation?.tags.usingGPS);
+        if (!ab.links.navigation.tags.introPlayed && !ab.links.navigation?.tags.usingGPS == true) {
             links.avatar.links.homeworld.masks.introPlayed = true;
         }
         shout("clearMapAvatarMenu");

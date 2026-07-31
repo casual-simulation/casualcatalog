@@ -15,7 +15,7 @@ if (!tags.currentKit) {
         masks.currentKit = abRemember.tags.defaultABKit ?? "casual_kit";
         const phys_kit = getBot("kitId", abRemember.tags.defaultABKit ?? "casual_kit");
         if (!phys_kit) {
-            links.catalog.loadKit({id: (abRemember.tags.defaultABKit ?? "casual_kit") + 'loader', hideOnLoad: true})
+            await links.catalog.loadKit({id: (abRemember.tags.defaultABKit ?? "casual_kit") + '_loader', hideOnLoad: true})
         }
     }
 }

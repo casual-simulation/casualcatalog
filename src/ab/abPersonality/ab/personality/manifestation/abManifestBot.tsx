@@ -12,7 +12,11 @@ if (!tags.currentKit) {
     if (configBot.tags.mapPortal) {
         masks.currentKit = 'log';
     } else {
-        masks.currentKit = abRemember.tags.defaultABKit;
+        masks.currentKit = abRemember.tags.defaultABKit ?? "casual_kit";
+        const phys_kit = getBot("kitId", abRemember.tags.defaultABKit ?? "casual_kit");
+        if (!phys_kit) {
+            links.catalog.loadKit({id: (abRemember.tags.defaultABKit ?? "casual_kit") + 'loader', hideOnLoad: true})
+        }
     }
 }
 
@@ -89,7 +93,7 @@ const abMod = {
                     }
                 }
             } else {
-                if (links.kitBot && links.kitBot?.tags.abMeshPath) {
+                if (links.kitBot && links.kitBot?.tags?.abMeshPath) {
                     if (links.kitBot?.tags.abMeshPath.startsWith('https://')) {
                         formAddress = links.kitBot?.tags.abMeshPath;
                     } else {

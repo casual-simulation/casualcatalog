@@ -12,8 +12,6 @@ tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
 tags.armColor = "white";
 tags.kitId = data.kitId;
 
-console.log("kit data", that)
-
 //Place bot correctly
 if (data.dimensionData) {
     for (const tagName in data.dimensionData) {
@@ -28,7 +26,7 @@ if (data.eggParameters) {
     const dimensionY = data.eggParameters.gridInformation?.position?.y ?? 0;
 
     tags.dimension = dimension;
-    tags[dimension] = true;
+    tags[dimension] = data.hideOnLoad ? false : true;
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
 }

@@ -1,5 +1,6 @@
 const id = that?.id;
 const argGridInformation = that?.gridInformation;
+const hide = that?.hideOnLoad;
 
 if (!id) {
     return { success: false, errorMessage: 'missing required arg: id' };
@@ -69,11 +70,11 @@ const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
 });
 
 try {
-    console.log("pre_kit_loader", gridInformation)
     await ab.links.search.onLookupAskID({
         askID: toolbox.name,
         space: "local",
         eggParameters: {
+            hideOnLoad: hide,
             studioId: tags.studioId,
             toolbox_name: expectedLabel,
             gridInformation: abRemember.tags.abGridFocus ?? gridInformation,

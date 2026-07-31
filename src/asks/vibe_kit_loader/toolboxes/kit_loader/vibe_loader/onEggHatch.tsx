@@ -5,6 +5,7 @@ if (that.eggParameters) {
 
     const abArtifactShard = {
         data: {
+            hideOnLoad: that.eggParameters.hideOnLoad,
             kitId: 'vibe_kit',
             label: that.eggParameters.toolbox_name ?? "vibe kit",
             studioId: that.eggParameters.studioId,

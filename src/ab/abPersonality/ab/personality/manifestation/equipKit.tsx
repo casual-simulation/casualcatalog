@@ -27,6 +27,8 @@ if (!links.kitBot) {
     const phys_kit = getBot('kitId', that.kit);
     if (phys_kit) {
         masks.kitBot = getLink(phys_kit);
+    } else {
+        links.catalog.loadKit({id: that.kit + 'loader', hideOnLoad: true})
     }
 }
 

@@ -3,10 +3,9 @@ if (that.eggParameters) {
     const dimensionX = that.eggParameters.gridInformation?.position?.x ?? 0;
     const dimensionY = that.eggParameters.gridInformation?.position?.y ?? 0;
 
-    console.log("kit_loader_egg_hatch", that)
-
     const abArtifactShard = {
         data: {
+            hideOnLoad: that.eggParameters.hideOnLoad,
             kitId: 'advanced_kit',
             label: that.eggParameters.toolbox_name ?? "advanced kit",
             studioId: that.eggParameters.studioId,

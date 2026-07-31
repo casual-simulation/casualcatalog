@@ -93,7 +93,7 @@ const abMod = {
                     if (links.kitBot?.tags.abMeshPath.startsWith('https://')) {
                         formAddress = links.kitBot?.tags.abMeshPath;
                     } else {
-                        formAddress = links.learn.abBuildCasualCatalogURL(that.kitBot.tags.abMeshPath);
+                        formAddress = links.learn.abBuildCasualCatalogURL(links.kitBot.tags.abMeshPath);
                     }
                 }
                 else if (instStudioConfig?.studio_ab_mesh_url) {

@@ -28,26 +28,26 @@ const catalogKit = {
         ab.links.manifestation.equipKit({kit: 'catalog'})
     }),  
 }
-const defaultKit = {
+const defaultABKit = {
     ...menuOptions,
-    label: `${abRemember.tags.defaultKitName ?? 'casual kit'}`,
+    label: `${abRemember.tags.defaultABKitName ?? 'casual kit'}`,
     formAddress: "category",
     onClick: ListenerString(() => {
-        ab.links.manifestation.equipKit({kit: abRemember.tags.defaultKit ?? 'casual_kit_loader'})
+        ab.links.manifestation.equipKit({kit: abRemember.tags.defaultABKit ?? 'casual_kit_loader'})
     }),  
 }
 
 if (tags.currentKit == 'log') {
     menuItems.push(catalogKit);
-    menuItems.push(defaultKit);
+    menuItems.push(defaultABKit);
 }
 
 else if (tags.currentKit == 'catalog') {
     menuItems.push(logKit);
-    menuItems.push(defaultKit);
+    menuItems.push(defaultABKit);
 }
 
-else if (tags.currentKit == abRemember.tags.defaultKit) {
+else if (tags.currentKit == abRemember.tags.defaultABKit) {
     menuItems.push(logKit);
     menuItems.push(catalogKit);
 } 
@@ -55,7 +55,7 @@ else if (tags.currentKit == abRemember.tags.defaultKit) {
 else {
     menuItems.push(logKit);
     menuItems.push(catalogKit);
-    menuItems.push(defaultKit);
+    menuItems.push(defaultABKit);
 }
 
 masks.menuItems = menuItems;

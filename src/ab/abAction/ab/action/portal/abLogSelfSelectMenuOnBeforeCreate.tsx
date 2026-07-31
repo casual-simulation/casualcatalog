@@ -33,6 +33,7 @@ const mapMenuBot = {
 mapMenuBot.label = "map";
 mapMenuBot.formAddress = "public";
 mapMenuBot.onClick = `@ 
+shout("abMenuRefresh");
 const state = os.getInputState("keyboard", "Shift");
 
 if(state)
@@ -60,7 +61,7 @@ const gridMenuBot = {
 gridMenuBot.label = "grid";
 gridMenuBot.formAddress = "cube";
 gridMenuBot.onClick = `@
-
+shout("abMenuRefresh");
 const state = os.getInputState("keyboard", "Shift");
 
 if(state)
@@ -88,7 +89,7 @@ const blueprintMenuBot = {
 blueprintMenuBot.label = "blueprint";
 blueprintMenuBot.formAddress = "architecture";
 blueprintMenuBot.onClick = `@
-
+shout("abMenuRefresh");
 const state = os.getInputState("keyboard", "Shift");
 
 if(state)
@@ -121,7 +122,7 @@ const sheetMenuBot = {
 sheetMenuBot.label = "sheet";
 sheetMenuBot.formAddress = "table_view";
 sheetMenuBot.onClick = `@ 
-
+shout("abMenuRefresh");
 const state = os.getInputState("keyboard", "Shift");
 
 if(state)
@@ -147,7 +148,7 @@ const systemMenuBot = {
 systemMenuBot.label = "system";
 systemMenuBot.formAddress = "settings_applications";
 systemMenuBot.onClick = `@
-
+shout("abMenuRefresh");
 const state = os.getInputState("keyboard", "Shift");
 
 if(state)
@@ -171,7 +172,7 @@ const authMenuBot = {
 authMenuBot.label = "account";
 authMenuBot.formAddress = "account_circle";
 authMenuBot.onClick = `@
-
+shout("abMenuRefresh");
 const state = os.getInputState("keyboard", "Shift");
 const endpoint = await os.getRecordsEndpoint();
 

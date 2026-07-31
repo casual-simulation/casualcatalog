@@ -25,25 +25,25 @@ const catalogKit = {
         ab.links.manifestation.equipKit({kit: 'catalog'})
     }),  
 }
-const defaultKit = {
-    label: `${abRemember.tags.defaultKitName ?? 'casual kit'}`,
+const defaultABKit = {
+    label: `${abRemember.tags.defaultABKitName ?? 'casual kit'}`,
     formAddress: "category",
     onClick: ListenerString(() => {
-        ab.links.manifestation.equipKit({kit: abRemember.tags.defaultKit ?? 'casual_kit_loader'})
+        ab.links.manifestation.equipKit({kit: abRemember.tags.defaultABKit ?? 'casual_kit_loader'})
     }),  
 }
 
 if (ab.links.manifestation.tags.currentKit == 'log') {
     kitGroup.menuItems.push(catalogKit);
-    kitGroup.menuItems.push(defaultKit);
+    kitGroup.menuItems.push(defaultABKit);
 }
 
 else if (ab.links.manifestation.tags.currentKit == 'catalog') {
     kitGroup.menuItems.push(logKit);
-    kitGroup.menuItems.push(defaultKit);
+    kitGroup.menuItems.push(defaultABKit);
 }
 
-else if (ab.links.manifestation.tags.currentKit == abRemember.tags.defaultKit) {
+else if (ab.links.manifestation.tags.currentKit == abRemember.tags.defaultABKit) {
     kitGroup.menuItems.push(logKit);
     kitGroup.menuItems.push(catalogKit);
 } 
@@ -51,7 +51,7 @@ else if (ab.links.manifestation.tags.currentKit == abRemember.tags.defaultKit) {
 else {
     kitGroup.menuItems.push(logKit);
     kitGroup.menuItems.push(catalogKit);
-    kitGroup.menuItems.push(defaultKit);
+    kitGroup.menuItems.push(defaultABKit);
 }
 
 options.push(kitGroup)

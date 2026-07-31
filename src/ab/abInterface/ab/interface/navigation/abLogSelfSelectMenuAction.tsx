@@ -1,2 +1,3 @@
 //
-os.toast("TODO: setup logic");
+thisBot.toggleGPS(!tags.usingGPS);
+shout("abMenuRefresh");

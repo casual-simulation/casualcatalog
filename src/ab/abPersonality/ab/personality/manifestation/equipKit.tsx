@@ -12,7 +12,7 @@ if (tags.currentKit && tags.currentKit != 'log' && tags.currentKit != 'catalog')
         phys_kit = getBot('kitId', tags.currentKit);
     }
 
-    let radius = inMap ? .0002 : 2;
+    let radius = inMap ? .0002 : 3;
     const angle = Math.random() * Math.PI * 2;
     const distance = Math.sqrt(Math.random()) * radius;
     const phys_kit_posX = posX + distance * Math.cos(angle);

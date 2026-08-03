@@ -37,8 +37,8 @@ if (configBot.tags.mapPortal) {
     tags.scale = 1;
 }
 
-const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-if (avatarBot) {
-    tags.abEquipmentFor = getID(avatarBot);
-    avatarBot.links.equipment.positionEquipment({base: avatarBot, equipment: [thisBot]});
-}
+// const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+// if (avatarBot) {
+//     tags.abEquipmentFor = getID(avatarBot);
+//     avatarBot.links.equipment.positionEquipment({base: avatarBot, equipment: [thisBot]});
+// }

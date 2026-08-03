@@ -54,13 +54,13 @@ if (that.portal == "mapPortal") {
             //         shout('resetHomeIntroMenu');
             //     `
             // })
-            const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-            if (avatarBot) {
-                avatarBot.onClick({origin: 'grid'});
-            } else {
-                //spawn avatar
-                thisBot.spawnPlayer();
-            }
+            // const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+            // if (avatarBot) {
+            //     avatarBot.onClick({origin: 'grid'});
+            // } else {
+            //     //spawn avatar
+            thisBot.spawnPlayer();
+            // }
         }
     } else {
         setTagMask(links.remember, "mapPreventFocus", null);

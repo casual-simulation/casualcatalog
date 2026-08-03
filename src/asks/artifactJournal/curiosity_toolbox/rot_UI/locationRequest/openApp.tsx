@@ -5,18 +5,16 @@ journal.tags.currentRegisteredApp = "locationApp";
 os.registerApp("locationApp", thisBot);
 
 console.log("[RoT] Opening App: " + that)
-const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-if (avatarBot) {
-    os.focusOn(avatarBot, {
-        portal: 'map',
-        duration: .5 * 3,
-        rotation: {x: 45, y: 45},
-        easing: {
-            type: "quadratic",
-            mode: "inout"
-            }
-    })
-}
+
+os.focusOn(ab.links.manifestation.links.abBot, {
+    portal: 'map',
+    duration: .5 * 3,
+    rotation: {x: 45, y: 45},
+    easing: {
+        type: "quadratic",
+        mode: "inout"
+        }
+})
 
 let menu = that
 

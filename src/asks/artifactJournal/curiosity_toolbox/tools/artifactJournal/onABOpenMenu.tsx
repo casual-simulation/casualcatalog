@@ -19,21 +19,21 @@ const reloadDataButton = {
     `
 }
 
-const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-if (avatarBot) {
-    const equipToButton = {
-        ...menuOptions,
-        label: 'equip to avatar',
-        avatar: getLink(avatarBot),
-        formAddress: 'add',
-        abMenuSortOrder: -3,
-        onClick: `@
-            links.journal.tags.abEquipmentFor = getID(links.avatar);
-            shout("abMenuRefresh");
-        `
-    }
-    ab.links.menu.abCreateMenuButton(equipToButton);
-}
+// const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+// if (avatarBot) {
+//     const equipToButton = {
+//         ...menuOptions,
+//         label: 'equip to avatar',
+//         avatar: getLink(avatarBot),
+//         formAddress: 'add',
+//         abMenuSortOrder: -3,
+//         onClick: `@
+//             links.journal.tags.abEquipmentFor = getID(links.avatar);
+//             shout("abMenuRefresh");
+//         `
+//     }
+//     ab.links.menu.abCreateMenuButton(equipToButton);
+// }
 
 ab.links.menu.abCreateMenuButton(reloadDataButton);
 

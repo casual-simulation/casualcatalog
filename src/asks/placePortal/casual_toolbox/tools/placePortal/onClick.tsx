@@ -11,13 +11,12 @@ if (!tags.instURL) {
 
 //circle wipe
 //move avatar
-const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-if (avatarBot) {
-    const dimension = tags.dimension ?? 'home';
-    avatarBot.onPlaceClicked({
-        dimension: dimension,
-        x: tags[dimension + 'X'],
-        y: tags[dimension + 'Y']
-    })
-}
+
+const dimension = tags.dimension ?? 'home';
+ab.links.manifestation.onPlaceClicked({
+    dimension: dimension,
+    x: tags[dimension + 'X'],
+    y: tags[dimension + 'Y']
+})
+
 thisBot.showConfirmationMenu();

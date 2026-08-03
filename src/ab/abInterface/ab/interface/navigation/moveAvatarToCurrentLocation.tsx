@@ -1,20 +1,19 @@
 if (!ab.abIsPrimary()) {
     return;
 }
-const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-if (avatarBot) {
-    const location = await os.getGeolocation();
-    if (!location.success) {
-        os.toast("Could not access current location.");
-        return;
-    }
-    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
-    avatarBot.onPlaceClicked({
-        dimension: dimension,
-        x: location.longitude,
-        y: location.latitude
-    })
+
+const location = await os.getGeolocation();
+if (!location.success) {
+    os.toast("Could not access current location.");
+    return;
 }
-if (!avatarBot.links.homeworld.tags.introPlayed) {
-    avatarBot.links.homeworld.masks.introPlayed = true;
+const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? 'home';
+ab.links.manifestation.onPlaceClicked({
+    dimension: dimension,
+    x: location.longitude,
+    y: location.latitude
+})
+
+if (!links.homeworld.tags.introPlayed) {
+   links.homeworld.masks.introPlayed = true;
 }

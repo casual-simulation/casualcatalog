@@ -1,4 +1,4 @@
-if (that.landmarkID == tags.landmarkID && that.bot.tags.mapAvatar == true && that.bot.tags.ownerID == authBot?.id) {
+if (that.landmarkID == tags.landmarkID && that.bot == ab.links.manifestation.links.abBot) {
     that.bot.masks.nearLandmark = true;
 
     shout('abMenuRefresh');

@@ -55,11 +55,11 @@ if (data.eggParameters) {
 // const strokeBot = await thisBot.generateStroke();
 // tags.strokeBot = getLink(strokeBot);
 
-if (tags.isAvatarEquipment) {
-    const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-    if (avatarBot) {
-        masks.abEquipmentFor = avatarBot.id;
-    }
-} else {
+// if (tags.isAvatarEquipment) {
+//     const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
+//     if (avatarBot) {
+//         masks.abEquipmentFor = avatarBot.id;
+//     }
+// } else {
     thisBot.determineLineTo();
-}
+// }

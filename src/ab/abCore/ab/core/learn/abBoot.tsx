@@ -109,13 +109,13 @@ globalThis.abStore = links.store;
 if (uuab) {
     await thisBot.abAdapt("abAction");
 
-    links.ask.abCoreMenuAction({message: configBot.tags.uuab, isUUAB: true});
+    links.ask.abGridMenuAction({message: configBot.tags.uuab, isUUAB: true});
 }
 //check for channel if channels allowed
 else if (channel && links.remember.tags.allowChannels) {
     await thisBot.abAdapt("abAction");
 
-    links.ask.abCoreMenuAction({message: channel, isChannel: true});
+    links.ask.abGridMenuAction({message: channel, isChannel: true});
 } else {
     //populate bootflag ab
     if (initialBoot && bootFlag) {
@@ -132,7 +132,7 @@ else if (channel && links.remember.tags.allowChannels) {
         else {
             await thisBot.abAdapt("abAction");
 
-            links.ask.abCoreMenuAction(ask);
+            links.ask.abGridMenuAction(ask);
         }
     } 
 
@@ -154,7 +154,7 @@ if (configBot.tags.artifact && initialBoot && !ask && !bootFlag) {
 
     await thisBot.abAdapt("abAction");
 
-    links.ask.abCoreMenuAction(askID);
+    links.ask.abGridMenuAction(askID);
 }
 
 // Check if we can wake up ab, and then do so.

@@ -45,7 +45,7 @@ abCommands.addCommand('ask', (args) => {
     if (links.ask) {
         if (args && args.length > 0) {
             const askInput = args.join(' ');
-            links.ask.abCoreMenuAction(askInput);
+            links.ask.abGridMenuAction(askInput);
         } else {
             links.utils.abLogAndToast(`.ask command requires input`);
         }

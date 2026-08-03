@@ -18,7 +18,7 @@ const grid = create({
 })
 
 if (configBot.tags.placeAsk) {
-    ab.links.ask.abCoreMenuAction({message: configBot.tags.placeAsk, autoHatch: true});
+    ab.links.ask.abGridMenuAction({message: configBot.tags.placeAsk, autoHatch: true});
 }
 
 const instName = configBot.tags.tempInst ?? configBot.tags.staticInst ?? configBot.tags.inst;

@@ -532,7 +532,7 @@ const abMod = {
             links.remember.masks.abBotFocus = "🔗" + selectedBots.id;
 
             if (selectedBots === thisBot) {
-                ab.links.menu.abEnvironmentMenu();
+                links.manager.abClick({ menu: 'selfSelect' });
             } else {
                 links.manager.abClick({ menu: 'bot' });
             }

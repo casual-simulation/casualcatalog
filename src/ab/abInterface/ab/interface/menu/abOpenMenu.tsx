@@ -4,8 +4,16 @@ configBot.masks.menuPortal = "abMenu";
 
 const chosenMenu = that.menu ?? that;
 
-let menuType = chosenMenu ? "ab" + (that.ignoreABKit ? '' : ab.links.manifestation.tags.currentKit ? ab.links.manifestation.tags.currentKit.charAt(0).toUpperCase() +  ab.links.manifestation.tags.currentKit.slice(1) : '') + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abCoreMenu"; //set up a check to see what type of menu should be occuring [core, bot, grid, inst]
+let menuType = chosenMenu ? "ab" + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abCoreMenu"; //set up a check to see what type of menu should be occuring [core, bot, grid, inst]
+let kitMenuType = chosenMenu ? "ab" + (that.ignoreABKit ? '' : ab.links.manifestation.tags.currentKit ? ab.links.manifestation.tags.currentKit.charAt(0).toUpperCase() +  ab.links.manifestation.tags.currentKit.slice(1) : '') + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abCoreMenu";
 let menuSkills = getBots(menuType + "Action");
+if (ab.links.manifestation.tags.currentKit) {
+    const kitMenuSkills = getBots(kitMenuType + 'Action');
+    const uniqueCombined = [
+        ...new Map([...menuSkills, ...kitMenuSkills].map(item => [item.id, item])).values()
+    ];
+    menuSkills = uniqueCombined;
+}
 let maxOptions = menuType == "inst" ? 7 : 5;
 
 console.log("menuType", menuType)
@@ -16,51 +24,58 @@ const BASE_TAGS = {
     personality: tags.personality,
     manifestation: tags.manifestation,
     abMenuRefresh: "@ destroy(thisBot);",
-    onClick: `@ links.baseSkill.${menuType + "Action"}({bot: thisBot});`,
 };
 
 let sortOrderIndex = menuSkills.length;
 for (let i = 0; i < menuSkills.length; i++)//ADD LOGIC FOR MORE OPTIONS THAN 5 : maxOptions
 {
-    //Allows for code to get called before the menu generates, useful for dynamically set groups or dropdowns
-    if (menuSkills[i].tags[menuType + "OnBeforeCreate"]) {
-        await whisper(menuSkills[i], menuType + "OnBeforeCreate");
+    const currentSkill = menuSkills[i];
+    let menuTagString = menuType;
+    if (!currentSkill?.tags[menuType + "Action"] && currentSkill?.tags[kitMenuType + "Action"]) {
+        menuTagString = kitMenuType;
     }
 
-    if (menuSkills[i].tags[menuType + "Hide"]) {
+    //Allows for code to get called before the menu generates, useful for dynamically set groups or dropdowns
+    if (menuSkills[i].tags[menuTagString + "OnBeforeCreate"]) {
+        await whisper(menuSkills[i], menuTagString + "OnBeforeCreate");
+    }
+
+    if (menuSkills[i].tags[menuTagString + "Hide"]) {
         continue;
     }
-
-    const currentSkill = menuSkills[i];
 
     const abMenuButton = {
         ...BASE_TAGS,
         baseSkill: "🔗" + currentSkill.id,
-        label: currentSkill.tags[menuType + "Label"],
-        formAddress: currentSkill.tags[menuType + "Icon"],
-        onCreate: currentSkill.tags[menuType + "OnGenerate"],
-        abMenuSortOrder: currentSkill.tags[menuType + "SortOrder"],
-        color: currentSkill.tags[menuType + "Color"] ?? links.personality.tags.abBaseMenuColor,
+        label: currentSkill.tags[menuTagString + "Label"],
+        formAddress: currentSkill.tags[menuTagString + "Icon"],
+        onCreate: currentSkill.tags[menuTagString + "OnGenerate"],
+        abMenuSortOrder: currentSkill.tags[menuTagString + "SortOrder"],
+        color: currentSkill.tags[menuTagString + "Color"] ?? links.personality.tags.abBaseMenuColor,
     };
 
-    const clickSound = currentSkill.tags[menuType + 'ClickSound'];
+    if (currentSkill?.tags[menuTagString + "Action"]) {
+        abMenuButton.onClick = `@ links.baseSkill.${menuTagString + "Action"}({bot: thisBot});`
+    }
+
+    let clickSound = currentSkill.tags[menuTagString + 'ClickSound'];
     if (clickSound) {
         abMenuButton.soundClick = clickSound;
     }
 
-    const menuItemType = currentSkill.tags[menuType + "ItemType"];
+    const menuItemType = currentSkill.tags[menuTagString + "ItemType"];
 
     if (menuItemType == "dropdown") {
         abMenuButton.dropdownOptions = currentSkill.tags.dropdownOptions;
 
         const prevDropdown = links.remember.links.lastOpenedDropdown;
-        if (prevDropdown && prevDropdown.tags[menuType + "Action"]) {
+        if (prevDropdown && prevDropdown.tags[menuTagString + "Action"]) {
             if (prevDropdown == currentSkill) {
                 setTagMask(links.remember, "lastOpenedDropdown", null);
                 abMenuButton.defaultOpen = true;
             }
         } else {
-            if (currentSkill.tags[menuType + "DefaultOpen"] == true) {
+            if (currentSkill.tags[menuTagString + "DefaultOpen"] == true) {
                 abMenuButton.defaultOpen = true;
             }
         }

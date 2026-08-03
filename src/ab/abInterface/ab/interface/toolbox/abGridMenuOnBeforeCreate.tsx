@@ -1,3 +1,9 @@
+if (ab.links.manifestation.tags.currentKit == 'log' || ab.links.manifestation.tags.currentKit == 'catalog') {
+    masks.abGridMenuHide = true;
+} else {
+    masks.abGridMenuHide = null;
+}
+
 const tools = tags.tools ?? [];
 
 const menuItems = [

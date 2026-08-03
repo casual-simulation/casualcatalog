@@ -5,7 +5,7 @@ if (!links.remember.tags.abRightClickDisabled && !that.bot.tags.abRightClickIgno
 
     // ab selected
     if (that.bot == links.abBot) {
-        links.menu.abEnvironmentMenu();
+        links.menu.abOpenMenu("selfSelect");
         return;
     }    
     

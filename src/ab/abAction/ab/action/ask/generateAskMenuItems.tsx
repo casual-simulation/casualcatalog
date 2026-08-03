@@ -71,15 +71,15 @@ menuItems.push({
         }
     }),
     onSubmit: ListenerString(() => {
-        // Invoke abCoreMenuAction with ab menu state specific data when input is submitted.
+        // Invoke abGridMenuAction with ab menu state specific data when input is submitted.
         if (tags.menuType === 'core') {
-            links.baseSkill.abCoreMenuAction({message: that.text, menu: 'core'});
+            links.baseSkill.abGridMenuAction({message: that.text, menu: 'core'});
         } else if (tags.menuType === 'grid') {
-            links.baseSkill.abCoreMenuAction({message: that.text, menu: 'grid', dimension: tags.dimension, dimensionX: tags.dimensionX, dimensionY: tags.dimensionY});
+            links.baseSkill.abGridMenuAction({message: that.text, menu: 'grid', dimension: tags.dimension, dimensionX: tags.dimensionX, dimensionY: tags.dimensionY});
         } else if (tags.menuType === 'bot') {
-            links.baseSkill.abCoreMenuAction({message: that.text, menu: 'bot', bot: links.targetBot});
+            links.baseSkill.abGridMenuAction({message: that.text, menu: 'bot', bot: links.targetBot});
         } else if (tags.menuType === 'multipleBot') {
-            links.baseSkill.abCoreMenuAction({message: that.text, menu: 'multipleBot', bots: tags.targetBots});
+            links.baseSkill.abGridMenuAction({message: that.text, menu: 'multipleBot', bots: tags.targetBots});
         } else {
             console.error(`ask input does not implement menu type '${tags.menuType}'`);
         }

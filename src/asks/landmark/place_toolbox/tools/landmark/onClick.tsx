@@ -102,7 +102,12 @@ if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(addLinkButton);
     ab.links.menu.abCreateMenuButton(lockButton);
 } else {
-    ab.links.navigation.moveAvatarToPlace(thisBot);
+    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+    ab.links.navigation.moveAvatarToPlace({
+        dimension: dimension,
+        x: tags[dimension + 'X'],
+        y: tags[dimension + 'Y']
+    });
     //ab.links.menu.abCreateMenuButton(visitButton);
     shout("onLandmarkClicked", tags.landmarkID);
 }

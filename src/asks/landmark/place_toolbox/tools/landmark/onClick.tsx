@@ -102,12 +102,18 @@ if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(addLinkButton);
     ab.links.menu.abCreateMenuButton(lockButton);
 } else {
-    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
-    ab.links.navigation.moveAvatarToPlace({
-        dimension: dimension,
-        x: tags[dimension + 'X'],
-        y: tags[dimension + 'Y']
-    });
-    //ab.links.menu.abCreateMenuButton(visitButton);
-    shout("onLandmarkClicked", tags.landmarkID);
+
+    const isNearby = await ab.links.navigation.isNearby({bot1: thisBot, bot2: ab.links.manifestation.links.abBot});
+    if (isNearby) {
+        ab.links.menu.abCreateMenuButton(visitButton);
+    } else {
+        const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+        ab.links.navigation.moveAvatarToPlace({
+            dimension: dimension,
+            x: tags[dimension + 'X'],
+            y: tags[dimension + 'Y']
+        });
+        //ab.links.menu.abCreateMenuButton(visitButton);
+        shout("onLandmarkClicked", tags.landmarkID);
+    }
 }

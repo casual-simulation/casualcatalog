@@ -12,7 +12,7 @@ if (dimension) {
     inMap = configBot.tags.mapPortal && configBot.tags.mapPortal == dimension ? true : false;
 }
 const currDimension = dimension ?? configBot.tags.mapPortal ?? configBot.tags.gridPortal;
-let distance = maxDistance ?? (inMap ? .001 : 3);
+let distance = maxDistance ?? (inMap ? .002 : 3);
 
 let nearby = true;
 if (Math.abs(bot2.tags[currDimension + 'X'] - bot1.tags[currDimension + 'X']) > distance) {

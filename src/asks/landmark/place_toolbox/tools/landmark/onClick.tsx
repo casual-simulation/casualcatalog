@@ -102,6 +102,7 @@ if (!tags.landmarkLocked) {
     ab.links.menu.abCreateMenuButton(addLinkButton);
     ab.links.menu.abCreateMenuButton(lockButton);
 } else {
-    ab.links.menu.abCreateMenuButton(visitButton);
+    ab.links.navigation.moveAvatarToPlace(thisBot);
+    //ab.links.menu.abCreateMenuButton(visitButton);
     shout("onLandmarkClicked", tags.landmarkID);
 }

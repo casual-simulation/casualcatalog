@@ -60,6 +60,7 @@ if (that.portal == "mapPortal") {
             // } else {
             //     //spawn avatar
             thisBot.spawnPlayer();
+            ab.links.menu.abOpenMenu("core");
             // }
         }
     } else {

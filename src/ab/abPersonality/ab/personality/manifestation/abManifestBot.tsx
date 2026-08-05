@@ -144,6 +144,11 @@ const abMod = {
                 [tags.dimension + 'Z']: -0.5,
             };
 
+            if (tags.kit == 'log') {
+                meshMod[tags.dimension + 'Z'] = null;
+                meshMod['anchorPoint'] = 'bottom';
+            }
+
             if (!tags.abMeshIsStatic) {
                 // Animated mesh: attach the animation state machine so the mesh
                 // plays its own idle/click/etc. animations.

@@ -145,8 +145,7 @@ const abMod = {
             };
 
             if (tags.kit == 'log') {
-                meshMod[tags.dimension + 'Z'] = null;
-                meshMod['anchorPoint'] = 'bottom';
+                meshMod[tags.dimension + 'Z'] = 1;
             }
 
             if (!tags.abMeshIsStatic) {

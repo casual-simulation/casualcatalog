@@ -103,6 +103,15 @@ return {
         }
     }),
     animStateIdleOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
+
         os.startFormAnimation(thisBot, 'idle_smile', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
 
         // Enter blink state randomly while idling.
@@ -116,9 +125,25 @@ return {
         thisBot.vars.idleBlinkTimeoutId = null;
     }),
     animStateBlinkOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'blink', { crossFadeWarp: true, crossFadeDuration: 300 });
     }),
     animStateClickOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         if (Math.random() > 0.5) {
             os.startFormAnimation(thisBot, 'hover_action', { timeScale: 2.25 });
         } else {
@@ -126,15 +151,47 @@ return {
         }
     }),
     animStateThinkingBeginOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'thinking_in', { crossFadeWarp: true, crossFadeDuration: 300 });
     }),
     animStateThinkingLoopOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'thinking_loop', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
     }),
     animStateThinkingSuccessOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'thinking_out', { crossFadeWarp: true, crossFadeDuration: 500 });
     }),
     animStateThinkingFailureOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         const hasFailAnimation = tags.formAnimations.some(a => a.name === 'thinking_out_fail');
 
         if (hasFailAnimation) {
@@ -144,24 +201,80 @@ return {
         }
     }),
     animStateSelectSingleBeginOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'select_single_in', { crossFadeWarp: true, crossFadeDuration: 300 });
     }),
     animStateSelectSingleLoopOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'select_single_loop', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
     }),
     animStateSelectSingleEndOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'select_single_out', { crossFadeWarp: true, crossFadeDuration: 300 });
     }),
     animStateSelectMultiBeginOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'select_multi', { crossFadeWarp: true, crossFadeDuration: 300 });
     }),
     animStateSelectMultiLoopOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'select_single_loop', { crossFadeWarp: true, fadeDuration: 200, crossFadeDuration: 300, loop: { mode: 'repeat' } });
     }),
     animStateSelectMultiEndOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'select_single_out', { crossFadeWarp: true, crossFadeDuration: 300 });
     }),
     animStateAcknowledgeOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'log') {
+            os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+
+        } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
         os.startFormAnimation(thisBot, 'select_single_out', { crossFadeWarp: true, crossFadeDuration: 300 });
     }),
 }

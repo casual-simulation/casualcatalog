@@ -6,6 +6,8 @@ const chosenMenu = that.menu ?? that;
 
 let menuType = chosenMenu ? "ab" + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abCoreMenu"; //set up a check to see what type of menu should be occuring [core, bot, grid, inst]
 let kitMenuType = chosenMenu ? "ab" + (that.ignoreABKit ? '' : ab.links.manifestation.tags.currentKit ? ab.links.manifestation.tags.currentKit.charAt(0).toUpperCase() +  ab.links.manifestation.tags.currentKit.slice(1) : '') + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abCoreMenu";
+let builderMenuType = chosenMenu ? "ab" + ((ab.links.manifestation.tags.currentKit != 'log' && ab.links.manifestation.tags.currentKit != 'catalog' ) ? 'Builder' : '') + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abBuilderCoreMenu";
+
 let menuSkills = getBots(menuType + "Action");
 if (ab.links.manifestation.tags.currentKit) {
     const kitMenuSkills = getBots(kitMenuType + 'Action');
@@ -16,7 +18,13 @@ if (ab.links.manifestation.tags.currentKit) {
 }
 let maxOptions = menuType == "inst" ? 7 : 5;
 
-console.log("menuType", menuType)
+if (ab.links.manifestation.tags.currentKit != 'log' && ab.links.manifestation.tags.currentKit != 'catalog' ) {
+    const builderMenuSkills = getBots(builderMenuType + 'Action');
+    const uniqueCombined2 = [
+        ...new Map([...menuSkills, ...builderMenuSkills].map(item => [item.id, item])).values()
+    ];
+    menuSkills = uniqueCombined2;
+}
 
 const BASE_TAGS = {
     abMenu: true,
@@ -33,6 +41,8 @@ for (let i = 0; i < menuSkills.length; i++)//ADD LOGIC FOR MORE OPTIONS THAN 5 :
     let menuTagString = menuType;
     if (!currentSkill?.tags[menuType + "Action"] && currentSkill?.tags[kitMenuType + "Action"]) {
         menuTagString = kitMenuType;
+    } else if (!currentSkill?.tags[menuType + "Action"] && !currentSkill?.tags[kitMenuType + "Action"] && ab.links.manifestation.tags.currentKit != 'log' && ab.links.manifestation.tags.currentKit != 'catalog' ) {
+        menuTagString = builderMenuType;
     }
 
     //Allows for code to get called before the menu generates, useful for dynamically set groups or dropdowns

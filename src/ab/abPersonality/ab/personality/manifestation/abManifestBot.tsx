@@ -133,7 +133,7 @@ const abMod = {
                 color: colorize ? links.personality.tags.abBaseColor : null,
                 form: 'mesh',
                 formSubtype: 'gltf',
-                // scaleMode: 'absolute',
+                scaleMode: 'absolute',
                 orientationMode: tags.kit == 'log' ? "billboardFront" : null,
                 formAddress,
                 formAnimation: false,

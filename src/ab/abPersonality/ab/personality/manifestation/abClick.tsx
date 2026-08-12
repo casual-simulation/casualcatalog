@@ -12,7 +12,6 @@ const ignoreKit = that ? that.ignoreABKit : false;
 const state = os.getInputState("keyboard", "Shift");
 
 const abselected = links.abBot?.tags.abEquipmentBaseSelected ? true : false;
-const cycle = ["log", "catalog", ab.links.remember.tags.defaultABKit];
 
 if (reset || (abselected && !state && !tags.keepMenuOpen)) {
     links.abBot.animateBot();
@@ -20,18 +19,6 @@ if (reset || (abselected && !state && !tags.keepMenuOpen)) {
     links.abBot.masks.lineTo = null;
 
     shout("abMenuRefresh");
-
-    let newIndex;
-    if (cycle.indexOf(tags.currentKit)) {
-        newIndex = cycle.indexOf(tags.currentKit) + 1;
-        if (newIndex > cycle.length - 1) {
-            newIndex = 0;
-        }
-    } else {
-        newIndex = 0;
-    }
-
-    thisBot.equipKit({kit: cycle[newIndex]});
 
     clearInterval(links.abBot.tags.interval);
     links.abBot.masks.interval = setInterval(() => links.abBot.animateBot(), links.abBot.tags.spinIntervalMS);

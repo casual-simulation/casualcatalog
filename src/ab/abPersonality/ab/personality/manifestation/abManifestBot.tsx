@@ -209,6 +209,21 @@ const abMod = {
             return;
         }
 
+        if (tags.abEquipmentBaseSelected) {
+            const cycle = ["log", "catalog", ab.links.remember.tags.defaultABKit];
+            let newIndex;
+            if (cycle.indexOf(ab.links.manifestation.tags.currentKit) >= 0) {
+                newIndex = cycle.indexOf(ab.links.manifestation.tags.currentKit) + 1;
+                if (newIndex > cycle.length - 1) {
+                    newIndex = 0;
+                }
+            } else {
+                newIndex = 0;
+            }
+
+            thisBot.equipKit({kit: cycle[newIndex], position: {x: ab.links.manifestation.links.abBot.tags[(configBot.tags.mapPortal ?? configBot.tags.gridPortal) + 'X'], y: ab.links.manifestation.links.abBot.tags[(configBot.tags.mapPortal ?? configBot.tags.gridPortal) + 'Y']}});
+        }
+
         if (masks.armBot) {
             destroy(links.armBot);
             masks.armBot = null;

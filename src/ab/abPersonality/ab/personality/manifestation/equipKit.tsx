@@ -1,8 +1,8 @@
 const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
 const posX = links.abBot?.tags[dimension + 'X'];
 const posY = links.abBot?.tags[dimension + 'Y'];
-let newPosX = posX;
-let newPosY = posY;
+let newPosX = that?.position?.x ?? posX;
+let newPosY = that?.position?.y ?? posY;
 
 const inMap = configBot.tags.mapPortal ? true : false;
 
@@ -42,8 +42,8 @@ if (!links.kitBot) {
 
 if (links.kitBot) {
     links.kitBot.tags[dimension] = false;
-    newPosX = links.kitBot.tags[dimension + 'X'];
-    newPosY = links.kitBot.tags[dimension + 'Y'];
+    newPosX = that?.position?.x ?? links.kitBot.tags[dimension + 'X'];
+    newPosY = that?.position?.y ?? links.kitBot.tags[dimension + 'Y'];
 }
 
 destroy(links.abBot);

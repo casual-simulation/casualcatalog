@@ -1,1 +1,0 @@
-ab.links.menu.abOpenMenu("core");

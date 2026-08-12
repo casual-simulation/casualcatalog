@@ -1,4 +1,5 @@
 await os.requestAuthBotInBackground();
+shout("abMenuRefresh");
 
 configBot.masks.menuPortal = "abMenu";
 

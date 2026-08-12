@@ -209,7 +209,20 @@ const abMod = {
             return;
         }
 
-        if (tags.abEquipmentBaseSelected) {
+        if (tags.awaitingDoubleClick != true) {
+            masks.awaitingDoubleClick = true;
+            if (tags.doubleClickTimeout) {
+                clearTimeout(tags.doubleClickTimeout);
+            }
+            masks.doubleClickTimeout = setTimeout(() => {
+                masks.awaitingDoubleClick = null;
+            }, 500);
+        } else {
+            if (tags.doubleClickTimeout) {
+                clearTimeout(tags.doubleClickTimeout);
+            }
+            masks.awaitingDoubleClick = null;
+            
             const cycle = ["log", "catalog", ab.links.remember.tags.defaultABKit];
             let newIndex;
             if (cycle.indexOf(ab.links.manifestation.tags.currentKit) >= 0) {
@@ -224,6 +237,7 @@ const abMod = {
             ab.links.manifestation.equipKit({kit: cycle[newIndex], position: {x: ab.links.manifestation.links.abBot.tags[(configBot.tags.mapPortal ?? configBot.tags.gridPortal) + 'X'], y: ab.links.manifestation.links.abBot.tags[(configBot.tags.mapPortal ?? configBot.tags.gridPortal) + 'Y']}});
         }
 
+        
         if (masks.armBot) {
             destroy(links.armBot);
             masks.armBot = null;

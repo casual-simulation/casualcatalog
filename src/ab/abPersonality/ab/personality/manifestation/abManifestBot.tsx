@@ -221,7 +221,7 @@ const abMod = {
                 newIndex = 0;
             }
 
-            thisBot.equipKit({kit: cycle[newIndex], position: {x: ab.links.manifestation.links.abBot.tags[(configBot.tags.mapPortal ?? configBot.tags.gridPortal) + 'X'], y: ab.links.manifestation.links.abBot.tags[(configBot.tags.mapPortal ?? configBot.tags.gridPortal) + 'Y']}});
+            ab.links.manifestation.equipKit({kit: cycle[newIndex], position: {x: ab.links.manifestation.links.abBot.tags[(configBot.tags.mapPortal ?? configBot.tags.gridPortal) + 'X'], y: ab.links.manifestation.links.abBot.tags[(configBot.tags.mapPortal ?? configBot.tags.gridPortal) + 'Y']}});
         }
 
         if (masks.armBot) {

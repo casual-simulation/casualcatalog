@@ -1,5 +1,6 @@
 await os.requestAuthBotInBackground();
-shout("abMenuRefresh");
+const abMenuBots = getBots("abMenu", true);
+whisper(abMenuBots, "abMenuRefresh");
 await os.sleep(0);
 
 configBot.masks.menuPortal = "abMenu";

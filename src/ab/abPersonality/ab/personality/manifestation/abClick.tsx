@@ -18,7 +18,8 @@ if (reset || (abselected && !state && !tags.keepMenuOpen)) {
 
     links.abBot.masks.lineTo = null;
 
-    shout("abMenuRefresh");
+    const abMenuBots = getBots("abMenu", true);
+    whisper(abMenuBots, "abMenuRefresh");
 
     clearInterval(links.abBot.tags.interval);
     links.abBot.masks.interval = setInterval(() => links.abBot.animateBot(), links.abBot.tags.spinIntervalMS);

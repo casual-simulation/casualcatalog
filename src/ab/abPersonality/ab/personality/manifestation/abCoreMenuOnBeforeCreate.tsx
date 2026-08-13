@@ -13,7 +13,7 @@ menuOptions.skillBot = getLink(thisBot);
 
 const logKit = {
     ...menuOptions,
-    label: `log`,
+    label: `nav kit`,
     formAddress: "article",
     onClick: ListenerString(() => {
         ab.links.manifestation.equipKit({kit: 'log'})
@@ -22,7 +22,7 @@ const logKit = {
 
 const catalogKit = {
     ...menuOptions,
-    label: `catalog`,
+    label: `catalog kit`,
     formAddress: "cube",
     onClick: ListenerString(() => {
         ab.links.manifestation.equipKit({kit: 'catalog'})

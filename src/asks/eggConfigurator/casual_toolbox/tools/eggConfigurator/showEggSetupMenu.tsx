@@ -70,21 +70,19 @@ const menuTags = {
 //     ab.links.menu.abCreateMenuButton(studioButton);
 //     ab.links.menu.abCreateMenuButton(createButton);
 // } else {
-    const catalog = getBot(byTag("studioCatalog", true), byTag("studioId", tags.studioId));
-    if (catalog) {
+    if (ab.links.store) {
         //PUBLISH CHANGES
         const publishButton = {
             ...menuTags,
             label: "publish current inst to egg",
             formAddress: 'publish',
-            catalog: getLink(catalog),
             homeworld: tags.homeworld,
             onClick: `@
                 if (links.eggConfigurator.tags.customSaveFunction && links.eggConfigurator.links.customSaveFunctionOrigin) {
                     whisper(links.eggConfigurator.links.customSaveFunctionOrigin, links.eggConfigurator.tags.customSaveFunction);
                 } else {
                     shout("clearEggSetupMenu");
-                    links.catalog.onStoreMenu({baseAB: links.eggConfigurator.tags.chosenEggName});
+                    ab.links.store.onStoreMenu({baseAB: links.eggConfigurator.tags.chosenEggName});
                 }
             `,
             eggSetupMenuSortOrder: 11,

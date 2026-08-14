@@ -1,34 +1,33 @@
 let possiblePublishBot = new Set();
 
-if (links.remember.links.abMultipleBotFocus) {
-    if (Array.isArray(links.remember.links.abMultipleBotFocus)) {
-        links.remember.links.abMultipleBotFocus.forEach(b => possiblePublishBot.add(b));
-    } else {
-        possiblePublishBot.add(links.remember.links.abMultipleBotFocus);
-    }
-}
+const multiSelect = Array.isArray(thisBot.links.selectedBots);
 
-if (links.remember.links.abBotFocus) {
-    possiblePublishBot.add(links.remember.links.abBotFocus);
+if (thisBot.links.selectedBots) {
+    if (multiSelect) {
+        thisBot.links.selectedBots.forEach(b => possiblePublishBot.add(b));
+    } else {
+        possiblePublishBot.add(thisBot.links.selectedBots);
+    }
 }
 
 possiblePublishBot = Array.from(possiblePublishBot);
 
-const baseAB = !links.remember.links.abBotFocus ? links.remember.tags.baseAB: links.remember.links.abBotFocus.id;
+const baseAB = that?.baseAB ?? ((multiSelect || !thisBot.links.selectedBots) ? ab.links.remember.tags.baseAB: thisBot.links.selectedBots.id);
 const baseBots = getBots(b => b.tags.abIDOrigin === baseAB && b.space === 'shared' && !b.tags.abIgnore);
 const nonABBots = getBots(b => b.tags.abIDOrigin == null && b.space === 'shared' && !b.tags.abIgnore);
 
+shout("clearStudioCalatogPublishMenu");
 shout("abMenuRefresh");
 
-configBot.masks.menuPortal = "abMenu";
-links.menu.masks.onGridClick = "@ shout('abMenuRefresh'); links.manifestation.abClick();";
+configBot.masks.menuPortal = "studioCalatogPublishMenu";
 
 const defaults = {
-    abMenu: true,
-    abMenuRefresh: "@ destroy(thisBot);",
-    manager: "🔗" + thisBot.id,
-    manifestation: tags.manifestation,
-    remember: tags.remember,
+    studioCalatogPublishMenu: true,
+    clearStudioCalatogPublishMenu: "@ destroy(thisBot);",
+    abMenuRefresh: `@destroy(thisBot);`,
+    manager: getLink(ab.links.store),
+    remember: ab.tags.remember,
+    catalog: getLink(thisBot),
     menuItemStyle: `🧬 {
         "border-radius": "0px", 
         "margin-top": "0px",
@@ -42,9 +41,9 @@ const defaults = {
 }
 
 // Create download button
-links.menu.abCreateMenuButton({
+ab.links.menu.abCreateMenuButton({
     ...defaults,
-    abMenuSortOrder: 9,
+    studioCalatogPublishMenuSortOrder: 9,
     label: "download",
     menuItemStyle: `🧬 {
         "border-radius": "8px", 
@@ -63,9 +62,9 @@ links.menu.abCreateMenuButton({
 if (!authBot) 
 {
     // Create login message
-    links.menu.abCreateMenuButton({
+    ab.links.menu.abCreateMenuButton({
         ...defaults,
-        abMenuSortOrder: 9,
+        studioCalatogPublishMenuSortOrder: 9,
         label: "please sign in to access share features",
         formAddress: "lock",
         onClick: `@ os.requestAuthBot()`
@@ -76,7 +75,7 @@ if (!authBot)
 else if (authBot.tags.subscriptionTier == "FreePlay") 
 {
     // Create upgrade subscription button
-    links.menu.abCreateMenuButton({
+    ab.links.menu.abCreateMenuButton({
         ...defaults,
         label: "please upgrade your subscription to access share features",
         formAddress: "lock"
@@ -85,64 +84,17 @@ else if (authBot.tags.subscriptionTier == "FreePlay")
     return;
 }
 
-
-let userStudios = configBot.tags.user_studios;
-
-if (!userStudios) 
-{
-    userStudios = await os.listUserStudios();
-}
-
-if (userStudios.success) 
-{
-    const activeStudio = userStudios.studios.findIndex(studio => studio.studioId == configBot.tags.selected_studioID);
-
-    let baseStudio = authBot.id;
-
-    if (baseStudio == authBot.id) 
-    {
-        baseStudio = "player";
-    }
-
-    if (activeStudio == -1 && baseStudio != "player") 
-    {
-        configBot.tags.selected_studioID = baseStudio;
-    }
-
-    if (configBot.tags.studio && !activeStudio) 
-    {
-        const studioMatch = userStudios.studios.findIndex(studio => studio.studioId == configBot.tags.studio)
-
-        if (studioMatch != -1) {
-            baseStudio = baseStudio;
-        }
-    }
-
-    const studioLabel = activeStudio == -1 ? baseStudio : userStudios.studios[activeStudio].displayName;
-
-    // Create studio select button
-    const studioDisplayButton = links.menu.abCreateMenuButton({
-        ...defaults,
-        label: "studio=" + studioLabel,
-        abMenuSortOrder: 1.5,
-        studioInformation: userStudios,
-        formAddress: "inventory_2",
-        onClick: `@ links.manager.studioSelect(tags.studioInformation);`
-    });
-
-    masks.studioSelectButton = getLink(studioDisplayButton);
-}
-
 const totalBotCount = possiblePublishBot.length > 0 ? possiblePublishBot.length : baseBots.length + nonABBots.length;
 
 // Create publish label button
-const labelBot = await links.menu.abCreateMenuButton({
+const labelBot = await ab.links.menu.abCreateMenuButton({
     ...defaults,
-    label: `publish pattern ${baseBots.length > 0 ? "" : "as "}${baseAB} (${totalBotCount} bot${baseBots.length + nonABBots.length == 1 ? "" : "s"})`,
-    totalBots: baseBots.length + nonABBots.length,
-    abMenuSortOrder: 1,
+    label: `publish pattern ${baseBots.length > 0 ? "" : "as "}${baseAB} to ${(configBot.tags.studio == authBot.id ? "user studio" : "studio " + (configBot.tags.studio ?? authBot?.id))} (${totalBotCount} bot${baseBots.length + nonABBots.length == 1 ? "" : "s"})`,
+    totalBots: totalBotCount,
+    studioCalatogPublishMenuSortOrder: 1,
     labelAlignment: "center",
     formAddress: null,
+    studioId: configBot.tags.studio ?? authBot?.id,
     menuItemStyle: `🧬 {
         "border-radius": "8px 8px 0px 0px", 
         "margin-top": "8px",         
@@ -155,7 +107,7 @@ const labelBot = await links.menu.abCreateMenuButton({
         "min-height": "44px"
     }`,
     shiftState: false,
-    onClick: `@ const menuBots = getBots('abMenuSortOrder');
+    onClick: `@ const menuBots = getBots('studioCalatogPublishMenuSortOrder');
 
         if (tags.shiftState)
         {
@@ -181,28 +133,28 @@ const labelBot = await links.menu.abCreateMenuButton({
         {
             const abBots = getBots(b => b.tags.abIDOrigin === links.remember.tags.baseAB && b.space === 'shared' && !b.tags.abIgnore).length;
 
-            tags.label = "publish " + links.remember.tags.baseAB + " (" + abBots + " bots)";
+            tags.label = "publish " + links.remember.tags.baseAB + " to " + (tags.studioId == authBot.id ? "user studio" : "studio " + tags.studioId) " + "(" + abBots + " bots)";
             tags.totalBots = abBots;
         }
         else
         {
-            tags.label = "publish pattern as " + links.remember.tags.baseAB + " (" + totalBots + totalBotVar + ")";
+            tags.label = "publish pattern as " + links.remember.tags.baseAB + " to " + (tags.studioId == authBot.id ? "user studio" : "studio " + tags.studioId)" +  " (" + totalBots + totalBotVar + ")";
             tags.totalBots = totalBots;
         }   
     }
     else
     {   
-        tags.label = "publish " + that.ab + " (" + totalBots + totalBotVar + ")";
+        tags.label = "publish " + that.ab + " to " + (tags.studioId == authBot.id ? "user studio" : "studio " + tags.studioId)" + " (" + totalBots + totalBotVar + ")";
         tags.totalBots = totalBots;
     }`
 });
 
 // Create encrypt button
-links.menu.abCreateMenuButton({
+ab.links.menu.abCreateMenuButton({
     ...defaults,
-    abMenu: null,
-    abMenuSortOrder: 2,
-    dimension: "abMenu",
+    studioCalatogPublishMenu: null,
+    studioCalatogPublishMenuSortOrder: 2,
+    dimension: "studioCalatogPublishMenu",
     label: "encrypt",
     formAddress: "check_box_outline_blank",
     encryptState: false,
@@ -233,11 +185,11 @@ let abButton;
 if (possiblePublishBot?.length < 1)
 {
     // Create includeBots button
-    abButton = await links.menu.abCreateMenuButton({
+    abButton = await ab.links.menu.abCreateMenuButton({
         ...defaults,
-        abMenu: null,
-        dimension: 'abMenu',
-        abMenuSortOrder: 1.52,
+        studioCalatogPublishMenu: null,
+        dimension: 'studioCalatogPublishMenu',
+        studioCalatogPublishMenuSortOrder: 1.52,
         abSelectionButton: true,
         label: baseBots.length > 0 && baseAB != undefined ? `selected pattern: ${baseAB} (${baseBots.length} bot${baseBots.length == 1 ? "" : "s"})` : `new pattern (${nonABBots.length} bot${nonABBots.length == 1 ? "" : "s"})`,
         formAddress: 'egg',
@@ -249,7 +201,7 @@ if (possiblePublishBot?.length < 1)
             {
                 tags[tags.dimension] = false;
             }`,
-        onClick: `@ links.manager.abPublishSelect();`,
+        onClick: `@ links.catalog.patternSelectMenu();`,
         abSelectTitleUpdate: `@ const botVarNon = that.nonABBots  == 1 ? " bot)" : " bots)";
         const botVarAB = that.abBots  == 1 ? " bot)" : " bots)";
 
@@ -267,13 +219,13 @@ if (possiblePublishBot?.length < 1)
 if (nonABBots.length > 0 && possiblePublishBot?.length < 1)
 {
     //iclude new bots
-    links.menu.abCreateMenuButton({
+    ab.links.menu.abCreateMenuButton({
         ...defaults,
-        abMenu: null,
-        abMenuSortOrder: 1.53,
+        studioCalatogPublishMenu: null,
+        studioCalatogPublishMenuSortOrder: 1.53,
         abButton: getLink(abButton),
         labelBot: getLink(labelBot),
-        dimension: "abMenu",
+        dimension: "studioCalatogPublishMenu",
         label: `include new (${nonABBots.length} bot${nonABBots.length == 1 ? "" : "s"})`,
         formAddress: "check_box",
         unclaimedState: false,
@@ -339,9 +291,9 @@ if (authBot.tags.privacyFeatures.allowPublicData)
 {
     configBot.tags.publicFacing = false;
 
-    links.menu.abCreateMenuButton({
+    ab.links.menu.abCreateMenuButton({
         ...defaults,
-        abMenuSortOrder: 2,
+        studioCalatogPublishMenuSortOrder: 2,
         label: "isPublic",
         formAddress: "check_box_outline_blank",
         publicState: false,
@@ -360,12 +312,15 @@ if (authBot.tags.privacyFeatures.allowPublicData)
     });
 }
 
+
+//HERE
+
 // Create version select button
-links.menu.abCreateMenuButton({
+ab.links.menu.abCreateMenuButton({
     ...defaults,
-    abMenu: null,
-    dimension: 'abMenu',
-    abMenuSortOrder: 1.51,
+    studioCalatogPublishMenu: null,
+    dimension: 'studioCalatogPublishMenu',
+    studioCalatogPublishMenuSortOrder: 1.51,
     label: 'versionFlag=current',
     formAddress: 'alt_route',
     showVersionSelector: `@ tags[tags.dimension] = null;`,
@@ -386,12 +341,12 @@ links.menu.abCreateMenuButton({
 });
 
 // Current Version
-links.menu.abCreateMenuButton({
+ab.links.menu.abCreateMenuButton({
     ...defaults,
-    abMenu: null,
+    studioCalatogPublishMenu: null,
     label: 'current',
-    dimension: 'abMenu',
-    abMenuSortOrder: 1.51,
+    dimension: 'studioCalatogPublishMenu',
+    studioCalatogPublishMenuSortOrder: 1.51,
     formAddress: 'radio_button_checked',
     showVersionSelector: `@ tags[tags.dimension] = true;`,
     hideVersionSelector: `@ tags[tags.dimension] = null;`,
@@ -412,12 +367,12 @@ links.menu.abCreateMenuButton({
 });
 
 // Feedback Version
-links.menu.abCreateMenuButton({
+ab.links.menu.abCreateMenuButton({
     ...defaults,
-    abMenu: null,
+    studioCalatogPublishMenu: null,
     label: 'feedback',
-    dimension: 'abMenu',
-    abMenuSortOrder: 1.511,
+    dimension: 'studioCalatogPublishMenu',
+    studioCalatogPublishMenuSortOrder: 1.511,
     formAddress: 'radio_button_unchecked',
     showVersionSelector: `@ tags[tags.dimension] = true;`,
     hideVersionSelector: `@ tags[tags.dimension] = null;`,
@@ -438,12 +393,12 @@ links.menu.abCreateMenuButton({
 });
 
 // Stable Version
-links.menu.abCreateMenuButton({
+ab.links.menu.abCreateMenuButton({
     ...defaults,
-    abMenu: null,
+    studioCalatogPublishMenu: null,
     label: 'stable',
-    dimension: 'abMenu',
-    abMenuSortOrder: 1.512,
+    dimension: 'studioCalatogPublishMenu',
+    studioCalatogPublishMenuSortOrder: 1.512,
     formAddress: 'radio_button_unchecked',
     showVersionSelector: `@ tags[tags.dimension] = true;`,
     hideVersionSelector: `@ tags[tags.dimension] = null;`,
@@ -464,9 +419,9 @@ links.menu.abCreateMenuButton({
 });
 
 // Create publish button
-links.menu.abCreateMenuButton({
+ab.links.menu.abCreateMenuButton({
     ...defaults,
-    abMenuSortOrder: 4,
+    studioCalatogPublishMenuSortOrder: 4,
     formAddress: "egg",
     menuItemStyle: `🧬 {
         "border-radius": "0px 0px 8px 8px",
@@ -481,10 +436,12 @@ links.menu.abCreateMenuButton({
     }`,
     form: "input",
     labelBot: getLink(labelBot),
-    onInputTyping: `@ links.labelBot.tags.label = 'publish pattern as ' + that.text + ' (' + links.labelBot.tags.totalBots + ' bot' + (links.labelBot.tags.totalBots == 1 ? ')' : 's)');`,
+    onInputTyping: `@ links.labelBot.tags.label = 'publish pattern as ' + that.text + ' to ' + (links.labelBot.tags.studioId == authBot.id ? 'user studio' : 'studio ' + links.labelBot.tags.studioId) + ' (' + links.labelBot.tags.totalBots + ' bot' + (links.labelBot.tags.totalBots == 1 ? ')' : 's)');`,
     menuItemShowSubmitWhenEmpty: true,
     targetBot: getLink(possiblePublishBot),
+    selected_studio_id: tags.studioId,
     menuItemText: baseAB,
+    catalog: getLink(thisBot),
     onSubmit: `@
             if (that.text == null && links.remember.tags.baseAB && !links.remember.links.abBotFocus)
             {
@@ -497,13 +454,14 @@ links.menu.abCreateMenuButton({
             if (inXR) {
                 confirmPush = true;
             } else {
-                const targetStudio = configBot.tags.selected_studioID ?? authBot.id;
+                const targetStudio = tags.selected_studio_id ?? authBot.id;
                 confirmPush = await os.showConfirm({
                     title: "confirm publish",
                     content: "publish " + that.text + " to " + targetStudio + "?",
                     confirmText: "publish",
                     cancelText: "cancel"
                 });
+                configBot.tags.selected_studioID = targetStudio;
             }
 
             if (!confirmPush)
@@ -513,7 +471,8 @@ links.menu.abCreateMenuButton({
 
             if (that.text)
             {
-                links.manager.abPublishAB({ ab: that.text, bot: links.targetBot, baseAB: links.remember.tags.baseAB, manualPublish: true, sourceEvent: 'store_menu' });
+                await links.manager.abPublishAB({ ab: that.text, bot: links.targetBot, baseAB: links.remember.tags.baseAB, manualPublish: true, sourceEvent: 'store_menu' });
+                links.catalog.publishedEgg({ab: that.text, bot: links.targetBot, baseAB: links.remember.tags.baseAB});
             }
             else
             {
@@ -533,12 +492,12 @@ links.menu.abCreateMenuButton({
     }`
 });
 
-if (links.remember.links.abBotFocus) 
+if (!multiSelect && tags.selectedBots) 
 {
     // Create copy to clipboard button
-    links.menu.abCreateMenuButton({
+    ab.links.menu.abCreateMenuButton({
         ...defaults,
-        abMenuSortOrder: 8,
+        studioCalatogPublishMenuSortOrder: 8,
         menuItemStyle: `🧬 {
             "border-radius": "8px", 
             "margin-top": "8px",
@@ -550,23 +509,22 @@ if (links.remember.links.abBotFocus)
         }`,
         label: "copy to clipboard",
         formAddress: "file_copy",
-        targetBot: links.remember.tags.abBotFocus,
+        targetBot: getLink(tags.selectedBots),
         onClick: `@ 
             const selectedBot = links.targetBot;
 
             ab.links.paste.abCopyBotsToClipboard({ bots: [links.targetBot], sourceEvent: 'ab_store_menu_copy_clipboard' })
 
             shout("abMenuRefresh");
-            links.manifestation.abClick();
         `,
     });
 }
 else 
 {
     // Create scan button
-    links.menu.abCreateMenuButton({
+    ab.links.menu.abCreateMenuButton({
         ...defaults,
-        abMenuSortOrder: 10,
+        studioCalatogPublishMenuSortOrder: 10,
         menuItemStyle: `🧬 {            
             "border-radius": "8px", 
             "margin-top": "8px",
@@ -580,29 +538,4 @@ else
         formAddress: "qr_code_scanner",
         onClick: `@ configBot.tags.publishScan = true; os.openQRCodeScanner();`,
     });
-}
-
-let hostButton = {
-    abMenu: true,
-    abMenuSortOrder: 50,
-    abMenuRefresh: "@ destroy(thisBot);",
-    formAddress: "group_add",
-    learn: tags.learn,
-    onClick: `@ 
-        links.learn.abCreateHost(thisBot);
-        if (!ab.links.remember.tags.hostID) {
-            tags.label = 'generating code now';
-        }
-    `,
-};
-
-if (links.remember.tags.hostID) {
-    hostButton.label = "join code: " + links.remember.tags.hostID;
-} else {
-    hostButton.label = "generate join code";
-}
-
-if (configBot.tags.staticInst == undefined)
-{
-    links.menu.abCreateMenuButton(hostButton);//generate a host button
 }

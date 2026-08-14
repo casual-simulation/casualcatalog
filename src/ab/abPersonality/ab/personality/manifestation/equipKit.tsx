@@ -6,7 +6,7 @@ let newPosY = that?.position?.y ?? posY;
 
 const inMap = configBot.tags.mapPortal ? true : false;
 
-if (tags.currentKit && tags.currentKit != 'log' && tags.currentKit != 'catalog') {
+if (tags.currentKit && tags.currentKit != 'log' && tags.currentKit != 'catalog' && tags.currentKit != ab.links.remember.tags.defaultABKit) {
     let phys_kit = links.kitBot;
     if (!phys_kit) {
         phys_kit = getBot('kitId', tags.currentKit);

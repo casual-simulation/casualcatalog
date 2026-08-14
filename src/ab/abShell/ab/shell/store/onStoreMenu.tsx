@@ -89,7 +89,7 @@ const totalBotCount = possiblePublishBot.length > 0 ? possiblePublishBot.length 
 // Create publish label button
 const labelBot = await ab.links.menu.abCreateMenuButton({
     ...defaults,
-    label: `publish pattern ${baseBots.length > 0 ? "" : "as "}${baseAB} to ${(configBot.tags.studio == authBot.id ? "user studio" : "studio " + (configBot.tags.studio ?? authBot?.id))} (${totalBotCount} bot${baseBots.length + nonABBots.length == 1 ? "" : "s"})`,
+    label: `publish pattern ${baseBots.length > 0 ? "" : "as "}${baseAB} to ${((configBot.tags.studio == authBot.id || !configBot.tags.studio) ? "user studio" : "studio " + (configBot.tags.studio ?? authBot?.id))} (${totalBotCount} bot${baseBots.length + nonABBots.length == 1 ? "" : "s"})`,
     totalBots: totalBotCount,
     studioCalatogPublishMenuSortOrder: 1,
     labelAlignment: "center",

@@ -15,10 +15,10 @@ const gridSnap = {
     ...menuOptions,
     label: "grid snap",
     onCreate: ListenerString(() => {
-        tags.formAddress = links.remember.tags.abGridSnapState ? 'check_box' : 'check_box_outline_blank'
+        tags.formAddress = ab.links.remember.tags.abGridSnapState ? 'check_box' : 'check_box_outline_blank'
     }),
     onClick: ListenerString(() => {
-        links.remember.tags.abGridSnapState = !links.remember.tags.abGridSnapState; tags.formAddress = links.remember.tags.abGridSnapState ? 'check_box' : 'check_box_outline_blank';
+        ab.links.remember.tags.abGridSnapState = !ab.links.remember.tags.abGridSnapState; tags.formAddress = ab.links.remember.tags.abGridSnapState ? 'check_box' : 'check_box_outline_blank';
     }),
 }
 
@@ -29,7 +29,7 @@ const botSnap = {
         tags.formAddress = links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
     }),
     onClick: ListenerString(() => {
-        links.remember.tags.abBotSnapState = !links.remember.tags.abBotSnapState; tags.formAddress = links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
+        ab.links.remember.tags.abBotSnapState = !ab.links.remember.tags.abBotSnapState; tags.formAddress = ab.links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
     }),
 }
 

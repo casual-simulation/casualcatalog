@@ -14,7 +14,7 @@ menuOptions.skillBot = getLink(thisBot);
 const camPresence = {
     ...menuOptions,
     label: "camera presence",
-    presence: tags.presence,
+    presence: getLink(thisBot),
     onCreate: ListenerString(() => {
         thisBot.vars.onPresenceBotChanged = (that) => {
             if (that.tags.includes('cameraEnabled')) {
@@ -22,25 +22,25 @@ const camPresence = {
             }
         }
 
-        os.addBotListener(ab.links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+        os.addBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
 
         thisBot.refreshDisplay();
     }),
     refreshDisplay: ListenerString(() => {
-        ab.links.presence.tags.cameraEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
+        links.presence.tags.cameraEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
     }),
     onClick: ListenerString(() => {
-        setTagMask(ab.links.presence, 'cameraEnabled', !!!ab.links.presence.tags.cameraEnabled, 'local');
+        setTagMask(links.presence, 'cameraEnabled', !!!links.presence.tags.cameraEnabled, 'local');
     }),
     onDestroy: ListenerString(() => {
-        os.removeBotListener(ab.links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+        os.removeBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
     })
 }
 
 const cursorPresence = {
     ...menuOptions,
     label: "cursor presence",
-    presence: tags.presence,
+    presence: getLink(thisBot),
     onCreate: ListenerString(() => {
         thisBot.vars.onPresenceBotChanged = (that) => {
             if (that.tags.includes('cursorEnabled')) {
@@ -48,18 +48,18 @@ const cursorPresence = {
             }
         }
 
-        os.addBotListener(ab.links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+        os.addBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
 
         thisBot.refreshDisplay();
     }),
     refreshDisplay: ListenerString(() => {
-        ab.links.presence.tags.cursorEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
+        links.presence.tags.cursorEnabled ? tags.formAddress = 'check_box' : tags.formAddress = 'check_box_outline_blank';
     }),
     onClick: ListenerString(() => {
-        setTagMask(ab.links.presence, 'cursorEnabled', !!!ab.links.presence.tags.cursorEnabled, 'local');
+        setTagMask(links.presence, 'cursorEnabled', !!!links.presence.tags.cursorEnabled, 'local');
     }),
     onDestroy: ListenerString(() => {
-        os.removeBotListener(ab.links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
+        os.removeBotListener(links.presence, 'onBotChanged', thisBot.vars.onPresenceBotChanged);
     })
 }
 

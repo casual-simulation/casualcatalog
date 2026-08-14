@@ -26,7 +26,7 @@ const botSnap = {
     ...menuOptions,
     label: "bot snap",
     onCreate: ListenerString(() => {
-        tags.formAddress = links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
+        tags.formAddress = ab.links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';
     }),
     onClick: ListenerString(() => {
         ab.links.remember.tags.abBotSnapState = !ab.links.remember.tags.abBotSnapState; tags.formAddress = ab.links.remember.tags.abBotSnapState ? 'check_box' : 'check_box_outline_blank';

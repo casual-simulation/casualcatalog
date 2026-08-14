@@ -31,6 +31,7 @@ const voiceEnabled = {
     }),
     onClick: ListenerString(() => {
         setTagMask(links.voice, 'voiceEnabled', !!!links.voice.tags.voiceEnabled, 'tempLocal');
+        shout("abMenuRefresh");
     }),
     onDestroy: ListenerString(() => {
         os.removeBotListener(links.voice, 'onBotChanged', thisBot.vars.onVoiceBotChanged);
@@ -92,7 +93,11 @@ const micMute = {
 };
 
 dropdownOptions.push(voiceEnabled);
-dropdownOptions.push(autoSpeak);
-dropdownOptions.push(micMute);
+
+if (tags.voiceEnabled) {
+    dropdownOptions.push(autoSpeak);
+    dropdownOptions.push(micMute);
+}
 
 masks.dropdownOptions = dropdownOptions;
+await os.sleep(0)

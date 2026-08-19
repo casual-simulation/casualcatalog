@@ -223,7 +223,7 @@ const abMod = {
             }
             masks.awaitingDoubleClick = null;
             
-            const cycle = ["log", "catalog", ab.links.remember.tags.defaultABKit];
+            const cycle = ["log", ab.links.remember.tags.defaultABKit, "catalog"];
             let newIndex;
             if (cycle.indexOf(ab.links.manifestation.tags.currentKit) >= 0) {
                 newIndex = cycle.indexOf(ab.links.manifestation.tags.currentKit) + 1;

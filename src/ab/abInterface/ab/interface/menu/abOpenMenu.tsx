@@ -6,6 +6,7 @@ await os.sleep(0);
 configBot.masks.menuPortal = "abMenu";
 
 const chosenMenu = that.menu ?? that;
+masks.chosenMenu = chosenMenu;
 
 let menuType = chosenMenu ? "ab" + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abCoreMenu"; //set up a check to see what type of menu should be occuring [core, bot, grid, inst]
 let kitMenuType = chosenMenu ? "ab" + (that.ignoreABKit ? '' : ab.links.manifestation.tags.currentKit ? ab.links.manifestation.tags.currentKit.charAt(0).toUpperCase() +  ab.links.manifestation.tags.currentKit.slice(1) : '') + chosenMenu.charAt(0).toUpperCase() + chosenMenu.slice(1) + "Menu": "abCoreMenu";

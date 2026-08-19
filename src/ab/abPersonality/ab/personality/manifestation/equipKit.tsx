@@ -31,6 +31,15 @@ if (!that.kitBot) {
    masks.kitBot = that.kitBot; 
 }
 
+let kitName;
+if (that.kit == 'log') {
+    kitName = 'nav kit';
+} else if (that.kit == 'catalog') {
+    kitName = 'catalog kit';
+} else {
+    kitName = 'build kit';
+}
+
 if (!links.kitBot) {
     const phys_kit = getBot('kitId', that.kit);
     if (phys_kit) {
@@ -48,4 +57,9 @@ if (links.kitBot) {
 
 destroy(links.abBot);
 
-thisBot.abManifestBot({...that, dimension: dimension, position: {x: newPosX, y: newPosY}});
+shout("onABKitChanged", that.kit);
+os.toast(kitName + ' equipped');
+
+const currentMenu = ab.links.menu.tags.chosenMenu;
+await thisBot.abManifestBot({...that, dimension: dimension, position: {x: newPosX, y: newPosY}});
+ab.links.menu.abOpenMenu(currentMenu);

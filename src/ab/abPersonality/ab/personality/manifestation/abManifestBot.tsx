@@ -143,9 +143,23 @@ const abMod = {
                 [tags.dimension]: true,
                 [tags.dimension + 'Z']: -0.5,
             };
+            
+            tags.form = 'cube';
+            tags.color = 'transparent';
+            tags.scale = 1;
 
-            if (tags.kit == 'log') {
-                meshMod[tags.dimension + 'Z'] = 1;
+            if (tags.kit == 'catalog') {
+                meshMod[tags.dimension + 'Z'] = -2/3;
+                meshMod['scale'] = 0.5;
+            }
+            else if (tags.kit == 'log') {
+                tags.scaleZ = 4;
+                meshMod[tags.dimension + 'Z'] = (2/tags.scaleZ) - 1;
+                meshMod['scaleZ'] = 1/tags.scaleZ;
+            } else {
+                tags.scaleZ = 1.3;
+                meshMod[tags.dimension + 'Z'] = (.6/tags.scaleZ) - 1;
+                meshMod['scaleZ'] = 1/tags.scaleZ;
             }
 
             if (!tags.abMeshIsStatic) {
@@ -165,10 +179,7 @@ const abMod = {
                 // Give abBot a reference to the meshBot changeAnimState function.
                 thisBot.listeners.changeAnimState = links.meshBot.listeners.changeAnimState;
             }
-
-            tags.form = 'cube';
-            tags.color = 'transparent';
-            tags.scale = 1;
+            
 
             if (!tags.abMeshIsStatic) {
                 tags.spinIntervalMS = 4500;

@@ -4,6 +4,12 @@ const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 const activeMenu = configBot.tags.menuPortal;
 
+if (!tags.abGuideEnabled) {
+    masks.abCoreMenuHide = true;
+} else {
+    masks.abCoreMenuHide = null;
+}
+
 const menuOptions = {};
 
 menuOptions.dimension = activeMenu;

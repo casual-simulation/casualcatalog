@@ -6,6 +6,12 @@ const activeMenu = configBot.tags.menuPortal;
 
 const menuOptions = {};
 
+if (!tags.abGuideEnabled) {
+    masks.abSelfSelectMenuHide = true;
+} else {
+    masks.abSelfSelectMenuHide = null;
+}
+
 menuOptions.dimension = activeMenu;
 menuOptions[activeMenu] = true;
 menuOptions.abMenuRefresh = "@ destroy(thisBot);";
@@ -14,6 +20,7 @@ menuOptions.skillBot = getLink(thisBot);
 const resetGuide = {
     ...menuOptions,
     label: "reset",
+    formAddress: "refresh",
     ask: getLink(ab.links.ask),
     onClick: ListenerString(() => {
         links.skillBot.resetGuide();

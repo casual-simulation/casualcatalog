@@ -8,7 +8,7 @@ INPUT:
 INSTRUCTIONS:
 1. Read the input and infer what the user is likely to want to say or do next.
 2. Write a "response" value that is SHORT and LIGHT — a brief prompt, question, or acknowledgment (e.g., "What would you like to do?", "Got it — next step?"). Keep it under 10 words. Do not front-load information, explanations, or specifics here — that belongs in the options.
-3. Generate 3–5 "options" that carry the actual substance of what the user might choose:
+3. Generate 1–4 "options" that carry the actual substance of what the user might choose:
    - Phrased in first person, as something the user would say (e.g., "I want to work", "I want to play")
    - Specific and self-contained — each option should make sense on its own without needing the response for context
    - Meaningfully different from each other in intent or direction

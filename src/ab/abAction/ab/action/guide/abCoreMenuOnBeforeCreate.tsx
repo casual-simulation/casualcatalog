@@ -38,7 +38,7 @@ for(let i = 0; i < menuArr.length; ++i) {
     let newMenuItem = {
         ...menuOptions,
         content: menuArr[i],
-        label: (menuArr.length - i - 1) + ': '  + menuArr[i],
+        label: (menuArr.length - i - 1) + '. '  + menuArr[i] + '...',
         onClick: `@
             links.skillBot.setText(tags.label);
         `

@@ -1,2 +1,0 @@
-thisBot.saveHomeworld(); 
-shout('abMenuRefresh');

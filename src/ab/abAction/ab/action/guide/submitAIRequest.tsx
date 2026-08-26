@@ -7,11 +7,18 @@ if (!ab.links.console.masks.open) {
 }
 ab.log({ name: username, message: that});
 
-configBot.tags.menuPortal = 'abMenu';
-const loadingBar = ab.links.menu.abCreateMenuBusyIndicator({
-    abMenu: true,
-    label: 'thinking...',
-});
+let hasAsk = that.includes("<ask>");
+let loadingBar;
+
+if (hasAsk) {
+    thisBot.handleAsk(that);
+} else {
+    configBot.tags.menuPortal = 'abMenu';
+    loadingBar = ab.links.menu.abCreateMenuBusyIndicator({
+        abMenu: true,
+        label: 'thinking...',
+    });
+}
 
 const aiPrompt = await thisBot.aiPrompt();
 
@@ -49,7 +56,10 @@ try {
         let match = res.match(/```json\s*([\s\S]*?)\s*```/);
         let cleanStr = match ? match[1] : res;
         masks.menuData = JSON.parse(cleanStr);
-        ab.links.menu.abOpenMenu("core");
+        if (!hasAsk) {
+            ab.links.menu.abOpenMenu("core");
+        }
+        
         history.push({
             role: 'assistant',
             content: cleanStr

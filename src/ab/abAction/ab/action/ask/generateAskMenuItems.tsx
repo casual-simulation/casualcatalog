@@ -15,6 +15,7 @@ menuItems.push({
     label: 'ask ab',
     formAddress: 'cube',
     menuType,
+    abAskInputBox: true,
     form: 'input',
     onCreate: ListenerString(() => {
         if (!authBot) {

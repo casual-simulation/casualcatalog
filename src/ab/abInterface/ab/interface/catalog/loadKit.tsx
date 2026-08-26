@@ -74,6 +74,7 @@ try {
         askID: toolbox.name,
         space: "local",
         eggParameters: {
+            hideOnLoad: hide,
             studioId: tags.studioId,
             toolbox_name: expectedLabel,
             gridInformation: abRemember.tags.abGridFocus ?? gridInformation,

@@ -45,7 +45,7 @@ if (type === 'kit') {
     try {
         // loadKit internally awaits the kit's reconstitute, so when this
         // resolves the kit's tool_array is already populated.
-        const loadResult = await ab.links.catalog.loadKit({ id });
+        const loadResult = await ab.links.catalog.loadKit({ id, hideOnLoad: false });
 
         if (loadResult && loadResult.success === false) {
             const errorMessage = loadResult.errorMessage ?? 'kit load failed';

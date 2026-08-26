@@ -39,8 +39,18 @@ for(let i = 0; i < menuArr.length; ++i) {
         ...menuOptions,
         content: menuArr[i],
         label: (menuArr.length - i - 1) + '. '  + menuArr[i] + '...',
+        formAddress: 'radio_button_unchecked',
         onClick: `@
+            shout("resetGuideOptionsSelectionState");
+            await os.sleep(0);
+            tags.formAddress = 'radio_button_checked';
+            
             links.skillBot.setText(tags.label);
+        `,
+        resetGuideOptionsSelectionState: `@
+            if (tags.formAddress != 'radio_button_unchecked') {
+                tags.formAddress = 'radio_button_unchecked';
+            } 
         `
     }
     dropdownOptions.push(newMenuItem);
@@ -50,6 +60,9 @@ const inputButton = {
     ...menuOptions,
     menuItemType: "input",
     abGuideInputBox: true,
+    onInputTyping: `@
+        shout("resetGuideOptionsSelectionState");
+    `,
     onSubmit: `@
         links.skillBot.submitAIRequest(that.text);
     `

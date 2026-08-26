@@ -64,7 +64,7 @@ const username = await ab.links.console.getUserName({ canSetPreferredName: false
 
 const superNavDropdown = {
     ...menuOptions,
-    label: ab.abIsPrimary() ? (username ? username + "'s places" : "user's places") : studioName ? studioName + ' places' : os.getCurrentInst() + ' places',
+    label: ab.abIsPrimary() ? (username ? username + "'s world links" : "user's world links") : studioName ? studioName + ' world links' : os.getCurrentInst() + ' world links',
     dropdownSortOrder: Number(randomNumber.toFixed(3)),
     dropdownOptions: [],
     defaultOpen: ab.abIsPrimary() && that?.defaultOpenPlaces ? true : null,

@@ -5,7 +5,7 @@
         "formAddress": "cube"
     },
     {
-        "name": "blank place",
+        "name": "blank world link",
         "targetAB": "placePortal",
         "formAddress": "circle",
         "artifact": true

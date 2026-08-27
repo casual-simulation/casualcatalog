@@ -1,8 +1,12 @@
+await os.sleep(0);
+
 if (ab.links.manifestation.tags.currentKit != tags.kitId) {
     masks.abGridMenuHide = true;
 } else {
     masks.abGridMenuHide = null;
 }
+
+await os.sleep(0);
 
 const gridInformation = abRemember.tags.abGridFocus;
 

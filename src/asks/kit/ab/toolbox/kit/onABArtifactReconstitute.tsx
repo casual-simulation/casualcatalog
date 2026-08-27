@@ -30,3 +30,5 @@ if (data.eggParameters) {
     tags[dimension + 'X'] = dimensionX;
     tags[dimension + 'Y'] = dimensionY;
 }
+
+thisBot.abGridMenuOnBeforeCreate();

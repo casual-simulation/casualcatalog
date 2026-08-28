@@ -220,6 +220,8 @@ const abMod = {
             return;
         }
 
+        ab.links.manifestation.masks.abEquipmentBaseSelected = true;
+
         if (tags.awaitingDoubleClick != true) {
             masks.awaitingDoubleClick = true;
             if (tags.doubleClickTimeout) {

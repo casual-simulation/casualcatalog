@@ -29,6 +29,8 @@ if (links.abBot && (shiftCheck || (that.modality == "mouse" && that.buttonId == 
     return;
 }
 
+ ab.links.manifestation.masks.abEquipmentBaseSelected = null;
+
 const footprint = {
     space: "tempLocal",
     dimension: that.dimension,

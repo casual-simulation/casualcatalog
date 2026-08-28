@@ -4,6 +4,8 @@ const posY = links.abBot?.tags[dimension + 'Y'];
 let newPosX = that?.position?.x ?? posX;
 let newPosY = that?.position?.y ?? posY;
 
+masks.abCatalogKitSelected = null;
+
 const inMap = configBot.tags.mapPortal ? true : false;
 
 if (tags.currentKit && tags.currentKit != 'log' && tags.currentKit != 'catalog' && tags.currentKit != ab.links.remember.tags.defaultABKit) {

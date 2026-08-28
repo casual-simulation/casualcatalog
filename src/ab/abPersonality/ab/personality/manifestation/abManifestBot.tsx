@@ -213,14 +213,20 @@ const abMod = {
     }),
     onClick: ListenerString(() => {
         if (links.meshBot && !tags.abMeshIsStatic) {
-            links.meshBot.changeAnimState('Click');
+            if (tags.kit != 'catalog') {
+                links.meshBot.changeAnimState('Click');
+            } else {
+                if (ab.links.manifestation.tags.abCatalogKitSelected) {
+                    links.meshBot.changeAnimState('CatalogDeselected');
+                } else {
+                    links.meshBot.changeAnimState('CatalogSelected');
+                }
+            }
         }
 
         if (that.modality == 'mouse' && that.buttonId == 'right') {
             return;
         }
-
-        ab.links.manifestation.masks.abEquipmentBaseSelected = true;
 
         if (tags.awaitingDoubleClick != true) {
             masks.awaitingDoubleClick = true;

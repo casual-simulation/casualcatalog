@@ -26,6 +26,8 @@ return {
         'SelectMultiBegin:select_multi': 'SelectMultiLoop',
         'SelectMultiEnd:select_single_out': 'Idle',
         'Acknowledge:select_single_out': 'Idle',
+        'CatalogSelected:opening': 'CatalogOpen',
+        'CatalogDeselected:closing': 'CatalogClose'
     },
     onBotAdded: ListenerString(async () => {
         // MUST run this before triggering animations. Without it, animations may try to trigger before the animation system is ready.
@@ -87,6 +89,16 @@ return {
             thisBot.changeAnimState('ThinkingFailure');
         }
     }),
+    onABCatalogSelected: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            thisBot.changeAnimState('CatalogSelected');
+        }
+    }),
+    onABCatalogDeselected: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            thisBot.changeAnimState('CatalogDeselected');
+        }
+    }),
     changeAnimState: ListenerString(() => {
         const state = that;
 
@@ -102,17 +114,43 @@ return {
             }
         }
     }),
+    animStateCatalogSelectedOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            ab.links.manifestation.masks.abCatalogKitSelected = true;
+            os.startFormAnimation(thisBot, 'opening', {});
+            return;
+        }
+    }),
+    animStateCatalogDeselectedOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            ab.links.manifestation.masks.abCatalogKitSelected = null;
+            os.startFormAnimation(thisBot, 'closing', { crossFadeWarp: true, crossFadeDuration: 300});
+            return;
+        }
+    }),
+    animStateCatalogOpenOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
+    }),
+    animStateCatalogCloseOnEnter: ListenerString(() => {
+        if (ab.links.manifestation.tags.currentKit == 'catalog') {
+            os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            return;
+        }
+    }),
     animStateIdleOnEnter: ListenerString(() => {
         if (ab.links.manifestation.tags.currentKit == 'log') {
             os.startFormAnimation(thisBot, 'idle', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             
             return;
         }
@@ -135,11 +173,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'blink', { crossFadeWarp: true, crossFadeDuration: 300 });
@@ -150,11 +188,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         if (Math.random() > 0.5) {
@@ -169,11 +207,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-           if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+        //    if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+        //         os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+        //     } else {
+        //         os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+        //     }
             return;
         }
         os.startFormAnimation(thisBot, 'thinking_in', { crossFadeWarp: true, crossFadeDuration: 300 });
@@ -184,11 +222,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'thinking_loop', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
@@ -199,11 +237,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'thinking_out', { crossFadeWarp: true, crossFadeDuration: 500 });
@@ -214,11 +252,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         const hasFailAnimation = tags.formAnimations.some(a => a.name === 'thinking_out_fail');
@@ -235,11 +273,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'select_single_in', { crossFadeWarp: true, crossFadeDuration: 300 });
@@ -250,11 +288,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'select_single_loop', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
@@ -265,11 +303,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'select_single_out', { crossFadeWarp: true, crossFadeDuration: 300 });
@@ -280,11 +318,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'select_multi', { crossFadeWarp: true, crossFadeDuration: 300 });
@@ -295,11 +333,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'select_single_loop', { crossFadeWarp: true, fadeDuration: 200, crossFadeDuration: 300, loop: { mode: 'repeat' } });
@@ -310,11 +348,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'select_single_out', { crossFadeWarp: true, crossFadeDuration: 300 });
@@ -325,11 +363,11 @@ return {
             return;
 
         } else if (ab.links.manifestation.tags.currentKit == 'catalog') {
-            if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
-                os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            } else {
-                os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
-            }
+            // if (ab.links.manifestation.tags.abEquipmentBaseSelected) {
+            //     os.startFormAnimation(thisBot, 'idle_open', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // } else {
+            //     os.startFormAnimation(thisBot, 'closed_static', { crossFadeWarp: true, crossFadeDuration: 300, loop: { mode: 'repeat' } });
+            // }
             return;
         }
         os.startFormAnimation(thisBot, 'select_single_out', { crossFadeWarp: true, crossFadeDuration: 300 });

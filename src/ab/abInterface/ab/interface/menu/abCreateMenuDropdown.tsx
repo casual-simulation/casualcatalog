@@ -47,6 +47,8 @@ let outerMenuButton = {
             thisBot.updateStyle();
             if (tags.dropdownOpen == true) {
                 shout("abMenuDropdownOpened", thisBot);
+            } else {
+                shout("abMenuDropdownClosed", thisBot);
             }
         }
     `,

@@ -6,11 +6,6 @@ const activeMenu = configBot.tags.menuPortal;
 
 const menuOptions = {};
 
-const username = await ab.links.console.getUserName({ canSetPreferredName: false });
-if (username) {
-    masks.abCoreMenuLabel = username + "'s guide";
-}
-
 menuOptions.dimension = activeMenu;
 menuOptions[activeMenu] = true;
 menuOptions.abMenuRefresh = "@ destroy(thisBot);";
@@ -30,14 +25,16 @@ const inputButton = {
     `
 }
 
-dropdownOptions.push(inputButton)
-
 let addFiles = {
     ...menuOptions,
-    label: "add",
+    formAddress: "add",
     menuItemType: 'dropdown',
+    menuItemStyle: {
+        marginTop: '-20px',
+        width: '20px'
+    
+    },
     dropdownSortOrder: 3.5,
-    formAddress: 'add',
     dropdownOptions: [
         {
             ...menuOptions,
@@ -83,6 +80,7 @@ let addFiles = {
         }
     ]
 }
-dropdownOptions.push(addFiles);
 
-masks.dropdownOptions = dropdownOptions;
+dropdownOptions.push(addFiles);
+dropdownOptions.push(inputButton)
+masks.menuItems = dropdownOptions;

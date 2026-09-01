@@ -13,7 +13,7 @@ const updatedURL = activeBios != false ? initialURL + "&inst=" + activeInst : in
 setTagMask(thisBot, "abShowMenuLabel",`current portal: ${currentPortal}`);
 setTagMask(thisBot, "currentDimension", currentDim);
 setTagMask(thisBot, "currentPortal", currentPortal);
-setTagMask(thisBot, "dropdownSortOrder", 1);
+setTagMask(thisBot, "dropdownSortOrder", 0);
 
 const menuOptions = {};
 

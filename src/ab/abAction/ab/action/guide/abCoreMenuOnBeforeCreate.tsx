@@ -12,6 +12,11 @@ if (!tags.abGuideEnabled) {
 
 const menuOptions = {};
 
+const username = await ab.links.console.getUserName({ canSetPreferredName: false });
+if (username) {
+    masks.abCoreMenuLabel = username + "'s guide";
+}
+
 menuOptions.dimension = activeMenu;
 menuOptions[activeMenu] = true;
 menuOptions.abMenuRefresh = "@ destroy(thisBot);";
@@ -56,18 +61,18 @@ for(let i = 0; i < menuArr.length; ++i) {
     dropdownOptions.push(newMenuItem);
 }
 
-const inputButton = {
-    ...menuOptions,
-    menuItemType: "input",
-    abGuideInputBox: true,
-    onInputTyping: `@
-        shout("resetGuideOptionsSelectionState");
-    `,
-    onSubmit: `@
-        links.skillBot.submitAIRequest(that.text);
-    `
-}
+// const inputButton = {
+//     ...menuOptions,
+//     menuItemType: "input",
+//     abGuideInputBox: true,
+//     onInputTyping: `@
+//         shout("resetGuideOptionsSelectionState");
+//     `,
+//     onSubmit: `@
+//         links.skillBot.submitAIRequest(that.text);
+//     `
+// }
 
-dropdownOptions.push(inputButton)
+// dropdownOptions.push(inputButton)
 
 masks.dropdownOptions = dropdownOptions;

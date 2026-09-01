@@ -60,11 +60,9 @@ const min = 2.100;
 const max = 2.900;
 const randomNumber = Math.random() * (max - min) + min;
 
-const username = await ab.links.console.getUserName({ canSetPreferredName: false });
-
 const superNavDropdown = {
     ...menuOptions,
-    label: ab.abIsPrimary() ? (username ? username + "'s world links" : "user's world links") : studioName ? studioName + ' world links' : os.getCurrentInst() + ' world links',
+    label: ab.abIsPrimary() ? "world links" : studioName ? studioName + ' world links' : os.getCurrentInst() + ' world links',
     dropdownSortOrder: Number(randomNumber.toFixed(3)),
     dropdownOptions: [],
     defaultOpen: ab.abIsPrimary() && that?.defaultOpenPlaces ? true : null,

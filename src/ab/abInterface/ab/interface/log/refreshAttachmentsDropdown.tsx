@@ -2,7 +2,7 @@
 // mutate vars.abAttachments. Finds the live dropdown header bot, updates its label and option
 // list directly, and re-renders option menu bots without closing the parent menu.
 
-const { options } = thisBot.getAttachmentsDropdownOptions();
+const options = thisBot.getAttachmentsDropdownOptions();
 
 const menuPortal = configBot.tags.menuPortal;
 const skillLink = getLink(thisBot);

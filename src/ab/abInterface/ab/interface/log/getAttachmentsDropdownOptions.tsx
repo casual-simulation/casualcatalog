@@ -1,3 +1,16 @@
+const currentDim = ab.links.remember.tags.abActiveDimension;
+const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
+const activeMenu = configBot.tags.menuPortal;
+
+const menuOptions = {};
+
+menuOptions.dimension = activeMenu;
+menuOptions[activeMenu] = true;
+menuOptions.abMenuRefresh = "@ destroy(thisBot);";
+menuOptions.clearTeleprompterMenu = `@destroy(thisBot)`;
+menuOptions.skillBot = getLink(thisBot);
+menuOptions.guide = tags.guide;
+
 const list: ABAttachment[] = ab.links.ask?.vars.abAttachments ?? [];
 let addFilesOptions = [];
 
@@ -6,6 +19,7 @@ for (let i = 0; i < list.length; i++) {
     const icon = att.mimeType?.startsWith('image/') ? 'image' : 'insert_drive_file';
 
     addFilesOptions.push({
+        ...menuOptions,
         menuItemStyle: {
                 width: 'calc(100% - 7px)',
                 left: '2px'
@@ -22,7 +36,7 @@ for (let i = 0; i < list.length; i++) {
                     ab.links.ask.vars.abAttachments = current;
                 }
             }
-            ab.links.ask?.refreshAttachmentsDropdown();
+            links.skillBot?.refreshAttachmentsDropdown();
         })
     });
 }

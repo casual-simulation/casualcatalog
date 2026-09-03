@@ -15,19 +15,19 @@ menuItems.push({
         marginLeft: '47px',
         borderRadius: '0px 8px 8px 0px',
         "border-left": `0px solid ${abPersonality.tags.abBaseShadowColor ?? "#000"}`,
-        "anchor-name": '--log-input'
+        "anchor-name": '--ask-input'
     },
     menuItemType: "input",
     abAskInputBox: true,
     abMenuDropdownOpened: `@
-        if (that.tags.abLogAddDropdownBot) {
+        if (that.tags.abAskAddDropdownBot) {
             let newMenuItemStyle = {...tags.menuItemStyle};
             newMenuItemStyle["borderRadius"] = '0px 8px 0px 0px'
             tags.menuItemStyle = newMenuItemStyle;
         }
     `,
     abMenuDropdownClosed: `@
-        if (that.tags.abLogAddDropdownBot) {
+        if (that.tags.abAskAddDropdownBot) {
             let newMenuItemStyle = {...tags.menuItemStyle};
             newMenuItemStyle["borderRadius"] = '0px 8px 8px 0px'
             tags.menuItemStyle = newMenuItemStyle;
@@ -111,7 +111,7 @@ menuItems.push({
 })
 
 menuItems.push({
-    label: label,
+    abAskAddDropdownBot: true,
     abAttachmentsDropdownHeader: true,
     menuItemStyle: {
         width: '50px',
@@ -121,7 +121,7 @@ menuItems.push({
         position: 'absolute',
         top: 'anchor(top)',
         right: 'calc(anchor(left) - 5px)',
-        'position-anchor': '--log-input',
+        'position-anchor': '--ask-input',
         "box-shadow": 'none',
         "border-top": `2px solid ${abPersonality.tags.abBaseShadowColor ?? "#000"}`,
         "border-bottom": `6px solid ${abPersonality.tags.abBaseShadowColor ?? "#000"}`,

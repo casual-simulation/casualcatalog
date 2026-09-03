@@ -14,7 +14,7 @@ if (!dropdownHeader) {
 
 // Update header label directly — abOpenMenu only reads the skill's masked label at construction time,
 // so the live header bot needs its own tag updated to reflect the new attachment count.
-dropdownHeader.tags.label = label;
+// dropdownHeader.tags.label = label;
 dropdownHeader.tags.dropdownOptions = options;
 
 if (dropdownHeader.links.menuBots) {

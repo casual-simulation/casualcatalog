@@ -180,7 +180,3 @@ dropdownOptions.push(inputButton)
 dropdownOptions.push(addFiles);
 
 masks.menuItems = dropdownOptions;
-
-function ListenerString(arg0: () => Promise<void>): never {
-    throw new Error("Function not implemented.");
-}

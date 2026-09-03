@@ -13,6 +13,10 @@ for (let i = 0; i < list.length; i++) {
     const icon = att.mimeType?.startsWith('image/') ? 'image' : 'insert_drive_file';
 
     options.push({
+        menuItemStyle: {
+                width: 'calc(100% - 7px)',
+                left: '2px'
+            }, 
         label: att.name,
         formAddress: icon,
         attachmentIndex: i,
@@ -31,6 +35,10 @@ for (let i = 0; i < list.length; i++) {
 }
 
 options.push({
+    menuItemStyle: {
+                width: 'calc(100% - 7px)',
+                left: '2px'
+            }, 
     label: "add photos & files",
     formAddress: "attach_file",
     onClick: ListenerString(async () => {
@@ -56,6 +64,10 @@ options.push({
 });
 
 options.push({
+    menuItemStyle: {
+                width: 'calc(100% - 7px)',
+                left: '2px'
+            }, 
     label: "take a photo",
     formAddress: "photo_camera",
     onClick: ListenerString(() => {

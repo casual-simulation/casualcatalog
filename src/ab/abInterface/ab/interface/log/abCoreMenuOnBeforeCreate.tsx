@@ -15,6 +15,7 @@ menuOptions.guide = tags.guide;
 
 const inputButton = {
     ...menuOptions,
+    label: 'log anything',
     menuItemStyle: {
         width: 'calc(100% - 52px)',
         marginLeft: '47px',
@@ -51,9 +52,12 @@ const inputButton = {
     `
 }
 
+const list: ABAttachment[] = ab.links.ask?.vars.abAttachments ?? [];
+
 let addFiles = {
     ...menuOptions,
     formAddress: "add",
+    label: list.length > 0 ? "(" + list.length + ")" : '',
     abLogAddDropdownBot: true,
     menuItemType: 'dropdown',
     menuItemStyle: {

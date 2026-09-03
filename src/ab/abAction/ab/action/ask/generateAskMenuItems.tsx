@@ -3,13 +3,6 @@ const { menuType } = that ?? {};
 const menuItems = [];
 
 const { options, label } = thisBot.getAttachmentsDropdownOptions();
-menuItems.push({
-    label: label,
-    abAttachmentsDropdownHeader: true,
-    formAddress: 'add',
-    menuItemType: 'dropdown',
-    dropdownOptions: options,
-});
 
 menuItems.push({
     label: 'ask ab',
@@ -17,6 +10,34 @@ menuItems.push({
     menuType,
     abAskInputBox: true,
     form: 'input',
+    menuItemStyle: {
+        width: 'calc(100% - 52px)',
+        marginLeft: '47px',
+        borderRadius: '0px 8px 8px 0px',
+        "border-left": `0px solid ${abPersonality.tags.abBaseShadowColor ?? "#000"}`,
+        "anchor-name": '--log-input'
+    },
+    menuItemType: "input",
+    abAskInputBox: true,
+    abMenuDropdownOpened: `@
+        if (that.tags.abLogAddDropdownBot) {
+            let newMenuItemStyle = {...tags.menuItemStyle};
+            newMenuItemStyle["borderRadius"] = '0px 8px 0px 0px'
+            tags.menuItemStyle = newMenuItemStyle;
+        }
+    `,
+    abMenuDropdownClosed: `@
+        if (that.tags.abLogAddDropdownBot) {
+            let newMenuItemStyle = {...tags.menuItemStyle};
+            newMenuItemStyle["borderRadius"] = '0px 8px 8px 0px'
+            tags.menuItemStyle = newMenuItemStyle;
+        }
+    `,
+    onBotChanged: `@
+        if (that.tags.includes("menuItemText") {
+            shout("abAskInputMenuTextChanged", tags.menuItemText);
+        }
+    `,
     onCreate: ListenerString(() => {
         if (!authBot) {
             tags.label = 'ask ' + ab.links.personality.tags.abBuilderIdentity + ' (limited)';
@@ -88,5 +109,40 @@ menuItems.push({
         setTagMask(links.baseSkill, 'hasUserSubmittedBotText', true, 'local');
     })
 })
+
+menuItems.push({
+    label: label,
+    abAttachmentsDropdownHeader: true,
+    menuItemStyle: {
+        width: '50px',
+        "min-height": 'calc(anchor-size(height) + 4px)',
+        height: 'calc(anchor-size(height) + 4px)',
+        borderRadius: '8px 0px 0px 8px',
+        position: 'absolute',
+        top: 'anchor(top)',
+        right: 'calc(anchor(left) - 5px)',
+        'position-anchor': '--log-input',
+        "box-shadow": 'none',
+        "border-top": `2px solid ${abPersonality.tags.abBaseShadowColor ?? "#000"}`,
+        "border-bottom": `6px solid ${abPersonality.tags.abBaseShadowColor ?? "#000"}`,
+        "border-right": `0px solid ${abPersonality.tags.abBaseShadowColor ?? "#000"}`
+    }, 
+    formAddress: 'add',
+    menuItemType: 'dropdown',
+    dropdownOptions: options,
+    abAskInputMenuTextChanged: `@
+        if (that) {
+            let newMenuItemStyle = {...tags.menuItemStyle};
+            newMenuItemStyle["height"] = 'calc(anchor-size(height) + 4px)',
+            newMenuItemStyle["min-height"] = 'calc(anchor-size(height) + 4px)'
+            tags.menuItemStyle = newMenuItemStyle;
+        } else {
+            let newMenuItemStyle = {...tags.menuItemStyle};
+            newMenuItemStyle["height"] = '40px',
+            newMenuItemStyle["min-height"] = '40px'
+            tags.menuItemStyle = newMenuItemStyle;
+        }
+    `,
+});
 
 masks.menuItems = menuItems;

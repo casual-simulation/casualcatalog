@@ -35,6 +35,7 @@ else {
     links.abBot.masks.interval = null;
 
     clearAnimations(links.abBot);
+    masks.abCatalogKitSelected = null;
 
     const rotZ = links.abBot.tags.dimension + "RotationZ";
 

@@ -18,6 +18,7 @@ if (loc.success) {
     const distance = Math.sqrt(Math.pow((xLoc - links.abBot.tags[mapDimension + 'X']), 2) + Math.pow((yLoc - links.abBot.tags[mapDimension + 'Y']), 2));
     if (distance > .0005) {
         clearAnimations(links.abBot);
+        masks.abCatalogKitSelected = null;
         links.abBot.tags[mapDimension + 'X'] = xLoc;
         links.abBot.tags[mapDimension + 'Y'] = yLoc;
     }

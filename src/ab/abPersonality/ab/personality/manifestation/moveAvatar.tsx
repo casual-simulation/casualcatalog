@@ -31,6 +31,7 @@ if (configBot.tags.mapPortal) {
 let dur = distance * speed;
 
 clearAnimations(links.abBot);
+masks.abCatalogKitSelected = null;
 
 if (distance > maxDistance) {
     links.abBot.tags[that.dimension + 'X'] = that.position.x;

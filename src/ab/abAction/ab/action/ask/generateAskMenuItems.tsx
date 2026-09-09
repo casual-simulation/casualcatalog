@@ -6,7 +6,6 @@ const { options, label } = thisBot.getAttachmentsDropdownOptions();
 
 menuItems.push({
     label: 'ask ab',
-    formAddress: 'cube',
     menuType,
     abAskInputBox: true,
     form: 'input',

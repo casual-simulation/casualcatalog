@@ -19,7 +19,7 @@
         "artifact": true
     },
     {
-        "name": "blank place",
+        "name": "blank world link",
         "studio": "AB",
         "targetAB": "placePortal",
         "formAddress": "circle",
@@ -31,14 +31,6 @@
         "targetAB": "studioCatalog",
         "formAddress": "menu_book",
         "artifact": true
-    },
-    {
-        "name": "navigation pin",
-        "studio": "AB",
-        "targetAB": "mapAvatar",
-        "formAddress": "person_pin_circle",
-        "artifact": true,
-        "space": "tempShared"
     },
     {
         "name": "aux importer",

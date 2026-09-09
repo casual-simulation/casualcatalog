@@ -30,7 +30,7 @@ const catalogKit = {
 }
 const defaultABKit = {
     ...menuOptions,
-    label: `${abRemember.tags.defaultABKitName ?? 'casual kit'}`,
+    label: `${abRemember.tags.defaultABKitName ?? 'build kit'}`,
     formAddress: "category",
     onClick: ListenerString(() => {
         ab.links.manifestation.equipKit({kit: abRemember.tags.defaultABKit ?? 'casual_kit_loader'})

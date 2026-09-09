@@ -39,7 +39,7 @@ if (that.kit == 'log') {
 } else if (that.kit == 'catalog') {
     kitName = 'catalog kit';
 } else {
-    kitName = 'build kit';
+    kitName = that.kit + ' kit';
 }
 
 if (!links.kitBot) {

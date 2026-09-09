@@ -7,7 +7,7 @@ if (that.eggParameters) {
         data: {
             hideOnLoad: that.eggParameters.hideOnLoad,
             kitId: 'casual_kit',
-            label: that.eggParameters.toolbox_name ?? "casual kit",
+            label: that.eggParameters.toolbox_name ?? "build kit",
             studioId: that.eggParameters.studioId,
             tool_array: tags.tool_array,
             eggParameters: {

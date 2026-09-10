@@ -54,7 +54,7 @@ if (that.kit == 'log') {
 } else if (that.kit == 'catalog') {
     kitName = 'catalog kit';
 } else {
-    kitName = (links.kitBot.tags.label ?? 'build') + ' kit';
+    kitName = (links.kitBot.tags.label ?? 'build');
 }
 
 destroy(links.abBot);

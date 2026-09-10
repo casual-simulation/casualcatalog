@@ -11,7 +11,7 @@ const mapRatio = .00012108755;
 const sortedEquipment = kitBots.toSorted((a, b) => a.tags.abCreateTime - b.tags.abCreateTime)
 
 for (let i = 0; i < sortedEquipment?.length; ++i) {
-    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? that.base?.tags.dimension ?? "home";
+    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal ?? links.abBot?.tags.dimension ?? "home";
     const isMap = configBot.tags.mapPortal ? true : false;
     
     for (let j = 0; j < equipmentOffsets.length; ++j) {
@@ -21,8 +21,8 @@ for (let i = 0; i < sortedEquipment?.length; ++i) {
         let yValue = equipmentOffsets[j].y;
         if (isMap) yValue = yValue * mapRatio;
 
-        xValue = (that.base.tags[dimension + 'X'] ?? 0) + xValue;
-        yValue = (that.base.tags[dimension + 'Y'] ?? 0) + yValue;
+        xValue = (links.abBot.tags[dimension + 'X'] ?? 0) + xValue;
+        yValue = (links.abBot.tags[dimension + 'Y'] ?? 0) + yValue;
 
         const botsInPosition = getBots(byTag(dimension + 'X', xVal => Math.abs(xVal - xValue) < .00001), byTag(dimension + 'Y', yVal => Math.abs(yVal - yValue) < .00001));
         let occupied = false;

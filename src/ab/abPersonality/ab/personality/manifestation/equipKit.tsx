@@ -33,15 +33,6 @@ if (!that.kitBot) {
    masks.kitBot = that.kitBot; 
 }
 
-let kitName;
-if (that.kit == 'log') {
-    kitName = 'nav kit';
-} else if (that.kit == 'catalog') {
-    kitName = 'catalog kit';
-} else {
-    kitName = that.kit + ' kit';
-}
-
 if (!links.kitBot) {
     const phys_kit = getBot('kitId', that.kit);
     if (phys_kit) {
@@ -55,6 +46,15 @@ if (links.kitBot) {
     links.kitBot.tags[dimension] = false;
     newPosX = that?.position?.x ?? links.kitBot.tags[dimension + 'X'];
     newPosY = that?.position?.y ?? links.kitBot.tags[dimension + 'Y'];
+}
+
+let kitName;
+if (that.kit == 'log') {
+    kitName = 'nav kit';
+} else if (that.kit == 'catalog') {
+    kitName = 'catalog kit';
+} else {
+    kitName = (links.kitBot.tags.label ?? 'build') + ' kit';
 }
 
 destroy(links.abBot);

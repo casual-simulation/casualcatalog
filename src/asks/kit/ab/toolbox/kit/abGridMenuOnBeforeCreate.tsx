@@ -21,7 +21,7 @@ if (physKits.length > 1) {
 
     if (thisBot.id != primaryKit) {
         masks.abGridMenuHide = true;
-    } else if (tags.abGridMenuHide) {
+    } else if (masks.abGridMenuHide) {
         masks.abGridMenuHide = true;
     } else {
         masks.abGridMenuHide = null;

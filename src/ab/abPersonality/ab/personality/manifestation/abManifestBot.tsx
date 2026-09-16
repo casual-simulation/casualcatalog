@@ -51,6 +51,7 @@ const abMod = {
     abBaseScale: tags.abBaseScale,
     abOffset: tags.abOffset,
     abScale: tags.abScale,
+    abOrientationMode: tags.abOrientationMode,
     armMeshPath: links.remember.tags.abArmMeshPath,
     armColor: "white",
     personality: tags.personality,

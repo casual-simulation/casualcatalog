@@ -9,6 +9,8 @@ masks.abOffset = that?.abOffset;
 masks.abBaseScale = that?.abBaseScale;
 masks.abOrientationMode = that?.abOrientationMode;
 
+await os.sleep(0);
+
 const inMap = configBot.tags.mapPortal ? true : false;
 
 if (tags.currentKit && tags.currentKit != ab.links.remember.tags.defaultABKit) {

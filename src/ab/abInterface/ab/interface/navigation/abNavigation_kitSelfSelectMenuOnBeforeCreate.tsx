@@ -1,11 +1,11 @@
 if (tags.usingGPS) {
-    masks.abLogSelfSelectMenuLabel = "stop following my location";
+    masks.abNavigation_kitSelfSelectMenuLabel = "stop following my location";
 } else {
-    masks.abLogSelfSelectMenuLabel = null;
+    masks.abNavigation_kitSelfSelectMenuLabel = null;
 }
 
 if (configBot.tags.mapPortal) {
-    masks.abLogSelfSelectMenuHide = null;
+    masks.abNavigation_kitSelfSelectMenuHide = null;
 } else {
-    masks.abLogSelfSelectMenuHide = true;
+    masks.abNavigation_kitSelfSelectMenuHide = true;
 }

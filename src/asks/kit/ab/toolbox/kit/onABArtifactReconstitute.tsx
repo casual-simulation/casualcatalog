@@ -11,6 +11,10 @@ tags.system = `ab.toolbox.${data.label ?? 'kit'}`;
 tags.armMeshPath = ab.links.remember.tags.abArmMeshPath;
 tags.armColor = "white";
 tags.kitId = data.kitId;
+tags.abFormAddress = data.abFormAddress;
+tags.abBaseScale = data.abBaseScale;
+tags.abScale = data.abScale;
+tags.abOffset = data.abOffset;
 
 //Place bot correctly
 if (data.dimensionData) {

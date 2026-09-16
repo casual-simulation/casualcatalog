@@ -30,18 +30,15 @@ const defaultABKit = {
 }
 
 if (tags.currentKit == 'log') {
-    menuItems.push(catalogKit);
     menuItems.push(defaultABKit);
 }
 
 else if (tags.currentKit == abRemember.tags.defaultABKit) {
     menuItems.push(logKit);
-    menuItems.push(catalogKit);
 } 
 
 else {
     menuItems.push(logKit);
-    menuItems.push(catalogKit);
     menuItems.push(defaultABKit);
 }
 

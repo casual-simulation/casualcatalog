@@ -20,6 +20,10 @@ delete data.tags.studioId;
 delete data.tags.lineTo;
 delete data.tags.formAddress;
 delete data.tags.formSubtype;
+delete data.tags.abFormAddress;
+delete data.tags.abOffset;
+delete data.tags.abScale;
+delete data.tags.abBaseScale;
 
 data.tags.system = `ab.toolbox.kit`;
 data.tags.form = 'nothing';

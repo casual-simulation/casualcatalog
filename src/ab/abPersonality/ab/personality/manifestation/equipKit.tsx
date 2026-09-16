@@ -3,6 +3,10 @@ const posX = links.abBot?.tags[dimension + 'X'];
 const posY = links.abBot?.tags[dimension + 'Y'];
 let newPosX = that?.position?.x ?? posX;
 let newPosY = that?.position?.y ?? posY;
+masks.abFormAddress = that?.abFormAddress;
+masks.abScale = that?.abScale;
+masks.abOffset = that?.abOffset;
+masks.abBaseScale = that?.abBaseScale;
 
 const inMap = configBot.tags.mapPortal ? true : false;
 

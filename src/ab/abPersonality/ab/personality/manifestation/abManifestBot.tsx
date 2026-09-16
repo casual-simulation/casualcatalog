@@ -43,6 +43,10 @@ const abMod = {
     abEquipmentShowEquipmentMenu: true,
     abEquipmentMenuPortal: 'abMenu',
     abEquipmentExclusiveSelect: true,
+    abFormAddress: tags.abFormAddress,
+    abBaseScale: tags.abBaseScale,
+    abOffset: tags.abOffset,
+    abScale: tags.abScale,
     armMeshPath: links.remember.tags.abArmMeshPath,
     armColor: "white",
     personality: tags.personality,
@@ -67,7 +71,15 @@ const abMod = {
         if (thisBot.vars.destroyed) {
             return;
         }
-        if (tags.kit) {
+        if (tags.abFormAddress) {
+            const newAddress = tags.abFormAddress;
+            if (newAddress.startsWith('https://')) {
+                formAddress = newAddress;
+            } else {
+                formAddress = links.learn.abBuildCasualCatalogURL(newAddress);
+            }
+        }
+        else if (tags.kit) {
             
             if (tags.kit == 'log') {
                 if (instStudioConfig?.studio_ab_mesh_url_log ?? instStudioConfig?.studio_ab_mesh_url) {
@@ -137,14 +149,80 @@ const abMod = {
             tags.color = 'transparent';
             tags.scale = 1;
 
-            if (tags.kit == 'log') {
-                tags.scaleZ = 4;
-                meshMod[tags.dimension + 'Z'] = (2/tags.scaleZ) - 1;
-                meshMod['scaleZ'] = 1/tags.scaleZ;
+            tags.scaleZ = 1.3;
+            meshMod[tags.dimension + 'Z'] = (.6/tags.scaleZ) - 1;
+            meshMod['scaleZ'] = 1/tags.scaleZ;
+
+            if (tags.abBaseScale) {
+                if (tags.abBaseScale?.x) {
+                    tags.scaleX = tags.abBaseScale.x
+                } else {
+                    tags.scaleX = null;
+                }
+
+                if (tags.abBaseScale?.y) {
+                    tags.scaleY = tags.abBaseScale.y
+                } else {
+                    tags.scaleY = null;
+                }
+
+                if (tags.abBaseScale?.z) {
+                    tags.scaleZ = tags.abBaseScale.z
+                } else {
+                    tags.scaleZ = null;
+                }
             } else {
-                tags.scaleZ = 1.3;
-                meshMod[tags.dimension + 'Z'] = (.6/tags.scaleZ) - 1;
-                meshMod['scaleZ'] = 1/tags.scaleZ;
+                tags.scaleX = null;
+                tags.scaleY = null;
+                tags.scaleZ = null;
+            }
+
+            if (tags.abOffset) {
+                if (tags.abOffset?.x) {
+                    meshMod[tags.dimension + 'X'] = tags.abOffset.x
+                } else {
+                    meshMod[tags.dimension + 'X'] = null;
+                }
+
+                if (tags.abOffset?.y) {
+                    meshMod[tags.dimension + 'Y'] = tags.abOffset.y
+                } else {
+                    meshMod[tags.dimension + 'Y'] = null;
+                }
+
+                if (tags.abOffset?.z) {
+                    meshMod[tags.dimension + 'Z'] = tags.abOffset.z
+                } else {
+                    meshMod[tags.dimension + 'Z'] = null;
+                }
+            } else {
+                meshMod[tags.dimension + 'X'] = null;
+                meshMod[tags.dimension + 'Y'] = null;
+                meshMod[tags.dimension + 'Z'] = null;
+            }
+
+            if (tags.abScale) {
+                if (tags.abScale?.x) {
+                    meshMod['scaleX'] = tags.abScale.x
+                } else {
+                    meshMod['scaleX'] = null;
+                }
+
+                if (tags.abScale?.y) {
+                    meshMod['scaleY'] = tags.abScale.y
+                } else {
+                    meshMod['scaleY'] = null;
+                }
+
+                if (tags.abScale?.z) {
+                    meshMod['scaleZ'] = tags.abScale.z
+                } else {
+                    meshMod['scaleZ'] = null;
+                }
+            } else {
+                meshMod['scaleX'] = null;
+                meshMod['scaleY'] = null;
+                meshMod['scaleZ'] = null;
             }
 
             if (!tags.abMeshIsStatic) {
@@ -164,8 +242,7 @@ const abMod = {
                 // Give abBot a reference to the meshBot changeAnimState function.
                 thisBot.listeners.changeAnimState = links.meshBot.listeners.changeAnimState;
             }
-        }
-            
+        }  
 
         if (!tags.abMeshIsStatic) {
             tags.spinIntervalMS = 4500;

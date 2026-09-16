@@ -21,7 +21,6 @@ if (!masks.initialized && tags.abArtifactShardReconstituted && masks.abInitializ
         })
     }
     
-    thisBot.determineLineTo();
 } else {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] invoke but early exit because not ready to initialize yet (initialized: ${masks.initialized}, abArtifactShardReconstituted: ${tags.abArtifactShardReconstituted}, abInitialized: ${masks.abInitialized})`);

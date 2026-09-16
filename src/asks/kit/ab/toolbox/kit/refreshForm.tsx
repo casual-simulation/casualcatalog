@@ -5,7 +5,7 @@ if (tags.debug) {
 let targetFormAddress = ab.abBuildCasualCatalogURL('/asks/meshes/kit_icon_animated.glb');
 tags.hasCustomMesh = false;
 
-if (tags.studioId) {
+if (!tags.formAddress && tags.studioId) {
     const studioConfig = await ab.links.search.abStudioConfig({ studioId: tags.studioId });
     if (studioConfig?.studio_kit_mesh_url) {
         targetFormAddress = studioConfig.studio_kit_mesh_url;

@@ -29,9 +29,6 @@ if (links.abBot && (shiftCheck || (that.modality == "mouse" && that.buttonId == 
     return;
 }
 
-if (ab.links.manifestation.tags.abCatalogKitSelected) {
-    shout("onABCatalogDeselected")
-}
 
 const footprint = {
     space: "tempLocal",

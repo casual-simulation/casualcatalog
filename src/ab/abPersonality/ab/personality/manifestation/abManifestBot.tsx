@@ -80,7 +80,8 @@ const abMod = {
                         formAddress = links.learn.abBuildCasualCatalogURL(newAddress);
                     }
                 }
-                else {
+            }
+            else {
                 if (links.kitBot && links.kitBot?.tags?.abMeshPath) {
                     if (links.kitBot?.tags.abMeshPath.startsWith('https://')) {
                         formAddress = links.kitBot?.tags.abMeshPath;
@@ -163,11 +164,11 @@ const abMod = {
                 // Give abBot a reference to the meshBot changeAnimState function.
                 thisBot.listeners.changeAnimState = links.meshBot.listeners.changeAnimState;
             }
+        }
             
 
-            if (!tags.abMeshIsStatic) {
-                tags.spinIntervalMS = 4500;
-            }
+        if (!tags.abMeshIsStatic) {
+            tags.spinIntervalMS = 4500;
         } else {
             // If a custom mesh is not defined for ab, then give ab a "core".
             masks.coreBot = getLink(create({
@@ -196,13 +197,6 @@ const abMod = {
         masks.interval = setInterval(() => thisBot.animateBot(), tags.spinIntervalMS);
     }),
     onClick: ListenerString(() => {
-        if (links.meshBot && !tags.abMeshIsStatic) {
-            if (ab.links.manifestation.tags.abCatalogKitSelected) {
-                links.meshBot.changeAnimState('CatalogDeselected');
-            } else {
-                links.meshBot.changeAnimState('CatalogSelected');
-            }
-        }
 
         if (that.modality == 'mouse' && that.buttonId == 'right') {
             return;

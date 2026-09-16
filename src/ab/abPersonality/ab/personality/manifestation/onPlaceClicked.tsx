@@ -9,7 +9,6 @@ if (!that) {
 }
 
 clearAnimations(links.abBot);
-masks.abCatalogKitSelected = null;
 
 let xPos;
 let yPos;

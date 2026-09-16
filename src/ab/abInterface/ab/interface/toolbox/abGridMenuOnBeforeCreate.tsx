@@ -1,4 +1,4 @@
-if (ab.links.manifestation.tags.currentKit == 'log') {
+if (ab.links.manifestation.tags.currentKit == 'navigation_kit') {
     masks.abGridMenuHide = true;
 } else {
     masks.abGridMenuHide = null;

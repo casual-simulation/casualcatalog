@@ -10,7 +10,11 @@ if (thisBot.vars.abBotLastId) {
 
 if (!tags.currentKit) {
     if (configBot.tags.mapPortal) {
-        masks.currentKit = 'log';
+        masks.currentKit = 'navigation_kit';
+        const phys_kit = getBot("kitId", 'navigation_kit');
+        if (!phys_kit) {
+            await links.catalog.loadKit({id: 'navigation_kit' + '_loader', hideOnLoad: true})
+        }
     } else {
         masks.currentKit = abRemember.tags.defaultABKit ?? "casual_kit";
         const phys_kit = getBot("kitId", abRemember.tags.defaultABKit ?? "casual_kit");
@@ -81,36 +85,23 @@ const abMod = {
         }
         else if (tags.kit) {
             
-            if (tags.kit == 'log') {
-                if (instStudioConfig?.studio_ab_mesh_url_log ?? instStudioConfig?.studio_ab_mesh_url) {
-                    formAddress = instStudioConfig.studio_ab_mesh_url_log ?? instStudioConfig?.studio_ab_mesh_url;
-                } else if (links.remember.tags.abMeshPath_log ?? links.remember.tags.abMeshPath) {
-                    const newAddress = links.remember.tags.abMeshPath_log ?? links.remember.tags.abMeshPath;
-                    if (newAddress.startsWith('https://')) {
-                        formAddress = newAddress;
-                    } else {
-                        formAddress = links.learn.abBuildCasualCatalogURL(newAddress);
-                    }
+            if (links.kitBot && links.kitBot?.tags?.abMeshPath) {
+                if (links.kitBot?.tags.abMeshPath.startsWith('https://')) {
+                    formAddress = links.kitBot?.tags.abMeshPath;
+                } else {
+                    formAddress = links.learn.abBuildCasualCatalogURL(links.kitBot.tags.abMeshPath);
                 }
             }
-            else {
-                if (links.kitBot && links.kitBot?.tags?.abMeshPath) {
-                    if (links.kitBot?.tags.abMeshPath.startsWith('https://')) {
-                        formAddress = links.kitBot?.tags.abMeshPath;
-                    } else {
-                        formAddress = links.learn.abBuildCasualCatalogURL(links.kitBot.tags.abMeshPath);
-                    }
-                }
-                else if (instStudioConfig?.studio_ab_mesh_url) {
-                    formAddress = instStudioConfig.studio_ab_mesh_url;
-                } else if (links.remember.tags.abMeshPath) {
-                    if (links.remember.tags.abMeshPath.startsWith('https://')) {
-                        formAddress = links.remember.tags.abMeshPath;
-                    } else {
-                        formAddress = links.learn.abBuildCasualCatalogURL(links.remember.tags.abMeshPath);
-                    }
+            else if (instStudioConfig?.studio_ab_mesh_url) {
+                formAddress = instStudioConfig.studio_ab_mesh_url;
+            } else if (links.remember.tags.abMeshPath) {
+                if (links.remember.tags.abMeshPath.startsWith('https://')) {
+                    formAddress = links.remember.tags.abMeshPath;
+                } else {
+                    formAddress = links.learn.abBuildCasualCatalogURL(links.remember.tags.abMeshPath);
                 }
             }
+            
         } else {
             if (instStudioConfig?.studio_ab_mesh_url) {
                 formAddress = instStudioConfig.studio_ab_mesh_url;
@@ -135,7 +126,6 @@ const abMod = {
                 form: 'mesh',
                 formSubtype: 'gltf',
                 scaleMode: 'absolute',
-                orientationMode: tags.kit == 'log' ? "billboardFront" : null,
                 formAddress,
                 formAnimation: false,
                 pointable: false,
@@ -152,6 +142,10 @@ const abMod = {
             tags.scaleZ = 1.3;
             meshMod[tags.dimension + 'Z'] = (.6/tags.scaleZ) - 1;
             meshMod['scaleZ'] = 1/tags.scaleZ;
+
+            if (tags.abOrientationMode) {
+                meshMod['orientationMode'] = "billboardFront";
+            }
 
             if (tags.abBaseScale) {
                 if (tags.abBaseScale?.x) {
@@ -293,7 +287,7 @@ const abMod = {
             }
             masks.awaitingDoubleClick = null;
             
-            const cycle = ["log", ab.links.remember.tags.defaultABKit];
+            const cycle = [ab.links.remember.tags.defaultABKit];
             let newIndex;
             if (cycle.indexOf(ab.links.manifestation.tags.currentKit) >= 0) {
                 newIndex = cycle.indexOf(ab.links.manifestation.tags.currentKit) + 1;
@@ -376,7 +370,7 @@ const abMod = {
     animateBot: ListenerString(async () => {
         // Animated meshes drive their own motion; static meshes (and ab's core)
         // get the procedural spin, which rotates the child mesh via transformer.
-        if (links.meshBot && !tags.abMeshIsStatic ||(tags.kit == 'log') ) {
+        if (links.meshBot && !tags.abMeshIsStatic) ) {
             return;
         }
 
@@ -598,7 +592,7 @@ const abMod = {
             }
         }
 
-        if (tags.kit && tags.kit != 'log') {
+        if (tags.kit) {
             links.manager.abClick({ menu: 'grid' , ignoreABKit: true});
         } else {
             links.manager.abClick({ menu: 'grid' });

@@ -10,7 +10,7 @@ masks.abBaseScale = that?.abBaseScale;
 
 const inMap = configBot.tags.mapPortal ? true : false;
 
-if (tags.currentKit && tags.currentKit != 'log' && tags.currentKit != ab.links.remember.tags.defaultABKit) {
+if (tags.currentKit && tags.currentKit != ab.links.remember.tags.defaultABKit) {
     let phys_kit = links.kitBot;
     if (!phys_kit) {
         phys_kit = getBot('kitId', tags.currentKit);
@@ -50,13 +50,7 @@ if (links.kitBot) {
     newPosY = that?.position?.y ?? links.kitBot.tags[dimension + 'Y'];
 }
 
-let kitName;
-if (that.kit == 'log') {
-    kitName = 'nav kit';
-}
-    else {
-    kitName = (links.kitBot.tags.label ?? 'build');
-}
+let kitName = (links.kitBot.tags.label ?? 'build');
 
 destroy(links.abBot);
 

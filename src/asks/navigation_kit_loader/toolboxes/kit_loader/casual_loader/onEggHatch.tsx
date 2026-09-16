@@ -22,6 +22,7 @@ if (that.eggParameters) {
             abOffset: {
                 z: (2/scaleZ) - 1
             },
+            abOrientationMode: 'billboardFront',
             eggParameters: {
                 gridInformation: {
                     dimension: dimension,

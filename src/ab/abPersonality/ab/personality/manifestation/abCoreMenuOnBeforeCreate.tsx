@@ -11,14 +11,7 @@ menuOptions[activeMenu] = true;
 menuOptions.abMenuRefresh = "@ destroy(thisBot);";
 menuOptions.skillBot = getLink(thisBot);
 
-const logKit = {
-    ...menuOptions,
-    label: `nav kit`,
-    formAddress: "article",
-    onClick: ListenerString(() => {
-        ab.links.manifestation.equipKit({kit: 'log'})
-    }),  
-}
+
 
 const defaultABKit = {
     ...menuOptions,
@@ -29,16 +22,10 @@ const defaultABKit = {
     }),  
 }
 
-if (tags.currentKit == 'log') {
-    menuItems.push(defaultABKit);
-}
-
-else if (tags.currentKit == abRemember.tags.defaultABKit) {
-    menuItems.push(logKit);
+if (tags.currentKit == abRemember.tags.defaultABKit) {
 } 
 
 else {
-    menuItems.push(logKit);
     menuItems.push(defaultABKit);
 }
 

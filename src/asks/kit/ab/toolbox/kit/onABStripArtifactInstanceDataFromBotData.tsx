@@ -24,6 +24,7 @@ delete data.tags.abFormAddress;
 delete data.tags.abOffset;
 delete data.tags.abScale;
 delete data.tags.abBaseScale;
+delete data.tags.abOrientationMode;
 
 data.tags.system = `ab.toolbox.kit`;
 data.tags.form = 'nothing';

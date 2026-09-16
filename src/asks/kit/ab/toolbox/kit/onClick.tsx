@@ -4,4 +4,4 @@ if (that) {
     }
 }
 
-ab.links.manifestation.equipKit({kit: tags.kitId, kitBot: '🔗' + thisBot.id, abFormAddress: tags.abFormAddress, abBaseScale: tags.abBaseScale, abScale: tags.abScale, abOffset: tags.abOffset})
+ab.links.manifestation.equipKit({kit: tags.kitId, kitBot: '🔗' + thisBot.id, abFormAddress: tags.abFormAddress, abBaseScale: tags.abBaseScale, abScale: tags.abScale, abOffset: tags.abOffset, abOrientationMode: tags.abOrientationMode})

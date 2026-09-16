@@ -10,14 +10,6 @@ const kitGroup = {
     menuItems: []
 }
 
-const logKit = {
-    label: `log`,
-    formAddress: "article",
-    onClick: ListenerString(() => {
-        ab.links.manifestation.equipKit({kit: 'log'})
-    }),  
-}
-
 const defaultABKit = {
     label: `${abRemember.tags.defaultABKitName ?? 'build kit'}`,
     formAddress: "category",
@@ -26,19 +18,11 @@ const defaultABKit = {
     }),  
 }
 
-if (ab.links.manifestation.tags.currentKit == 'log') {
-    kitGroup.menuItems.push(catalogKit);
-    kitGroup.menuItems.push(defaultABKit);
-}
 
-else if (ab.links.manifestation.tags.currentKit == abRemember.tags.defaultABKit) {
-    kitGroup.menuItems.push(logKit);
-    kitGroup.menuItems.push(catalogKit);
+if (ab.links.manifestation.tags.currentKit == abRemember.tags.defaultABKit) {
 } 
 
 else {
-    kitGroup.menuItems.push(logKit);
-    kitGroup.menuItems.push(catalogKit);
     kitGroup.menuItems.push(defaultABKit);
 }
 

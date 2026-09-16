@@ -11,9 +11,17 @@ if (thisBot.vars.abBotLastId) {
 if (!tags.currentKit) {
     if (configBot.tags.mapPortal) {
         masks.currentKit = 'navigation_kit';
-        const phys_kit = getBot("kitId", 'navigation_kit');
+        let phys_kit = getBot("kitId", 'navigation_kit');
         if (!phys_kit) {
             await links.catalog.loadKit({id: 'navigation_kit' + '_loader', hideOnLoad: true})
+        }
+        phys_kit = getBot("kitId", 'navigation_kit');
+        if (phys_kit) {
+            masks.abFormAddress = phys_kit.tags.abFormAddress;
+            masks.abScale = phys_kit.tags.abScale;
+            masks.abOffset = phys_kit.tags.abOffset;
+            masks.abBaseScale = phys_kit.tags.abBaseScale;
+            masks.abOrientationMode = phys_kit.tags.abOrientationMode;
         }
     } else {
         masks.currentKit = abRemember.tags.defaultABKit ?? "casual_kit";
@@ -151,73 +159,43 @@ const abMod = {
             if (tags.abBaseScale) {
                 if (tags.abBaseScale?.x) {
                     tags.scaleX = tags.abBaseScale.x
-                } else {
-                    tags.scaleX = null;
                 }
 
                 if (tags.abBaseScale?.y) {
                     tags.scaleY = tags.abBaseScale.y
-                } else {
-                    tags.scaleY = null;
                 }
 
                 if (tags.abBaseScale?.z) {
                     tags.scaleZ = tags.abBaseScale.z
-                } else {
-                    tags.scaleZ = null;
                 }
-            } else {
-                tags.scaleX = null;
-                tags.scaleY = null;
-                tags.scaleZ = null;
             }
 
             if (tags.abOffset) {
                 if (tags.abOffset?.x) {
                     meshMod[tags.dimension + 'X'] = tags.abOffset.x
-                } else {
-                    meshMod[tags.dimension + 'X'] = null;
                 }
 
                 if (tags.abOffset?.y) {
                     meshMod[tags.dimension + 'Y'] = tags.abOffset.y
-                } else {
-                    meshMod[tags.dimension + 'Y'] = null;
                 }
 
                 if (tags.abOffset?.z) {
                     meshMod[tags.dimension + 'Z'] = tags.abOffset.z
-                } else {
-                    meshMod[tags.dimension + 'Z'] = null;
                 }
-            } else {
-                meshMod[tags.dimension + 'X'] = null;
-                meshMod[tags.dimension + 'Y'] = null;
-                meshMod[tags.dimension + 'Z'] = null;
             }
 
             if (tags.abScale) {
                 if (tags.abScale?.x) {
                     meshMod['scaleX'] = tags.abScale.x
-                } else {
-                    meshMod['scaleX'] = null;
                 }
 
                 if (tags.abScale?.y) {
                     meshMod['scaleY'] = tags.abScale.y
-                } else {
-                    meshMod['scaleY'] = null;
                 }
 
                 if (tags.abScale?.z) {
                     meshMod['scaleZ'] = tags.abScale.z
-                } else {
-                    meshMod['scaleZ'] = null;
                 }
-            } else {
-                meshMod['scaleX'] = null;
-                meshMod['scaleY'] = null;
-                meshMod['scaleZ'] = null;
             }
 
             if (!tags.abMeshIsStatic) {

@@ -52,6 +52,8 @@ for (let i = 0; i < menuSkills.length; i++)//ADD LOGIC FOR MORE OPTIONS THAN 5 :
         await whisper(menuSkills[i], menuTagString + "OnBeforeCreate");
     }
 
+    await os.sleep(0);
+
     if (menuSkills[i].tags[menuTagString + "Hide"]) {
         continue;
     }

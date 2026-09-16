@@ -370,7 +370,7 @@ const abMod = {
     animateBot: ListenerString(async () => {
         // Animated meshes drive their own motion; static meshes (and ab's core)
         // get the procedural spin, which rotates the child mesh via transformer.
-        if (links.meshBot && !tags.abMeshIsStatic) ) {
+        if (links.meshBot && !tags.abMeshIsStatic) {
             return;
         }
 

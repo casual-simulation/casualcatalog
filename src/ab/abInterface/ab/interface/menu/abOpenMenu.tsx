@@ -20,6 +20,12 @@ if (ab.links.manifestation.tags.currentKit) {
     ];
     menuSkills = uniqueCombined;
 }
+
+const builderMenuSkills = getBots(builderMenuType + 'Action');
+const uniqueCombined2 = [
+    ...new Map([...menuSkills, ...builderMenuSkills].map(item => [item.id, item])).values()
+];
+menuSkills = uniqueCombined2;
 let maxOptions = menuType == "inst" ? 7 : 5;
 
 const BASE_TAGS = {

@@ -3,7 +3,7 @@ await os.sleep(0);
 if (ab.links.manifestation.tags.currentKit && ab.links.manifestation.tags.currentKit != tags.kitId) {
     masks.abGridMenuHide = true;
 } else {
-    masks.abGridMenuHide = null;
+    masks.abGridMenuHide = false;
 }
 
 const physKits = getBots("kitId", tags.kitId);
@@ -24,7 +24,7 @@ if (physKits.length > 1) {
     } else if (masks.abGridMenuHide) {
         masks.abGridMenuHide = true;
     } else {
-        masks.abGridMenuHide = null;
+        masks.abGridMenuHide = false;
     }
 }
 

@@ -1,3 +1,3 @@
 masks.abInitialized = true;
 thisBot.initialize();
-thisBot.abGridMenuOnBeforeCreate();
+await thisBot.abGridMenuOnBeforeCreate();

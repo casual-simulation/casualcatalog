@@ -59,10 +59,6 @@ else {
         },
         duration: 0.5
     }).catch(e => {})
-
-    if (tags.currentKit == 'catalog') {
-        thisBot.assembleKits();
-    }
 }
 
 shout('onABClick', { abBot: links.abBot, dimension: links.abBot.tags.dimension, menu, shiftKey: !!state, reset });

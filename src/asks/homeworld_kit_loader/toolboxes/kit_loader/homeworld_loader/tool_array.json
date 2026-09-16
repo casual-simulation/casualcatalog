@@ -8,7 +8,7 @@
     {
         "name": "catalog",
         "studio": "AB",
-        "targetAB": "studioCatalog",
+        "targetAB": "catalogCrafter",
         "artifact": true
     }
 ]

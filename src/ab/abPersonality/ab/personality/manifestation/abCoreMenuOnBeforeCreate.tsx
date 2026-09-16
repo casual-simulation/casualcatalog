@@ -20,14 +20,6 @@ const logKit = {
     }),  
 }
 
-const catalogKit = {
-    ...menuOptions,
-    label: `catalog kit`,
-    formAddress: "cube",
-    onClick: ListenerString(() => {
-        ab.links.manifestation.equipKit({kit: 'catalog'})
-    }),  
-}
 const defaultABKit = {
     ...menuOptions,
     label: `${abRemember.tags.defaultABKitName ?? 'build kit'}`,
@@ -39,11 +31,6 @@ const defaultABKit = {
 
 if (tags.currentKit == 'log') {
     menuItems.push(catalogKit);
-    menuItems.push(defaultABKit);
-}
-
-else if (tags.currentKit == 'catalog') {
-    menuItems.push(logKit);
     menuItems.push(defaultABKit);
 }
 

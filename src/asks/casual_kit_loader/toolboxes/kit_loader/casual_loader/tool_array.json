@@ -28,7 +28,7 @@
     {
         "name": "blank catalog",
         "studio": "AB",
-        "targetAB": "studioCatalog",
+        "targetAB": "catalogCrafter",
         "formAddress": "menu_book",
         "artifact": true
     },

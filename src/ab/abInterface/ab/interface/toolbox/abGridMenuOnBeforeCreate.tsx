@@ -1,4 +1,4 @@
-if (ab.links.manifestation.tags.currentKit == 'log' || ab.links.manifestation.tags.currentKit == 'catalog') {
+if (ab.links.manifestation.tags.currentKit == 'log') {
     masks.abGridMenuHide = true;
 } else {
     masks.abGridMenuHide = null;

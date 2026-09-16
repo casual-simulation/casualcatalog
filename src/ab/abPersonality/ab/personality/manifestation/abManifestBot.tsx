@@ -80,19 +80,7 @@ const abMod = {
                         formAddress = links.learn.abBuildCasualCatalogURL(newAddress);
                     }
                 }
-
-            } else if (tags.kit == 'catalog') {
-                if (instStudioConfig?.studio_ab_mesh_url_catalog ?? instStudioConfig?.studio_ab_mesh_url) {
-                    formAddress = instStudioConfig.studio_ab_mesh_url_catalog ?? instStudioConfig?.studio_ab_mesh_url;
-                } else if (links.remember.tags.abMeshPath_catalog ?? links.remember.tags.abMeshPath) {
-                    const newAddress = links.remember.tags.abMeshPath_catalog ?? links.remember.tags.abMeshPath;
-                    if (newAddress.startsWith('https://')) {
-                        formAddress = newAddress;
-                    } else {
-                        formAddress = links.learn.abBuildCasualCatalogURL(newAddress);
-                    }
-                }
-            } else {
+                else {
                 if (links.kitBot && links.kitBot?.tags?.abMeshPath) {
                     if (links.kitBot?.tags.abMeshPath.startsWith('https://')) {
                         formAddress = links.kitBot?.tags.abMeshPath;
@@ -148,11 +136,7 @@ const abMod = {
             tags.color = 'transparent';
             tags.scale = 1;
 
-            if (tags.kit == 'catalog') {
-                meshMod[tags.dimension + 'Z'] = -2/3;
-                meshMod['scale'] = 0.5;
-            }
-            else if (tags.kit == 'log') {
+            if (tags.kit == 'log') {
                 tags.scaleZ = 4;
                 meshMod[tags.dimension + 'Z'] = (2/tags.scaleZ) - 1;
                 meshMod['scaleZ'] = 1/tags.scaleZ;
@@ -213,14 +197,10 @@ const abMod = {
     }),
     onClick: ListenerString(() => {
         if (links.meshBot && !tags.abMeshIsStatic) {
-            if (tags.kit != 'catalog') {
-                links.meshBot.changeAnimState('Click');
+            if (ab.links.manifestation.tags.abCatalogKitSelected) {
+                links.meshBot.changeAnimState('CatalogDeselected');
             } else {
-                if (ab.links.manifestation.tags.abCatalogKitSelected) {
-                    links.meshBot.changeAnimState('CatalogDeselected');
-                } else {
-                    links.meshBot.changeAnimState('CatalogSelected');
-                }
+                links.meshBot.changeAnimState('CatalogSelected');
             }
         }
 
@@ -242,7 +222,7 @@ const abMod = {
             }
             masks.awaitingDoubleClick = null;
             
-            const cycle = ["log", ab.links.remember.tags.defaultABKit, "catalog"];
+            const cycle = ["log", ab.links.remember.tags.defaultABKit];
             let newIndex;
             if (cycle.indexOf(ab.links.manifestation.tags.currentKit) >= 0) {
                 newIndex = cycle.indexOf(ab.links.manifestation.tags.currentKit) + 1;
@@ -325,7 +305,7 @@ const abMod = {
     animateBot: ListenerString(async () => {
         // Animated meshes drive their own motion; static meshes (and ab's core)
         // get the procedural spin, which rotates the child mesh via transformer.
-        if (links.meshBot && !tags.abMeshIsStatic ||(tags.kit == 'catalog' || tags.kit == 'log') ) {
+        if (links.meshBot && !tags.abMeshIsStatic ||(tags.kit == 'log') ) {
             return;
         }
 
@@ -547,7 +527,7 @@ const abMod = {
             }
         }
 
-        if (tags.kit && tags.kit != 'log' && tags.kit != 'catalog') {
+        if (tags.kit && tags.kit != 'log') {
             links.manager.abClick({ menu: 'grid' , ignoreABKit: true});
         } else {
             links.manager.abClick({ menu: 'grid' });

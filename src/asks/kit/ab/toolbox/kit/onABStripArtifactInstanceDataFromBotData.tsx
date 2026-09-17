@@ -25,6 +25,7 @@ delete data.tags.abOffset;
 delete data.tags.abScale;
 delete data.tags.abBaseScale;
 delete data.tags.abOrientationMode;
+delete data.tags.abAnimationOverride;
 
 data.tags.system = `ab.toolbox.kit`;
 data.tags.form = 'nothing';

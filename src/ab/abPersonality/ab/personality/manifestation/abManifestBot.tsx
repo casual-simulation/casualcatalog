@@ -60,6 +60,7 @@ const abMod = {
     abOffset: tags.abOffset,
     abScale: tags.abScale,
     abOrientationMode: tags.abOrientationMode,
+    abAnimationOverride: tags.abAnimationOverride,
     armMeshPath: links.remember.tags.abArmMeshPath,
     armColor: "white",
     personality: tags.personality,
@@ -349,6 +350,10 @@ const abMod = {
     animateBot: ListenerString(async () => {
         // Animated meshes drive their own motion; static meshes (and ab's core)
         // get the procedural spin, which rotates the child mesh via transformer.
+        if (tags.abAnimationOverride && links.meshBot) {
+            links.meshBot.tags.formAnimation = tags.abAnimationOverride;
+        }
+
         if (links.meshBot && !tags.abMeshIsStatic) {
             return;
         }

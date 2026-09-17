@@ -15,6 +15,7 @@ const shard: ABArtifactShard = {
         abOffset: tags.abOffset,
         abBaseScale: tags.abBaseScale,
         abOrientationMode: tags.abOrientationMode,
+        abAnimationOverride: tags.abAnimationOverride,
         label: tags.label,
         color: tags.color,
         labelFloatingBackgroundColor: tags.labelFloatingBackgroundColor,

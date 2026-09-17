@@ -8,6 +8,7 @@ masks.abScale = that?.abScale;
 masks.abOffset = that?.abOffset;
 masks.abBaseScale = that?.abBaseScale;
 masks.abOrientationMode = that?.abOrientationMode;
+masks.abAnimationOverride = that?.abAnimationOverride;
 
 await os.sleep(0);
 

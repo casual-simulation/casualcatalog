@@ -23,6 +23,7 @@ if (that.eggParameters) {
                 z: (2/scaleZ) - 1
             },
             abOrientationMode: 'billboardFront',
+            abAnimationOverride: 'idle',
             eggParameters: {
                 gridInformation: {
                     dimension: dimension,

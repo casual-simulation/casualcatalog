@@ -16,6 +16,7 @@ tags.abBaseScale = data.abBaseScale;
 tags.abScale = data.abScale;
 tags.abOffset = data.abOffset;
 tags.abOrientationMode = data.abOrientationMode;
+tags.abAnimationOverride = data.abAnimationOverride;
 
 //Place bot correctly
 if (data.dimensionData) {

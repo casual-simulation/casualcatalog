@@ -42,6 +42,23 @@ if (that.tags.includes("abCatalogSelected")) {
             //     thisBot.onPointerEnter();
             // }
         }
+
+        //shoot out arm
+        const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+        const inMap = configBot.tags.mapPortal ? true : false;
+
+        let posX = tags[dimension + 'X'] + (inMap ? .002 : 2);
+        let posY = tags[dimension + 'Y'];
+
+        const armBot = ab.links.arm_tool.abCreateArm({
+            originBot: thisBot,
+            dimension: dimension,
+            position: {
+                x: posX,
+                y: posY
+            },
+        })
+        thisBot.onArmPlaced()
     } else {
         tags.currentFormAnimation = 'closed';
 

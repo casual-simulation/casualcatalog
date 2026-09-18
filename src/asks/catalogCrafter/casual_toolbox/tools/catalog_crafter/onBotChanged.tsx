@@ -58,7 +58,8 @@ if (that.tags.includes("abCatalogSelected")) {
                 y: posY
             },
         })
-        thisBot.onArmPlaced()
+
+        thisBot.onArmPlaced({dimension: dimension, x: posX, y: posY})
     } else {
         tags.currentFormAnimation = 'closed';
 

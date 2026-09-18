@@ -18,6 +18,13 @@ tags.studioId = data.studioId;
 tags.originType = data.originType;
 tags.placeAsk = data.placeAsk;
 
+tags.placeLocked = data.placeLocked ?? false;
+if (data.placeLocked) {
+    tags.draggable = false;
+} else {
+    tags.draggable = true;
+}
+
 tags.form = 'mesh';
 tags.formAddress = ab.abBuildCasualCatalogURL("/asks/meshes/sphere_solidColor.glb");
 tags.strokeFormAddress = ab.abBuildCasualCatalogURL("/asks/meshes/inst_cylinder_16_stroke.glb");

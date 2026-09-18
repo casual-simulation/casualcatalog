@@ -9,6 +9,7 @@ const shard: ABArtifactShard = {
         originType: tags.originType,
         instSetting: tags.instSetting,
         biosSetting: tags.biosSetting,
+        placeLocked: tags.placeLocked,
         dimensionData: {
             dimension: ab.links.remember.tags.abActiveDimension,
             [ab.links.remember.tags.abActiveDimension]: tags[ab.links.remember.tags.abActiveDimension],

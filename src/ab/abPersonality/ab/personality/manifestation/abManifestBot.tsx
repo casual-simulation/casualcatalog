@@ -15,7 +15,9 @@ if (!tags.currentKit) {
         if (!phys_kit) {
             await links.catalog.loadKit({id: 'navigation_kit' + '_loader', hideOnLoad: true})
         }
+        await os.sleep(0);
         phys_kit = getBot("kitId", 'navigation_kit');
+        console.log("pin default tester", phys_kit);
         if (phys_kit) {
             masks.abFormAddress = phys_kit.tags.abFormAddress;
             masks.abScale = phys_kit.tags.abScale;
@@ -238,6 +240,9 @@ const abMod = {
             tags.form = 'cube';
             tags.color = links.personality.tags.abBaseColor;
             tags.scale = 0.9;
+            tags.scaleX = null;
+            tags.scaleY = null;
+            tags.scaleZ = null;
             tags.strokeWidth = 1;
             tags.strokeColor = links.personality.tags.abBaseStrokeColor;
             tags.formOpacity = 0.33;

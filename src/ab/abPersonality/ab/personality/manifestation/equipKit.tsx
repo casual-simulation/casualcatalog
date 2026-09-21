@@ -54,7 +54,7 @@ if (links.kitBot) {
     newPosY = that?.position?.y ?? links.kitBot.tags[dimension + 'Y'];
 }
 
-let kitName = (links.kitBot.tags.label ?? 'build');
+let kitName = (links.kitBot?.tags.label ?? 'build');
 
 destroy(links.abBot);
 

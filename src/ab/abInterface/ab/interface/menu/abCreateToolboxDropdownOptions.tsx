@@ -1,4 +1,4 @@
-const toolboxTools = [...that.toolArray] ?? [];
+const toolboxTools = [...that?.toolArray] ?? [];
 const toolboxName = that.toolboxName ?? "Kit ";
 const toolbox = that.toolbox;
 const gridInformation = (that?.gridInformation && that?.gridInformation != undefined) ? that?.gridInformation : abRemember.tags.abGridFocus;

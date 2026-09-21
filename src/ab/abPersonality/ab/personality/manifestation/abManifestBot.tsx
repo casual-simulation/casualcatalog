@@ -17,7 +17,6 @@ if (!tags.currentKit) {
         }
         await os.sleep(0);
         phys_kit = getBot("kitId", 'navigation_kit');
-        console.log("pin default tester", phys_kit);
         if (phys_kit) {
             masks.abFormAddress = phys_kit.tags.abFormAddress;
             masks.abScale = phys_kit.tags.abScale;
@@ -151,9 +150,11 @@ const abMod = {
             tags.color = 'transparent';
             tags.scale = 1;
 
-            tags.scaleZ = 1.3;
-            meshMod[tags.dimension + 'Z'] = (.6/tags.scaleZ) - 1;
-            meshMod['scaleZ'] = 1/tags.scaleZ;
+            if (!tags.abMeshIsStatic) {
+                tags.scaleZ = 1.3;
+                meshMod[tags.dimension + 'Z'] = (.6/tags.scaleZ) - 1;
+                meshMod['scaleZ'] = 1/tags.scaleZ;
+            }
 
             if (tags.abOrientationMode) {
                 meshMod['orientationMode'] = "billboardFront";
@@ -223,30 +224,32 @@ const abMod = {
         if (!tags.abMeshIsStatic) {
             tags.spinIntervalMS = 4500;
         } else {
-            // If a custom mesh is not defined for ab, then give ab a "core".
-            masks.coreBot = getLink(create({
-                space: 'tempLocal',
-                abBot: getLink(thisBot),
-                color: links.personality.tags.abBaseColor,
-                formOpacity: 0.66,
-                pointable: false,
-                scale: 0.75,
-                transformer: thisBot.id,
-                anchorPoint: 'center',
-                [tags.dimension]: true,
-                [tags.dimension + 'Z']: -0.5
-            }));
+            if (!tags.abFormAddress) {
+                // If a custom mesh is not defined for ab, then give ab a "core".
+                masks.coreBot = getLink(create({
+                    space: 'tempLocal',
+                    abBot: getLink(thisBot),
+                    color: links.personality.tags.abBaseColor,
+                    formOpacity: 0.66,
+                    pointable: false,
+                    scale: 0.75,
+                    transformer: thisBot.id,
+                    anchorPoint: 'center',
+                    [tags.dimension]: true,
+                    [tags.dimension + 'Z']: -0.5
+                }));
 
-            tags.form = 'cube';
-            tags.color = links.personality.tags.abBaseColor;
-            tags.scale = 0.9;
-            tags.scaleX = null;
-            tags.scaleY = null;
-            tags.scaleZ = null;
-            tags.strokeWidth = 1;
-            tags.strokeColor = links.personality.tags.abBaseStrokeColor;
-            tags.formOpacity = 0.33;
-            tags.formDepthTest = false;
+                tags.form = 'cube';
+                tags.color = links.personality.tags.abBaseColor;
+                tags.scale = 0.9;
+                tags.scaleX = null;
+                tags.scaleY = null;
+                tags.scaleZ = null;
+                tags.strokeWidth = 1;
+                tags.strokeColor = links.personality.tags.abBaseStrokeColor;
+                tags.formOpacity = 0.33;
+                tags.formDepthTest = false;
+            }
         }
 
         thisBot.animateBot();

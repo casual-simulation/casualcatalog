@@ -137,6 +137,7 @@ const abMod = {
                 form: 'mesh',
                 formSubtype: 'gltf',
                 scaleMode: 'absolute',
+                draggable: false,
                 formAddress,
                 formAnimation: false,
                 pointable: false,

@@ -41,3 +41,7 @@ if (!hasCustomMesh) {
     tags.color = 'clear';
     tags.strokeColor = null;
 }
+
+tags.abCatalogSelected = false;
+await os.sleep();
+thisBot.onClick();

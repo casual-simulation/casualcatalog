@@ -1,5 +1,9 @@
 const dropdownOptions = [];
 
+if (authBot?.tags.privacyFeatures?.allowAI == false) {
+    tags.abGuideEnabled = false;
+}
+
 const currentDim = ab.links.remember.tags.abActiveDimension;
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 const activeMenu = configBot.tags.menuPortal;

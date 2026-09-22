@@ -1,3 +1,9 @@
 if (!tags.personalityLoaded) {
-    thisBot.abPersonalityLoad();
+    if (!authBot) {
+        try { 
+            await os.requestAuthBotInBackground();
+        } catch {
+            return;
+        }
+    }
 }

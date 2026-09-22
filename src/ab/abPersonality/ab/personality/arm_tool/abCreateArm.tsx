@@ -280,6 +280,7 @@ const arm = {
         links.originBot.masks.armSelectedBots = null;
         links.originBot.masks.lineColor = null;
         links.originBot.masks.lineTo = null;
+        links.originBot.masks.draggable = null;
     }),
     originSetSelection: ListenerString(() => {
         const selectedBots = that;
@@ -291,6 +292,7 @@ const arm = {
         links.originBot.masks.armSelectedBots = selectedBots ? getLink(selectedBots) : null;
         links.originBot.masks.lineColor = tags.armColor;
         links.originBot.masks.lineTo = links.originBot.tags.armSelectedBots;
+        links.originBot.masks.draggable = true;
         
         if (links.originBot.links.armSelectedBots) {
             whisper(links.originBot, 'onArmSelectedBots', links.originBot.links.armSelectedBots);

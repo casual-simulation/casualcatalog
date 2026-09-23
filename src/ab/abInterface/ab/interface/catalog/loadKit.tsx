@@ -8,10 +8,8 @@ if (!id) {
 
 console.log("ab.interface.catalog: loading kit", id);
 
-const toolboxes = tags.toolbox_array ?? [];
+const toolboxes = tags.toolbox_array ?? abRemember.tags.toolbox_array ?? [];
 const toolbox = toolboxes.find(tb => tb && (tb.name === id || tb.title === id));
-
-console.log("testing toolbox", toolbox);
 
 if (!toolbox) {
     return { success: false, errorMessage: `kit '${id}' not found in catalog '${tags.label}'` };

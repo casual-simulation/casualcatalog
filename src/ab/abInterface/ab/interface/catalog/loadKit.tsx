@@ -11,22 +11,23 @@ console.log("ab.interface.catalog: loading kit", id);
 const toolboxes = tags.toolbox_array ?? [];
 const toolbox = toolboxes.find(tb => tb && (tb.name === id || tb.title === id));
 
+console.log("testing toolbox", toolbox);
+
 if (!toolbox) {
     return { success: false, errorMessage: `kit '${id}' not found in catalog '${tags.label}'` };
 }
 
 const expectedLabel = toolbox.title ?? toolbox.name;
 
-const existing = getBot((b) => {
-    return b.tags.abArtifactName === 'kit' &&
-           b.tags.studioId === tags.studioId &&
-           b.tags.label === expectedLabel &&
-           b.tags.lineTo === thisBot.id;
-});
+// const existing = getBot((b) => {
+//     return b.tags.abArtifactName === 'kit' &&
+//            b.tags.label === expectedLabel &&
+//            b.tags.id === id
+// });
 
-if (existing) {
-    return { success: true, alreadyLoaded: true };
-}
+// if (existing) {
+//     return { success: true, alreadyLoaded: true };
+// }
 
 let gridInformation = argGridInformation;
 if (!gridInformation) {
@@ -58,7 +59,7 @@ const reconstitutionPromise = ab.links.artifact.awaitArtifactReconstitution({
     matchSuccess: (e) => {
         return e?.abArtifactName === 'kit' && e?.shardBots?.some((b) => {
             return b?.tags?.label === expectedLabel &&
-                b?.tags?.studioId === tags.studioId;
+                b?.tags?.kitId === id;
         });
     },
     matchFailure: (e) => e?.abArtifactName === 'kit',

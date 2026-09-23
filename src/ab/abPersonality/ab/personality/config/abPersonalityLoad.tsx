@@ -1,3 +1,5 @@
+console.log("abPersonality authBot", authBot, thisBot.vars.loading);
+
 if (thisBot.vars.loading) {
     return;
 }
@@ -21,28 +23,35 @@ if (!links.remember) {
 // Retrieve personality config from user's record.
 let userPersonalityData = {};
 
-console.log("abPersonality authBot", authBot, thisBot.vars.loading);
 
 if (authBot) {
-    const getDataResponse = await os.getData(authBot.id, 'abPersonalityConfig');
+    try {
+       const getDataResponse = await os.getData(authBot.id, 'abPersonalityConfig');
 
-    if (tags.debug) {
-        console.log(`[${tags.system}.${tagName}] getDataResponse:`, self.structuredClone(getDataResponse));
-    }
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] getDataResponse:`, self.structuredClone(getDataResponse));
+        }
 
-    if (getDataResponse.success) {
-        userPersonalityData = getDataResponse.data;
-    } else {
-        if (getDataResponse.errorCode !== 'data_not_found') {
-            console.error(`[${tags.system}.${tagName}] abPersonalityConfig get error:`, { errorCode: getDataResponse.errorCode, errorMessage: getDataResponse.errorMessage });
+        if (getDataResponse.success) {
+            userPersonalityData = getDataResponse.data;
+        } else {
+            if (getDataResponse.errorCode !== 'data_not_found') {
+                console.error(`[${tags.system}.${tagName}] abPersonalityConfig get error:`, { errorCode: getDataResponse.errorCode, errorMessage: getDataResponse.errorMessage });
+                thisBot.vars.loading = false;
+                return;
+            }
+        }
+
+        if (!tags.personalityLoaded) {
+            setTagMask(thisBot, "personalityLoaded", true, "shared");
+        } 
+    } catch (e) {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] error getting user data:`, e);
             thisBot.vars.loading = false;
-            return;
         }
     }
-
-    if (!tags.personalityLoaded) {
-        setTagMask(thisBot, "personalityLoaded", true, "shared");
-    }
+    
 }
 
 // Clear any previously loaded tags.

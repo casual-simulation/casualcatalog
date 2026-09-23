@@ -1,3 +1,5 @@
+console.log("reloading ab due to personality change", links.abBot);
+
 if (links.abBot) {
     const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
     thisBot.abManifestBot({
@@ -8,3 +10,4 @@ if (links.abBot) {
         }
     });
 }
+

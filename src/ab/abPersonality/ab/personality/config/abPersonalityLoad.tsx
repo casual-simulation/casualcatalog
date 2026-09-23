@@ -97,6 +97,7 @@ for (const tagName of tags.abPersonalityTags) {
 
         }
     }
+    await os.sleep(0);
 }
 
 // Ryan (Aug 29, 2025): im not sure exactly what is happening here but without sleeping on these big tag mask changes, they dont all seem to come in properly.

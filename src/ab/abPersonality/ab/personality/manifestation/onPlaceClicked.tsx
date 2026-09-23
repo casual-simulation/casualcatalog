@@ -14,13 +14,13 @@ let xPos;
 let yPos;
 const dimension = that.dimension ?? "home";
 
-if (links.abBot.tags[dimension + 'X'] > that.x) {
+if (links.abBot?.tags[dimension + 'X'] > that.x) {
     xPos = that.x + .0005;
 } else {
     xPos = that.x - .0005;
 }
 
-if (links.abBot.tags[dimension + 'Y'] > that.y) {
+if (links.abBot?.tags[dimension + 'Y'] > that.y) {
     yPos = that.y + .0005;
 } else {
     yPos = that.y - .0005;

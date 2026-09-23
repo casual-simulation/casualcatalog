@@ -15,26 +15,24 @@ if (links.abBot) {
 if (!tags.currentKit) {
     if (configBot.tags.mapPortal) {
         masks.currentKit = 'navigation_kit';
-        let phys_kit = getBot("kitId", 'navigation_kit');
-        if (!phys_kit) {
-            await links.catalog.loadKit({id: 'navigation_kit' + '_loader', hideOnLoad: true})
-        }
-        await os.sleep(0);
-        phys_kit = getBot("kitId", 'navigation_kit');
-        if (phys_kit) {
-            masks.abFormAddress = phys_kit.tags.abFormAddress;
-            masks.abScale = phys_kit.tags.abScale;
-            masks.abOffset = phys_kit.tags.abOffset;
-            masks.abBaseScale = phys_kit.tags.abBaseScale;
-            masks.abOrientationMode = phys_kit.tags.abOrientationMode;
-        }
     } else {
         masks.currentKit = abRemember.tags.defaultABKit ?? "casual_kit";
-        const phys_kit = getBot("kitId", abRemember.tags.defaultABKit ?? "casual_kit");
-        if (!phys_kit) {
-            await links.catalog.loadKit({id: (abRemember.tags.defaultABKit ?? "casual_kit") + '_loader', hideOnLoad: true})
-        }
     }
+}
+
+let phys_kit = getBot("kitId", tags.currentKit);
+if (!phys_kit) {
+    await links.catalog.loadKit({id: tags.currentKit + '_loader', hideOnLoad: true})
+}
+await os.sleep(0);
+phys_kit = getBot("kitId", tags.currentKit);
+if (phys_kit) {
+    masks.abFormAddress = phys_kit.tags.abFormAddress;
+    masks.abScale = phys_kit.tags.abScale;
+    masks.abOffset = phys_kit.tags.abOffset;
+    masks.abBaseScale = phys_kit.tags.abBaseScale;
+    masks.abOrientationMode = phys_kit.tags.abOrientationMode;
+    await os.sleep(0);
 }
 
 const abMod = {

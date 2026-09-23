@@ -1,5 +1,3 @@
-console.log("abPersonality authBot", authBot, thisBot.vars.loading);
-
 if (thisBot.vars.loading == true) {
     return;
 }

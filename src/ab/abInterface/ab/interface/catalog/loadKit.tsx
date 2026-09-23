@@ -6,6 +6,8 @@ if (!id) {
     return { success: false, errorMessage: 'missing required arg: id' };
 }
 
+console.log("ab.interface.catalog: loading kit", id);
+
 const toolboxes = tags.toolbox_array ?? [];
 const toolbox = toolboxes.find(tb => tb && (tb.name === id || tb.title === id));
 

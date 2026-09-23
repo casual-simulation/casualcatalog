@@ -8,6 +8,10 @@ if (thisBot.vars.abBotLastId) {
     destroy(thisBot.vars.abBotLastId);
 }
 
+if (links.abBot) {
+    destroy(links.abBot);
+}
+
 if (!tags.currentKit) {
     if (configBot.tags.mapPortal) {
         masks.currentKit = 'navigation_kit';

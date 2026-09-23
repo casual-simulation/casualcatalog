@@ -106,7 +106,6 @@ for (const tagName of tags.abPersonalityTags) {
 
         }
     }
-    await os.sleep(0);
 }
 
 thisBot.vars.loading = false;

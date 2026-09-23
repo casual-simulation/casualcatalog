@@ -21,6 +21,8 @@ if (!links.remember) {
 // Retrieve personality config from user's record.
 let userPersonalityData = {};
 
+console.log("abPersonality authBot", authBot, thisBot.vars.loading);
+
 if (authBot) {
     const getDataResponse = await os.getData(authBot.id, 'abPersonalityConfig');
 

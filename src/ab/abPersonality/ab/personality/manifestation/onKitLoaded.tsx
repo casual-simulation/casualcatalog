@@ -1,4 +1,3 @@
-console.log("kit loaded", that, that.tags.kitId, tags.currentKit, links.abBot, masks.manifestingAB);
 if (that.tags.kitId == tags.currentKit) {
 
     if (masks.manifestingAB == true) {

@@ -6,6 +6,7 @@ if (that.tags.kidId == tags.currentKit) {
     }
 
     if (links.abBot) {
+        console.log("found abBot")
         const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
         thisBot.abManifestBot({
             dimension: dimension,

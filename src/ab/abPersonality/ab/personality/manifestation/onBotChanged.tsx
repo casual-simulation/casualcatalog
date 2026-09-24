@@ -1,8 +1,9 @@
 await os.sleep(100);
 if (that.tags.includes("manifestingAB")) {
+    console.log("checking awaiting manifest", links.abBot, tags.manifestingAB, tags.awaitingManifestation);
     if (!tags.manifestingAB && tags.awaitingManifestation) {
         masks.awaitingManifestation = false;
-        console.log("checking awaiting manifest", links.abBot);
+        
         if (links.abBot) {
             const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
             thisBot.abManifestBot({

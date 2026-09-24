@@ -1,6 +1,9 @@
 console.log("kit loaded", that, that.tags.kitId, tags.currentKit, links.abBot, masks.manifestingAB);
 if (that.tags.kidId == tags.currentKit) {
+    console.log("kit check 1");
+
     if (masks.manifestingAB == true) {
+        console.log("kit check 2");
         masks.awaitingManifestation = true;
         return;
     }

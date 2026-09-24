@@ -84,7 +84,7 @@ const footprint = {
     onClick: ListenerString(() => {
         tags[tags.dimension] = false;
         shout("onABFootClicked", { dimension: tags.dimension });
-        await links.manager.abManifestBot(tags.positionInfo);
+        links.manager.abManifestBot(tags.positionInfo);
         ab.links.sound.abPlaySound({ value: ab.links.arm_tool.tags.defaultArmTeleportSound });
     }),
 };

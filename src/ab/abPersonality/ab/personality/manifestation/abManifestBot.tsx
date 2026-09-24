@@ -1,6 +1,8 @@
 const dimension = that?.dimension;
 const position = that?.position;
 
+masks.manifestingAB = true;
+
 console.log("abManifestBot triggeres", links.abBot, tags.currentKit);
 
 if (thisBot.vars.abBotLastId) {
@@ -20,7 +22,7 @@ if (!tags.currentKit) {
 
 let phys_kit = getBot("kitId", tags.currentKit);
 if (!phys_kit) {
-    await links.catalog.loadKit({id: tags.currentKit + '_loader', hideOnLoad: true})
+    links.catalog.loadKit({id: tags.currentKit + '_loader', hideOnLoad: true})
 }
 phys_kit = getBot("kitId", tags.currentKit);
 if (phys_kit) {
@@ -29,7 +31,7 @@ if (phys_kit) {
     masks.abOffset = phys_kit.tags.abOffset;
     masks.abBaseScale = phys_kit.tags.abBaseScale;
     masks.abOrientationMode = phys_kit.tags.abOrientationMode;
-    await os.sleep(0);
+    os.sleep(0);
 }
 
 const abMod = {
@@ -692,5 +694,7 @@ links.remember.masks[dimension + 'ABLastPosition'] = '🧬' + JSON.stringify({ x
 await os.sleep(0); // Give CasualOS a chance to update tag masks.
 
 shout('onABMoved', { dimension, x: position.x, y: position.y });
+
+masks.manifestingAB = false;
 
 return abBot;

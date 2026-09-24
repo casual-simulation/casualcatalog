@@ -38,3 +38,4 @@ if (data.eggParameters) {
 }
 
 await thisBot.abGridMenuOnBeforeCreate();
+shout("onKitLoaded", thisBot);

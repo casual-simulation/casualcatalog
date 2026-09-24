@@ -1,4 +1,4 @@
-console.log("kit loaded", that, that.tags.kitId, tags.currentKit);
+console.log("kit loaded", that, that.tags.kitId, tags.currentKit, links.abBot, tags.manifestingAB);
 if (that.tags.kidId == tags.currentKit) {
     if (tags.manifestingAB) {
         masks.awaitingManifestation = true;

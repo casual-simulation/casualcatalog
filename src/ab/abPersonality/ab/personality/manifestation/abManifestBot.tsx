@@ -1,6 +1,8 @@
 const dimension = that?.dimension;
 const position = that?.position;
 
+console.log("abManifestBot triggeres", links.abBot, tags.currentKit);
+
 if (thisBot.vars.abBotLastId) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] destroying abBot`);
@@ -20,7 +22,6 @@ let phys_kit = getBot("kitId", tags.currentKit);
 if (!phys_kit) {
     await links.catalog.loadKit({id: tags.currentKit + '_loader', hideOnLoad: true})
 }
-await os.sleep(0);
 phys_kit = getBot("kitId", tags.currentKit);
 if (phys_kit) {
     masks.abFormAddress = phys_kit.tags.abFormAddress;

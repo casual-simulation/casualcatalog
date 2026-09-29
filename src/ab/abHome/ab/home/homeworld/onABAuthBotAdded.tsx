@@ -1,8 +1,8 @@
-if (tags.awaitingAuthBot) {
-    return;
-}
+// if (tags.awaitingAuthBot) {
+//     return;
+// }
 
-const homeBots = getBots("abIDOrigin", "home");
-if (homeBots.length == 0) {
-    thisBot.onABInitialized();
-}
+// const homeBots = getBots("abIDOrigin", "home");
+// if (homeBots.length == 0) {
+//     thisBot.onABInitialized();
+// }

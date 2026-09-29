@@ -29,6 +29,7 @@ if (phys_kit) {
     masks.abOffset = phys_kit.tags.abOffset;
     masks.abBaseScale = phys_kit.tags.abBaseScale;
     masks.abOrientationMode = phys_kit.tags.abOrientationMode;
+    masks.abAnimationOverride = phys_kit.tags.abAnimationOverride;
     os.sleep(0);
 }
 

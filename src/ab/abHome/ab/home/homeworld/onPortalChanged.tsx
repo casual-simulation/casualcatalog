@@ -33,32 +33,6 @@ if (that.portal == "mapPortal") {
             const abPosition = await links.manifestation.getDefaultManifestPosition('map');
             await os.focusOn(abPosition, { duration: 0, portal: 'map', zoom: 999999999 });
 
-            // Show home intro menu.
-            // shout('resetHomeIntroMenu');
-
-            // configBot.tags.menuPortal = 'homeIntroMenu';
-
-            // links.menu.abCreateMenuButton({
-            //     space: 'tempLocal',
-            //     homeIntroMenu: true,
-            //     label: 'go to home',
-            //     homeworldBot: getLink(thisBot),
-            //     resetHomeIntroMenu: `@
-            //         destroy(thisBot);
-            //     `,
-            //     onClick: `@
-            //         setTagMask(ab.links.remember, "mapPreventFocus", null);
-                    
-            //         links.homeworldBot.playIntro();
-                    
-            //         shout('resetHomeIntroMenu');
-            //     `
-            // })
-            // const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-            // if (avatarBot) {
-            //     avatarBot.onClick({origin: 'grid'});
-            // } else {
-            //     //spawn avatar
             thisBot.spawnPlayer();
             ab.links.menu.abOpenMenu("core");
             // }

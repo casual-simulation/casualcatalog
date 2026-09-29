@@ -61,6 +61,4 @@ destroy(links.abBot);
 shout("onABKitChanged", that.kit);
 os.toast(kitName + ' equipped');
 
-const currentMenu = ab.links.menu.tags.chosenMenu;
 await thisBot.abManifestBot({...that, dimension: dimension, position: {x: newPosX, y: newPosY}});
-ab.links.menu.abOpenMenu(currentMenu);

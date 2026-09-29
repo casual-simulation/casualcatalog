@@ -34,7 +34,6 @@ if (that.portal == "mapPortal") {
             await os.focusOn(abPosition, { duration: 0, portal: 'map', zoom: 999999999 });
 
             thisBot.spawnPlayer();
-            await os.sleep(100);
             ab.links.menu.abOpenMenu("core");
             // }
         }

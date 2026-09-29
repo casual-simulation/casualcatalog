@@ -696,4 +696,7 @@ shout('onABMoved', { dimension, x: position.x, y: position.y });
 
 masks.manifestingAB = false;
 
+const currentMenu = ab.links.menu.tags.chosenMenu;
+ab.links.menu.abOpenMenu(currentMenu);
+
 return abBot;

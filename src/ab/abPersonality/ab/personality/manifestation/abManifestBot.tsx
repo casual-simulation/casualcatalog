@@ -3,6 +3,8 @@ const position = that?.position;
 
 masks.manifestingAB = true;
 
+console.log("abManifestBot triggeres", links.abBot, tags.currentKit);
+
 if (thisBot.vars.abBotLastId) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] destroying abBot`);

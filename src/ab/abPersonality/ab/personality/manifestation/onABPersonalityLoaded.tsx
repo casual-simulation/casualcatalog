@@ -1,3 +1,7 @@
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] personality loaded.`);
+}
+
 if (links.abBot) {
     const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
     await thisBot.abManifestBot({
@@ -7,6 +11,9 @@ if (links.abBot) {
             y: links.abBot.tags[dimension + 'Y'],
         }
     });
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] bot manifested.`, links.abBot);
+    }
     shout("onABManifestedAfterPersonality");
 }
 

@@ -1,4 +1,7 @@
 if (thisBot.vars.loading == true) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] personality load already in progress.`);
+    }
     return;
 }
 
@@ -8,12 +11,18 @@ if (!authBot) {
     try { 
         await os.requestAuthBotInBackground();
     } catch {
+        if (tags.debug) {
+            console.log(`[${tags.system}.${tagName}] no auth bot found.`);
+        }
         thisBot.vars.loading = false;
         return;
     }
 }
 
 if (!links.remember) {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] no remember bot found.`);
+    }
     thisBot.vars.loading = false;
     return;
 }

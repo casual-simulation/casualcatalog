@@ -1,5 +1,5 @@
 //prevent automatic map focus
-setTagMask(links.remember, "mapPreventFocus", true);
+// setTagMask(links.remember, "mapPreventFocus", true);
 
 const currentDim = 'home';
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
@@ -15,10 +15,7 @@ if (!authBot) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] authBot not found`);
     }
-    masks.awaitingAuthBot = true;
     await os.requestAuthBot();
-
-    masks.awaitingAuthBot = null;
 }
 
 if (!authBot) {

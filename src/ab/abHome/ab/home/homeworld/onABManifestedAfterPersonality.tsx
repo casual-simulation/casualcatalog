@@ -1,1 +1,1 @@
-thisBot.onABInitialized();
+thisBot.initPreCheck();

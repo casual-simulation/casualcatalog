@@ -45,7 +45,4 @@ if (!homeEggData.success) {
     }
 }
 
-await thisBot.handleEggSetup();
-
-// Manually call homeworld's onPortalChanged so it sets up the intro state.
-thisBot.onPortalChanged({ portal: 'mapPortal', dimension: currentDim });
+//await thisBot.handleEggSetup();

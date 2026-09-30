@@ -15,5 +15,7 @@ if (links.abBot) {
         console.log(`[${tags.system}.${tagName}] bot manifested.`, links.abBot);
     }
     shout("onABManifestedAfterPersonality");
+} else {
+    masks.awaitingManifestation = true;
 }
 

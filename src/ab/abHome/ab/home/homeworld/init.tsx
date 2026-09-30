@@ -40,13 +40,13 @@ if (!homeEggData.success) {
         if (!homeEggData2.success) {
             thisBot.saveHomeworld();
         } else {
-            ab.links.search.onLookupABEggs({recordKey: configBot.tags.studio ?? authBot.id, abID: 'home', autoHatch: true, sourceEvent: 'ask'});
+            thisBot.loadHome();
         }
     } else if (homeEggData.errorCode && homeEggData.errorCode == 'data_not_found') {
         thisBot.saveHomeworld();
     }
 } else {
-    ab.links.search.onLookupABEggs({recordKey: configBot.tags.studio ?? authBot.id, abID: 'home', autoHatch: true, sourceEvent: 'ask'});
+    thisBot.loadHome();
 }
 
 //await thisBot.handleEggSetup();

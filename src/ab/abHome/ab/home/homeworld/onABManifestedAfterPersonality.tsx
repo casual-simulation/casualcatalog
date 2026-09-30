@@ -1,3 +1,7 @@
+if (!authBot) {
+    return;
+}
+
 const homeBots = getBots("abIDOrigin", "home");
 if (homeBots.length == 0) {
     masks.introPlayed = null;

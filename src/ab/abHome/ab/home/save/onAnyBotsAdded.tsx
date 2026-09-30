@@ -2,8 +2,12 @@ if (!tags.listeningForChanges) {
     return;
 }
 
+if (!authBot) {
+    return;
+}
+
 let changesRequired = false;
-const studio = configBot.tags.studio ?? authBot.id;
+const studio = configBot.tags.studio ?? authBot?.id;
 for (const newBot of that.bots) {
     if (newBot.tags.worldLayer && newBot.tags.worldLayer == studio) {
         changesRequired = true;

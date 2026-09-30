@@ -4,10 +4,6 @@
 const currentDim = 'home';
 const currentPortal = configBot.tags.mapPortal ? "map" : configBot.tags.gridPortal == "blueprint" ? "blueprint" :"grid";
 
-if (links.learn.abIsPrimary()) {
-    links.manifestation.abSetAwake({ awake: true })
-}
-
 configBot.tags.mapPortal = currentDim;
 
 //Check login

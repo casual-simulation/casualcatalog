@@ -1,3 +1,7 @@
+if (tags.debug) {
+    console.log(`[${tags.system}.${tagName}] that`, that, links.abBot);
+}
+
 if (that.dimension != tags.dimension) {
     links.abBot.tags[tags.dimension] = null;
     // links.spriteBot.tags[tags.dimension] = null;
@@ -35,7 +39,14 @@ clearAnimations(links.abBot);
 if (distance > maxDistance) {
     links.abBot.tags[that.dimension + 'X'] = that.position.x;
     links.abBot.tags[that.dimension + 'Y'] = that.position.y;
+
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] quick move`);
+    }
 } else {
+    if (tags.debug) {
+        console.log(`[${tags.system}.${tagName}] slow move`);
+    }
     await animateTag(links.abBot, {
         fromValue: {
             [that.dimension + 'X']: links.abBot.tags[that.dimension + 'X'] ?? 0,

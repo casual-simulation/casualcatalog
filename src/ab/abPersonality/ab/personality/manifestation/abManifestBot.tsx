@@ -648,6 +648,10 @@ const abMod = {
     onDestroy: ListenerString(() => {
         thisBot.vars.destroyed = true;
 
+        if (ab.links.manifestation.tags.debug) {
+            console.log(`[$[abBot]: destroyed abBot`);
+        }
+
         clearInterval(tags.interval);
         clearInterval(tags.abMoveIntervalId);
 

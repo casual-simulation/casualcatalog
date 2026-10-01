@@ -2,16 +2,18 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that`, that, links.abBot);
 }
 
-if (!links.abBot) {
+let abBot = links.abBot;
+
+if (!abBot) {
     const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
-    await thisBot.abManifestBot({dimension: dimension});
+    abBot = await thisBot.abManifestBot({dimension: dimension, position: {x: 0, y: 0}});
 }
 
 if (that.dimension != tags.dimension) {
-    links.abBot.tags[tags.dimension] = null;
+    abBot.tags[tags.dimension] = null;
     // links.spriteBot.tags[tags.dimension] = null;
 
-    links.abBot.tags.dimension = that.dimension;
+    abBot.tags.dimension = that.dimension;
     // links.spriteBot.tags.dimension = that.dimension;
 }
 
@@ -23,10 +25,10 @@ if (that.dimension != tags.dimension) {
 //     links.equipment.onEquipmentBaseDeselected(thisBot);
 // }
 
-links.abBot.tags[that.dimension] = true;
+abBot.tags[that.dimension] = true;
 
-const prevX = links.abBot.tags[that.dimension + 'X'] ?? 0;
-const prevY = links.abBot.tags[that.dimension + 'Y'] ?? 0;
+const prevX = abBot.tags[that.dimension + 'X'] ?? 0;
+const prevY = abBot.tags[that.dimension + 'Y'] ?? 0;
 
 const distance = Math.sqrt(Math.pow((that.position.x - prevX), 2) + Math.pow((that.position.y - prevY), 2));
 let speed = 0.05;
@@ -39,11 +41,11 @@ if (configBot.tags.mapPortal) {
 
 let dur = distance * speed;
 
-clearAnimations(links.abBot);
+clearAnimations(abBot);
 
 if (distance > maxDistance) {
-    links.abBot.tags[that.dimension + 'X'] = that.position.x;
-    links.abBot.tags[that.dimension + 'Y'] = that.position.y;
+    abBot.tags[that.dimension + 'X'] = that.position.x;
+    abBot.tags[that.dimension + 'Y'] = that.position.y;
 
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] quick move`);
@@ -52,10 +54,10 @@ if (distance > maxDistance) {
     if (tags.debug) {
         console.log(`[${tags.system}.${tagName}] slow move`);
     }
-    await animateTag(links.abBot, {
+    await animateTag(abBot, {
         fromValue: {
-            [that.dimension + 'X']: links.abBot.tags[that.dimension + 'X'] ?? 0,
-            [that.dimension + 'Y']: links.abBot.tags[that.dimension + 'Y'] ?? 0,
+            [that.dimension + 'X']: abBot.tags[that.dimension + 'X'] ?? 0,
+            [that.dimension + 'Y']: abBot.tags[that.dimension + 'Y'] ?? 0,
         },
         toValue: {
             [that.dimension + 'X']: that.position.x,

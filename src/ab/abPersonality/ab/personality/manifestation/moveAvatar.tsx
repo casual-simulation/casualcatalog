@@ -2,6 +2,11 @@ if (tags.debug) {
     console.log(`[${tags.system}.${tagName}] that`, that, links.abBot);
 }
 
+if (!links.abBot) {
+    const dimension = configBot.tags.mapPortal ?? configBot.tags.gridPortal;
+    await thisBot.abManifestBot({dimension: dimension});
+}
+
 if (that.dimension != tags.dimension) {
     links.abBot.tags[tags.dimension] = null;
     // links.spriteBot.tags[tags.dimension] = null;

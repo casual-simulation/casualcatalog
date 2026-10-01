@@ -56,8 +56,6 @@ if (links.kitBot) {
 
 let kitName = (links.kitBot?.tags.label ?? 'build');
 
-destroy(links.abBot);
-
 shout("onABKitChanged", that.kit);
 os.toast(kitName + ' equipped');
 

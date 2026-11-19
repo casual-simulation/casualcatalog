@@ -11,8 +11,8 @@ const menuOptions = {
 const switchProcessingButton = {
     ...menuOptions,
     label: 'switch processing mode',
-    abMenuSortOrder: -1,
-    dropdownSortOrder: -1,
+    abMenuSortOrder: -2,
+    dropdownSortOrder: -2,
     dropdownOptions: [
         {
             ...menuOptions,
@@ -33,20 +33,22 @@ const switchProcessingButton = {
     ]
 }
 
-// const avatarBot = getBot(byTag("mapAvatar", true), byTag("ownerID", authBot?.id));
-// if (avatarBot) {
-//     const equipToButton = {
-//         ...menuOptions,
-//         label: 'equip to avatar',
-//         avatar: getLink(avatarBot),
-//         formAddress: 'add',
-//         abMenuSortOrder: -3,
-//         onClick: `@
-//             links.camera.tags.abEquipmentFor = getID(links.avatar);
-//             shout("abMenuRefresh");
-//         `
-//     }
-//     ab.links.menu.abCreateMenuButton(equipToButton);
-// }
+const pimIDButton = {
+    ...menuOptions,
+    label: 'change pimID',
+    abMenuSortOrder: -3,
+    onCreate: `@
+        masks.menuItemText = links.camera.tags.pimID;
+    `,
+    onInputTyping: `@
+        links.camera.tags.pimID = that.text;
+    `,
+    onSubmit: `@
+        links.camera.tags.pimID = that.text;
+        links.camera.getDataFromStrapi();
+        shout("abMenuRefresh");
+    `
+}
 
 ab.links.menu.abCreateMenuDropdown(switchProcessingButton);
+ab.links.menu.abCreateMenuInput(pimIDButton);

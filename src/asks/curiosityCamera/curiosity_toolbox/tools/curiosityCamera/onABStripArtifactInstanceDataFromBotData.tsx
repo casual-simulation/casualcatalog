@@ -15,4 +15,4 @@ delete data.tags.processingMode;
 delete data.tags.confidenceCount;
 delete data.tags.confidenceName;
 delete data.tags.abEquipmentFor;
-;
+delete data.tags.pimID;
